@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+<struts-config>
+    
+    <!-- ========== Data Source Configuration =============================== -->
+    <data-sources />
+    
+    <!-- ========== Form Bean Definitions ================================== -->
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+    </form-beans>
+    
+    <!-- ========== Global Exception Definitions ============================== -->
+    <global-exceptions> 
+	</global-exceptions>
+
+    
+    <!-- ========== Global Forward Definitions =============================== -->
+    <global-forwards type="org.apache.struts.action.ActionForward">
+        <forward name="ErrorPage" path="/de/payback/aon/cms/jsp/ErrorPage.jsp"/>
+
+
+		
+    </global-forwards>
+    
+    <!-- ========== Action Mapping Definitions =============================== -->
+    <action-mappings type="org.apache.struts.action.ActionMapping">
+    	<action path="/fileShow" type="net.anotheria.webutils.filehandling.actions.ShowFile" scope="request">
+    		<forward name="success" path="/net/anotheria/webutils/jsp/UploadFile.jsp"/>
+    	</action>
+    	<action path="/fileUpload" type="net.anotheria.webutils.filehandling.actions.UploadFile" scope="request">
+    		<forward name="success" path="/net/anotheria/webutils/jsp/UploadFileResult.jsp"/>
+    	</action>
+    	<action path="/showTmpFile" type="net.anotheria.webutils.filehandling.actions.ShowTmpFile" scope="request"/>
+    	<action path="/getFile" type="net.anotheria.webutils.filehandling.actions.GetFile" scope="request"/>
+		<action path="/tstImageSave" type="net.anotheria.koblenz.test.action.TestImageSaveAction" scope="request">
+		</action>
+
+		<action path="/getImageByName" type="net.anotheria.koblenz.action.ShowImageByNameAction" scope="request"/>
+		
+		<!--- Login -->
+	  	<action path="/login"  type="net.anotheria.webutils.actions.LoginAction" scope="request">
+			<forward name="success" path="/net/anotheria/webutils/jsp/Login.jsp" /> 
+		</action>
+	  	<action path="/showPage"  type="de.payback.pt.web.cms.action.ShowPageAction" scope="request">
+			<forward name="success" path="/de/payback/pt/web/cms/jsp/CmsTemplate.jsp" /> 
+			<forward name="nolayout" path="/de/payback/pt/web/cms/jsp/CmsNoLayout.jsp" /> 
+		</action>
+		
+    </action-mappings>
+    
+    
+
+    
+    <!-- ========== Controller Configuration ================================ -->
+    <controller />
+    
+    <!-- ========== Message Resources Definitions ============================ -->
+<!--    <message-resources
+	    parameter="ScoreText"
+        key="text" /> -->
+
+    <!-- ========== Plug Ins Configuration ================================= -->
+</struts-config>
