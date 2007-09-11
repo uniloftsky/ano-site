@@ -1,0 +1,184 @@
+<?xml version="1.0"?>
+
+<project name="ptcms" default="all" basedir=".">
+	
+	<property name="output.dir" value="${basedir}/build"/>
+	<property name="classes.dir" value="${output.dir}/classes"/>
+
+	<property name="src" value="${basedir}/src"/>
+
+	<property name="lib.project" value="${basedir}/lib"/>
+
+	<property name="etc" value="${basedir}/etc"/>
+	<property name="html" value="${basedir}/web"/>
+
+	
+	<property name="generation.output" value="${basedir}/generated"/>	
+
+	<property name="appdata" value="${etc}/appdata"/>
+	<property name="gen.appdata" value="${generation.output}/etc/appdata"/>
+	
+	<property name="dist.dir" value="${basedir}/dist"/>
+	<property name="lib.dest" value="${dist.dir}/lib"/>
+	
+	<property name="javadoc.dest" value="${basedir}/../javadoc"/>
+	
+	<property name="project.name" value="ano-site"/>
+	<property name="target.jar.name" value="ano-site.jar"/>
+	
+	<target name="clean" depends="generate.clean">
+		<delete dir="${output.dir}"/>
+	</target>
+
+	<target name="prepare">
+		<mkdir dir="${dist.dir}"/>
+		<mkdir dir="${classes.dir}"/>
+	</target>
+	
+	<target name="compile" depends="prepare">
+		<javac destdir="${classes.dir}" srcdir="${src}" debug="on" deprecation="off" optimize="on">
+			<classpath>
+				<fileset dir="${lib.project}">
+					<include name="**/*.jar"/>
+				</fileset>
+			</classpath>
+		</javac>
+	</target>
+	
+	<target name="copy" depends="prepare">
+		<copy toDir="${classes.dir}">
+			<fileset dir="${src}">
+				<include name="**/*.jsp"/>
+			</fileset>
+		</copy>
+		<copy toDir="${classes.dir}">
+			<fileset dir="${generation.output}/java">
+				<include name="**/*.jsp"/>
+			</fileset>
+		</copy>
+		<copy toDir="${classes.dir}" >
+			<fileset dir="${gen.appdata}">
+				<include name="**/struts-config-*"/>
+				<exclude name="**/struts-config.xml"/>
+			</fileset>
+			<fileset dir="${appdata}">
+				<include name="**/struts-config-*"/>
+				<exclude name="**/struts-config.xml"/>
+			</fileset>
+		</copy>
+		<copy toDir="${classes.dir}">
+			<fileset dir="${appdata}">
+				<include name="**/filestorage.properties"/>
+				<include name="**/anodoc.storage.properties"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="generate.clean">
+		<ant antfile="generate.xml" target="clean"/>
+	</target>
+
+	<target name="generate">
+		<ant antfile="generate.xml" target="all"/>
+	</target>
+	
+	<target name="jar" depends="generate,compile,copy">
+		<jar jarfile="${dist.dir}/${target.jar.name}">
+         	<fileset dir="${classes.dir}">
+         		<include name="**/*"/>
+         	</fileset>
+		</jar>
+	</target>
+	
+	<target name="prepare.webapp">
+		<!-- copy libs -->
+		<copy toDir="${webapp.lib}" flatten="true"> 
+			<fileset dir="${lib.project}">
+				<include name="**/*.jar"/>
+				<exclude name="**/moskito-demo.jar"/>
+				<exclude name="**/servlet-api.jar"/>
+				<exclude name="**/*-src.jar"/>
+				<exclude name="**/moskito-webui-jsps.jar"/>
+			</fileset>
+		</copy>
+		<!-- copy configs and properties -->
+		<copy toDir="${webapp.classes}" flatten="true"> 
+			<fileset dir="${appdata}">
+				<include name="**/*.xml"/>
+				<include name="**/*.properties"/>
+			</fileset>
+		</copy>
+		<copy toDir="${webapp.appdata}" flatten="true"> 
+			<fileset dir="${appdata}">
+				<include name="**/*.xml"/>
+				<include name="**/*.properties"/>
+				<include name="**/*.drl"/>
+			</fileset>
+		</copy>
+		<!-- copy configs and properties -->
+		<copy toDir="${binaries.target}" flatten="true"> 
+			<fileset dir="${binaries}">
+				<include name="**/*"/>
+			</fileset>
+		</copy>
+		<property name="config.file" location="etc/config/special-config.properties"/>
+		<echo>Using configfile ${config.file}</echo>
+		<copy tofile="${config.file.target}" file="${config.file}" overwrite="true"/>
+	</target>
+	
+	<target name="jsps.webapp" depends="prepare.webapp">
+		<copy toDir="${webapp.tmp.dir}">
+			<fileset dir="${src}">
+				<include name="**/*.jsp"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	
+	<target name="compile.webapp" depends="prepare.webapp">
+		<javac destdir="${webapp.classes}" srcdir="${src}" debug="on" deprecation="off" optimize="on">
+			<classpath>
+				<fileset dir="${webapp.lib}">
+					<include name="**/*.jar"/>
+				</fileset>
+				<fileset dir="${lib.project}">
+					<include name="**/servlet-api.jar"/>
+				</fileset>
+			</classpath>
+		</javac>
+	</target>
+	
+	<target name="dist.clean" depends="clean">
+		<delete dir="${dist.dir}"/>
+	</target>
+
+	<target name="dist" depends="jar">
+	    <copy todir="${lib.dest}">
+	      <fileset dir="${lib.project}"/>
+	    </copy>
+	</target>
+	
+	<target name="all" depends="dist"/>
+	
+	<target name="javadoc" depends="compile">
+		<mkdir dir="${javadoc.dest}/${project.name}"/>
+	    <javadoc source="1.5" packagenames="de.payback.pt.*" 
+	    	private="true" author="true"
+	    	sourcepath="${src}" destdir="${javadoc.dest}/${project.name}" 
+	    	bottom="Copyright &#169; 2007 Loyalty Partners. All Rights Reserved.&lt;br/&gt;"
+		>
+		<classpath>
+	        <fileset dir="${lib.project}">
+	          <include name="**/*.jar"/>
+	        </fileset>
+	      </classpath>
+	      <tag name="created" scope="all" description="Created: " />
+	      <link href="http://java.sun.com/j2se/1.5.0/docs/api"/>
+	      <link href="http://struts.apache.org/1.x/struts-core/apidocs/"/>
+	      <link href="http://java.sun.com/products/servlet/2.2/javadoc/"/>
+	      <link href="http://www.jdom.org/docs/apidocs/"/>
+	      <link href="http://moskito.anotheria.net/javadoc/core/"/>
+	      <link href="http://moskito.anotheria.net/javadoc/web/"/>
+	    </javadoc>
+	</target>
+</project>
