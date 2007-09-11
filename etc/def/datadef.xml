@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<datadefinitions>
+  <module name="Images">
+	<document name="Image">
+		<property name="name" type="string"/>
+		<property name="title" type="string" multilingual="false"/>
+		<property name="image" type="image"/>
+		<property name="size" type="string"/>
+	</document>
+  </module>
+  <module name="ASMetaData">
+  	<document name="PageStyle">
+		<property name="name" type="string"/>
+		<property name="css" type="text"/>
+  	</document>
+	<document name="PageTemplate">
+		<property type="string" name="name"/>
+		<property type="string" name="layoutpage"/>
+		<link name="style" type="single" target="ASMetaData.PageStyle"/>
+		<link name="site"  type="single" target="ASMetaData.Site"/>
+		<property type="text" name="description"/>
+	</document> 
+  	<document name="Site">
+		<property name="name" type="string"/>
+		<property name="title" type="string"/>
+		<property name="subtitle" type="string"/>
+		<property name="mainNavi" type="list">
+	        <content>
+				<link name="item" type="single" target="ASWebData.NaviItem"/>
+        	</content>
+        </property>
+		<property name="topNavi" type="list">
+	        <content>
+				<link name="item" type="single" target="ASWebData.NaviItem"/>
+        	</content>
+        </property>
+  	</document>
+	<document name="BoxType">
+		<property name="name" type="string"/>
+		<property name="rendererpage" type="string"/>
+	</document>
+  </module>
+  <module name="ASWebData">
+	<document name="Pagex">
+		<property type="string" name="name"/>
+		<property type="string" name="title" />
+		<link type="single" target="ASMetaData.PageTemplate" name="template"/>
+		<property name="c1" type="list">
+	        <content>
+				<link name="box" type="single" target="ASWebData.Box"/>
+        	</content>
+        </property>
+		<property name="c2" type="list">
+	        <content>
+				<link name="box" type="single" target="ASWebData.Box"/>
+        	</content>
+        </property>
+		<property name="c3" type="list">
+	        <content>
+				<link name="box" type="single" target="ASWebData.Box"/>
+        	</content>
+        </property>
+	</document>
+	<document name="Box">
+		<property name="name" type="string"/>
+		<property name="content" type="text"/>
+		<link name="type" type="single" target="ASMetaData.BoxType"/>
+		<property name="subboxes" type="list">
+	        <content>
+				<link name="type" type="single" target="ASWebData.Box"/>
+        	</content>
+        </property>
+		<property name="parameter1" type="string"/>
+		<property name="parameter2" type="string"/>
+		<property name="parameter3" type="string"/>
+		<property name="parameter4" type="string"/>
+		<property name="parameter5" type="string"/>
+		<property name="parameter6" type="string"/>
+		<property name="parameter7" type="string"/>
+		<property name="parameter8" type="string"/>
+		<property name="parameter9" type="string"/>
+		<property name="parameter10" type="string"/>
+	</document>
+  	<document name="NaviItem">
+		<property name="name" type="string"/>
+		<property name="title" type="string"/>
+		<property name="externalLink" type="string"/>
+		<link name="internalLink" type="single" target="ASWebData.Pagex"/>
+		<property name="popup" type="boolean"/>
+		<property name="subNavi" type="list">
+	        <content>
+				<link name="item" type="single" target="ASWebData.NaviItem"/>
+        	</content>
+        </property>
+  	</document>
+  </module>
+
+</datadefinitions>
