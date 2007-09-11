@@ -58,16 +58,20 @@
 	        		   	<decorator name="editLink"/>
 					</element>
 					<element type="field" name="type" comparable="true"/> 
+					<element type="field" name="handler" comparable="true"/> 
+					<element type="field" name="subboxes" comparable="true"/> 
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
 	        		<element type="function" name="delete"/>
 	      		</elements>
-	      		<dialog name="Edit" title="Edit BoxType">
+	      		<dialog name="Edit" title="Edit Box">
         			<elements>
 	       				<element type="empty"/>
 		       			<element type="field" name="id" readonly="true"/>
 		      			<element type="field" name="name" /> 
 		      			<element type="field" name="type" /> 
+		      			<element type="field" name="handler" /> 
+		      			<element type="field" name="subboxes" /> 
 		      			<element type="field" name="content" /> 
 		      			<element type="field" name="parameter1" /> 
 		      			<element type="field" name="parameter2" /> 
@@ -283,6 +287,39 @@
       			</dialog>
 	    	</section>
 
+    		<!-- Section BoxHandler -->
+			<section title="BoxHandler" type="module">
+				<module>ASMetaData</module>
+				<document>BoxHandlerType</document>
+				<filter name="AZ" field="name"/>
+				<elements>
+					<element type="field" name="id" comparable="true">
+	        		   	<decorator name="idToA">
+	        		 		<rule>3</rule>
+	        		   	</decorator>
+					</element>
+					<element type="field" name="name" comparable="default"> 
+	        		   	<decorator name="editLink"/>
+					</element>
+					<element type="field" name="clazz" comparable="true"/> 
+	        		<element type="function" name="edit"/>
+	        		<element type="function" name="duplicate"/>
+	        		<element type="function" name="delete"/>
+	      		</elements>
+	      		<dialog name="Edit" title="Edit BoxType">
+        			<elements>
+	       				<element type="empty"/>
+		       			<element type="field" name="id" readonly="true"/>
+		      			<element type="field" name="name" /> 
+		      			<element type="field" name="clazz" /> 
+						<element type="empty"/>
+						<element type="list">
+							<element type="function" name="update"/>
+							<element type="function" name="cancel"/>
+						</element>
+        			</elements>
+      			</dialog>
+	    	</section>
     	</sections>
 	</view>
 </views>

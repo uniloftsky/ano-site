@@ -14,21 +14,7 @@
 <!--           Wolfgang (www.1-2-3-4.info). Thank you!     -->
 
 <head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-  <meta http-equiv="cache-control" content="no-cache" />
-  <meta http-equiv="expires" content="0" />
-
-  <meta name="revisit-after" content="2 days" />
-  <meta name="robots" content="index,follow" />
-  <meta name="publisher" content="Your publisher infos here ..." />
-  <meta name="copyright" content="Your copyright infos here ..." />
-  <meta name="author" content="Design: Wolfgang (www.1-2-3-4.info) / Modified: Your Name" />
-  <meta name="distribution" content="global" />
-  <meta name="description" content="Your page description here ..." />
-  <meta name="keywords" content="Your keywords, keywords, keywords, here ..." />
-  <link rel="stylesheet" type="text/css" media="screen,projection,print" href="<bean:write name="stylesheet" property="link"/>" />
-  <link rel="icon" type="image/x-icon" href="simg/favicon.ico" />
-  <title><bean:write name="page" scope="request" property="title"/></title>
+<jsp:include page="MultiflexMetas.jsp"/>
 </head>
 
 <!-- Global IE fix to avoid layout crash when single word size wider than column width -->
@@ -39,104 +25,10 @@
   <div class="page-container">
 
 
- <!-- START COPY here -->
+ <!-- START HEADER here -->
+<jsp:include page="MultiflexHeader.jsp"/>
 
-    <!-- A. HEADER -->      
-    <div class="header">
-      
-      <!-- A.1 HEADER MIDDLE -->
-      <div class="header-middle">    
-   
-        <!-- Sitelogo and sitename -->
-
-        <a class="sitelogo" href="#" title="Go to Start page"></a>
-        <div class="sitename">
-
-          <h1><a href="index.html" title="Go to Start page"><bean:write name="site" property="title"/></a></h1>
-          <h2><bean:write name="site" property="subtitle"/></h2>
-        </div>
-
-        <!-- Navigation Level 0 -->
-
-        <div class="nav0">
-          <ul>
-
-            <li><a href="#" title="Pagina home in Italiano"><img src="simg/flag_italy.gif" alt="Image description" /></a></li>
-            <li><a href="#" title="Homepage auf Deutsch"><img src="simg/flag_germany.gif" alt="Image description" /></a></li>
-            <li><a href="#" title="Hemsidan p&aring; svenska"><img src="simg/flag_sweden.gif" alt="Image description" /></a></li>
-          </ul>
-        </div>			
-
-        <!-- Navigation Level 1 -->
-        <div class="nav1">
-
-          <ul>
-            <li><a href="#" title="Go to Start page">Home</a></li>
-            <li><a href="#" title="Get to know who we are">About</a></li>
-            <li><a href="#" title="Get in touch with us">Contact</a></li>																		
-            <li><a href="#" title="Get an overview of website">Sitemap</a></li>
-          </ul>
-        </div>              
-      </div>
-
-      
-      <!-- A.2 HEADER BOTTOM -->
-      <div class="header-bottom">
-
-      
-        <!-- Navigation Level 2 (Drop-down menus) -->
-        <div class="nav2">
-	
-	      <logic:iterate name="mainNavi" id="item" type="net.anotheria.anosite.content.bean.NaviItemBean">
-          	  <!-- Navigation item -->
-          	  <% System.out.println("Item: "+item); %>
-        	  <ul>
-          	  <logic:equal name="item" property="hasChilds" value="false">
-    	        <li><a <logic:equal name="item" property="popup" value="true">target="_blank" </logic:equal>href="<bean:write name="item" property="link"/>"><bean:write name="item" property="name"/></a></li>
-	          </logic:equal>
-          	  <logic:equal name="item" property="hasChilds" value="true">
-	            <li><a <logic:equal name="item" property="popup" value="true">target="_blank" </logic:equal>href="<bean:write name="item" property="link"/>"><bean:write name="item" property="name"/><!--[if IE 7]><!--></a><!--<![endif]-->
-	              <!--[if lte IE 6]><table><tr><td><![endif]-->
-	                <ul>
-				      <logic:iterate name="item" property="subNavi" id="subitem" type="net.anotheria.anosite.content.bean.NaviItemBean">
-	                  <li><a <logic:equal name="subitem" property="popup" value="true">target="_blank" </logic:equal>href="<bean:write name="subitem" property="link"/>"><bean:write name="subitem" property="name"/></a></li>
-	                  </logic:iterate>
-	                </ul>
-	              <!--[if lte IE 6]></td></tr></table></a><![endif]-->
-	            </li>
-	          </logic:equal>
-	          </ul>
-	      </logic:iterate>
-
-        </div>
-	  </div>
-
-      <!-- A.3 HEADER BREADCRUMBS -->
-
-      <!-- Breadcrumbs -->
-      <div class="header-breadcrumbs">
-        <ul>
-          <li><a href="#">Home</a></li>
-
-          <li><a href="#">Webdesign</a></li>
-          <li><a href="#">Templates</a></li>
-          <li>Multiflex-3</li>
-        </ul>
-
-        <!-- Search form -->                  
-        <div class="searchform">
-          <form action="index.html" method="get">
-
-            <fieldset>
-              <input name="field" class="field"  value=" Search..." />
-              <input type="submit" name="button" class="button" value="GO!" />
-            </fieldset>
-          </form>
-        </div>
-      </div>
-    </div>
-
-  <!-- END COPY here -->
+  <!-- END HEADER here -->
 
 
     <!-- B. MAIN -->

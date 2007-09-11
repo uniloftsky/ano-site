@@ -39,6 +39,10 @@
 		<property name="name" type="string"/>
 		<property name="rendererpage" type="string"/>
 	</document>
+	<document name="BoxHandlerType">
+		<property name="name" type="string"/>
+		<property name="clazz" type="string"/>
+	</document>
   </module>
   <module name="ASWebData">
 	<document name="Pagex">
@@ -65,6 +69,7 @@
 		<property name="name" type="string"/>
 		<property name="content" type="text"/>
 		<link name="type" type="single" target="ASMetaData.BoxType"/>
+		<link name="handler" type="single" target="ASMetaData.BoxHandlerType"/>
 		<property name="subboxes" type="list">
 	        <content>
 				<link name="type" type="single" target="ASWebData.Box"/>

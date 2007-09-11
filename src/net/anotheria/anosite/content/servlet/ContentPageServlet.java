@@ -31,6 +31,8 @@ import net.anotheria.anosite.gen.service.ASMetaDataServiceFactory;
 import net.anotheria.anosite.gen.service.ASWebDataServiceFactory;
 import net.anotheria.anosite.gen.service.IASMetaDataService;
 import net.anotheria.anosite.gen.service.IASWebDataService;
+import net.anotheria.anosite.handler.BoxHandler;
+import net.anotheria.anosite.handler.BoxHandlerFactory;
 import net.java.dev.moskito.web.MoskitoHttpServlet;
 
 public class ContentPageServlet extends MoskitoHttpServlet{
@@ -62,7 +64,7 @@ public class ContentPageServlet extends MoskitoHttpServlet{
 		SiteBean siteBean = createSiteBean(template);
 		req.setAttribute("site", siteBean);
 		
-		PageBean pageBean = createPageBean(page);
+		PageBean pageBean = createPageBean(req, res, page);
 		if (pageBean.getTitle()==null || pageBean.getTitle().length()==0)
 			pageBean.setTitle(siteBean.getTitle());
 		req.setAttribute("page", pageBean);
@@ -95,18 +97,18 @@ public class ContentPageServlet extends MoskitoHttpServlet{
 		
 	}
 	
-	private PageBean createPageBean(Pagex page){
+	private PageBean createPageBean(HttpServletRequest req, HttpServletResponse res, Pagex page){
 		PageBean ret = new PageBean();
 		
 		ret.setTitle(page.getTitle());
 		ret.setName(page.getName());
 		
 		List<StringProperty> c1 = page.getC1();
-		ret.setColumn1(createBoxBeanList(c1));
+		ret.setColumn1(createBoxBeanList(req, res, c1));
 		List<StringProperty> c2 = page.getC2();
-		ret.setColumn2(createBoxBeanList(c2));
+		ret.setColumn2(createBoxBeanList(req, res, c2));
 		List<StringProperty> c3 = page.getC3();
-		ret.setColumn3(createBoxBeanList(c3));
+		ret.setColumn3(createBoxBeanList(req, res, c3));
 		System.out.println("\t c1: "+c1+", c2: "+c2+", c3: "+c3);
 		
 		return ret;
@@ -140,17 +142,17 @@ public class ContentPageServlet extends MoskitoHttpServlet{
 		return ret;
 	}
 	
-	private List<BoxBean> createBoxBeanList(List<StringProperty> boxIds){
+	private List<BoxBean> createBoxBeanList(HttpServletRequest req, HttpServletResponse res, List<StringProperty> boxIds){
 		ArrayList<BoxBean> ret = new ArrayList<BoxBean>();
 		
 		for (StringProperty p : boxIds){
-			ret.add(createBoxBean(webDataService.getBox(p.getString())));
+			ret.add(createBoxBean(req, res, webDataService.getBox(p.getString())));
 		}
 		
 		return ret;
 	}
 	
-	private BoxBean createBoxBean (Box box){
+	private BoxBean createBoxBean (HttpServletRequest req, HttpServletResponse res, Box box){
 		System.out.println("creating box bean for box: "+box);
 		BoxBean ret = new BoxBean();
 		
@@ -171,6 +173,10 @@ public class ContentPageServlet extends MoskitoHttpServlet{
 		
 		ret.setType(createBoxTypeBean(box.getType()));
 		
+		if (box.getHandler()!=null && box.getHandler().length()>0){
+			BoxHandler handler = BoxHandlerFactory.createHandler(box.getHandler());
+			handler.process(req, res, box, ret);
+		}
 		
 		return ret;
 	}

@@ -2,7 +2,7 @@
   <context>
     <package>net.anotheria.anosite.gen</package>
     <owner>anothereria</owner>
-    <applicationName>moskitosite</applicationName>
+    <applicationName>flingly</applicationName>
     <servletMapping>cms</servletMapping>
 	<encoding>iso-8859-15</encoding>
 <!--
