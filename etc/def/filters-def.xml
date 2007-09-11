@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<filters>
+	<filter name="AZ" class="net.anotheria.asg.util.filter.AZDocumentFilter"/>
+</filters>
