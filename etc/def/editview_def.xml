@@ -186,7 +186,9 @@
 					<element type="field" name="name" comparable="default"> 
 	        		   	<decorator name="editLink"/>
 					</element>
-					<element type="field" name="template" comparable="true"/> 
+					<element type="field" name="template" comparable="true"> 
+						<decorator name="linkTargetName"/>
+					</element>
 					<element type="field" name="c1" comparable="true"/> 
 					<element type="field" name="c2" comparable="true"/> 
 					<element type="field" name="c3" comparable="true"/> 
@@ -227,8 +229,12 @@
 					<element type="field" name="name" comparable="default"> 
 	        		   	<decorator name="editLink"/>
 					</element>
-					<element type="field" name="type" comparable="true"/> 
-					<element type="field" name="handler" comparable="true"/> 
+					<element type="field" name="type" comparable="true"> 
+	        		   	<decorator name="linkTargetName"/>
+					</element>
+					<element type="field" name="handler" comparable="true"> 
+	        		   	<decorator name="linkTargetName"/>
+					</element>
 					<element type="field" name="subboxes" comparable="true"/> 
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
@@ -399,8 +405,13 @@
 					<element type="field" name="layoutpage" comparable="true"> 
 	        		   	<decorator name="editLink"/>
 					</element>
-					<element type="field" name="style" comparable="true"/> 
-					<element type="field" name="site" comparable="true"/> 
+					<element type="field" name="style" comparable="true"> 
+	        		   	<decorator name="linkTargetName"/>
+					</element>
+					<element type="field" name="site" comparable="true">
+	        		   	<decorator name="linkTargetName"/>
+					</element>
+					
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
 	        		<element type="function" name="delete"/>

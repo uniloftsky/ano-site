@@ -4,4 +4,8 @@
 	<decorator name="idToA" class="net.anotheria.asg.util.decorators.IDItoADecorator"/>
 	<decorator name="editLink" class="net.anotheria.asg.util.decorators.EditLinkDecorator"/>
 	<!--decorator name="pixDec" class="net.anotheria.score.util.PictureDecorator"/-->
+	
+	<!-- custom decorators -->
+	<decorator name="boxType" class="net.anotheria.anosite.decorator.BoxTypeDecorator"/>
+	<decorator name="linkTargetName" class="net.anotheria.anosite.decorator.LinkTargetNameDecorator"/>
 </decorators>
