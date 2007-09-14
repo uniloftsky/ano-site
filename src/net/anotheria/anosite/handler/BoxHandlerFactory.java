@@ -1,17 +1,17 @@
 package net.anotheria.anosite.handler;
 
-import net.anotheria.anosite.gen.data.BoxHandlerType;
-import net.anotheria.anosite.gen.service.ASMetaDataServiceFactory;
-import net.anotheria.anosite.gen.service.IASMetaDataService;
+import net.anotheria.anosite.gen.data.BoxHandlerDef;
+import net.anotheria.anosite.gen.service.ASFederatedDataServiceFactory;
+import net.anotheria.anosite.gen.service.IASFederatedDataService;
 
 public class BoxHandlerFactory {
 	
-	private static IASMetaDataService service = ASMetaDataServiceFactory.createASMetaDataService();
+	private static IASFederatedDataService service = ASFederatedDataServiceFactory.createASFederatedDataService();
 	
 	public static BoxHandler createHandler(String id){
 		try{
-			BoxHandlerType type = service.getBoxHandlerType(id);
-			return (BoxHandler)Class.forName(type.getClazz()).newInstance();
+			BoxHandlerDef def = service.getBoxHandlerDef(id);
+			return (BoxHandler)Class.forName(def.getClazz()).newInstance();
 		}catch(Exception e){
 			e.printStackTrace();
 			throw new RuntimeException("Handler instantiation failed - "+e.getMessage());
