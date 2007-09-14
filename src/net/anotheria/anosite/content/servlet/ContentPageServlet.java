@@ -10,6 +10,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import net.anotheria.anodoc.data.StringProperty;
 import net.anotheria.anosite.content.bean.BoxBean;
 import net.anotheria.anosite.content.bean.BoxTypeBean;
@@ -24,23 +26,34 @@ import net.anotheria.anosite.gen.data.PageTemplate;
 import net.anotheria.anosite.gen.data.Pagex;
 import net.anotheria.anosite.gen.data.PagexDocument;
 import net.anotheria.anosite.gen.data.Site;
+import net.anotheria.anosite.gen.service.ASFederatedDataServiceFactory;
 import net.anotheria.anosite.gen.service.ASMetaDataServiceFactory;
 import net.anotheria.anosite.gen.service.ASWebDataServiceFactory;
+import net.anotheria.anosite.gen.service.IASFederatedDataService;
 import net.anotheria.anosite.gen.service.IASMetaDataService;
 import net.anotheria.anosite.gen.service.IASWebDataService;
 import net.anotheria.anosite.handler.BoxHandler;
 import net.anotheria.anosite.handler.BoxHandlerFactory;
 import net.java.dev.moskito.web.MoskitoHttpServlet;
 
-import org.apache.log4j.Logger;
 
 public class ContentPageServlet extends MoskitoHttpServlet {
 
 	private static Logger log = Logger.getLogger(ContentPageServlet.class);
-	private IASMetaDataService metaDataService;
-
+	
 	private IASWebDataService webDataService;
+	private IASMetaDataService metaDataService;
+	private IASFederatedDataService federatedDataService;
 
+	public void init(ServletConfig config) throws ServletException{
+		super.init(config);
+		
+		webDataService = ASWebDataServiceFactory.createASWebDataService();
+		metaDataService = ASMetaDataServiceFactory.createASMetaDataService();
+		federatedDataService = ASFederatedDataServiceFactory.createASFederatedDataService();
+	}
+
+	
 	private BoxBean createBoxBean(HttpServletRequest req,
 			HttpServletResponse res, Box box) {
 		System.out.println("creating box bean for box: " + box);
@@ -89,7 +102,7 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 	}
 
 	private BoxTypeBean createBoxTypeBean(String boxTypeId) {
-		BoxType type = metaDataService.getBoxType(boxTypeId);
+		BoxType type = federatedDataService.getBoxType(boxTypeId);
 		BoxTypeBean bean = new BoxTypeBean();
 		bean.setName(type.getName());
 		bean.setRenderer(type.getRendererpage());
@@ -177,12 +190,6 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		throw new ServletException("Page " + pageName + " not found.");
 	}
 
-	public void init(ServletConfig config) throws ServletException {
-		super.init(config);
-
-		webDataService = ASWebDataServiceFactory.createASWebDataService();
-		metaDataService = ASMetaDataServiceFactory.createASMetaDataService();
-	}
 
 	@Override
 	protected void moskitoDoGet(HttpServletRequest req, HttpServletResponse res)
