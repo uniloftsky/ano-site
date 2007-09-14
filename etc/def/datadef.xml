@@ -8,6 +8,42 @@
 		<property name="size" type="string"/>
 	</document>
   </module>
+  <module name="ASGenericData">
+	<document name="GenericBoxType">
+		<property name="name" type="string"/>
+		<property name="rendererpage" type="string"/>
+	</document>
+	<document name="GenericBoxHandlerDef">
+		<property name="name" type="string"/>
+		<property name="clazz" type="string"/>
+	</document>
+  </module>
+  <module name="ASCustomData">
+	<document name="CustomBoxType">
+		<property name="name" type="string"/>
+		<property name="rendererpage" type="string"/>
+	</document>
+	<document name="CustomBoxHandlerDef">
+		<property name="name" type="string"/>
+		<property name="clazz" type="string"/>
+	</document>
+  </module>
+  <module name="ASFederatedData" storageType="federation">
+	<federatedmodule name="ASGenericData" key="G"/>
+	<federatedmodule name="ASCustomData"  key="C"/>
+	<mapping sourceDocument="BoxType" targetDocument="G.GenericBoxType"/>
+	<mapping sourceDocument="BoxType" targetDocument="C.CustomBoxType"/>
+	<mapping sourceDocument="BoxHandlerDef" targetDocument="G.GenericBoxHandlerDef"/>
+	<mapping sourceDocument="BoxHandlerDef" targetDocument="C.CustomBoxHandlerDef"/>
+	<document name="BoxType">
+		<property name="name" type="string"/>
+		<property name="rendererpage" type="string"/>
+	</document>
+	<document name="BoxHandlerDef">
+		<property name="name" type="string"/>
+		<property name="clazz" type="string"/>
+	</document>
+  </module>
   <module name="ASMetaData">
   	<document name="PageStyle">
 		<property name="name" type="string"/>
@@ -35,14 +71,6 @@
         	</content>
         </property>
   	</document>
-	<document name="BoxType">
-		<property name="name" type="string"/>
-		<property name="rendererpage" type="string"/>
-	</document>
-	<document name="BoxHandlerType">
-		<property name="name" type="string"/>
-		<property name="clazz" type="string"/>
-	</document>
   </module>
   <module name="ASWebData">
 	<document name="Pagex">
@@ -68,8 +96,8 @@
 	<document name="Box">
 		<property name="name" type="string"/>
 		<property name="content" type="text"/>
-		<link name="type" type="single" target="ASMetaData.BoxType"/>
-		<link name="handler" type="single" target="ASMetaData.BoxHandlerType"/>
+		<link name="type" type="single" target="ASFederatedData.BoxType"/>
+		<link name="handler" type="single" target="ASFederatedData.BoxHandlerDef"/>
 		<property name="subboxes" type="list">
 	        <content>
 				<link name="type" type="single" target="ASWebData.Box"/>
