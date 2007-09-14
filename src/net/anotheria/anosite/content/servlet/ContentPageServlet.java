@@ -133,6 +133,7 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		return ret;
 	}
 
+	@SuppressWarnings("unchecked")
 	private PageBean createPageBean(HttpServletRequest req, HttpServletResponse res, Pagex page) {
 		PageBean ret = new PageBean();
 		
