@@ -54,8 +54,7 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 	}
 
 	
-	private BoxBean createBoxBean(HttpServletRequest req,
-			HttpServletResponse res, Box box) {
+	private BoxBean createBoxBean(HttpServletRequest req, HttpServletResponse res, Box box) {
 		System.out.println("creating box bean for box: " + box);
 		BoxBean ret = new BoxBean();
 
@@ -81,21 +80,18 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		}
 
 		if (box.getHandler() != null && box.getHandler().length() > 0) {
-			BoxHandler handler = BoxHandlerFactory.createHandler(box
-					.getHandler());
+			BoxHandler handler = BoxHandlerFactory.createHandler(box.getHandler());
 			handler.process(req, res, box, ret);
 		}
 
 		return ret;
 	}
 
-	private List<BoxBean> createBoxBeanList(HttpServletRequest req,
-			HttpServletResponse res, List<StringProperty> boxIds) {
+	private List<BoxBean> createBoxBeanList(HttpServletRequest req,	HttpServletResponse res, List<StringProperty> boxIds) {
 		ArrayList<BoxBean> ret = new ArrayList<BoxBean>();
 
 		for (StringProperty p : boxIds) {
-			ret.add(createBoxBean(req, res, webDataService
-					.getBox(p.getString())));
+			ret.add(createBoxBean(req, res, webDataService.getBox(p.getString())));
 		}
 
 		return ret;
@@ -123,8 +119,7 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 			} else {
 				if (item.getInternalLink().length() > 0) {
 					String pageId = item.getInternalLink();
-					bean.setLink(webDataService.getPagex(pageId).getName()
-							+ ".html");
+					bean.setLink(webDataService.getPagex(pageId).getName() + ".html");
 				} else {
 					bean.setLink("#");
 				}
@@ -138,10 +133,9 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		return ret;
 	}
 
-	private PageBean createPageBean(HttpServletRequest req,
-			HttpServletResponse res, Pagex page) {
+	private PageBean createPageBean(HttpServletRequest req, HttpServletResponse res, Pagex page) {
 		PageBean ret = new PageBean();
-
+		
 		ret.setTitle(page.getTitle());
 		ret.setName(page.getName());
 
@@ -151,8 +145,7 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		ret.setColumn2(createBoxBeanList(req, res, c2));
 		List<StringProperty> c3 = page.getC3();
 		ret.setColumn3(createBoxBeanList(req, res, c3));
-		System.out.println("\t c1: " + c1 + ", c2: " + c2 + ", c3: " + c3);
-
+		
 		return ret;
 	}
 
@@ -192,15 +185,13 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 
 
 	@Override
-	protected void moskitoDoGet(HttpServletRequest req, HttpServletResponse res)
-			throws ServletException, IOException {
+	protected void moskitoDoGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		String pageName = extractPageName(req);
 		System.out.println("Page: " + pageName);
 		Pagex page = getPageByName(pageName);
 		System.out.println("Found page: " + page);
 
-		PageTemplate template = metaDataService.getPageTemplate(page
-				.getTemplate());
+		PageTemplate template = metaDataService.getPageTemplate(page.getTemplate());
 		System.out.println("Found template: " + template);
 
 		req.setAttribute("stylesheet", new StylesheetBean(template.getStyle()));
@@ -227,8 +218,7 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 
 		String layoutPage = template.getLayoutpage();
 		if (!layoutPage.startsWith("/"))
-			layoutPage = "/net/anotheria/anosite/layout/templates/"
-					+ layoutPage;
+			layoutPage = "/net/anotheria/anosite/layout/templates/"	+ layoutPage;
 		if (!layoutPage.endsWith(".jsp"))
 			layoutPage += ".jsp";
 
