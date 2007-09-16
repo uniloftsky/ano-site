@@ -301,6 +301,9 @@
 					<element type="field" name="title" comparable="true"/> 
 					<element type="field" name="topNavi" comparable="true"/> 
 					<element type="field" name="mainNavi" comparable="true"/> 
+					<element type="field" name="startpage" comparable="true"> 
+	        		   	<decorator name="linkTargetName"/>
+					</element>
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
 	        		<element type="function" name="delete"/>
@@ -314,6 +317,7 @@
 		      			<element type="field" name="subtitle" /> 
 						<element type="field" name="topNavi" /> 
 						<element type="field" name="mainNavi" /> 
+						<element type="field" name="startpage" /> 
 						<element type="empty"/>
 						<element type="list">
 							<element type="function" name="update"/>
@@ -338,7 +342,9 @@
 	        		   	<decorator name="editLink"/>
 					</element>
 					<element type="field" name="externalLink" comparable="true"/> 
-					<element type="field" name="internalLink" comparable="true"/> 
+					<element type="field" name="internalLink" comparable="true">
+	        		   	<decorator name="linkTargetName"/>
+					</element>
 					<element type="field" name="subNavi" comparable="true"/> 
 					<element type="field" name="popup" comparable="true"/> 
 	        		<element type="function" name="edit"/>

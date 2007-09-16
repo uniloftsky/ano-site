@@ -3,6 +3,7 @@ package net.anotheria.anosite.content.bean;
 public class SiteBean {
 	private String title;
 	private String subtitle;
+	private String linkToStartPage;
 	
 	public String getSubtitle() {
 		return subtitle;
@@ -15,5 +16,11 @@ public class SiteBean {
 	}
 	public void setTitle(String title) {
 		this.title = title;
+	}
+	public String getLinkToStartPage() {
+		return linkToStartPage;
+	}
+	public void setLinkToStartPage(String linkToStartPage) {
+		this.linkToStartPage = linkToStartPage;
 	}
 }

@@ -70,6 +70,7 @@
 				<link name="item" type="single" target="ASWebData.NaviItem"/>
         	</content>
         </property>
+        <link type="single" target="ASWebData.Pagex" name="startpage"/>
   	</document>
   </module>
   <module name="ASWebData">
@@ -116,8 +117,8 @@
 		<property name="parameter10" type="string"/>
 	</document>
   	<document name="NaviItem">
-		<property name="name" type="string"/>
-		<property name="title" type="string"/>
+		<property name="name" type="string" multilingual="true"/>
+		<property name="title" type="string" multilingual="true"/>
 		<property name="externalLink" type="string"/>
 		<link name="internalLink" type="single" target="ASWebData.Pagex"/>
 		<property name="popup" type="boolean"/>

@@ -12,10 +12,10 @@
    
         <!-- Sitelogo and sitename -->
 
-        <a class="sitelogo" href="#" title="Go to Start page"></a>
+        <a class="sitelogo" href="<bean:write name="site" property="linkToStartPage"/>" title="Go to Start page"></a>
         <div class="sitename">
 
-          <h1><a href="index.html" title="Go to Start page"><bean:write name="site" property="title"/></a></h1>
+          <h1><a href="<bean:write name="site" property="linkToStartPage"/>" title="Go to Start page"><bean:write name="site" property="title"/></a></h1>
           <h2><bean:write name="site" property="subtitle"/></h2>
         </div>
 
@@ -52,7 +52,6 @@
 	
 	      <logic:iterate name="mainNavi" id="item" type="net.anotheria.anosite.content.bean.NaviItemBean">
           	  <!-- Navigation item -->
-          	  <% System.out.println("Item: "+item); %>
         	  <ul>
           	  <logic:equal name="item" property="hasChilds" value="false">
     	        <li><a <logic:equal name="item" property="popup" value="true">target="_blank" </logic:equal>href="<bean:write name="item" property="link"/>"><bean:write name="item" property="name"/></a></li>

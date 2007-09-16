@@ -5,18 +5,13 @@
     <applicationName>flingly</applicationName>
     <servletMapping>cms</servletMapping>
 	<encoding>iso-8859-15</encoding>
-<!--
 	<languages>
 		<supported>
-			<language>1</language>
-			<language>2</language>
-			<language>3</language>
-			<language>4</language>
-			<language>5</language>
+			<language>EN</language>
+			<language>DE</language>
 		</supported>
 		<default>
-			<language>1</language>
+			<language>EN</language>
 		</default>
 	</languages>
--->
   </context>

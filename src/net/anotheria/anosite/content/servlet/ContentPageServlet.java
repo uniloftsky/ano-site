@@ -157,6 +157,8 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 			Site site = metaDataService.getSite(template.getSite());
 			ret.setSubtitle(site.getSubtitle());
 			ret.setTitle(site.getTitle());
+			if (site.getStartpage()!=null && site.getStartpage().length()>0)
+				ret.setLinkToStartPage(webDataService.getPagex(site.getStartpage()).getName()+".html");
 		} catch (Exception e) {
 			log.warn("createSiteBean(" + template + ")", e);
 		}
