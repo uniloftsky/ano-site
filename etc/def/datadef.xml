@@ -73,6 +73,7 @@
   	</document>
   </module>
   <module name="ASWebData">
+	<listener class="test.TestListener"/>
 	<document name="Pagex">
 		<property type="string" name="name"/>
 		<property type="string" name="title" />
@@ -127,5 +128,23 @@
         </property>
   	</document>
   </module>
-
+  
+  <!-- custom data, temporarly -->
+  <module name="User" storageType="db">
+  	<document name="Account">
+  		<property name="name" type="string"/>
+  		<property name="password" type="string"/>
+  		<property name="email" type="string"/>
+  		<property name="confirmed" type="boolean"/>
+  		<property name="confirmationCode" type="boolean"/>
+  		<property name="type" type="enumeration" enumeration="AccountType"/>
+  		<link name="profile" type="single" target="User.Profile"/>
+  	</document>
+  	<document name="Profile">
+  		<property name="name" type="string"/>
+  		<property name="dummy" type="string"/>
+  		<link name="account" type="single" target="User.Account"/>
+  	</document>
+  </module>
+  
 </datadefinitions>

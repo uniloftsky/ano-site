@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.anotheria.anosite.content.bean.BoxBean;
-import net.anotheria.anosite.gen.data.Box;
+import net.anotheria.anosite.gen.aswebdata.data.Box;
 
 public abstract class AbstractBoxHandler implements BoxHandler{
 
@@ -13,7 +13,7 @@ public abstract class AbstractBoxHandler implements BoxHandler{
 		
 	}
 
-	public void submit() {
+	public void submit(HttpServletRequest req, HttpServletResponse res, Box box) {
 		// TODO Auto-generated method stub
 		
 	}

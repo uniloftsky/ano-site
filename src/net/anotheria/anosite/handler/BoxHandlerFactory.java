@@ -1,8 +1,8 @@
 package net.anotheria.anosite.handler;
 
-import net.anotheria.anosite.gen.data.BoxHandlerDef;
-import net.anotheria.anosite.gen.service.ASFederatedDataServiceFactory;
-import net.anotheria.anosite.gen.service.IASFederatedDataService;
+import net.anotheria.anosite.gen.asfederateddata.data.BoxHandlerDef;
+import net.anotheria.anosite.gen.asfederateddata.service.ASFederatedDataServiceFactory;
+import net.anotheria.anosite.gen.asfederateddata.service.IASFederatedDataService;
 
 public class BoxHandlerFactory {
 	

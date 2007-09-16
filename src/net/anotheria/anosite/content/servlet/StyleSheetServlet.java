@@ -8,9 +8,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.anotheria.anosite.gen.data.PageStyle;
-import net.anotheria.anosite.gen.service.ASMetaDataServiceFactory;
-import net.anotheria.anosite.gen.service.IASMetaDataService;
+import net.anotheria.anosite.gen.asmetadata.data.PageStyle;
+import net.anotheria.anosite.gen.asmetadata.service.ASMetaDataServiceFactory;
+import net.anotheria.anosite.gen.asmetadata.service.IASMetaDataService;
 import net.java.dev.moskito.web.MoskitoHttpServlet;
 
 public class StyleSheetServlet extends MoskitoHttpServlet{

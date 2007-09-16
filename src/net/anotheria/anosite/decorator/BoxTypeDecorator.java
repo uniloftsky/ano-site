@@ -1,10 +1,10 @@
 package net.anotheria.anosite.decorator;
 
 import net.anotheria.anodoc.data.NoSuchDocumentException;
-import net.anotheria.anosite.gen.data.Box;
-import net.anotheria.anosite.gen.data.BoxType;
-import net.anotheria.anosite.gen.service.ASFederatedDataServiceFactory;
-import net.anotheria.anosite.gen.service.IASFederatedDataService;
+import net.anotheria.anosite.gen.asfederateddata.data.BoxType;
+import net.anotheria.anosite.gen.asfederateddata.service.ASFederatedDataServiceFactory;
+import net.anotheria.anosite.gen.asfederateddata.service.IASFederatedDataService;
+import net.anotheria.anosite.gen.aswebdata.data.Box;
 import net.anotheria.asg.data.DataObject;
 import net.anotheria.asg.util.decorators.IAttributeDecorator;
 

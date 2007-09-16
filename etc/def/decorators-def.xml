@@ -7,5 +7,7 @@
 	
 	<!-- custom decorators -->
 	<decorator name="boxType" class="net.anotheria.anosite.decorator.BoxTypeDecorator"/>
+	<decorator name="subboxes" class="net.anotheria.anosite.decorator.BoxDecorator"/>
+
 	<decorator name="linkTargetName" class="net.anotheria.anosite.decorator.LinkTargetNameDecorator"/>
 </decorators>

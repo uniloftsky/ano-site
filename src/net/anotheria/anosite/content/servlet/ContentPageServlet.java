@@ -2,6 +2,7 @@ package net.anotheria.anosite.content.servlet;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -10,8 +11,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
-
 import net.anotheria.anodoc.data.StringProperty;
 import net.anotheria.anosite.content.bean.BoxBean;
 import net.anotheria.anosite.content.bean.BoxTypeBean;
@@ -19,22 +18,24 @@ import net.anotheria.anosite.content.bean.NaviItemBean;
 import net.anotheria.anosite.content.bean.PageBean;
 import net.anotheria.anosite.content.bean.SiteBean;
 import net.anotheria.anosite.content.bean.StylesheetBean;
-import net.anotheria.anosite.gen.data.Box;
-import net.anotheria.anosite.gen.data.BoxType;
-import net.anotheria.anosite.gen.data.NaviItem;
-import net.anotheria.anosite.gen.data.PageTemplate;
-import net.anotheria.anosite.gen.data.Pagex;
-import net.anotheria.anosite.gen.data.PagexDocument;
-import net.anotheria.anosite.gen.data.Site;
-import net.anotheria.anosite.gen.service.ASFederatedDataServiceFactory;
-import net.anotheria.anosite.gen.service.ASMetaDataServiceFactory;
-import net.anotheria.anosite.gen.service.ASWebDataServiceFactory;
-import net.anotheria.anosite.gen.service.IASFederatedDataService;
-import net.anotheria.anosite.gen.service.IASMetaDataService;
-import net.anotheria.anosite.gen.service.IASWebDataService;
+import net.anotheria.anosite.gen.asfederateddata.data.BoxType;
+import net.anotheria.anosite.gen.asfederateddata.service.ASFederatedDataServiceFactory;
+import net.anotheria.anosite.gen.asfederateddata.service.IASFederatedDataService;
+import net.anotheria.anosite.gen.asmetadata.data.PageTemplate;
+import net.anotheria.anosite.gen.asmetadata.data.Site;
+import net.anotheria.anosite.gen.asmetadata.service.ASMetaDataServiceFactory;
+import net.anotheria.anosite.gen.asmetadata.service.IASMetaDataService;
+import net.anotheria.anosite.gen.aswebdata.data.Box;
+import net.anotheria.anosite.gen.aswebdata.data.NaviItem;
+import net.anotheria.anosite.gen.aswebdata.data.Pagex;
+import net.anotheria.anosite.gen.aswebdata.data.PagexDocument;
+import net.anotheria.anosite.gen.aswebdata.service.ASWebDataServiceFactory;
+import net.anotheria.anosite.gen.aswebdata.service.IASWebDataService;
 import net.anotheria.anosite.handler.BoxHandler;
 import net.anotheria.anosite.handler.BoxHandlerFactory;
 import net.java.dev.moskito.web.MoskitoHttpServlet;
+
+import org.apache.log4j.Logger;
 
 
 public class ContentPageServlet extends MoskitoHttpServlet {
@@ -55,7 +56,6 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 
 	
 	private BoxBean createBoxBean(HttpServletRequest req, HttpServletResponse res, Box box) {
-		System.out.println("creating box bean for box: " + box);
 		BoxBean ret = new BoxBean();
 
 		ret.setName(box.getName());
@@ -176,25 +176,60 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 
 	private Pagex getPageByName(String pageName) throws ServletException {
 		try {
-			return webDataService.getPagexsByProperty(PagexDocument.PROP_NAME,
-					pageName).get(0);
+			return webDataService.getPagexsByProperty(PagexDocument.PROP_NAME, pageName).get(0);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		throw new ServletException("Page " + pageName + " not found.");
 	}
-
-
 	@Override
 	protected void moskitoDoGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		processRequest(req, res, false);
+	}
+	@Override	
+	protected void moskitoDoPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		processRequest(req, res, true);
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void processSubmit(HttpServletRequest req, HttpServletResponse res, Pagex page, HashMap<String, BoxHandler> handlerCache ){
+		processSubmit(req, res, (List<StringProperty>)page.getC1(), handlerCache);
+		processSubmit(req, res, (List<StringProperty>)page.getC2(), handlerCache);
+		processSubmit(req, res, (List<StringProperty>)page.getC3(), handlerCache);
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void processSubmit(HttpServletRequest req, HttpServletResponse res, List<StringProperty> boxIds, HashMap<String, BoxHandler> handlerCache){
+		if (boxIds==null || boxIds.size()==0)
+			return;
+		for (StringProperty p : boxIds){
+			String id = p.getString();
+			Box box = webDataService.getBox(id);
+			String handlerId = box.getHandler();
+			if (handlerId!=null && handlerId.length()>0){
+				BoxHandler handler = BoxHandlerFactory.createHandler(handlerId);
+				handler.submit(req, res, box);
+				handlerCache.put(box.getId(), handler);
+			}
+			List<StringProperty> subboxesIds = box.getSubboxes();
+			processSubmit(req, res, subboxesIds, handlerCache);
+		}
+	}
+	
+
+	protected void processRequest(HttpServletRequest req, HttpServletResponse res, boolean submit) throws ServletException, IOException {
 		String pageName = extractPageName(req);
 		System.out.println("Page: " + pageName);
 		Pagex page = getPageByName(pageName);
-		System.out.println("Found page: " + page);
+		
+		HashMap<String, BoxHandler> handlerCache = new HashMap<String, BoxHandler>();
+		if (submit){
+			processSubmit(req, res, page, handlerCache);
+		}
 
 		PageTemplate template = metaDataService.getPageTemplate(page.getTemplate());
-		System.out.println("Found template: " + template);
-
+		
 		req.setAttribute("stylesheet", new StylesheetBean(template.getStyle()));
 
 		SiteBean siteBean = createSiteBean(template);

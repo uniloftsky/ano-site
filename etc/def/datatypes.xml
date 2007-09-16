@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<datatypes>
+	<enumeration name="AccountType">
+		<element>Premium</element>
+		<element>Member</element>
+	</enumeration>
+</datatypes>

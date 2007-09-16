@@ -9,6 +9,5 @@
 <logic:notEqual name="box" property="content" value="">
 	<bean:write name="box" property="content" filter="false"/>
 </logic:notEqual>
-
 <bean:define id="__boxlist" toScope="request" name="box" property="subboxes"/>
 <jsp:include page="../templates/ListIterator.jsp" flush="false"/>
