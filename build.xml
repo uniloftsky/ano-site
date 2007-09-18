@@ -57,13 +57,8 @@
 			</fileset>
 		</copy>
 		<copy toDir="${classes.dir}" >
-			<fileset dir="${gen.appdata}">
-				<include name="**/struts-config-*"/>
-				<exclude name="**/struts-config.xml"/>
-			</fileset>
 			<fileset dir="${appdata}">
 				<include name="**/struts-config-*"/>
-				<exclude name="**/struts-config.xml"/>
 			</fileset>
 		</copy>
 		<copy toDir="${classes.dir}">
@@ -82,10 +77,13 @@
 		<ant antfile="generate.xml" target="all"/>
 	</target>
 	
-	<target name="jar" depends="generate,compile,copy">
+	<target name="buildapp" depends="generate,compile,copy"/>
+	
+	<target name="jar">
 		<jar jarfile="${dist.dir}/${target.jar.name}">
          	<fileset dir="${classes.dir}">
-         		<include name="**/*"/>
+         		<!--include name="**/*"/-->
+         		<exclude name="net/anotheria/anosite/gen/**"/>
          	</fileset>
 		</jar>
 	</target>
@@ -152,7 +150,7 @@
 		<delete dir="${dist.dir}"/>
 	</target>
 
-	<target name="dist" depends="jar">
+	<target name="dist" depends="buildapp,jar">
 	    <copy todir="${lib.dest}">
 	      <fileset dir="${lib.project}"/>
 	    </copy>
