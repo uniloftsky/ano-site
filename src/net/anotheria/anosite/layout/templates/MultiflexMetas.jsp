@@ -1,9 +1,9 @@
 <%@ page
 	contentType="text/html;charset=iso-8859-15" session="true"
-%><%@ taglib uri="/WEB-INF/tld/struts-bean.tld" prefix="bean"
-%><%@ taglib uri="/WEB-INF/tld/struts-html.tld" prefix="html"
-%><%@ taglib uri="/WEB-INF/tld/struts-logic.tld" prefix="logic"
-%>  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+%><%@ taglib uri="/tags/struts-bean" prefix="bean"
+%><%@ taglib uri="/tags/struts-html" prefix="html"
+%><%@ taglib uri="/tags/struts-logic" prefix="logic"
+%> <meta http-equiv="content-type" content="text/html; charset=utf-8" />
   <meta http-equiv="cache-control" content="no-cache" />
   <meta http-equiv="expires" content="3600" />
   <meta name="revisit-after" content="2 days" />

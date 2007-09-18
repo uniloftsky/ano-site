@@ -1,8 +1,8 @@
 <%@ page
 	contentType="text/html;charset=iso-8859-15" session="true"
-%><%@ taglib uri="/WEB-INF/tld/struts-bean.tld" prefix="bean"
-%><%@ taglib uri="/WEB-INF/tld/struts-html.tld" prefix="html"
-%><%@ taglib uri="/WEB-INF/tld/struts-logic.tld" prefix="logic"
+%><%@ taglib uri="/tags/struts-bean" prefix="bean"
+%><%@ taglib uri="/tags/struts-html" prefix="html"
+%><%@ taglib uri="/tags/struts-logic" prefix="logic"
 %><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 
