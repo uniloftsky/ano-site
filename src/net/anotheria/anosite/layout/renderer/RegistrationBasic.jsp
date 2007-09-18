@@ -1,8 +1,8 @@
 <%@ page
 	contentType="text/html;charset=iso-8859-15" session="true"
-%><%@ taglib uri="/WEB-INF/tlds/struts-bean.tld" prefix="bean"
-%><%@ taglib uri="/WEB-INF/tlds/struts-html.tld" prefix="html"
-%><%@ taglib uri="/WEB-INF/tlds/struts-logic.tld" prefix="logic"
+%><%@ taglib uri="/tags/struts-bean" prefix="bean"
+%><%@ taglib uri="/tags/struts-html" prefix="html"
+%><%@ taglib uri="/tags/struts-logic" prefix="logic"
 %><div class="contactform">
 <form method="post" action="Register.html">
 <fieldset><legend>&nbsp;Personal Data&nbsp;</legend>

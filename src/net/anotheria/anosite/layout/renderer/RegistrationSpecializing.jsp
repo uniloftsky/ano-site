@@ -1,10 +1,12 @@
-<%@ page contentType="text/html;charset=iso-8859-15" session="true"%><%@ taglib
-	uri="/WEB-INF/tlds/struts-bean.tld" prefix="bean"%><%@ taglib
-	uri="/WEB-INF/tlds/struts-html.tld" prefix="html"%><%@ taglib
-	uri="/WEB-INF/tlds/struts-logic.tld" prefix="logic"%><div
+<%@ page
+	contentType="text/html;charset=iso-8859-15" session="true"
+%><%@ taglib uri="/tags/struts-bean" prefix="bean"
+%><%@ taglib uri="/tags/struts-html" prefix="html"
+%><%@ taglib uri="/tags/struts-logic" prefix="logic"
+%><div
 	class="contactform">
 <form method="post" action="Register.html">
-<fieldset><legend>&nbsp;Über mich/uns&nbsp;</legend> <!--<p><label for="___" class="left">___</label> <input name="___"-->
+<fieldset><legend>&nbsp;ï¿½ber mich/uns&nbsp;</legend> <!--<p><label for="___" class="left">___</label> <input name="___"-->
 <!--	id="___" class="field" value="" tabindex="____" type="text" /></p>-->
 
 <p><label for="sex" class="left">Geschlecht:</label> <select
@@ -143,7 +145,7 @@
 	name="habitat" id="habitat" class="field" value="" tabindex="6"
 	type="text" /></p>
 
-<p><label for="nationality" class="left">Maine Nationalität</label>
+<p><label for="nationality" class="left">Maine Nationalitï¿½t</label>
 <input name="nationality" id="nationality" class="field" value=""
 	tabindex="7" type="text" /></p>
 
