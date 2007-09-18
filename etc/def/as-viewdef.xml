@@ -1,0 +1,450 @@
+	<view name="Definitions" title="Definitions">
+		<sections>
+			<section title="Generic BoxType" type="module">
+				<module>ASGenericData</module>
+				<document>GenericBoxType</document>
+				<filter name="AZ" field="name"/>
+				<elements>
+					<element type="field" name="id" comparable="true">
+	        		   	<decorator name="idToA">
+	        		 		<rule>3</rule>
+	        		   	</decorator>
+					</element>
+					<element type="field" name="name" comparable="default"> 
+	        		   	<decorator name="editLink"/>
+					</element>
+					<element type="field" name="rendererpage" comparable="true"/> 
+	        		<element type="function" name="edit"/>
+	        		<element type="function" name="duplicate"/>
+	        		<element type="function" name="delete"/>
+	      		</elements>
+	      		<dialog name="Edit" title="Edit Generic BoxType">
+        			<elements>
+	       				<element type="empty"/>
+		       			<element type="field" name="id" readonly="true"/>
+		      			<element type="field" name="name" /> 
+		      			<element type="field" name="rendererpage" /> 
+						<element type="empty"/>
+						<element type="list">
+							<element type="function" name="update"/>
+							<element type="function" name="cancel"/>
+						</element>
+        			</elements>
+      			</dialog>
+	    	</section>
+
+    		<!-- Section BoxHandler -->
+			<section title="Generic BoxHandler" type="module">
+				<module>ASGenericData</module>
+				<document>GenericBoxHandlerDef</document>
+				<filter name="AZ" field="name"/>
+				<elements>
+					<element type="field" name="id" comparable="true">
+	        		   	<decorator name="idToA">
+	        		 		<rule>3</rule>
+	        		   	</decorator>
+					</element>
+					<element type="field" name="name" comparable="default"> 
+	        		   	<decorator name="editLink"/>
+					</element>
+					<element type="field" name="clazz" comparable="true"/> 
+	        		<element type="function" name="edit"/>
+	        		<element type="function" name="duplicate"/>
+	        		<element type="function" name="delete"/>
+	      		</elements>
+	      		<dialog name="Edit" title="Edit Generic BoxHandler">
+        			<elements>
+	       				<element type="empty"/>
+		       			<element type="field" name="id" readonly="true"/>
+		      			<element type="field" name="name" /> 
+		      			<element type="field" name="clazz" /> 
+						<element type="empty"/>
+						<element type="list">
+							<element type="function" name="update"/>
+							<element type="function" name="cancel"/>
+						</element>
+        			</elements>
+      			</dialog>
+	    	</section>
+
+			<!-- custom -->
+
+			<section title="CustomBoxType" type="module">
+				<module>ASCustomData</module>
+				<document>CustomBoxType</document>
+				<filter name="AZ" field="name"/>
+				<elements>
+					<element type="field" name="id" comparable="true">
+	        		   	<decorator name="idToA">
+	        		 		<rule>3</rule>
+	        		   	</decorator>
+					</element>
+					<element type="field" name="name" comparable="default"> 
+	        		   	<decorator name="editLink"/>
+					</element>
+					<element type="field" name="rendererpage" comparable="true"/> 
+	        		<element type="function" name="edit"/>
+	        		<element type="function" name="duplicate"/>
+	        		<element type="function" name="delete"/>
+	      		</elements>
+	      		<dialog name="Edit" title="Edit Custom BoxType">
+        			<elements>
+	       				<element type="empty"/>
+		       			<element type="field" name="id" readonly="true"/>
+		      			<element type="field" name="name" /> 
+		      			<element type="field" name="rendererpage" /> 
+						<element type="empty"/>
+						<element type="list">
+							<element type="function" name="update"/>
+							<element type="function" name="cancel"/>
+						</element>
+        			</elements>
+      			</dialog>
+	    	</section>
+
+    		<!-- Section BoxHandler -->
+			<section title="CustomBoxHandler" type="module">
+				<module>ASCustomData</module>
+				<document>CustomBoxHandlerDef</document>
+				<filter name="AZ" field="name"/>
+				<elements>
+					<element type="field" name="id" comparable="true">
+	        		   	<decorator name="idToA">
+	        		 		<rule>3</rule>
+	        		   	</decorator>
+					</element>
+					<element type="field" name="name" comparable="default"> 
+	        		   	<decorator name="editLink"/>
+					</element>
+					<element type="field" name="clazz" comparable="true"/> 
+	        		<element type="function" name="edit"/>
+	        		<element type="function" name="duplicate"/>
+	        		<element type="function" name="delete"/>
+	      		</elements>
+	      		<dialog name="Edit" title="Edit CustomBoxHandler">
+        			<elements>
+	       				<element type="empty"/>
+		       			<element type="field" name="id" readonly="true"/>
+		      			<element type="field" name="name" /> 
+		      			<element type="field" name="clazz" /> 
+						<element type="empty"/>
+						<element type="list">
+							<element type="function" name="update"/>
+							<element type="function" name="cancel"/>
+						</element>
+        			</elements>
+      			</dialog>
+	    	</section>
+		
+			<!-- combined -->
+
+			<section title="Federated BoxTypes" type="module">
+				<module>ASFederatedData</module>
+				<document>BoxType</document>
+				<filter name="AZ" field="name"/>
+				<elements>
+					<element type="field" name="id" comparable="true">
+					</element>
+					<element type="field" name="name" comparable="default"/> 
+					<element type="field" name="rendererpage" comparable="true"/> 
+	        		<element type="function" name="delete"/>
+	      		</elements>
+	    	</section>
+
+    		<!-- Section BoxHandler -->
+			<section title="Federated BoxHandler" type="module">
+				<module>ASFederatedData</module>
+				<document>BoxHandlerDef</document>
+				<filter name="AZ" field="name"/>
+				<elements>
+					<element type="field" name="id" comparable="true">
+					</element>
+					<element type="field" name="name" comparable="default"/> 
+					<element type="field" name="clazz" comparable="true"/> 
+	        		<element type="function" name="delete"/>
+	      		</elements>
+	    	</section>
+		</sections>
+	</view>
+
+
+	<view name="Content" title="Content">
+		<sections>
+			<!-- Section Page -->
+			<section title="Page" type="module">
+				<module>ASWebData</module>
+				<document>Pagex</document>
+				<filter name="AZ" field="name"/>
+				<elements>
+					<element type="field" name="id" comparable="true">
+	        		   	<decorator name="idToA">
+	        		 		<rule>3</rule>
+	        		   	</decorator>
+					</element>
+					<element type="field" name="name" comparable="default">
+						<decorator name="editLink"/>
+					</element>
+					<element type="field" name="template" comparable="true"> 
+						<decorator name="linkTargetName"/>
+					</element>
+					<element type="field" name="c1" comparable="true"> 
+						<decorator name="subboxes"/>
+					</element>
+					<element type="field" name="c2" comparable="true"> 
+						<decorator name="subboxes"/>
+					</element>
+					<element type="field" name="c3" comparable="true"> 
+						<decorator name="subboxes"/>
+					</element>
+	        		<element type="function" name="edit"/>
+	        		<element type="function" name="duplicate"/>
+	        		<element type="function" name="delete"/>
+	      		</elements>
+	      		<dialog name="Edit" title="Edit Page">
+        			<elements>
+	       				<element type="empty"/>
+		       			<element type="field" name="id" readonly="true"/>
+		      			<element type="field" name="name" /> 
+		      			<element type="field" name="title" /> 
+						<element type="field" name="template" /> 
+						<element type="field" name="c1" /> 
+						<element type="field" name="c2" /> 
+						<element type="field" name="c3" /> 
+						<element type="empty"/>
+						<element type="list">
+							<element type="function" name="update"/>
+							<element type="function" name="cancel"/>
+						</element>
+        			</elements>
+      			</dialog>
+	    	</section>
+
+			<!-- Section Box -->
+			<section title="Box" type="module">
+				<module>ASWebData</module>
+				<document>Box</document>
+				<filter name="AZ" field="name"/>
+				<elements>
+					<element type="field" name="id" comparable="true">
+	        		   	<decorator name="idToA">
+	        		 		<rule>3</rule>
+	        		   	</decorator>
+					</element>
+					<element type="field" name="name" comparable="default"> 
+	        		   	<decorator name="editLink"/>
+					</element>
+					<element type="field" name="type" comparable="true"> 
+	        		   	<decorator name="linkTargetName"/>
+					</element>
+					<element type="field" name="handler" comparable="true"> 
+	        		   	<decorator name="linkTargetName"/>
+					</element>
+					<element type="field" name="subboxes" comparable="true"> 
+						<decorator name="subboxes"/>
+					</element>
+	        		<element type="function" name="edit"/>
+	        		<element type="function" name="duplicate"/>
+	        		<element type="function" name="delete"/>
+	      		</elements>
+	      		<dialog name="Edit" title="Edit Box">
+        			<elements>
+	       				<element type="empty"/>
+		       			<element type="field" name="id" readonly="true"/>
+		      			<element type="field" name="name" /> 
+		      			<element type="field" name="type" /> 
+		      			<element type="field" name="handler" /> 
+		      			<element type="field" name="subboxes" /> 
+		      			<element type="field" name="content" /> 
+		      			<element type="field" name="parameter1" /> 
+		      			<element type="field" name="parameter2" /> 
+		      			<element type="field" name="parameter3" /> 
+		      			<element type="field" name="parameter4" /> 
+		      			<element type="field" name="parameter5" /> 
+		      			<element type="field" name="parameter6" /> 
+		      			<element type="field" name="parameter7" /> 
+		      			<element type="field" name="parameter8" /> 
+		      			<element type="field" name="parameter9" /> 
+		      			<element type="field" name="parameter10" /> 
+						<element type="empty"/>
+						<element type="list">
+							<element type="function" name="update"/>
+							<element type="function" name="cancel"/>
+						</element>
+        			</elements>
+      			</dialog>
+	    	</section>
+
+
+    	</sections>
+	</view>
+
+   <!-- Layout view, here everything is defined -->
+
+	<view name="Layout" title="Layout">
+		<sections>
+			<!-- Site -->
+			<section title="Site" type="module">
+				<module>ASMetaData</module>
+				<document>Site</document>
+				<filter name="AZ" field="name"/>
+				<elements>
+					<element type="field" name="id" comparable="true">
+	        		   	<decorator name="idToA">
+	        		 		<rule>3</rule>
+	        		   	</decorator>
+					</element>
+					<element type="field" name="name" comparable="default"> 
+	        		   	<decorator name="editLink"/>
+					</element>
+					<element type="field" name="title" comparable="true"/> 
+					<element type="field" name="topNavi" comparable="true"/> 
+					<element type="field" name="mainNavi" comparable="true"/> 
+					<element type="field" name="startpage" comparable="true"> 
+	        		   	<decorator name="linkTargetName"/>
+					</element>
+	        		<element type="function" name="edit"/>
+	        		<element type="function" name="duplicate"/>
+	        		<element type="function" name="delete"/>
+	      		</elements>
+	      		<dialog name="Edit" title="Edit Site">
+        			<elements>
+	       				<element type="empty"/>
+		       			<element type="field" name="id" readonly="true"/>
+		      			<element type="field" name="name" /> 
+		      			<element type="field" name="title" /> 
+		      			<element type="field" name="subtitle" /> 
+						<element type="field" name="topNavi" /> 
+						<element type="field" name="mainNavi" /> 
+						<element type="field" name="startpage" /> 
+						<element type="empty"/>
+						<element type="list">
+							<element type="function" name="update"/>
+							<element type="function" name="cancel"/>
+						</element>
+        			</elements>
+      			</dialog>
+	    	</section>
+		
+			<!-- NaviItems -->
+			<section title="NaviItem" type="module">
+				<module>ASWebData</module>
+				<document>NaviItem</document>
+				<filter name="AZ" field="name"/>
+				<elements>
+					<element type="field" name="id" comparable="true">
+	        		   	<decorator name="idToA">
+	        		 		<rule>3</rule>
+	        		   	</decorator>
+					</element>
+					<element type="field" name="name" comparable="default"> 
+	        		   	<decorator name="editLink"/>
+					</element>
+					<element type="field" name="externalLink" comparable="true"/> 
+					<element type="field" name="internalLink" comparable="true">
+	        		   	<decorator name="linkTargetName"/>
+					</element>
+					<element type="field" name="subNavi" comparable="true"/> 
+					<element type="field" name="popup" comparable="true"/> 
+	        		<element type="function" name="edit"/>
+	        		<element type="function" name="duplicate"/>
+	        		<element type="function" name="delete"/>
+	      		</elements>
+	      		<dialog name="Edit" title="Edit NaviItem">
+        			<elements>
+	       				<element type="empty"/>
+		       			<element type="field" name="id" readonly="true"/>
+		      			<element type="field" name="name" /> 
+		      			<element type="field" name="title" /> 
+						<element type="field" name="externalLink" /> 
+						<element type="field" name="internalLink" /> 
+						<element type="field" name="subNavi" /> 
+						<element type="field" name="popup" /> 
+						<element type="empty"/>
+						<element type="list">
+							<element type="function" name="update"/>
+							<element type="function" name="cancel"/>
+						</element>
+        			</elements>
+      			</dialog>
+	    	</section>
+
+			<!-- Section PageStyle -->
+			<section title="Style" type="module">
+				<module>ASMetaData</module>
+				<document>PageStyle</document>
+				<filter name="AZ" field="name"/>
+				<elements>
+					<element type="field" name="id" comparable="true">
+	        		   	<decorator name="idToA">
+	        		 		<rule>3</rule>
+	        		   	</decorator>
+					</element>
+					<element type="field" name="name" comparable="default"> 
+	        		   	<decorator name="editLink"/>
+					</element>
+	        		<element type="function" name="edit"/>
+	        		<element type="function" name="duplicate"/>
+	        		<element type="function" name="delete"/>
+	      		</elements>
+	      		<dialog name="Edit" title="Edit Style">
+        			<elements>
+	       				<element type="empty"/>
+		       			<element type="field" name="id" readonly="true"/>
+		      			<element type="field" name="name" /> 
+		      			<element type="field" name="css" /> 
+						<element type="empty"/>
+						<element type="list">
+							<element type="function" name="update"/>
+							<element type="function" name="cancel"/>
+						</element>
+        			</elements>
+      			</dialog>
+	    	</section>
+			<!-- Section PageTemplate -->
+			<section title="Template" type="module">
+				<module>ASMetaData</module>
+				<document>PageTemplate</document>
+				<filter name="AZ" field="name"/>
+				<elements>
+					<element type="field" name="id" comparable="true">
+	        		   	<decorator name="idToA">
+	        		 		<rule>3</rule>
+	        		   	</decorator>
+					</element>
+					<element type="field" name="name" comparable="default"> 
+	        		   	<decorator name="editLink"/>
+					</element>
+					<element type="field" name="layoutpage" comparable="true"> 
+	        		   	<decorator name="editLink"/>
+					</element>
+					<element type="field" name="style" comparable="true"> 
+	        		   	<decorator name="linkTargetName"/>
+					</element>
+					<element type="field" name="site" comparable="true">
+	        		   	<decorator name="linkTargetName"/>
+					</element>
+					
+	        		<element type="function" name="edit"/>
+	        		<element type="function" name="duplicate"/>
+	        		<element type="function" name="delete"/>
+	      		</elements>
+	      		<dialog name="Edit" title="Edit Template">
+        			<elements>
+	       				<element type="empty"/>
+		       			<element type="field" name="id" readonly="true"/>
+		      			<element type="field" name="name" /> 
+		      			<element type="field" name="layoutpage" /> 
+		      			<element type="field" name="style" /> 
+		      			<element type="field" name="site" /> 
+		      			<element type="field" name="description" /> 
+						<element type="empty"/>
+						<element type="list">
+							<element type="function" name="update"/>
+							<element type="function" name="cancel"/>
+						</element>
+        			</elements>
+      			</dialog>
+	    	</section>
+
+    	</sections>
+	</view>

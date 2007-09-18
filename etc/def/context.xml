@@ -2,7 +2,7 @@
   <context>
     <package>net.anotheria.anosite.gen</package>
     <owner>anothereria</owner>
-    <applicationName>flingly</applicationName>
+    <applicationName>anosite</applicationName>
     <servletMapping>cms</servletMapping>
 	<encoding>iso-8859-15</encoding>
 	<languages>
