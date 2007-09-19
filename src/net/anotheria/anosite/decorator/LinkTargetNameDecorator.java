@@ -4,12 +4,14 @@ import net.anotheria.anodoc.data.NoSuchDocumentException;
 import net.anotheria.anodoc.data.NoSuchPropertyException;
 import net.anotheria.anosite.gen.asfederateddata.service.ASFederatedDataServiceFactory;
 import net.anotheria.anosite.gen.asfederateddata.service.IASFederatedDataService;
-import net.anotheria.anosite.gen.asmetadata.data.PageTemplate;
-import net.anotheria.anosite.gen.asmetadata.data.Site;
-import net.anotheria.anosite.gen.asmetadata.service.ASMetaDataServiceFactory;
-import net.anotheria.anosite.gen.asmetadata.service.IASMetaDataService;
+import net.anotheria.anosite.gen.aslayoutdata.service.ASLayoutDataServiceFactory;
+import net.anotheria.anosite.gen.aslayoutdata.service.IASLayoutDataService;
+import net.anotheria.anosite.gen.assitedata.data.NaviItem;
+import net.anotheria.anosite.gen.assitedata.data.PageTemplate;
+import net.anotheria.anosite.gen.assitedata.data.Site;
+import net.anotheria.anosite.gen.assitedata.service.ASSiteDataServiceFactory;
+import net.anotheria.anosite.gen.assitedata.service.IASSiteDataService;
 import net.anotheria.anosite.gen.aswebdata.data.Box;
-import net.anotheria.anosite.gen.aswebdata.data.NaviItem;
 import net.anotheria.anosite.gen.aswebdata.data.Pagex;
 import net.anotheria.anosite.gen.aswebdata.service.ASWebDataServiceFactory;
 import net.anotheria.anosite.gen.aswebdata.service.IASWebDataService;
@@ -18,8 +20,9 @@ import net.anotheria.asg.util.decorators.IAttributeDecorator;
 
 public class LinkTargetNameDecorator implements IAttributeDecorator{
 	private static IASFederatedDataService federatedDataService = ASFederatedDataServiceFactory.createASFederatedDataService();
-	private static IASMetaDataService metaDataService = ASMetaDataServiceFactory.createASMetaDataService();
+	private static IASSiteDataService metaDataService = ASSiteDataServiceFactory.createASSiteDataService();
 	private static IASWebDataService webDataService = ASWebDataServiceFactory.createASWebDataService();
+	private static IASLayoutDataService layoutDataService = ASLayoutDataServiceFactory.createASLayoutDataService();
 
 	/* (non-Javadoc)
 	 * @see net.anotheria.asg.util.decorators.IAttributeDecorator#decorate(net.anotheria.anodoc.data.Document, java.lang.String, java.lang.String)
@@ -64,9 +67,6 @@ public class LinkTargetNameDecorator implements IAttributeDecorator{
 	}
 	
 	private String getTargetNameForTemplate(PageTemplate template, String attributeName){
-		if (attributeName.equals("style")){
-			return metaDataService.getPageStyle(template.getStyle()).getName();
-		}
 		if (attributeName.equals("site")){
 			return metaDataService.getSite(template.getSite()).getName();
 		}
