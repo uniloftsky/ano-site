@@ -1,0 +1,6 @@
+  <module name="ASResourceData">
+	<document name="TextResource">
+		<property type="string" name="name"/>
+		<property type="string" name="value" multilingual="true"/>
+	</document>
+  </module>
