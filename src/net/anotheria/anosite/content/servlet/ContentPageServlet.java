@@ -21,12 +21,14 @@ import net.anotheria.anosite.content.bean.StylesheetBean;
 import net.anotheria.anosite.gen.asfederateddata.data.BoxType;
 import net.anotheria.anosite.gen.asfederateddata.service.ASFederatedDataServiceFactory;
 import net.anotheria.anosite.gen.asfederateddata.service.IASFederatedDataService;
-import net.anotheria.anosite.gen.asmetadata.data.PageTemplate;
-import net.anotheria.anosite.gen.asmetadata.data.Site;
-import net.anotheria.anosite.gen.asmetadata.service.ASMetaDataServiceFactory;
-import net.anotheria.anosite.gen.asmetadata.service.IASMetaDataService;
+import net.anotheria.anosite.gen.aslayoutdata.service.ASLayoutDataServiceFactory;
+import net.anotheria.anosite.gen.aslayoutdata.service.IASLayoutDataService;
+import net.anotheria.anosite.gen.assitedata.data.NaviItem;
+import net.anotheria.anosite.gen.assitedata.data.PageTemplate;
+import net.anotheria.anosite.gen.assitedata.data.Site;
+import net.anotheria.anosite.gen.assitedata.service.ASSiteDataServiceFactory;
+import net.anotheria.anosite.gen.assitedata.service.IASSiteDataService;
 import net.anotheria.anosite.gen.aswebdata.data.Box;
-import net.anotheria.anosite.gen.aswebdata.data.NaviItem;
 import net.anotheria.anosite.gen.aswebdata.data.Pagex;
 import net.anotheria.anosite.gen.aswebdata.data.PagexDocument;
 import net.anotheria.anosite.gen.aswebdata.service.ASWebDataServiceFactory;
@@ -43,15 +45,17 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 	private static Logger log = Logger.getLogger(ContentPageServlet.class);
 	
 	private IASWebDataService webDataService;
-	private IASMetaDataService metaDataService;
+	private IASSiteDataService siteDataService;
 	private IASFederatedDataService federatedDataService;
+	private IASLayoutDataService layoutDataService;
 
 	public void init(ServletConfig config) throws ServletException{
 		super.init(config);
 		
 		webDataService = ASWebDataServiceFactory.createASWebDataService();
-		metaDataService = ASMetaDataServiceFactory.createASMetaDataService();
+		siteDataService = ASSiteDataServiceFactory.createASSiteDataService();
 		federatedDataService = ASFederatedDataServiceFactory.createASFederatedDataService();
+		layoutDataService = ASLayoutDataServiceFactory.createASLayoutDataService();
 	}
 
 	
@@ -110,7 +114,7 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		for (StringProperty p : idList) {
 			String id = p.getString();
 			NaviItemBean bean = new NaviItemBean();
-			NaviItem item = webDataService.getNaviItem(id);
+			NaviItem item = siteDataService.getNaviItem(id);
 			bean.setPopup(item.getPopup());
 			bean.setName(item.getName());
 			bean.setTitle(item.getTitle());
@@ -154,7 +158,7 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		SiteBean ret = new SiteBean();
 
 		try {
-			Site site = metaDataService.getSite(template.getSite());
+			Site site = siteDataService.getSite(template.getSite());
 			ret.setSubtitle(site.getSubtitle());
 			ret.setTitle(site.getTitle());
 			if (site.getStartpage()!=null && site.getStartpage().length()>0)
@@ -230,9 +234,9 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 			processSubmit(req, res, page, handlerCache);
 		}
 
-		PageTemplate template = metaDataService.getPageTemplate(page.getTemplate());
+		PageTemplate template = siteDataService.getPageTemplate(page.getTemplate());
 		
-		req.setAttribute("stylesheet", new StylesheetBean(template.getStyle()));
+		req.setAttribute("stylesheet", new StylesheetBean("1"));//template.getLayout();getStyle()));
 
 		SiteBean siteBean = createSiteBean(template);
 		req.setAttribute("site", siteBean);
@@ -243,7 +247,7 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		req.setAttribute("page", pageBean);
 
 		// prepare navi
-		Site site = metaDataService.getSite(template.getSite());
+		Site site = siteDataService.getSite(template.getSite());
 		List<NaviItemBean> topNavi = createNaviItemList(site.getTopNavi());
 		// System.out.println("TOPNavi: "+topNavi);
 		req.setAttribute("topNavi", topNavi);
@@ -254,7 +258,8 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 
 		// navi end
 
-		String layoutPage = template.getLayoutpage();
+		String pageLayout = template.getLayout();
+		String layoutPage = layoutDataService.getPageLayout(pageLayout).getLayoutpage();
 		if (!layoutPage.startsWith("/"))
 			layoutPage = "/net/anotheria/anosite/layout/templates/"	+ layoutPage;
 		if (!layoutPage.endsWith(".jsp"))

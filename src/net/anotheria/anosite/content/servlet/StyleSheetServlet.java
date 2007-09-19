@@ -8,18 +8,18 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.anotheria.anosite.gen.asmetadata.data.PageStyle;
-import net.anotheria.anosite.gen.asmetadata.service.ASMetaDataServiceFactory;
-import net.anotheria.anosite.gen.asmetadata.service.IASMetaDataService;
+import net.anotheria.anosite.gen.aslayoutdata.data.PageStyle;
+import net.anotheria.anosite.gen.aslayoutdata.service.ASLayoutDataServiceFactory;
+import net.anotheria.anosite.gen.aslayoutdata.service.IASLayoutDataService;
 import net.java.dev.moskito.web.MoskitoHttpServlet;
 
 public class StyleSheetServlet extends MoskitoHttpServlet{
 	
-	private IASMetaDataService metaDataService;
+	private IASLayoutDataService layoutDataService;
 	
 	public void init(ServletConfig config) throws ServletException{
 		super.init(config);
-		metaDataService = ASMetaDataServiceFactory.createASMetaDataService();
+		layoutDataService = ASLayoutDataServiceFactory.createASLayoutDataService();
 	}
 
 	@Override
@@ -30,7 +30,7 @@ public class StyleSheetServlet extends MoskitoHttpServlet{
 		int indexOfDot = path.indexOf('.');
 		if (indexOfDot!=-1)
 			path = path.substring(0, indexOfDot);
-		PageStyle style = metaDataService.getPageStyle(path);
+		PageStyle style = layoutDataService.getPageStyle(path);
 		
 		OutputStream out = res.getOutputStream();
 		out.write(style.getCss().getBytes());
