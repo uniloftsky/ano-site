@@ -23,6 +23,9 @@ import net.anotheria.anosite.gen.asfederateddata.service.ASFederatedDataServiceF
 import net.anotheria.anosite.gen.asfederateddata.service.IASFederatedDataService;
 import net.anotheria.anosite.gen.aslayoutdata.service.ASLayoutDataServiceFactory;
 import net.anotheria.anosite.gen.aslayoutdata.service.IASLayoutDataService;
+import net.anotheria.anosite.gen.asresourcedata.data.TextResource;
+import net.anotheria.anosite.gen.asresourcedata.service.ASResourceDataServiceFactory;
+import net.anotheria.anosite.gen.asresourcedata.service.IASResourceDataService;
 import net.anotheria.anosite.gen.assitedata.data.NaviItem;
 import net.anotheria.anosite.gen.assitedata.data.PageTemplate;
 import net.anotheria.anosite.gen.assitedata.data.Site;
@@ -48,6 +51,7 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 	private IASSiteDataService siteDataService;
 	private IASFederatedDataService federatedDataService;
 	private IASLayoutDataService layoutDataService;
+	private IASResourceDataService resourceDataService;
 
 	public void init(ServletConfig config) throws ServletException{
 		super.init(config);
@@ -56,6 +60,7 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		siteDataService = ASSiteDataServiceFactory.createASSiteDataService();
 		federatedDataService = ASFederatedDataServiceFactory.createASFederatedDataService();
 		layoutDataService = ASLayoutDataServiceFactory.createASLayoutDataService();
+		resourceDataService = ASResourceDataServiceFactory.createASResourceDataService();
 	}
 
 	
@@ -225,6 +230,9 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 	
 
 	protected void processRequest(HttpServletRequest req, HttpServletResponse res, boolean submit) throws ServletException, IOException {
+		
+		prepareTextResources(req);
+		
 		String pageName = extractPageName(req);
 		System.out.println("Page: " + pageName);
 		Pagex page = getPageByName(pageName);
@@ -268,6 +276,12 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		RequestDispatcher dispatcher = req.getRequestDispatcher(layoutPage);
 		dispatcher.forward(req, res);
 
+	}
+	
+	private void prepareTextResources(HttpServletRequest req){
+		List<TextResource> resources = resourceDataService.getTextResources();
+		for (TextResource r : resources)
+			req.setAttribute("res."+r.getName(), r.getValue());
 	}
 
 }
