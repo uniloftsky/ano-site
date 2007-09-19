@@ -1,0 +1,36 @@
+  <module name="ASGenericData">
+	<document name="GenericBoxType">
+		<property name="name" type="string"/>
+		<property name="rendererpage" type="string"/>
+	</document>
+	<document name="GenericBoxHandlerDef">
+		<property name="name" type="string"/>
+		<property name="clazz" type="string"/>
+	</document>
+  </module>
+  <module name="ASCustomData">
+	<document name="CustomBoxType">
+		<property name="name" type="string"/>
+		<property name="rendererpage" type="string"/>
+	</document>
+	<document name="CustomBoxHandlerDef">
+		<property name="name" type="string"/>
+		<property name="clazz" type="string"/>
+	</document>
+  </module>
+  <module name="ASFederatedData" storageType="federation">
+	<federatedmodule name="ASGenericData" key="G"/>
+	<federatedmodule name="ASCustomData"  key="C"/>
+	<mapping sourceDocument="BoxType" targetDocument="G.GenericBoxType"/>
+	<mapping sourceDocument="BoxType" targetDocument="C.CustomBoxType"/>
+	<mapping sourceDocument="BoxHandlerDef" targetDocument="G.GenericBoxHandlerDef"/>
+	<mapping sourceDocument="BoxHandlerDef" targetDocument="C.CustomBoxHandlerDef"/>
+	<document name="BoxType">
+		<property name="name" type="string"/>
+		<property name="rendererpage" type="string"/>
+	</document>
+	<document name="BoxHandlerDef">
+		<property name="name" type="string"/>
+		<property name="clazz" type="string"/>
+	</document>
+  </module>

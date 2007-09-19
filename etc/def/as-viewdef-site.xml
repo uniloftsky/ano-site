@@ -1,0 +1,133 @@
+   <!-- Layout view, here everything is defined -->
+
+	<view name="Sitex" title="Site">
+		<sections>
+			<!-- Site -->
+			<section title="Site" type="module">
+				<module>ASSiteData</module>
+				<document>Site</document>
+				<filter name="AZ" field="name"/>
+				<elements>
+					<element type="field" name="id" comparable="true">
+	        		   	<decorator name="idToA">
+	        		 		<rule>3</rule>
+	        		   	</decorator>
+					</element>
+					<element type="field" name="name" comparable="default"> 
+	        		   	<decorator name="editLink"/>
+					</element>
+					<element type="field" name="title" comparable="true"/> 
+					<element type="field" name="topNavi" comparable="true"/> 
+					<element type="field" name="mainNavi" comparable="true"/> 
+					<element type="field" name="startpage" comparable="true"> 
+	        		   	<decorator name="linkTargetName"/>
+					</element>
+	        		<element type="function" name="edit"/>
+	        		<element type="function" name="duplicate"/>
+	        		<element type="function" name="delete"/>
+	      		</elements>
+	      		<dialog name="Edit" title="Edit Site">
+        			<elements>
+	       				<element type="empty"/>
+		       			<element type="field" name="id" readonly="true"/>
+		      			<element type="field" name="name" /> 
+		      			<element type="field" name="title" /> 
+		      			<element type="field" name="subtitle" /> 
+						<element type="field" name="topNavi" /> 
+						<element type="field" name="mainNavi" /> 
+						<element type="field" name="startpage" /> 
+						<element type="empty"/>
+						<element type="list">
+							<element type="function" name="update"/>
+							<element type="function" name="cancel"/>
+						</element>
+        			</elements>
+      			</dialog>
+	    	</section>
+		
+			<!-- NaviItems -->
+			<section title="NaviItem" type="module">
+				<module>ASSiteData</module>
+				<document>NaviItem</document>
+				<filter name="AZ" field="name"/>
+				<elements>
+					<element type="field" name="id" comparable="true">
+	        		   	<decorator name="idToA">
+	        		 		<rule>3</rule>
+	        		   	</decorator>
+					</element>
+					<element type="field" name="name" comparable="default"> 
+	        		   	<decorator name="editLink"/>
+					</element>
+					<element type="field" name="externalLink" comparable="true"/> 
+					<element type="field" name="internalLink" comparable="true">
+	        		   	<decorator name="linkTargetName"/>
+					</element>
+					<element type="field" name="subNavi" comparable="true"/> 
+					<element type="field" name="popup" comparable="true"/> 
+	        		<element type="function" name="edit"/>
+	        		<element type="function" name="duplicate"/>
+	        		<element type="function" name="delete"/>
+	      		</elements>
+	      		<dialog name="Edit" title="Edit NaviItem">
+        			<elements>
+	       				<element type="empty"/>
+		       			<element type="field" name="id" readonly="true"/>
+		      			<element type="field" name="name" /> 
+		      			<element type="field" name="title" /> 
+						<element type="field" name="externalLink" /> 
+						<element type="field" name="internalLink" /> 
+						<element type="field" name="subNavi" /> 
+						<element type="field" name="popup" /> 
+						<element type="empty"/>
+						<element type="list">
+							<element type="function" name="update"/>
+							<element type="function" name="cancel"/>
+						</element>
+        			</elements>
+      			</dialog>
+	    	</section>
+			<!-- Section PageTemplate -->
+			<section title="Template" type="module">
+				<module>ASSiteData</module>
+				<document>PageTemplate</document>
+				<filter name="AZ" field="name"/>
+				<elements>
+					<element type="field" name="id" comparable="true">
+	        		   	<decorator name="idToA">
+	        		 		<rule>3</rule>
+	        		   	</decorator>
+					</element>
+					<element type="field" name="name" comparable="default"> 
+	        		   	<decorator name="editLink"/>
+					</element>
+					<element type="field" name="layout" comparable="true"> 
+	        		   	<decorator name="editLink"/>
+					</element>
+					<element type="field" name="site" comparable="true">
+	        		   	<decorator name="linkTargetName"/>
+					</element>
+					
+	        		<element type="function" name="edit"/>
+	        		<element type="function" name="duplicate"/>
+	        		<element type="function" name="delete"/>
+	      		</elements>
+	      		<dialog name="Edit" title="Edit Template">
+        			<elements>
+	       				<element type="empty"/>
+		       			<element type="field" name="id" readonly="true"/>
+		      			<element type="field" name="name" /> 
+		      			<element type="field" name="layout" /> 
+		      			<element type="field" name="site" /> 
+		      			<element type="field" name="description" /> 
+						<element type="empty"/>
+						<element type="list">
+							<element type="function" name="update"/>
+							<element type="function" name="cancel"/>
+						</element>
+        			</elements>
+      			</dialog>
+	    	</section>
+
+    	</sections>
+	</view>

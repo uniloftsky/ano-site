@@ -1,0 +1,36 @@
+  <module name="ASSiteData">
+	<document name="PageTemplate">
+		<property type="string" name="name"/>
+		<link name="layout" type="single" target="ASLayoutData.PageLayout"/>
+		<link name="site"  type="single" target="ASSiteData.Site"/>
+		<property type="text" name="description"/>
+	</document> 
+  	<document name="Site">
+		<property name="name" type="string"/>
+		<property name="title" type="string"/>
+		<property name="subtitle" type="string"/>
+		<property name="mainNavi" type="list">
+	        <content>
+				<link name="item" type="single" target="ASSiteData.NaviItem"/>
+        	</content>
+        </property>
+		<property name="topNavi" type="list">
+	        <content>
+				<link name="item" type="single" target="ASSiteData.NaviItem"/>
+        	</content>
+        </property>
+        <link type="single" target="ASWebData.Pagex" name="startpage"/>
+  	</document>
+  	<document name="NaviItem">
+		<property name="name" type="string" multilingual="true"/>
+		<property name="title" type="string" multilingual="true"/>
+		<property name="externalLink" type="string"/>
+		<link name="internalLink" type="single" target="ASWebData.Pagex"/>
+		<property name="popup" type="boolean"/>
+		<property name="subNavi" type="list">
+	        <content>
+				<link name="item" type="single" target="ASSiteData.NaviItem"/>
+        	</content>
+        </property>
+  	</document>
+ </module>
