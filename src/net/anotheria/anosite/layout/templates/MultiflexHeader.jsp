@@ -24,9 +24,8 @@
         <div class="nav0">
           <ul>
 
-            <li><a href="#" title="Pagina home in Italiano"><img src="simg/flag_italy.gif" alt="Image description" /></a></li>
-            <li><a href="#" title="Homepage auf Deutsch"><img src="simg/flag_germany.gif" alt="Image description" /></a></li>
-            <li><a href="#" title="Hemsidan p&aring; svenska"><img src="simg/flag_sweden.gif" alt="Image description" /></a></li>
+            <li><a href="<bean:write name="site" property="linkToStartPage"/>?lang=EN" title="English homepage"><img src="simg/flag_italy.gif" alt="English homepage" /></a></li>
+            <li><a href="<bean:write name="site" property="linkToStartPage"/>?lang=DE" title="Homepage auf Deutsch"><img src="simg/flag_germany.gif" alt="German homepage" /></a></li>
           </ul>
         </div>			
 
@@ -34,7 +33,7 @@
         <div class="nav1">
 
           <ul>
-            <li><a href="#" title="Go to Start page">Home</a></li>
+            <li><a href="<bean:write name="site" property="linkToStartPage"/>" title="Go to Start page">Home</a></li>
             <li><a href="#" title="Get to know who we are">About</a></li>
             <li><a href="#" title="Get in touch with us">Contact</a></li>																		
             <li><a href="#" title="Get an overview of website">Sitemap</a></li>
