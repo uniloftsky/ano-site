@@ -1,8 +1,7 @@
   <module name="ASWebData">
-	<listener class="test.TestListener"/>
 	<document name="Pagex">
 		<property type="string" name="name"/>
-		<property type="string" name="title" />
+		<property type="string" name="title" multilingual="true"/>
 		<link type="single" target="ASSiteData.PageTemplate" name="template"/>
 		<property name="c1" type="list">
 	        <content>
@@ -22,7 +21,7 @@
 	</document>
 	<document name="Box">
 		<property name="name" type="string"/>
-		<property name="content" type="text"/>
+		<property name="content" type="text" multilingual="true"/>
 		<link name="type" type="single" target="ASFederatedData.BoxType"/>
 		<link name="handler" type="single" target="ASFederatedData.BoxHandlerDef"/>
 		<property name="subboxes" type="list">

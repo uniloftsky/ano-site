@@ -7,8 +7,8 @@
 	</document> 
   	<document name="Site">
 		<property name="name" type="string"/>
-		<property name="title" type="string"/>
-		<property name="subtitle" type="string"/>
+		<property name="title" type="string" multilingual="true"/>
+		<property name="subtitle" type="string" multilingual="true"/>
 		<property name="mainNavi" type="list">
 	        <content>
 				<link name="item" type="single" target="ASSiteData.NaviItem"/>
