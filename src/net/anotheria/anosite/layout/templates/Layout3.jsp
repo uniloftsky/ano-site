@@ -23,39 +23,28 @@
 <body>
   <!-- Main Page Container -->
   <div class="page-container">
-
- <!-- START HEADER here -->
-<jsp:include page="MultiflexHeader.jsp"/>
-
-  <!-- END HEADER here -->
-
+ 	<!-- START HEADER here -->
+	<jsp:include page="MultiflexHeader.jsp"/>
+  	<!-- END HEADER here -->
     <!-- B. MAIN -->
     <div class="main">
-  
-      <!-- B.1 MAIN CONTENT -->
-      <div class="main-content">
-        
-        <!-- Pagetitle -->
-        <h1 class="pagetitle"><bean:write name="page" scope="request" property="title"/></h1>
-
-        <!-- Content unit - One column -->
-
-		<!-- Rendering column 2 -->
-		<bean:define id="__boxlist" toScope="request" name="page" property="column1"/>
-		<jsp:include page="ListIterator.jsp" flush="false"/>
-
-      </div>
-
-      <!-- B.2 MAIN NAVIGATION -->
-      <div class="main-navigation">
-		<!-- Rendering column 1 -->
-		<bean:define id="__boxlist" toScope="request" name="page" property="column2"/>
-		<jsp:include page="ListIterator.jsp" flush="false"/>
-
-    </div>
-      
+      	<!-- B.1 MAIN CONTENT -->
+      	<div class="main-content">        
+        	<!-- Pagetitle -->
+	        <h1 class="pagetitle"><bean:write name="page" scope="request" property="title"/></h1>
+        	<!-- Content unit - One column -->
+			<!-- Rendering column 2 -->
+			<bean:define id="__boxlist" toScope="request" name="page" property="column1"/>
+			<jsp:include page="ListIterator.jsp" flush="false"/>
+      	</div>
+      	<!-- B.2 MAIN NAVIGATION -->
+      	<div class="main-navigation">
+			<!-- Rendering column 1 -->
+			<bean:define id="__boxlist" toScope="request" name="page" property="column2"/>
+			<jsp:include page="ListIterator.jsp" flush="false"/>
+    	</div>
+	</div>      
     <!-- C. FOOTER AREA -->      
-
     <div class="footer">
       <p>Copyright &copy; 2007 Your Company | All Rights Reserved</p>
       <p class="credits">Design by <a href="http://www.1-2-3-4.info/" title="Designer Homepage">Wolfgang</a>  | Modified by <a href="#" title="Modifyer Homepage">Your Name</a> | Powered by <a href="#" title="CMS Homepage">Your CMS</a> | <a href="http://validator.w3.org/check?uri=referer" title="Validate XHTML code">XHTML 1.0</a> | <a href="http://jigsaw.w3.org/css-validator/" title="Validate CSS code">CSS 2.0</a></p>
