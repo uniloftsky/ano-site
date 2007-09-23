@@ -20,7 +20,7 @@ import net.anotheria.asg.util.decorators.IAttributeDecorator;
 
 public class LinkTargetNameDecorator implements IAttributeDecorator{
 	private static IASFederatedDataService federatedDataService = ASFederatedDataServiceFactory.createASFederatedDataService();
-	private static IASSiteDataService metaDataService = ASSiteDataServiceFactory.createASSiteDataService();
+	private static IASSiteDataService siteDataService = ASSiteDataServiceFactory.createASSiteDataService();
 	private static IASWebDataService webDataService = ASWebDataServiceFactory.createASWebDataService();
 	private static IASLayoutDataService layoutDataService = ASLayoutDataServiceFactory.createASLayoutDataService();
 
@@ -68,7 +68,10 @@ public class LinkTargetNameDecorator implements IAttributeDecorator{
 	
 	private String getTargetNameForTemplate(PageTemplate template, String attributeName){
 		if (attributeName.equals("site")){
-			return metaDataService.getSite(template.getSite()).getName();
+			return siteDataService.getSite(template.getSite()).getName();
+		}
+		if (attributeName.equals("layout")){
+			return layoutDataService.getPageLayout(template.getLayout()).getName();
 		}
 		return "Unknown attribute: "+attributeName;
 	}
@@ -92,7 +95,7 @@ public class LinkTargetNameDecorator implements IAttributeDecorator{
 
 	private String getTargetNameForPage(Pagex page, String attributeName){
 		if (attributeName.equals("template")){
-			return metaDataService.getPageTemplate(page.getTemplate()).getName();
+			return siteDataService.getPageTemplate(page.getTemplate()).getName();
 		}
 		return "UnknownAttr: "+attributeName;
 	}

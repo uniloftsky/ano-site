@@ -6,6 +6,8 @@ import java.util.List;
 import net.anotheria.anodoc.data.Document;
 import net.anotheria.anodoc.data.NoSuchDocumentException;
 import net.anotheria.anodoc.data.NoSuchPropertyException;
+import net.anotheria.anosite.gen.assitedata.data.NaviItem;
+import net.anotheria.anosite.gen.assitedata.data.Site;
 import net.anotheria.anosite.gen.aswebdata.data.Box;
 import net.anotheria.anosite.gen.aswebdata.data.Pagex;
 import net.anotheria.anosite.gen.aswebdata.service.ASWebDataServiceFactory;
@@ -14,7 +16,7 @@ import net.anotheria.asg.data.DataObject;
 import net.anotheria.asg.util.decorators.IAttributeDecorator;
 import net.anotheria.util.StringUtils;
 
-public class BoxDecorator implements IAttributeDecorator{
+public class NaviItemDecorator implements IAttributeDecorator{
 	
 	private static IASWebDataService service = ASWebDataServiceFactory.createASWebDataService();
 	
@@ -40,18 +42,19 @@ public class BoxDecorator implements IAttributeDecorator{
 			value = value + linksValue+"]";
 			
 			String href = "#";
-			if (doc instanceof Pagex){
-				href = "pagex"+StringUtils.capitalize(attributeName)+"Show?pId="+doc.getId()+"&ts="+System.currentTimeMillis();
+			if (doc instanceof Site){
+				href = "site"+StringUtils.capitalize(attributeName)+"Show?pId="+doc.getId()+"&ts="+System.currentTimeMillis();
 			}
-			if (doc instanceof Box){
-				href = "boxSubboxesShow?pId="+doc.getId()+"&ts="+System.currentTimeMillis();
+			
+			if (doc instanceof NaviItem){
+				href = "naviitem"+StringUtils.capitalize(attributeName)+"Show?pId="+doc.getId()+"&ts="+System.currentTimeMillis();
 			}
 			
 			String title = "";
 			for (String id : ids){
 				String name ;
 				try{
-					name = service.getBox(id).getName();
+					name = service.getPagex(id).getName();
 				}catch(NoSuchDocumentException e){
 					name = "*DELETED*";
 				}
