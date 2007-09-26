@@ -3,4 +3,11 @@
 		<property type="string" name="name"/>
 		<property type="string" name="value" multilingual="true"/>
 	</document>
+	<document name="CountryResource">
+		<property type="string" name="name" multilingual="true"/>
+	</document>
+	<document name="StateResource">
+		<property type="string" name="name" multilingual="true"/>
+		<link name="country" type="single" target="ASResourceData.CountryResource"/>
+	</document>	
   </module>
