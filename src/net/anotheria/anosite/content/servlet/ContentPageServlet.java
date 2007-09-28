@@ -83,14 +83,15 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		ret.setParameter10(box.getParameter10());
 
 		ret.setType(createBoxTypeBean(box.getType()));
-
-		if (box.getSubboxes() != null && box.getSubboxes().size() > 0) {
-			ret.setSubboxes(createBoxBeanList(req, res, box.getSubboxes()));
-		}
-
+	 
+		//Firsts notify handler
 		if (box.getHandler() != null && box.getHandler().length() > 0) {
 			BoxHandler handler = BoxHandlerFactory.createHandler(box.getHandler());
 			handler.process(req, res, box, ret);
+		}
+		//Then create subboxes
+		if (box.getSubboxes() != null && box.getSubboxes().size() > 0) {
+			ret.setSubboxes(createBoxBeanList(req, res, box.getSubboxes()));
 		}
 
 		return ret;
