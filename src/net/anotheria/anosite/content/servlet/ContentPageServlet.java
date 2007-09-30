@@ -42,20 +42,19 @@ import net.java.dev.moskito.web.MoskitoHttpServlet;
 
 import org.apache.log4j.Logger;
 
-
 public class ContentPageServlet extends MoskitoHttpServlet {
 
 	private static Logger log = Logger.getLogger(ContentPageServlet.class);
-	
+
 	private IASWebDataService webDataService;
 	private IASSiteDataService siteDataService;
 	private IASFederatedDataService federatedDataService;
 	private IASLayoutDataService layoutDataService;
 	private IASResourceDataService resourceDataService;
 
-	public void init(ServletConfig config) throws ServletException{
+	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
-		
+
 		webDataService = ASWebDataServiceFactory.createASWebDataService();
 		siteDataService = ASSiteDataServiceFactory.createASSiteDataService();
 		federatedDataService = ASFederatedDataServiceFactory.createASFederatedDataService();
@@ -63,7 +62,6 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		resourceDataService = ASResourceDataServiceFactory.createASResourceDataService();
 	}
 
-	
 	private BoxBean createBoxBean(HttpServletRequest req, HttpServletResponse res, Box box) {
 		BoxBean ret = new BoxBean();
 
@@ -83,13 +81,13 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		ret.setParameter10(box.getParameter10());
 
 		ret.setType(createBoxTypeBean(box.getType()));
-	 
-		//Firsts notify handler
+
+		// Firsts notify handler
 		if (box.getHandler() != null && box.getHandler().length() > 0) {
 			BoxHandler handler = BoxHandlerFactory.createHandler(box.getHandler());
 			handler.process(req, res, box, ret);
 		}
-		//Then create subboxes
+		// Then create subboxes
 		if (box.getSubboxes() != null && box.getSubboxes().size() > 0) {
 			ret.setSubboxes(createBoxBeanList(req, res, box.getSubboxes()));
 		}
@@ -97,7 +95,7 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		return ret;
 	}
 
-	private List<BoxBean> createBoxBeanList(HttpServletRequest req,	HttpServletResponse res, List<StringProperty> boxIds) {
+	private List<BoxBean> createBoxBeanList(HttpServletRequest req, HttpServletResponse res, List<StringProperty> boxIds) {
 		ArrayList<BoxBean> ret = new ArrayList<BoxBean>();
 
 		for (StringProperty p : boxIds) {
@@ -146,7 +144,7 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 	@SuppressWarnings("unchecked")
 	private PageBean createPageBean(HttpServletRequest req, HttpServletResponse res, Pagex page) {
 		PageBean ret = new PageBean();
-		
+
 		ret.setTitle(page.getTitle());
 		ret.setName(page.getName());
 
@@ -156,7 +154,7 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		ret.setColumn2(createBoxBeanList(req, res, c2));
 		List<StringProperty> c3 = page.getC3();
 		ret.setColumn3(createBoxBeanList(req, res, c3));
-		
+
 		return ret;
 	}
 
@@ -167,8 +165,8 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 			Site site = siteDataService.getSite(template.getSite());
 			ret.setSubtitle(site.getSubtitle());
 			ret.setTitle(site.getTitle());
-			if (site.getStartpage()!=null && site.getStartpage().length()>0)
-				ret.setLinkToStartPage(webDataService.getPagex(site.getStartpage()).getName()+".html");
+			if (site.getStartpage() != null && site.getStartpage().length() > 0)
+				ret.setLinkToStartPage(webDataService.getPagex(site.getStartpage()).getName() + ".html");
 		} catch (Exception e) {
 			log.warn("createSiteBean(" + template + ")", e);
 		}
@@ -194,32 +192,36 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		}
 		throw new ServletException("Page " + pageName + " not found.");
 	}
+
 	@Override
 	protected void moskitoDoGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		processRequest(req, res, false);
 	}
-	@Override	
+
+	@Override
 	protected void moskitoDoPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		processRequest(req, res, true);
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	private void processSubmit(HttpServletRequest req, HttpServletResponse res, Pagex page, HashMap<String, BoxHandler> handlerCache ){
-		processSubmit(req, res, (List<StringProperty>)page.getC1(), handlerCache);
-		processSubmit(req, res, (List<StringProperty>)page.getC2(), handlerCache);
-		processSubmit(req, res, (List<StringProperty>)page.getC3(), handlerCache);
-		
+	private void processSubmit(HttpServletRequest req, HttpServletResponse res, Pagex page,
+			HashMap<String, BoxHandler> handlerCache) {
+		processSubmit(req, res, (List<StringProperty>) page.getC1(), handlerCache);
+		processSubmit(req, res, (List<StringProperty>) page.getC2(), handlerCache);
+		processSubmit(req, res, (List<StringProperty>) page.getC3(), handlerCache);
+
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	private void processSubmit(HttpServletRequest req, HttpServletResponse res, List<StringProperty> boxIds, HashMap<String, BoxHandler> handlerCache){
-		if (boxIds==null || boxIds.size()==0)
+	private void processSubmit(HttpServletRequest req, HttpServletResponse res, List<StringProperty> boxIds,
+			HashMap<String, BoxHandler> handlerCache) {
+		if (boxIds == null || boxIds.size() == 0)
 			return;
-		for (StringProperty p : boxIds){
+		for (StringProperty p : boxIds) {
 			String id = p.getString();
 			Box box = webDataService.getBox(id);
 			String handlerId = box.getHandler();
-			if (handlerId!=null && handlerId.length()>0){
+			if (handlerId != null && handlerId.length() > 0) {
 				BoxHandler handler = BoxHandlerFactory.createHandler(handlerId);
 				handler.submit(req, res, box);
 				handlerCache.put(box.getId(), handler);
@@ -228,24 +230,24 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 			processSubmit(req, res, subboxesIds, handlerCache);
 		}
 	}
-	
 
-	protected void processRequest(HttpServletRequest req, HttpServletResponse res, boolean submit) throws ServletException, IOException {
-		
+	protected void processRequest(HttpServletRequest req, HttpServletResponse res, boolean submit)
+			throws ServletException, IOException {
+
 		prepareTextResources(req);
-		
+
 		String pageName = extractPageName(req);
 		System.out.println("Page: " + pageName);
 		Pagex page = getPageByName(pageName);
-		
+
 		HashMap<String, BoxHandler> handlerCache = new HashMap<String, BoxHandler>();
-		if (submit){
+		if (submit) {
 			processSubmit(req, res, page, handlerCache);
 		}
 
 		PageTemplate template = siteDataService.getPageTemplate(page.getTemplate());
-		
-		req.setAttribute("stylesheet", new StylesheetBean("1"));//template.getLayout();getStyle()));
+
+		req.setAttribute("stylesheet", new StylesheetBean("1"));// template.getLayout();getStyle()));
 
 		SiteBean siteBean = createSiteBean(template);
 		req.setAttribute("site", siteBean);
@@ -270,19 +272,19 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		String pageLayout = template.getLayout();
 		String layoutPage = layoutDataService.getPageLayout(pageLayout).getLayoutpage();
 		if (!layoutPage.startsWith("/"))
-			layoutPage = "/net/anotheria/anosite/layout/templates/"	+ layoutPage;
+			layoutPage = "/net/anotheria/anosite/layout/templates/" + layoutPage;
 		if (!layoutPage.endsWith(".jsp"))
 			layoutPage += ".jsp";
-
-		RequestDispatcher dispatcher = req.getRequestDispatcher(layoutPage);
-		dispatcher.forward(req, res);
-
+		if (!res.isCommitted()) {
+			RequestDispatcher dispatcher = req.getRequestDispatcher(layoutPage);
+			dispatcher.forward(req, res);
+		}
 	}
-	
-	private void prepareTextResources(HttpServletRequest req){
+
+	private void prepareTextResources(HttpServletRequest req) {
 		List<TextResource> resources = resourceDataService.getTextResources();
 		for (TextResource r : resources)
-			req.setAttribute("res."+r.getName(), r.getValue());
+			req.setAttribute("res." + r.getName(), r.getValue());
 	}
 
 }
