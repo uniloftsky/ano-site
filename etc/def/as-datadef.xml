@@ -4,3 +4,4 @@
 	<!--@include:as-datadef-site.xml -->
     <!--@include:as-datadef-content.xml -->
     <!--@include:as-datadef-resources.xml -->
+    <!--@include:as-datadef-geographic.xml -->

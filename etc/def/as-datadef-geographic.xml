@@ -1,0 +1,16 @@
+  <module name="ASGeographicData">
+	<document name="Country">
+		<property type="string" name="name"/>
+		<property type="string" name="country" multilingual="true"/>
+	</document>
+	<document name="State">
+		<property type="string" name="name"/>
+		<property type="string" name="state" multilingual="true"/>
+		<link name="country" type="single" target="ASGeographicData.Country"/>
+	</document>
+	<document name="City">
+		<property type="string" name="name"/>
+		<property type="string" name="city" multilingual="true"/>
+		<link name="state" type="single" target="ASGeographicData.State"/>
+	</document>		
+  </module>
