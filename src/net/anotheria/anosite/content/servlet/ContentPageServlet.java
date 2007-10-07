@@ -142,18 +142,25 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 	}
 
 	@SuppressWarnings("unchecked")
-	private PageBean createPageBean(HttpServletRequest req, HttpServletResponse res, Pagex page) {
+	private PageBean createPageBean(HttpServletRequest req, HttpServletResponse res, Pagex page, PageTemplate template) {
 		PageBean ret = new PageBean();
 
 		ret.setTitle(page.getTitle());
 		ret.setName(page.getName());
 
-		List<StringProperty> c1 = page.getC1();
-		ret.setColumn1(createBoxBeanList(req, res, c1));
-		List<StringProperty> c2 = page.getC2();
-		ret.setColumn2(createBoxBeanList(req, res, c2));
-		List<StringProperty> c3 = page.getC3();
-		ret.setColumn3(createBoxBeanList(req, res, c3));
+		ret.addColumn1(createBoxBeanList(req, res, template.getC1first()));
+		ret.addColumn1(createBoxBeanList(req, res, page.getC1()));
+		ret.addColumn1(createBoxBeanList(req, res, template.getC1last()));
+		
+		ret.addColumn2(createBoxBeanList(req, res, template.getC2first()));
+		ret.addColumn2(createBoxBeanList(req, res, page.getC2()));
+		ret.addColumn2(createBoxBeanList(req, res, template.getC2last()));
+
+		ret.addColumn3(createBoxBeanList(req, res, template.getC3first()));
+		ret.addColumn3(createBoxBeanList(req, res, page.getC3()));
+		ret.addColumn3(createBoxBeanList(req, res, template.getC3last()));
+
+		
 
 		return ret;
 	}
@@ -252,7 +259,7 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		SiteBean siteBean = createSiteBean(template);
 		req.setAttribute("site", siteBean);
 
-		PageBean pageBean = createPageBean(req, res, page);
+		PageBean pageBean = createPageBean(req, res, page, template);
 		if (pageBean.getTitle() == null || pageBean.getTitle().length() == 0)
 			pageBean.setTitle(siteBean.getTitle());
 		req.setAttribute("page", pageBean);

@@ -52,6 +52,18 @@ public class PageBean {
 		return column1;
 	}
 
+	public void addColumn1(List<BoxBean> boxes) {
+		column1.addAll(boxes);
+	}
+
+	public void addColumn2(List<BoxBean> boxes) {
+		column2.addAll(boxes);
+	}
+
+	public void addColumn3(List<BoxBean> boxes) {
+		column3.addAll(boxes);
+	}
+
 	public void setColumn1(List<BoxBean> column1) {
 		this.column1 = column1;
 	}
