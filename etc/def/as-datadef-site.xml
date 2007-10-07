@@ -3,7 +3,42 @@
 		<property type="string" name="name"/>
 		<link name="layout" type="single" target="ASLayoutData.PageLayout"/>
 		<link name="site"  type="single" target="ASSiteData.Site"/>
+
+		<!-- cXfirst properties defines boxes which have to be inserted at the start of each column, BEFORE any other boxes are rendered -->
+		<property name="c1first" type="list">
+	        <content>
+				<link name="box" type="single" target="ASWebData.Box"/>
+        	</content>
+        </property>
+		<property name="c2first" type="list">
+	        <content>
+				<link name="box" type="single" target="ASWebData.Box"/>
+        	</content>
+        </property>
+		<property name="c3first" type="list">
+	        <content>
+				<link name="box" type="single" target="ASWebData.Box"/>
+        	</content>
+        </property>
+		<!-- cXlast properties defines boxes which have to be inserted at the start of each column, BEFORE any other boxes are rendered -->
+		<property name="c1last" type="list">
+	        <content>
+				<link name="box" type="single" target="ASWebData.Box"/>
+        	</content>
+        </property>
+		<property name="c2last" type="list">
+	        <content>
+				<link name="box" type="single" target="ASWebData.Box"/>
+        	</content>
+        </property>
+		<property name="c3last" type="list">
+	        <content>
+				<link name="box" type="single" target="ASWebData.Box"/>
+        	</content>
+        </property>
+		
 		<property type="text" name="description"/>
+		
 	</document> 
   	<document name="Site">
 		<property name="name" type="string"/>

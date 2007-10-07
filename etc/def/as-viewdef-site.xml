@@ -113,6 +113,24 @@
 					<element type="field" name="site" comparable="true">
 	        		   	<decorator name="linkTargetName"/>
 					</element>
+					<element type="field" name="c1first" comparable="true"> 
+						<decorator name="subboxes"/>
+					</element>
+					<element type="field" name="c2first" comparable="true"> 
+						<decorator name="subboxes"/>
+					</element>
+					<element type="field" name="c3first" comparable="true"> 
+						<decorator name="subboxes"/>
+					</element>
+					<element type="field" name="c1last" comparable="true"> 
+						<decorator name="subboxes"/>
+					</element>
+					<element type="field" name="c2last" comparable="true"> 
+						<decorator name="subboxes"/>
+					</element>
+					<element type="field" name="c3last" comparable="true"> 
+						<decorator name="subboxes"/>
+					</element>
 					
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
@@ -125,6 +143,14 @@
 		      			<element type="field" name="name" /> 
 		      			<element type="field" name="layout" /> 
 		      			<element type="field" name="site" /> 
+						<element type="field" name="c1first" />
+						<element type="field" name="c2first" />
+						<element type="field" name="c3first" />
+						<element type="empty"/>
+						<element type="field" name="c1last" />
+						<element type="field" name="c2last" />
+						<element type="field" name="c3last" />
+						<element type="empty"/>
 		      			<element type="field" name="description" /> 
 						<element type="empty"/>
 						<element type="list">
