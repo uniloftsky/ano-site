@@ -18,6 +18,7 @@ import net.anotheria.anosite.content.bean.NaviItemBean;
 import net.anotheria.anosite.content.bean.PageBean;
 import net.anotheria.anosite.content.bean.SiteBean;
 import net.anotheria.anosite.content.bean.StylesheetBean;
+import net.anotheria.anosite.content.variables.VariablesUtility;
 import net.anotheria.anosite.gen.asfederateddata.data.BoxType;
 import net.anotheria.anosite.gen.asfederateddata.service.ASFederatedDataServiceFactory;
 import net.anotheria.anosite.gen.asfederateddata.service.IASFederatedDataService;
@@ -68,17 +69,17 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		ret.setName(box.getName());
 		ret.setId(box.getId());
 
-		ret.setContent(box.getContent());
-		ret.setParameter1(box.getParameter1());
-		ret.setParameter2(box.getParameter2());
-		ret.setParameter3(box.getParameter3());
-		ret.setParameter4(box.getParameter4());
-		ret.setParameter5(box.getParameter5());
-		ret.setParameter6(box.getParameter6());
-		ret.setParameter7(box.getParameter7());
-		ret.setParameter8(box.getParameter8());
-		ret.setParameter9(box.getParameter9());
-		ret.setParameter10(box.getParameter10());
+		ret.setContent(VariablesUtility.replaceVariables(req, box.getContent()));
+		ret.setParameter1(VariablesUtility.replaceVariables(req, box.getParameter1()));
+		ret.setParameter2(VariablesUtility.replaceVariables(req, box.getParameter2()));
+		ret.setParameter3(VariablesUtility.replaceVariables(req, box.getParameter3()));
+		ret.setParameter4(VariablesUtility.replaceVariables(req, box.getParameter4()));
+		ret.setParameter5(VariablesUtility.replaceVariables(req, box.getParameter5()));
+		ret.setParameter6(VariablesUtility.replaceVariables(req, box.getParameter6()));
+		ret.setParameter7(VariablesUtility.replaceVariables(req, box.getParameter7()));
+		ret.setParameter8(VariablesUtility.replaceVariables(req, box.getParameter8()));
+		ret.setParameter9(VariablesUtility.replaceVariables(req, box.getParameter9()));
+		ret.setParameter10(VariablesUtility.replaceVariables(req, box.getParameter10()));
 
 		ret.setType(createBoxTypeBean(box.getType()));
 
@@ -95,11 +96,11 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		return ret;
 	}
 
-	private List<BoxBean> createBoxBeanList(HttpServletRequest req, HttpServletResponse res, List<StringProperty> boxIds) {
+	private List<BoxBean> createBoxBeanList(HttpServletRequest req, HttpServletResponse res, List<String> boxIds) {
 		ArrayList<BoxBean> ret = new ArrayList<BoxBean>();
 
-		for (StringProperty p : boxIds) {
-			ret.add(createBoxBean(req, res, webDataService.getBox(p.getString())));
+		for (String boxId : boxIds) {
+			ret.add(createBoxBean(req, res, webDataService.getBox(boxId)));
 		}
 
 		return ret;
@@ -113,10 +114,9 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		return bean;
 	}
 
-	private List<NaviItemBean> createNaviItemList(List<StringProperty> idList) {
+	private List<NaviItemBean> createNaviItemList(List<String> idList) {
 		List<NaviItemBean> ret = new ArrayList<NaviItemBean>(idList.size());
-		for (StringProperty p : idList) {
-			String id = p.getString();
+		for (String id : idList) {
 			NaviItemBean bean = new NaviItemBean();
 			NaviItem item = siteDataService.getNaviItem(id);
 			bean.setPopup(item.getPopup());
@@ -133,7 +133,7 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 				}
 			}
 			ret.add(bean);
-			List<StringProperty> subNaviIds = item.getSubNavi();
+			List<String> subNaviIds = item.getSubNavi();
 			if (subNaviIds.size() > 0)
 				bean.setSubNavi(createNaviItemList(subNaviIds));
 		}
@@ -210,22 +210,18 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		processRequest(req, res, true);
 	}
 
-	@SuppressWarnings("unchecked")
 	private void processSubmit(HttpServletRequest req, HttpServletResponse res, Pagex page,
 			HashMap<String, BoxHandler> handlerCache) {
-		processSubmit(req, res, (List<StringProperty>) page.getC1(), handlerCache);
-		processSubmit(req, res, (List<StringProperty>) page.getC2(), handlerCache);
-		processSubmit(req, res, (List<StringProperty>) page.getC3(), handlerCache);
+		processSubmit(req, res, page.getC1(), handlerCache);
+		processSubmit(req, res, page.getC2(), handlerCache);
+		processSubmit(req, res, page.getC3(), handlerCache);
 
 	}
 
-	@SuppressWarnings("unchecked")
-	private void processSubmit(HttpServletRequest req, HttpServletResponse res, List<StringProperty> boxIds,
-			HashMap<String, BoxHandler> handlerCache) {
+	private void processSubmit(HttpServletRequest req, HttpServletResponse res, List<String> boxIds, HashMap<String, BoxHandler> handlerCache) {
 		if (boxIds == null || boxIds.size() == 0)
 			return;
-		for (StringProperty p : boxIds) {
-			String id = p.getString();
+		for (String id : boxIds) {
 			Box box = webDataService.getBox(id);
 			String handlerId = box.getHandler();
 			if (handlerId != null && handlerId.length() > 0) {
@@ -233,7 +229,7 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 				handler.submit(req, res, box);
 				handlerCache.put(box.getId(), handler);
 			}
-			List<StringProperty> subboxesIds = box.getSubboxes();
+			List<String> subboxesIds = box.getSubboxes();
 			processSubmit(req, res, subboxesIds, handlerCache);
 		}
 	}
