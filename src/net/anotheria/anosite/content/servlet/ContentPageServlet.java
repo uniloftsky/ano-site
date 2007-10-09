@@ -39,6 +39,7 @@ import net.anotheria.anosite.gen.aswebdata.service.ASWebDataServiceFactory;
 import net.anotheria.anosite.gen.aswebdata.service.IASWebDataService;
 import net.anotheria.anosite.handler.BoxHandler;
 import net.anotheria.anosite.handler.BoxHandlerFactory;
+import net.anotheria.anosite.util.AnositeConstants;
 import net.java.dev.moskito.web.MoskitoHttpServlet;
 
 import org.apache.log4j.Logger;
@@ -238,9 +239,17 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 			throws ServletException, IOException {
 
 		prepareTextResources(req);
+		
+		String requestURI = req.getRequestURI();
+		String queryString = req.getQueryString();
+		if (queryString==null || queryString.length()==0)
+			requestURI+="?dummy=dummy";
+		else
+			requestURI+="?"+queryString;
+		System.out.println("requestURI: "+requestURI);
+		req.setAttribute(AnositeConstants.RA_CURRENT_URI, requestURI);
 
 		String pageName = extractPageName(req);
-		System.out.println("Page: " + pageName);
 		Pagex page = getPageByName(pageName);
 
 		HashMap<String, BoxHandler> handlerCache = new HashMap<String, BoxHandler>();
