@@ -17,15 +17,15 @@ public class VariablesUtility {
 	
 	public static final String QUOTE = "\"";
 	
-	private static Map<String, VariablesProcessor> processors = new HashMap<String, VariablesProcessor>();
+	private static Map<String, VariablesProcessor> defaultProcessors = new HashMap<String, VariablesProcessor>();
 	
 	static{
-		processors.put(DefinitionPrefixes.PREFIX_CONSTANT, new ConstantsProcessor());
-		processors.put(DefinitionPrefixes.PREFIX_PARAMETER, new ParameterProcessor());
+		defaultProcessors.put(DefinitionPrefixes.PREFIX_CONSTANT, new ConstantsProcessor());
+		defaultProcessors.put(DefinitionPrefixes.PREFIX_PARAMETER, new ParameterProcessor());
 		VariablesProcessor p = new AttributeProcessor();
-		processors.put(DefinitionPrefixes.PREFIX_REQUEST_ATTRIBUTE, p);
-		processors.put(DefinitionPrefixes.PREFIX_SESSION_ATTRIBUTE, p);
-		processors.put(DefinitionPrefixes.PREFIX_CONTEXT_ATTRIBUTE, p);
+		defaultProcessors.put(DefinitionPrefixes.PREFIX_REQUEST_ATTRIBUTE, p);
+		defaultProcessors.put(DefinitionPrefixes.PREFIX_SESSION_ATTRIBUTE, p);
+		defaultProcessors.put(DefinitionPrefixes.PREFIX_CONTEXT_ATTRIBUTE, p);
 	}
 	
 	/**
@@ -37,6 +37,10 @@ public class VariablesUtility {
 	 * @return
 	 */
 	public static String replaceVariables(HttpServletRequest req, String src){
+		return replaceVariables(req, src, defaultProcessors);
+	}
+	
+	public static String replaceVariables(HttpServletRequest req, String src, Map<String,VariablesProcessor> processors){
 
 		String myS = StringUtils.removeChar(src, '\r');
 		String lines[] = StringUtils.tokenize(myS, '\n');
@@ -48,8 +52,8 @@ public class VariablesUtility {
 			Map<String, String> varValues = new HashMap<String, String>();
 		
 			for (String var : vars){
-				String varValue = replaceInWord(req, var);
-				if (varValue!=null)
+				String varValue = replaceInWord(req, var, processors);
+				if (varValue!=null && !varValue.equals(var))
 					varValues.put(var, varValue);
 			}
 		
@@ -67,8 +71,7 @@ public class VariablesUtility {
 		return totalRet;
 	}
 
-	
-	private static String replaceInWord(HttpServletRequest req, String word){
+	private static String replaceInWord(HttpServletRequest req, String word, Map<String,VariablesProcessor> processors){
 		String varName = StringUtils.strip(word, 1, 1);
 		if (varName!=null){
 			char c = varName.charAt(0);
@@ -93,7 +96,7 @@ public class VariablesUtility {
 			defaultValue = tokens[2];
 		VariablesProcessor processor = processors.get(prefix);
 		if (processor==null)
-			return varName;
+			return word;
 		String ret = processor.replace(prefix, var, defaultValue, req);
 		return ret;
 	}
