@@ -33,10 +33,9 @@
         <div class="nav1">
 
           <ul>
-            <li><a href="<bean:write name="site" property="linkToStartPage"/>" title="Go to Start page">Home</a></li>
-            <li><a href="#" title="Get to know who we are">About</a></li>
-            <li><a href="#" title="Get in touch with us">Contact</a></li>																		
-            <li><a href="#" title="Get an overview of website">Sitemap</a></li>
+          	<logic:iterate name="topNavi" id="item" type="net.anotheria.anosite.content.bean.NaviItemBean">
+	            <li><a <logic:equal name="item" property="popup" value="true">target="_blank" </logic:equal>href="<bean:write name="item" property="link"/>" title="<bean:write name="item" property="title"/>"><bean:write name="item" property="name"/></a></li>
+            </logic:iterate>
           </ul>
         </div>              
       </div>
