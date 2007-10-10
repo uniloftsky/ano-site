@@ -68,4 +68,15 @@
         	</content>
         </property>
   	</document>
+  	<document name="EntryPoint">
+		<property name="name" type="string"/>
+		<link name="startPage" type="single" target="ASWebData.Pagex"/>
+		<link name="startSite" type="single" target="ASSiteData.Site"/>
+		<property name="defaultEntry" type="boolean"/>
+		<property name="domains" type="list">
+	        <content>
+				<property name="domain" type="string"/>
+        	</content>
+        </property>
+  	</document>
  </module>
