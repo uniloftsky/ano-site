@@ -287,7 +287,7 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 			layoutPage = "/net/anotheria/anosite/layout/templates/" + layoutPage;
 		if (!layoutPage.endsWith(".jsp"))
 			layoutPage += ".jsp";
-		if (!res.isCommitted()) {
+		if (!"true".equals(req.getParameter(AnositeConstants.FLAG_XML_REQUEST)) && !res.isCommitted()) {
 			RequestDispatcher dispatcher = req.getRequestDispatcher(layoutPage);
 			dispatcher.forward(req, res);
 		}
