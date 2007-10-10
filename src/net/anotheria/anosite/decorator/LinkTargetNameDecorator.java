@@ -6,6 +6,7 @@ import net.anotheria.anosite.gen.asfederateddata.service.ASFederatedDataServiceF
 import net.anotheria.anosite.gen.asfederateddata.service.IASFederatedDataService;
 import net.anotheria.anosite.gen.aslayoutdata.service.ASLayoutDataServiceFactory;
 import net.anotheria.anosite.gen.aslayoutdata.service.IASLayoutDataService;
+import net.anotheria.anosite.gen.assitedata.data.EntryPoint;
 import net.anotheria.anosite.gen.assitedata.data.NaviItem;
 import net.anotheria.anosite.gen.assitedata.data.PageTemplate;
 import net.anotheria.anosite.gen.assitedata.data.Site;
@@ -31,7 +32,11 @@ public class LinkTargetNameDecorator implements IAttributeDecorator{
 		String name = "Unknown";
 		String linkValue = "?";
 		try{
-			linkValue = ""+ doc.getPropertyValue(attributeName);
+			Object link = doc.getPropertyValue(attributeName);
+			
+			linkValue = link == null ? null : ""+link;
+			if (linkValue==null || linkValue.length()==0)
+				return "----";
 			if (doc instanceof PageTemplate){
 				name = getTargetNameForTemplate((PageTemplate)doc, attributeName);
 			}
@@ -46,6 +51,9 @@ public class LinkTargetNameDecorator implements IAttributeDecorator{
 			}
 			if (doc instanceof Site){
 				name = getTargetNameForSite((Site)doc, attributeName);
+			}
+			if (doc instanceof EntryPoint){
+				name = getTargetNameForEntryPoint((EntryPoint)doc, attributeName);
 			}
 		}catch(NoSuchDocumentException e){
 			name = "*** DELETED ***";
@@ -80,6 +88,18 @@ public class LinkTargetNameDecorator implements IAttributeDecorator{
 		if (attributeName.equals("startpage")){
 			return webDataService.getPagex(site.getStartpage()).getName();
 		}
+		return "Unknown attribute: "+attributeName;
+	}
+
+	private String getTargetNameForEntryPoint(EntryPoint entry, String attributeName){
+		if (attributeName.equals("startPage")){
+			return webDataService.getPagex(entry.getStartPage()).getName();
+		}
+		
+		if (attributeName.equals("startSite")){
+			return siteDataService.getSite(entry.getStartSite()).getName();
+		}
+		
 		return "Unknown attribute: "+attributeName;
 	}
 
