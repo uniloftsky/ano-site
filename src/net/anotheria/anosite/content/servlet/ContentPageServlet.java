@@ -64,6 +64,97 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		resourceDataService = ASResourceDataServiceFactory.createASResourceDataService();
 	}
 
+	@Override
+	protected void moskitoDoGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		processRequest(req, res, false);
+	}
+
+	@Override
+	protected void moskitoDoPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		processRequest(req, res, true);
+	}
+
+	private void processSubmit(HttpServletRequest req, HttpServletResponse res, Pagex page,
+			HashMap<String, BoxHandler> handlerCache) {
+		processSubmit(req, res, page.getC1(), handlerCache);
+		processSubmit(req, res, page.getC2(), handlerCache);
+		processSubmit(req, res, page.getC3(), handlerCache);
+
+	}
+
+	private void processSubmit(HttpServletRequest req, HttpServletResponse res, List<String> boxIds, HashMap<String, BoxHandler> handlerCache) {
+		if (boxIds == null || boxIds.size() == 0)
+			return;
+		for (String id : boxIds) {
+			Box box = webDataService.getBox(id);
+			String handlerId = box.getHandler();
+			if (handlerId != null && handlerId.length() > 0) {
+				BoxHandler handler = BoxHandlerFactory.createHandler(handlerId);
+				handler.submit(req, res, box);
+				handlerCache.put(box.getId(), handler);
+			}
+			List<String> subboxesIds = box.getSubboxes();
+			processSubmit(req, res, subboxesIds, handlerCache);
+		}
+	}
+
+	protected void processRequest(HttpServletRequest req, HttpServletResponse res, boolean submit)
+			throws ServletException, IOException {
+
+		prepareTextResources(req);
+		
+		String requestURI = req.getRequestURI();
+		String queryString = req.getQueryString();
+		if (queryString==null || queryString.length()==0)
+			requestURI+="?dummy=dummy";
+		else
+			requestURI+="?"+queryString;
+		System.out.println("requestURI: "+requestURI);
+		System.out.println("ServletPath: "+req.getServletPath());
+		req.setAttribute(AnositeConstants.RA_CURRENT_URI, requestURI);
+
+		String pageName = extractPageName(req);
+		Pagex page = getPageByName(pageName);
+
+		HashMap<String, BoxHandler> handlerCache = new HashMap<String, BoxHandler>();
+		if (submit) {
+			processSubmit(req, res, page, handlerCache);
+		}
+
+		PageTemplate template = siteDataService.getPageTemplate(page.getTemplate());
+
+		req.setAttribute("stylesheet", new StylesheetBean("1"));// template.getLayout();getStyle()));
+
+		SiteBean siteBean = createSiteBean(template);
+		req.setAttribute("site", siteBean);
+
+		PageBean pageBean = createPageBean(req, res, page, template);
+		if (pageBean.getTitle() == null || pageBean.getTitle().length() == 0)
+			pageBean.setTitle(siteBean.getTitle());
+		req.setAttribute("page", pageBean);
+
+		// prepare navi
+		Site site = siteDataService.getSite(template.getSite());
+		List<NaviItemBean> topNavi = createNaviItemList(site.getTopNavi());
+		req.setAttribute("topNavi", topNavi);
+
+		List<NaviItemBean> mainNavi = createNaviItemList(site.getMainNavi());
+		req.setAttribute("mainNavi", mainNavi);
+
+		// navi end
+
+		String pageLayout = template.getLayout();
+		String layoutPage = layoutDataService.getPageLayout(pageLayout).getLayoutpage();
+		if (!layoutPage.startsWith("/"))
+			layoutPage = "/net/anotheria/anosite/layout/templates/" + layoutPage;
+		if (!layoutPage.endsWith(".jsp"))
+			layoutPage += ".jsp";
+		if (!"true".equals(req.getParameter(AnositeConstants.FLAG_XML_REQUEST)) && !res.isCommitted()) {
+			RequestDispatcher dispatcher = req.getRequestDispatcher(layoutPage);
+			dispatcher.forward(req, res);
+		}
+	}
+
 	private BoxBean createBoxBean(HttpServletRequest req, HttpServletResponse res, Box box) {
 		BoxBean ret = new BoxBean();
 
@@ -201,97 +292,6 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		throw new ServletException("Page " + pageName + " not found.");
 	}
 
-	@Override
-	protected void moskitoDoGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		processRequest(req, res, false);
-	}
-
-	@Override
-	protected void moskitoDoPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		processRequest(req, res, true);
-	}
-
-	private void processSubmit(HttpServletRequest req, HttpServletResponse res, Pagex page,
-			HashMap<String, BoxHandler> handlerCache) {
-		processSubmit(req, res, page.getC1(), handlerCache);
-		processSubmit(req, res, page.getC2(), handlerCache);
-		processSubmit(req, res, page.getC3(), handlerCache);
-
-	}
-
-	private void processSubmit(HttpServletRequest req, HttpServletResponse res, List<String> boxIds, HashMap<String, BoxHandler> handlerCache) {
-		if (boxIds == null || boxIds.size() == 0)
-			return;
-		for (String id : boxIds) {
-			Box box = webDataService.getBox(id);
-			String handlerId = box.getHandler();
-			if (handlerId != null && handlerId.length() > 0) {
-				BoxHandler handler = BoxHandlerFactory.createHandler(handlerId);
-				handler.submit(req, res, box);
-				handlerCache.put(box.getId(), handler);
-			}
-			List<String> subboxesIds = box.getSubboxes();
-			processSubmit(req, res, subboxesIds, handlerCache);
-		}
-	}
-
-	protected void processRequest(HttpServletRequest req, HttpServletResponse res, boolean submit)
-			throws ServletException, IOException {
-
-		prepareTextResources(req);
-		
-		String requestURI = req.getRequestURI();
-		String queryString = req.getQueryString();
-		if (queryString==null || queryString.length()==0)
-			requestURI+="?dummy=dummy";
-		else
-			requestURI+="?"+queryString;
-		System.out.println("requestURI: "+requestURI);
-		req.setAttribute(AnositeConstants.RA_CURRENT_URI, requestURI);
-
-		String pageName = extractPageName(req);
-		Pagex page = getPageByName(pageName);
-
-		HashMap<String, BoxHandler> handlerCache = new HashMap<String, BoxHandler>();
-		if (submit) {
-			processSubmit(req, res, page, handlerCache);
-		}
-
-		PageTemplate template = siteDataService.getPageTemplate(page.getTemplate());
-
-		req.setAttribute("stylesheet", new StylesheetBean("1"));// template.getLayout();getStyle()));
-
-		SiteBean siteBean = createSiteBean(template);
-		req.setAttribute("site", siteBean);
-
-		PageBean pageBean = createPageBean(req, res, page, template);
-		if (pageBean.getTitle() == null || pageBean.getTitle().length() == 0)
-			pageBean.setTitle(siteBean.getTitle());
-		req.setAttribute("page", pageBean);
-
-		// prepare navi
-		Site site = siteDataService.getSite(template.getSite());
-		List<NaviItemBean> topNavi = createNaviItemList(site.getTopNavi());
-		// System.out.println("TOPNavi: "+topNavi);
-		req.setAttribute("topNavi", topNavi);
-
-		List<NaviItemBean> mainNavi = createNaviItemList(site.getMainNavi());
-		// System.out.println("MainNavi: "+mainNavi);
-		req.setAttribute("mainNavi", mainNavi);
-
-		// navi end
-
-		String pageLayout = template.getLayout();
-		String layoutPage = layoutDataService.getPageLayout(pageLayout).getLayoutpage();
-		if (!layoutPage.startsWith("/"))
-			layoutPage = "/net/anotheria/anosite/layout/templates/" + layoutPage;
-		if (!layoutPage.endsWith(".jsp"))
-			layoutPage += ".jsp";
-		if (!"true".equals(req.getParameter(AnositeConstants.FLAG_XML_REQUEST)) && !res.isCommitted()) {
-			RequestDispatcher dispatcher = req.getRequestDispatcher(layoutPage);
-			dispatcher.forward(req, res);
-		}
-	}
 
 	private void prepareTextResources(HttpServletRequest req) {
 		List<TextResource> resources = resourceDataService.getTextResources();
