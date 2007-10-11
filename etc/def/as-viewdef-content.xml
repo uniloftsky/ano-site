@@ -26,6 +26,12 @@
 					<element type="field" name="c3" comparable="true"> 
 						<decorator name="subboxes"/>
 					</element>
+					<element type="field" name="header" comparable="true"> 
+						<decorator name="subboxes"/>
+					</element>
+					<element type="field" name="footer" comparable="true"> 
+						<decorator name="subboxes"/>
+					</element>
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
 	        		<element type="function" name="delete"/>
@@ -37,9 +43,13 @@
 		      			<element type="field" name="name" /> 
 		      			<element type="field" name="title" /> 
 						<element type="field" name="template" /> 
+						<element type="empty"/>
 						<element type="field" name="c1" /> 
 						<element type="field" name="c2" /> 
 						<element type="field" name="c3" /> 
+						<element type="empty"/>
+						<element type="field" name="header" /> 
+						<element type="field" name="footer" /> 
 						<element type="empty"/>
 						<element type="list">
 							<element type="function" name="update"/>

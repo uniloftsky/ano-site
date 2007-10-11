@@ -18,6 +18,16 @@
 				<link name="box" type="single" target="ASWebData.Box"/>
         	</content>
         </property>
+		<property name="header" type="list">
+	        <content>
+				<link name="box" type="single" target="ASWebData.Box"/>
+        	</content>
+        </property>
+		<property name="footer" type="list">
+	        <content>
+				<link name="box" type="single" target="ASWebData.Box"/>
+        	</content>
+        </property>
 	</document>
 	<document name="Box">
 		<property name="name" type="string"/>

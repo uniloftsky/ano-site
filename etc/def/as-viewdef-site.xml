@@ -131,7 +131,12 @@
 					<element type="field" name="c3last" comparable="true"> 
 						<decorator name="subboxes"/>
 					</element>
-					
+					<element type="field" name="header" comparable="true"> 
+						<decorator name="subboxes"/>
+					</element>
+					<element type="field" name="footer" comparable="true"> 
+						<decorator name="subboxes"/>
+					</element>
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
 	        		<element type="function" name="delete"/>
@@ -150,6 +155,9 @@
 						<element type="field" name="c1last" />
 						<element type="field" name="c2last" />
 						<element type="field" name="c3last" />
+						<element type="empty"/>
+						<element type="field" name="header" />
+						<element type="field" name="footer" />
 						<element type="empty"/>
 		      			<element type="field" name="description" /> 
 						<element type="empty"/>
