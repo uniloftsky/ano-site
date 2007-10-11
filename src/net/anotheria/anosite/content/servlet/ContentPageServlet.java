@@ -251,6 +251,12 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		ret.addColumn3(createBoxBeanList(req, res, template.getC3first()));
 		ret.addColumn3(createBoxBeanList(req, res, page.getC3()));
 		ret.addColumn3(createBoxBeanList(req, res, template.getC3last()));
+		
+		ret.addHeaderBoxes(createBoxBeanList(req, res, template.getHeader()));
+		ret.addHeaderBoxes(createBoxBeanList(req, res, page.getHeader()));
+		
+		ret.addFooterBoxes(createBoxBeanList(req, res, template.getFooter()));
+		ret.addFooterBoxes(createBoxBeanList(req, res, page.getFooter()));
 
 		
 

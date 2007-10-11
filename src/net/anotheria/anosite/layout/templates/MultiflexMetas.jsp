@@ -17,3 +17,6 @@
   <link rel="stylesheet" type="text/css" media="screen,projection,print" href="<bean:write name="stylesheet" property="link"/>" />
   <link rel="icon" type="image/x-icon" href="simg/favicon.ico" />
   <title><bean:write name="page" scope="request" property="title"/></title>
+  <bean:define id="__boxlist" toScope="request" name="page" property="headerBoxes"/>
+  <jsp:include page="ListIterator.jsp" flush="false"/>
+  

@@ -9,11 +9,17 @@ public class PageBean {
 	private List<BoxBean> column1;
 	private List<BoxBean> column2;
 	private List<BoxBean> column3;
+	
+	private List<BoxBean> headerBoxes;
+	private List<BoxBean> footerBoxes;
 
 	public PageBean() {
 		column1 = new ArrayList<BoxBean>();
 		column2 = new ArrayList<BoxBean>();
 		column3 = new ArrayList<BoxBean>();
+		
+		headerBoxes = new ArrayList<BoxBean>();
+		footerBoxes = new ArrayList<BoxBean>();
 	}
 	
 	public String getTitle() {
@@ -63,6 +69,14 @@ public class PageBean {
 	public void addColumn3(List<BoxBean> boxes) {
 		column3.addAll(boxes);
 	}
+	
+	public void addHeaderBoxes(List<BoxBean> boxes){
+		headerBoxes.addAll(boxes);
+	}
+
+	public void addFooterBoxes(List<BoxBean> boxes){
+		footerBoxes.addAll(boxes);
+	}
 
 	public void setColumn1(List<BoxBean> column1) {
 		this.column1 = column1;
@@ -82,5 +96,21 @@ public class PageBean {
 
 	public void setColumn3(List<BoxBean> column3) {
 		this.column3 = column3;
+	}
+
+	public List<BoxBean> getFooterBoxes() {
+		return footerBoxes;
+	}
+
+	public void setFooterBoxes(List<BoxBean> footerBoxes) {
+		this.footerBoxes = footerBoxes;
+	}
+
+	public List<BoxBean> getHeaderBoxes() {
+		return headerBoxes;
+	}
+
+	public void setHeaderBoxes(List<BoxBean> headerBoxes) {
+		this.headerBoxes = headerBoxes;
 	}
 }

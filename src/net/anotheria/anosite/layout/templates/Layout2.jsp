@@ -66,7 +66,9 @@
       <p class="credits">Design by <a href="http://www.1-2-3-4.info/" title="Designer Homepage">Wolfgang</a>  | Powered by <a href="www.anotheria.net" title="CMS Homepage">ASG</a> | <a href="http://validator.w3.org/check?uri=referer" title="Validate XHTML code">XHTML 1.0</a> | <a href="http://jigsaw.w3.org/css-validator/" title="Validate CSS code">CSS 2.0</a></p>
     </div>      
   </div> 
-  
+
+  <bean:define id="__boxlist" toScope="request" name="page" property="footerBoxes"/>
+  <jsp:include page="ListIterator.jsp" flush="false"/>
 </body>
 
 </html>
