@@ -350,6 +350,7 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 			Site site = siteDataService.getSite(template.getSite());
 			ret.setSubtitle(site.getSubtitle());
 			ret.setTitle(site.getTitle());
+			ret.setLanguageSelector(site.getLanguageselector());
 			if (site.getStartpage() != null && site.getStartpage().length() > 0)
 				ret.setLinkToStartPage(webDataService.getPagex(site.getStartpage()).getName() + ".html");
 		} catch (Exception e) {
