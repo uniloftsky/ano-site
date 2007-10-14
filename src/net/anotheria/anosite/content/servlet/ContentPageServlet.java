@@ -383,7 +383,7 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 	private void prepareTextResources(HttpServletRequest req) {
 		List<TextResource> resources = resourceDataService.getTextResources();
 		for (TextResource r : resources)
-			req.setAttribute("res." + r.getName(), r.getValue());
+			req.setAttribute("res." + r.getName(), VariablesUtility.replaceVariables(req, r.getValue()));
 	}
 
 }
