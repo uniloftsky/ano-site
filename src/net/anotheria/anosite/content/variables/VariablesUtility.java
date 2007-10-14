@@ -28,6 +28,10 @@ public class VariablesUtility {
 		defaultProcessors.put(DefinitionPrefixes.PREFIX_CONTEXT_ATTRIBUTE, p);
 	}
 	
+	
+	public static void addProcessor(String prefix, VariablesProcessor processor){
+		defaultProcessors.put(prefix, processor);
+	}
 	/**
 	 * Replaces variables in string s with attributes from the request req. If dummy is not NULL it will be inserted instead of 
 	 * variable value.
