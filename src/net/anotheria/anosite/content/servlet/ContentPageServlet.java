@@ -2,6 +2,7 @@ package net.anotheria.anosite.content.servlet;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -11,9 +12,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.anotheria.anodoc.data.StringProperty;
+import net.anotheria.anodoc.data.NoSuchDocumentException;
 import net.anotheria.anosite.content.bean.BoxBean;
 import net.anotheria.anosite.content.bean.BoxTypeBean;
+import net.anotheria.anosite.content.bean.BreadCrumbItemBean;
 import net.anotheria.anosite.content.bean.NaviItemBean;
 import net.anotheria.anosite.content.bean.PageBean;
 import net.anotheria.anosite.content.bean.SiteBean;
@@ -74,12 +76,25 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		processRequest(req, res, true);
 	}
 
-	private void processSubmit(HttpServletRequest req, HttpServletResponse res, Pagex page,
-			HashMap<String, BoxHandler> handlerCache) {
+	private void processSubmit(HttpServletRequest req, HttpServletResponse res, Pagex page, PageTemplate template, HashMap<String, BoxHandler> handlerCache) {
+		processSubmit(req, res, template.getHeader(), handlerCache);
+		processSubmit(req, res, page.getHeader(), handlerCache);
+		
+		processSubmit(req, res, template.getC1first(), handlerCache);
+		processSubmit(req, res, template.getC2first(), handlerCache);
+		processSubmit(req, res, template.getC3first(), handlerCache);
+
 		processSubmit(req, res, page.getC1(), handlerCache);
 		processSubmit(req, res, page.getC2(), handlerCache);
 		processSubmit(req, res, page.getC3(), handlerCache);
 
+		processSubmit(req, res, template.getC1last(), handlerCache);
+		processSubmit(req, res, template.getC2last(), handlerCache);
+		processSubmit(req, res, template.getC3last(), handlerCache);
+
+		processSubmit(req, res, template.getFooter(), handlerCache);
+		processSubmit(req, res, page.getFooter(), handlerCache);
+	
 	}
 
 	private void processSubmit(HttpServletRequest req, HttpServletResponse res, List<String> boxIds, HashMap<String, BoxHandler> handlerCache) {
@@ -109,19 +124,17 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 			requestURI+="?dummy=dummy";
 		else
 			requestURI+="?"+queryString;
-		System.out.println("requestURI: "+requestURI);
-		System.out.println("ServletPath: "+req.getServletPath());
 		req.setAttribute(AnositeConstants.RA_CURRENT_URI, requestURI);
 
 		String pageName = extractPageName(req);
 		Pagex page = getPageByName(pageName);
+		PageTemplate template = siteDataService.getPageTemplate(page.getTemplate());
 
 		HashMap<String, BoxHandler> handlerCache = new HashMap<String, BoxHandler>();
 		if (submit) {
-			processSubmit(req, res, page, handlerCache);
+			processSubmit(req, res, page, template, handlerCache);
 		}
 
-		PageTemplate template = siteDataService.getPageTemplate(page.getTemplate());
 
 		req.setAttribute("stylesheet", new StylesheetBean("1"));// template.getLayout();getStyle()));
 
@@ -140,9 +153,12 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 
 		List<NaviItemBean> mainNavi = createNaviItemList(site.getMainNavi());
 		req.setAttribute("mainNavi", mainNavi);
-
 		// navi end
-
+		
+		//prepare breadcrumb
+		List<BreadCrumbItemBean> breadcrumb = prepareBreadcrumb(page, site);
+		req.setAttribute("breadcrumbs", breadcrumb);
+		
 		String pageLayout = template.getLayout();
 		String layoutPage = layoutDataService.getPageLayout(pageLayout).getLayoutpage();
 		if (!layoutPage.startsWith("/"))
@@ -153,6 +169,70 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 			RequestDispatcher dispatcher = req.getRequestDispatcher(layoutPage);
 			dispatcher.forward(req, res);
 		}
+	}
+	 
+	private List<BreadCrumbItemBean> prepareBreadcrumb(Pagex page, Site site){
+		List<BreadCrumbItemBean> ret = new ArrayList<BreadCrumbItemBean>();
+		try{
+			//first find navi item
+			List<NaviItem> linkingItems = siteDataService.getNaviItemsByProperty(NaviItem.LINK_PROP_INTERNAL_LINK, page.getId());
+			if (linkingItems.size()==0)
+				return ret;
+			NaviItem linkingItem = linkingItems.get(0);
+			
+			if (site.getStartpage().length()>0){
+				linkingItems = siteDataService.getNaviItemsByProperty(NaviItem.LINK_PROP_INTERNAL_LINK, site.getStartpage());
+				NaviItem linkToStartPage = linkingItems.get(0);
+				
+				BreadCrumbItemBean startpageBean = new BreadCrumbItemBean();
+				startpageBean.setTitle(linkToStartPage.getName());
+				startpageBean.setLink(webDataService.getPagex(linkToStartPage.getInternalLink()).getName()+".html");
+				ret.add(startpageBean);
+				if (linkToStartPage.equals(linkingItem)){
+					startpageBean.setClickable(false);
+					return ret;
+				}else{
+					startpageBean.setClickable(true);
+				}
+				
+				//ok start page is found and we are not the startpage
+				//now find other... this is now hardcored for two level navigation.
+				List<BreadCrumbItemBean> items = new ArrayList<BreadCrumbItemBean>();
+				while (linkingItem!=null){
+					BreadCrumbItemBean b = new BreadCrumbItemBean();
+					b.setClickable(items.size()>0);
+					b.setTitle(linkingItem.getName());
+					try{
+						b.setLink(webDataService.getPagex(linkingItem.getInternalLink()).getName()+".html");
+					}catch(NoSuchDocumentException e){
+						b.setLink("");
+						b.setClickable(false);
+					}
+					items.add(b);
+					String searchId = linkingItem.getId();
+					linkingItem = null;
+					List<NaviItem> tosearch = siteDataService.getNaviItems();
+					for (NaviItem i : tosearch){
+						if (i.getSubNavi().contains(searchId)){
+							linkingItem = i;
+							break;
+						}
+					}
+				}
+				
+				Collections.reverse(items);
+				ret.addAll(items);
+				
+				
+			}
+		}catch(Exception e){
+			BreadCrumbItemBean b = new BreadCrumbItemBean();
+			b.setTitle("Error: "+e.getMessage());
+			b.setClickable(false);
+			ret.add(b);
+		}
+		
+		return ret;
 	}
 
 	private BoxBean createBoxBean(HttpServletRequest req, HttpServletResponse res, Box box) {
