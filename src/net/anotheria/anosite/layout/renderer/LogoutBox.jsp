@@ -5,7 +5,7 @@
 %><%@ taglib uri="/tags/struts-logic" prefix="logic"
 %>
         <!-- Login -->
-<h1><bean:write name="res.logout.title"/>, <bean:write name="login.username" ignore="true" /></h1>
+<h1><bean:write name="res.logout.title"/></h1>
 <div class="loginform">
   <form method="post" action="<bean:write name="logout.action" ignore="true"/>"> 
    	<fieldset>

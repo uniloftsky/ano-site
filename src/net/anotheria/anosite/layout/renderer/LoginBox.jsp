@@ -16,7 +16,7 @@
         <input type="password" name="password" id="password" tabindex="2" class="field" onkeypress="return webLoginEnter(document.loginfrm.cmdweblogin);" value="" /></p>
    <p><input type="checkbox" name="remeberme" id="remeberme" class="checkbox" tabindex="3" size="1" /><label for="remeberme" class="right"><bean:write name="res.login.rememberme"/></label></p>
    <p><input type="submit" name="login" class="button" value="<bean:write name="res.login.submit"/>"  /></p>
-   <p><bean:write name="login.username" ignore="true" /></p>
+   <p><bean:write name="login.invalid" ignore="true" /></p>
    <p><a href="#" id="password_forgotten"><bean:write name="res.login.password_forgotten"/></a></p>
  </fieldset>
   </form>
