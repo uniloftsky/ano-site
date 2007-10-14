@@ -76,11 +76,14 @@
       <!-- Breadcrumbs -->
       <div class="header-breadcrumbs">
         <ul>
-          <li><a href="#">Home</a></li>
-
-          <li><a href="#">Webdesign</a></li>
-          <li><a href="#">Templates</a></li>
-          <li>Multiflex-3</li>
+      	<logic:iterate name="breadcrumbs" type="net.anotheria.anosite.content.bean.BreadCrumbItemBean" id="b">
+      		<logic:equal name="b" property="clickable" value="true">
+	          <li><a href="<bean:write name="b" property="link"/>"><bean:write name="b" property="title"/></a></li>
+			</logic:equal>
+      		<logic:notEqual name="b" property="clickable" value="true">
+	          <li><bean:write name="b" property="title"/></li>
+			</logic:notEqual>
+        </logic:iterate>
         </ul>
 
         <!-- Search form -->                  
