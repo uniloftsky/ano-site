@@ -6,7 +6,6 @@
 %>
         <!-- Login -->
 
-<h1><bean:write name="res.logout.title"/></h1>
 <div class="loginform">
   <form method="post" action="MyProfile.html"> 
    <fieldset>
