@@ -4,6 +4,7 @@ public class SiteBean {
 	private String title;
 	private String subtitle;
 	private String linkToStartPage;
+	private boolean languageSelector;
 	
 	public String getSubtitle() {
 		return subtitle;
@@ -22,5 +23,11 @@ public class SiteBean {
 	}
 	public void setLinkToStartPage(String linkToStartPage) {
 		this.linkToStartPage = linkToStartPage;
+	}
+	public boolean isLanguageSelector() {
+		return languageSelector;
+	}
+	public void setLanguageSelector(boolean languageSelector) {
+		this.languageSelector = languageSelector;
 	}
 }
