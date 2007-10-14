@@ -8,7 +8,7 @@
 
 <h1><bean:write name="res.login.title"/></h1>
 <div class="loginform">
-  <form method="post" action="MyProfile.html"> 
+  <form method="post" action="<bean:write name="login.action" ignore="true"/>"> 
     <fieldset>
       <p><label for="username" class="top"><bean:write name="res.login.username"/>:</label><br />
         <input type="text" name="username" id="username" tabindex="1" class="field" /></p>
@@ -16,6 +16,7 @@
         <input type="password" name="password" id="password" tabindex="2" class="field" onkeypress="return webLoginEnter(document.loginfrm.cmdweblogin);" value="" /></p>
    <p><input type="checkbox" name="remeberme" id="remeberme" class="checkbox" tabindex="3" size="1" /><label for="remeberme" class="right"><bean:write name="res.login.rememberme"/></label></p>
    <p><input type="submit" name="login" class="button" value="<bean:write name="res.login.submit"/>"  /></p>
+   <p><bean:write name="login.username" ignore="true" /></p>
    <p><a href="#" id="password_forgotten"><bean:write name="res.login.password_forgotten"/></a></p>
  </fieldset>
   </form>

@@ -5,12 +5,12 @@
 %><%@ taglib uri="/tags/struts-logic" prefix="logic"
 %>
         <!-- Login -->
-
+<h1><bean:write name="res.logout.title"/>, <bean:write name="login.username" ignore="true" /></h1>
 <div class="loginform">
-  <form method="post" action="MyProfile.html"> 
-   <fieldset>
-   <p><input type="submit" name="logout" class="button" value="<bean:write name="res.logout.submit"/>"  /></p>
- </fieldset>
+  <form method="post" action="<bean:write name="logout.action" ignore="true"/>"> 
+   	<fieldset>
+   		<p><input type="submit" name="logout" class="button" value="<bean:write name="res.logout.submit"/>"  /></p>
+ 	</fieldset>
   </form>
 </div>
 
