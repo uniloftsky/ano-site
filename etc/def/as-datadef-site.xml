@@ -72,6 +72,7 @@
         	</content>
         </property>
         <link type="single" target="ASWebData.Pagex" name="startpage"/>
+        <property type="boolean" name="languageselector"/>
   	</document>
   	<document name="NaviItem">
 		<property name="name" type="string" multilingual="true"/>
