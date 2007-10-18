@@ -16,16 +16,13 @@ import org.apache.struts.action.Action;
 
 import net.anotheria.anodoc.util.context.ContextManager;
 import net.anotheria.anosite.gen.shared.service.AnoDocConfigurator;
-import net.anotheria.anosite.util.AnositeConstants;
 
 import static net.anotheria.anosite.util.AnositeConstants.PARAM_LANGUAGE;
 import static net.anotheria.anosite.util.AnositeConstants.SA_LANGUAGE;
 
 public class LanguageFilter implements Filter{
 	
-
 	public void destroy() {
-		
 	}
 
 	public void doFilter(ServletRequest rq, ServletResponse rs, FilterChain chain) throws IOException, ServletException {
@@ -61,5 +58,4 @@ public class LanguageFilter implements Filter{
 	public void init(FilterConfig arg0) throws ServletException {
 		AnoDocConfigurator.configure();
 	}
-
 }
