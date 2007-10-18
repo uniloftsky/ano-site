@@ -43,7 +43,8 @@
 						<element type="field" name="languageselector" /> 
 						<element type="empty"/>
 						<element type="list">
-							<element type="function" name="update"/>
+							<element type="function" name="updateAndClose"/>
+							<element type="function" name="updateAndStay"/>
 							<element type="function" name="cancel"/>
 						</element>
         			</elements>
@@ -88,7 +89,8 @@
 						<element type="field" name="popup" /> 
 						<element type="empty"/>
 						<element type="list">
-							<element type="function" name="update"/>
+							<element type="function" name="updateAndClose"/>
+							<element type="function" name="updateAndStay"/>
 							<element type="function" name="cancel"/>
 						</element>
         			</elements>
@@ -163,7 +165,8 @@
 		      			<element type="field" name="description" /> 
 						<element type="empty"/>
 						<element type="list">
-							<element type="function" name="update"/>
+							<element type="function" name="updateAndClose"/>
+							<element type="function" name="updateAndStay"/>
 							<element type="function" name="cancel"/>
 						</element>
         			</elements>
@@ -207,7 +210,8 @@
 						<element type="field" name="domains"/> 
 						<element type="empty"/>
 						<element type="list">
-							<element type="function" name="update"/>
+							<element type="function" name="updateAndClose"/>
+							<element type="function" name="updateAndStay"/>
 							<element type="function" name="cancel"/>
 						</element>
         			</elements>

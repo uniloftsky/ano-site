@@ -52,7 +52,8 @@
 						<element type="field" name="footer" /> 
 						<element type="empty"/>
 						<element type="list">
-							<element type="function" name="update"/>
+							<element type="function" name="updateAndClose"/>
+							<element type="function" name="updateAndStay"/>
 							<element type="function" name="cancel"/>
 						</element>
         			</elements>
@@ -107,7 +108,8 @@
 		      			<element type="field" name="parameter10" /> 
 						<element type="empty"/>
 						<element type="list">
-							<element type="function" name="update"/>
+							<element type="function" name="updateAndClose"/>
+							<element type="function" name="updateAndStay"/>
 							<element type="function" name="cancel"/>
 						</element>
         			</elements>
