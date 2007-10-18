@@ -22,7 +22,7 @@
 	<classpathentry kind="lib" path="lib/commons-validator.jar"/>
 	<classpathentry kind="lib" path="lib/struts.jar"/>
 	<classpathentry kind="lib" path="lib/servlet-api.jar"/>
-	<classpathentry kind="lib" path="lib/ano-web.jar"/>
+	<classpathentry kind="lib" path="lib/ano-web.jar" sourcepath="/ano-web/java"/>
 	<classpathentry kind="lib" path="lib/moskito-web.jar"/>
 	<classpathentry kind="lib" path="lib/ano-db.jar" sourcepath="/ano-db/java"/>
 	<classpathentry kind="output" path="classes"/>
