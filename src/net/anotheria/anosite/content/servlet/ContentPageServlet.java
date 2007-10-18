@@ -39,6 +39,8 @@ import net.anotheria.anosite.gen.aswebdata.data.Pagex;
 import net.anotheria.anosite.gen.aswebdata.data.PagexDocument;
 import net.anotheria.anosite.gen.aswebdata.service.ASWebDataServiceFactory;
 import net.anotheria.anosite.gen.aswebdata.service.IASWebDataService;
+import net.anotheria.anosite.guard.ConditionalGuard;
+import net.anotheria.anosite.guard.GuardFactory;
 import net.anotheria.anosite.handler.BoxHandler;
 import net.anotheria.anosite.handler.BoxHandlerFactory;
 import net.anotheria.anosite.util.AnositeConstants;
@@ -148,10 +150,10 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 
 		// prepare navi
 		Site site = siteDataService.getSite(template.getSite());
-		List<NaviItemBean> topNavi = createNaviItemList(site.getTopNavi());
+		List<NaviItemBean> topNavi = createNaviItemList(site.getTopNavi(), req);
 		req.setAttribute("topNavi", topNavi);
 
-		List<NaviItemBean> mainNavi = createNaviItemList(site.getMainNavi());
+		List<NaviItemBean> mainNavi = createNaviItemList(site.getMainNavi(), req);
 		req.setAttribute("mainNavi", mainNavi);
 		// navi end
 		
@@ -286,11 +288,35 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		return bean;
 	}
 
-	private List<NaviItemBean> createNaviItemList(List<String> idList) {
+	private List<NaviItemBean> createNaviItemList(List<String> idList, HttpServletRequest req) {
 		List<NaviItemBean> ret = new ArrayList<NaviItemBean>(idList.size());
 		for (String id : idList) {
 			NaviItemBean bean = new NaviItemBean();
 			NaviItem item = siteDataService.getNaviItem(id);
+			
+			boolean do_break = false;
+			//check the guards
+			try{
+				List<String> gIds = item.getGuards();
+				for (String gid : gIds){
+					ConditionalGuard g = GuardFactory.getConditionalGuard(gid);
+					System.out.println("checking guard "+g);
+					if (!g.isConditionFullfilled(item, req)){
+						System.out.println("Guard: "+g+" not fullfiled");
+						do_break = true;
+						break;
+					}
+						
+				}
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			
+			if (do_break){
+				continue;
+			}
+			
+			
 			bean.setPopup(item.getPopup());
 			bean.setName(item.getName());
 			bean.setTitle(item.getTitle());
@@ -307,7 +333,7 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 			ret.add(bean);
 			List<String> subNaviIds = item.getSubNavi();
 			if (subNaviIds.size() > 0)
-				bean.setSubNavi(createNaviItemList(subNaviIds));
+				bean.setSubNavi(createNaviItemList(subNaviIds, req));
 		}
 
 		return ret;

@@ -8,8 +8,6 @@ import net.anotheria.anodoc.data.NoSuchDocumentException;
 import net.anotheria.anodoc.data.NoSuchPropertyException;
 import net.anotheria.anosite.gen.assitedata.data.NaviItem;
 import net.anotheria.anosite.gen.assitedata.data.Site;
-import net.anotheria.anosite.gen.aswebdata.data.Box;
-import net.anotheria.anosite.gen.aswebdata.data.Pagex;
 import net.anotheria.anosite.gen.aswebdata.service.ASWebDataServiceFactory;
 import net.anotheria.anosite.gen.aswebdata.service.IASWebDataService;
 import net.anotheria.asg.data.DataObject;

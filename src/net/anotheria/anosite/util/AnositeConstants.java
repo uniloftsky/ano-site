@@ -6,6 +6,7 @@ public class AnositeConstants {
 	public static final String RA_PREFIX = "ra.";
 	
 	public static final String SA_LANGUAGE = BEAN_PREFIX+SA_PREFIX+".lang";
+	public static final String SA_EDIT_MODE_FLAG = BEAN_PREFIX+SA_PREFIX+".editModeFlag";
 	
 	public static final String RA_CURRENT_URI = BEAN_PREFIX+RA_PREFIX+".currentUri";
 	

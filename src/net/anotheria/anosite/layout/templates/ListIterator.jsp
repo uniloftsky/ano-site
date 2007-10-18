@@ -7,5 +7,10 @@
    	<!-- generating box , box id: <bean:write name="box" property="id"/>, name: <bean:write name="box" property="name"/> , renderer: <bean:write name="box" property="renderer"/>, type: <bean:write name="box" property="typeName"/> -->
 	<bean:define id="__box" toScope="request"  scope="page" name="box" type="net.anotheria.anosite.content.bean.BoxBean"/>
 	<% String renderer = box.getRenderer(); %>
-	<jsp:include page="<%=renderer%>" flush="false"/> 
+<%--	<div style="background-color: red; color: white; padding-left: 3px; padding-right: 3px; font-stretch:narrower; font-style: bold; font-variant: small-caps"> --%>
+		<a style="padding-left:3px;padding-right:3px; color:white; background-color: red; font-variant: small-caps; font-size:tiny" href="cms/boxEdit?pId=<bean:write name="box" property="id"/>" target="_blank"><bean:write name="box" property="name"/></a>
+<%--	</div> --%>
+	<div style="border-top: solid red; border-left: solid red; border-right: solid red; border-bottom: solid red; border-width: 1px; ">
+		<jsp:include page="<%=renderer%>" flush="false"/> 
+	</div>
 </logic:iterate>
