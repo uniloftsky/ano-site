@@ -12,7 +12,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.anotheria.anosite.content.servlet.ContentPageServlet;
 import net.anotheria.anosite.gen.assitedata.data.EntryPoint;
 import net.anotheria.anosite.gen.assitedata.data.Site;
 import net.anotheria.anosite.gen.assitedata.service.ASSiteDataServiceFactory;
