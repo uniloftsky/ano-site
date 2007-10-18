@@ -87,6 +87,7 @@
 						<element type="field" name="internalLink" /> 
 						<element type="field" name="subNavi" /> 
 						<element type="field" name="popup" /> 
+						<element type="field" name="guards"/>
 						<element type="empty"/>
 						<element type="list">
 							<element type="function" name="updateAndClose"/>
