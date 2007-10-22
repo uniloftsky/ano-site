@@ -1,6 +1,6 @@
-package net.anotheria.anosite.handler;
+package net.anotheria.anosite.shared;
 
-public enum BoxHandlerResponseCode {
+public enum InternalResponseCode {
 	/**
 	 * Continue execution
 	 */
@@ -18,6 +18,14 @@ public enum BoxHandlerResponseCode {
 	 * Cancel further execution and redirect immediately.
 	 */
 	CANCEL_AND_REDIRECT,
+	/**
+	 * A part of the exection encountered an error, but the application can still resume processing, only a part is broken.
+	 */
+	ERROR_AND_CONTINUE,
+	/**
+	 * Stop all further processing, since the request has been handled.
+	 */
+	STOP
 	
 	
 }

@@ -1,5 +1,7 @@
 package net.anotheria.anosite.handler;
 
+import net.anotheria.anosite.shared.InternalResponseCode;
+
 public class ResponseAbort extends BoxHandlerResponse{
 	private Exception cause;
 	
@@ -12,8 +14,8 @@ public class ResponseAbort extends BoxHandlerResponse{
 	}
 
 	@Override
-	public BoxHandlerResponseCode getResponseCode() {
-		return BoxHandlerResponseCode.ABORT;
+	public InternalResponseCode getResponseCode() {
+		return InternalResponseCode.ABORT;
 	}
 	
 	public Exception getCause(){

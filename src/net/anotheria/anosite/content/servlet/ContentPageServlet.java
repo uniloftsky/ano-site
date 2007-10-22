@@ -46,10 +46,13 @@ import net.anotheria.anosite.handler.BoxHandler;
 import net.anotheria.anosite.handler.BoxHandlerFactory;
 import net.anotheria.anosite.handler.BoxHandlerResponse;
 import net.anotheria.anosite.handler.ResponseAbort;
+import net.anotheria.anosite.shared.InternalResponseCode;
 import net.anotheria.anosite.util.AnositeConstants;
 import net.java.dev.moskito.web.MoskitoHttpServlet;
 
 import org.apache.log4j.Logger;
+
+import sun.awt.SubRegionShowable;
 
 public class ContentPageServlet extends MoskitoHttpServlet {
 
@@ -81,87 +84,10 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		processRequest(req, res, true);
 	}
 
-	private void processSubmit(HttpServletRequest req, HttpServletResponse res, Pagex page, PageTemplate template, HashMap<String, BoxHandler> handlerCache) {
-		processSubmit(req, res, template.getHeader(), handlerCache);
-		processSubmit(req, res, page.getHeader(), handlerCache);
-		
-		processSubmit(req, res, template.getC1first(), handlerCache);
-		processSubmit(req, res, template.getC2first(), handlerCache);
-		processSubmit(req, res, template.getC3first(), handlerCache);
-
-		processSubmit(req, res, page.getC1(), handlerCache);
-		processSubmit(req, res, page.getC2(), handlerCache);
-		processSubmit(req, res, page.getC3(), handlerCache);
-
-		processSubmit(req, res, template.getC1last(), handlerCache);
-		processSubmit(req, res, template.getC2last(), handlerCache);
-		processSubmit(req, res, template.getC3last(), handlerCache);
-
-		processSubmit(req, res, template.getFooter(), handlerCache);
-		processSubmit(req, res, page.getFooter(), handlerCache);
-	
-	}
-
-	private void processSubmit(HttpServletRequest req, HttpServletResponse res, List<String> boxIds, HashMap<String, BoxHandler> handlerCache) {
-		if (boxIds == null || boxIds.size() == 0)
-			return;
-		for (String id : boxIds) {
-			Box box = webDataService.getBox(id);
-			String handlerId = box.getHandler();
-			
-			boolean doRedirect = false;
-			String redirectTarget = null;
-			
-			if (handlerId != null && handlerId.length() > 0) {
-				BoxHandler handler = BoxHandlerFactory.createHandler(handlerId);
-				BoxHandlerResponse response = handler.submit(req, res, box);
-				switch(response.getResponseCode()){
-				case CONTINUE:
-					break;
-				case CONTINUE_AND_REDIRECT:
-					doRedirect = true;
-					redirectTarget = ((AbstractRedirectResponse)response).getRedirectTarget();
-					break;
-				case CANCEL_AND_REDIRECT:
-					redirectTarget = ((AbstractRedirectResponse)response).getRedirectTarget();
-					try{
-						res.sendRedirect(redirectTarget);
-					}catch(IOException e){
-						log.error("Redirect failed, target: "+redirectTarget, e);
-					}
-					//abort execution
-					return;
-				case ABORT:
-					Exception e = ((ResponseAbort)response).getCause();
-					if (e == null)
-						throw new RuntimeException("No exception given");
-					if (e instanceof RuntimeException)
-						throw (RuntimeException)e;
-					throw new RuntimeException("Execution aborted: "+e.getMessage()+" ("+e.getClass());
-						
-				}
-				handlerCache.put(box.getId(), handler);
-			}
-			List<String> subboxesIds = box.getSubboxes();
-			processSubmit(req, res, subboxesIds, handlerCache);
-			
-			if (doRedirect){
-				try{
-					res.sendRedirect(redirectTarget);
-				}catch(IOException e){
-					log.warn("Redirect failed to "+redirectTarget, e);
-				}
-			}
-				
-			
-		}
-	}
-
-	protected void processRequest(HttpServletRequest req, HttpServletResponse res, boolean submit)
-			throws ServletException, IOException {
+	protected void processRequest(HttpServletRequest req, HttpServletResponse res, boolean submit) throws ServletException, IOException {
 
 		prepareTextResources(req);
-		
+
 		String requestURI = req.getRequestURI();
 		String queryString = req.getQueryString();
 		if (queryString==null || queryString.length()==0)
@@ -169,32 +95,32 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		else
 			requestURI+="?"+queryString;
 		req.setAttribute(AnositeConstants.RA_CURRENT_URI, requestURI);
-
+		
 		String pageName = extractPageName(req);
 		Pagex page = getPageByName(pageName);
 		PageTemplate template = siteDataService.getPageTemplate(page.getTemplate());
-
+		
 		HashMap<String, BoxHandler> handlerCache = new HashMap<String, BoxHandler>();
 		if (submit) {
 			processSubmit(req, res, page, template, handlerCache);
 		}
-
-
+		
+		
 		req.setAttribute("stylesheet", new StylesheetBean("1"));// template.getLayout();getStyle()));
-
+		
 		SiteBean siteBean = createSiteBean(template);
 		req.setAttribute("site", siteBean);
-
+		
 		PageBean pageBean = createPageBean(req, res, page, template);
 		if (pageBean.getTitle() == null || pageBean.getTitle().length() == 0)
 			pageBean.setTitle(siteBean.getTitle());
 		req.setAttribute("page", pageBean);
-
+		
 		// prepare navi
 		Site site = siteDataService.getSite(template.getSite());
 		List<NaviItemBean> topNavi = createNaviItemList(site.getTopNavi(), req);
 		req.setAttribute("topNavi", topNavi);
-
+		
 		List<NaviItemBean> mainNavi = createNaviItemList(site.getMainNavi(), req);
 		req.setAttribute("mainNavi", mainNavi);
 		// navi end
@@ -214,6 +140,106 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 			dispatcher.forward(req, res);
 		}
 	}
+	
+	private List<String> getBoxIdsForRenderingStep(Pagex page, PageTemplate template, int step){
+		switch(step){
+		case 0:
+			return template.getHeader();
+		case 1: 
+			return page.getHeader();
+		case 2:
+			return template.getC1first();
+		case 3:
+			return template.getC2first();
+		case 4:
+			return template.getC3first();
+		case 5:
+			return page.getC1();
+		case 6:
+			return page.getC2();
+		case 7:
+			return page.getC3();
+		case 8:
+			return template.getC1last();
+		case 9:
+			return template.getC2last();
+		case 10:
+			return template.getC3last();
+		case 11:
+			return template.getFooter();
+		case 12: 
+			return page.getFooter();
+		}
+		throw new RuntimeException("Error, step "+step+" is unknown!");
+	}
+
+	private InternalResponse processSubmit(HttpServletRequest req, HttpServletResponse res, Pagex page, PageTemplate template, HashMap<String, BoxHandler> handlerCache) {
+		
+		InternalResponse progress = new InternalResponseContinue();
+		int step = 0;
+		while(progress.canContinue() && step<13){
+			progress = processSubmit(req, res, getBoxIdsForRenderingStep(page, template, step), handlerCache, progress);
+			step++;
+		}
+		System.out.println("Returning at step: "+step+" : "+progress);
+		return progress;
+		
+	
+	}
+
+	private InternalResponse processSubmit(HttpServletRequest req, HttpServletResponse res, List<String> boxIds, HashMap<String, BoxHandler> handlerCache, InternalResponse previous) {
+		if (boxIds == null || boxIds.size() == 0)
+			return new InternalResponse(InternalResponseCode.CONTINUE);
+		boolean doRedirect = false;
+		String redirectTarget = null;
+		for (String id : boxIds) {
+			Box box = webDataService.getBox(id);
+			String handlerId = box.getHandler();
+			
+			
+			if (handlerId != null && handlerId.length() > 0) {
+				BoxHandler handler = BoxHandlerFactory.createHandler(handlerId);
+				BoxHandlerResponse response = handler.submit(req, res, box);
+				switch(response.getResponseCode()){
+				case CONTINUE:
+					break;
+				case CONTINUE_AND_REDIRECT:
+					doRedirect = true;
+					redirectTarget = ((AbstractRedirectResponse)response).getRedirectTarget();
+					break;
+				case CANCEL_AND_REDIRECT:
+					redirectTarget = ((AbstractRedirectResponse)response).getRedirectTarget();
+					try{
+						res.sendRedirect(redirectTarget);
+					}catch(IOException e){
+						log.error("Redirect failed, target: "+redirectTarget, e);
+					}
+					//abort execution
+					return new InternalResponse(InternalResponseCode.STOP);
+				case ABORT:
+					Exception e = ((ResponseAbort)response).getCause();
+					if (e == null)
+						throw new RuntimeException("No exception given");
+					if (e instanceof RuntimeException)
+						throw (RuntimeException)e;
+					throw new RuntimeException("Execution aborted: "+e.getMessage()+" ("+e.getClass());
+						
+				}
+				handlerCache.put(box.getId(), handler);
+			}
+			List<String> subboxesIds = box.getSubboxes();
+			InternalResponse subResponse = processSubmit(req, res, subboxesIds, handlerCache, previous);
+			//a redirect from subbox can override a continue from upper box
+			if (subResponse.getCode()==InternalResponseCode.CONTINUE_AND_REDIRECT && previous.getCode()==InternalResponseCode.CONTINUE)
+				previous = subResponse;
+			
+		}
+		if (doRedirect){
+			return new InternalRedirectResponse(redirectTarget);
+		}
+		return previous;
+	}
+
 	 
 	private List<BreadCrumbItemBean> prepareBreadcrumb(Pagex page, Site site){
 		List<BreadCrumbItemBean> ret = new ArrayList<BreadCrumbItemBean>();

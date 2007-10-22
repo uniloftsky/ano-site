@@ -1,7 +1,9 @@
 package net.anotheria.anosite.handler;
 
+import net.anotheria.anosite.shared.InternalResponseCode;
+
 public abstract class BoxHandlerResponse {
-	public abstract BoxHandlerResponseCode getResponseCode();
+	public abstract InternalResponseCode getResponseCode();
 	
 	public String toString(){
 		return getResponseCode().toString();

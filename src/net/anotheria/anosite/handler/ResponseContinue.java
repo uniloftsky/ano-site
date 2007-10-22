@@ -1,7 +1,9 @@
 package net.anotheria.anosite.handler;
 
+import net.anotheria.anosite.shared.InternalResponseCode;
+
 public class ResponseContinue extends BoxHandlerResponse{
-	public BoxHandlerResponseCode getResponseCode(){
-		return BoxHandlerResponseCode.CONTINUE;
+	public InternalResponseCode getResponseCode(){
+		return InternalResponseCode.CONTINUE;
 	}
 }
