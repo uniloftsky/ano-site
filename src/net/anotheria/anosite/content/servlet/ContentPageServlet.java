@@ -102,8 +102,18 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		
 		HashMap<String, BoxHandler> handlerCache = new HashMap<String, BoxHandler>();
 		if (submit) {
-			processSubmit(req, res, page, template, handlerCache);
+			InternalResponse response = processSubmit(req, res, page, template, handlerCache);
+			if (response.getCode()==InternalResponseCode.CONTINUE_AND_REDIRECT){
+				res.sendRedirect(((InternalRedirectResponse)response).getUrl());
+				return;
+			}
+			
+			//TODO any further actions needed?
+			if (!response.canContinue())
+				return;
 		}
+		
+		//ok, if we got sofar, we have at least continue and error or continue responses.
 		
 		
 		req.setAttribute("stylesheet", new StylesheetBean("1"));// template.getLayout();getStyle()));
@@ -189,7 +199,7 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 
 	private InternalResponse processSubmit(HttpServletRequest req, HttpServletResponse res, List<String> boxIds, HashMap<String, BoxHandler> handlerCache, InternalResponse previous) {
 		if (boxIds == null || boxIds.size() == 0)
-			return new InternalResponse(InternalResponseCode.CONTINUE);
+			return previous;
 		boolean doRedirect = false;
 		String redirectTarget = null;
 		for (String id : boxIds) {
@@ -204,8 +214,12 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 				case CONTINUE:
 					break;
 				case CONTINUE_AND_REDIRECT:
-					doRedirect = true;
-					redirectTarget = ((AbstractRedirectResponse)response).getRedirectTarget();
+					if (!(previous instanceof InternalRedirectResponse)){
+						doRedirect = true;
+						redirectTarget = ((AbstractRedirectResponse)response).getRedirectTarget();
+					}else{
+						System.out.println("box "+box+" trying to rewrite redirect, denied");
+					}
 					break;
 				case CANCEL_AND_REDIRECT:
 					redirectTarget = ((AbstractRedirectResponse)response).getRedirectTarget();
