@@ -8,14 +8,12 @@ import net.anotheria.anosite.gen.aswebdata.data.Box;
 
 public abstract class AbstractBoxHandler implements BoxHandler{
 
-	public void process(HttpServletRequest req, HttpServletResponse res, Box box, BoxBean bean) {
-		// TODO Auto-generated method stub
-		
+	public BoxHandlerResponse process(HttpServletRequest req, HttpServletResponse res, Box box, BoxBean bean) {
+		return new ResponseContinue();
 	}
 
-	public void submit(HttpServletRequest req, HttpServletResponse res, Box box) {
-		// TODO Auto-generated method stub
-		
+	public BoxHandlerResponse submit(HttpServletRequest req, HttpServletResponse res, Box box) {
+		return new ResponseContinue();
 	}
 
 }

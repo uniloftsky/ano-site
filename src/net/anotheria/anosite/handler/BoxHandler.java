@@ -8,7 +8,7 @@ import net.anotheria.anosite.gen.aswebdata.data.Box;
 
 public interface BoxHandler {
 	
-	public void submit(HttpServletRequest req, HttpServletResponse res, Box box);
+	public BoxHandlerResponse submit(HttpServletRequest req, HttpServletResponse res, Box box);
 	
-	public void process(HttpServletRequest req, HttpServletResponse res, Box box, BoxBean bean);
+	public BoxHandlerResponse process(HttpServletRequest req, HttpServletResponse res, Box box, BoxBean bean);
 }

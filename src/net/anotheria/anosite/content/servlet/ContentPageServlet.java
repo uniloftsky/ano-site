@@ -41,8 +41,11 @@ import net.anotheria.anosite.gen.aswebdata.service.ASWebDataServiceFactory;
 import net.anotheria.anosite.gen.aswebdata.service.IASWebDataService;
 import net.anotheria.anosite.guard.ConditionalGuard;
 import net.anotheria.anosite.guard.GuardFactory;
+import net.anotheria.anosite.handler.AbstractRedirectResponse;
 import net.anotheria.anosite.handler.BoxHandler;
 import net.anotheria.anosite.handler.BoxHandlerFactory;
+import net.anotheria.anosite.handler.BoxHandlerResponse;
+import net.anotheria.anosite.handler.ResponseAbort;
 import net.anotheria.anosite.util.AnositeConstants;
 import net.java.dev.moskito.web.MoskitoHttpServlet;
 
@@ -105,13 +108,52 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		for (String id : boxIds) {
 			Box box = webDataService.getBox(id);
 			String handlerId = box.getHandler();
+			
+			boolean doRedirect = false;
+			String redirectTarget = null;
+			
 			if (handlerId != null && handlerId.length() > 0) {
 				BoxHandler handler = BoxHandlerFactory.createHandler(handlerId);
-				handler.submit(req, res, box);
+				BoxHandlerResponse response = handler.submit(req, res, box);
+				switch(response.getResponseCode()){
+				case CONTINUE:
+					break;
+				case CONTINUE_AND_REDIRECT:
+					doRedirect = true;
+					redirectTarget = ((AbstractRedirectResponse)response).getRedirectTarget();
+					break;
+				case CANCEL_AND_REDIRECT:
+					redirectTarget = ((AbstractRedirectResponse)response).getRedirectTarget();
+					try{
+						res.sendRedirect(redirectTarget);
+					}catch(IOException e){
+						log.error("Redirect failed, target: "+redirectTarget, e);
+					}
+					//abort execution
+					return;
+				case ABORT:
+					Exception e = ((ResponseAbort)response).getCause();
+					if (e == null)
+						throw new RuntimeException("No exception given");
+					if (e instanceof RuntimeException)
+						throw (RuntimeException)e;
+					throw new RuntimeException("Execution aborted: "+e.getMessage()+" ("+e.getClass());
+						
+				}
 				handlerCache.put(box.getId(), handler);
 			}
 			List<String> subboxesIds = box.getSubboxes();
 			processSubmit(req, res, subboxesIds, handlerCache);
+			
+			if (doRedirect){
+				try{
+					res.sendRedirect(redirectTarget);
+				}catch(IOException e){
+					log.warn("Redirect failed to "+redirectTarget, e);
+				}
+			}
+				
+			
 		}
 	}
 
