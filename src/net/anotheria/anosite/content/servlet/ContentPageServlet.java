@@ -46,11 +46,17 @@ import net.anotheria.anosite.handler.BoxHandler;
 import net.anotheria.anosite.handler.BoxHandlerFactory;
 import net.anotheria.anosite.handler.BoxHandlerResponse;
 import net.anotheria.anosite.handler.ResponseAbort;
+import net.anotheria.anosite.handler.ResponseContinue;
+import net.anotheria.anosite.handler.ResponseRedirectAfterProcessing;
+import net.anotheria.anosite.handler.ResponseRedirectImmediately;
+import net.anotheria.anosite.handler.ResponseStop;
 import net.anotheria.anosite.shared.InternalResponseCode;
 import net.anotheria.anosite.util.AnositeConstants;
 import net.java.dev.moskito.web.MoskitoHttpServlet;
 
 import org.apache.log4j.Logger;
+
+import com.sun.xml.internal.ws.spi.runtime.InternalSoapEncoder;
 
 import sun.awt.SubRegionShowable;
 
@@ -116,7 +122,8 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		//ok, if we got sofar, we have at least continue and error or continue responses.
 		
 		
-		req.setAttribute("stylesheet", new StylesheetBean("1"));// template.getLayout();getStyle()));
+		//set the proper stylesheet
+		req.setAttribute("stylesheet", new StylesheetBean(layoutDataService.getPageLayout(template.getLayout()).getStyle()));
 		
 		SiteBean siteBean = createSiteBean(template);
 		req.setAttribute("site", siteBean);
@@ -319,7 +326,7 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		return ret;
 	}
 
-	private BoxBean createBoxBean(HttpServletRequest req, HttpServletResponse res, Box box) {
+	private InternalResponse createBoxBean(HttpServletRequest req, HttpServletResponse res, Box box) {
 		BoxBean ret = new BoxBean();
 
 		ret.setName(box.getName());
@@ -339,27 +346,90 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 
 		ret.setType(createBoxTypeBean(box.getType()));
 
+		BoxHandlerResponse handlerResponse = null;
+		
 		// Firsts notify handler
 		if (box.getHandler() != null && box.getHandler().length() > 0) {
 			BoxHandler handler = BoxHandlerFactory.createHandler(box.getHandler());
-			handler.process(req, res, box, ret);
+			handlerResponse = handler.process(req, res, box, ret);
 		}
+		
+		if (handlerResponse == null)
+			handlerResponse = new ResponseContinue();
+		
+		if (handlerResponse.getResponseCode()==InternalResponseCode.CANCEL_AND_REDIRECT){
+			try{
+				res.sendRedirect(((ResponseRedirectImmediately)handlerResponse).getRedirectTarget());
+			}catch(IOException ignored){
+				ignored.printStackTrace();
+			}
+			handlerResponse = new ResponseStop();
+		}
+
+		InternalResponse response = null;
+		
+		switch(handlerResponse.getResponseCode()){
+		case ERROR_AND_CONTINUE://TODO make an error bean later
+		case CONTINUE:
+			response = new InternalBoxBeanResponse(InternalResponseCode.CONTINUE, ret);
+			break;
+		case CONTINUE_AND_REDIRECT:
+			response = new InternalBoxBeanWithRedirectResponse(ret, ((ResponseRedirectAfterProcessing)handlerResponse).getRedirectTarget());
+			break;
+		case STOP:
+		case ABORT:
+			response = new InternalResponse(handlerResponse);
+		}
+		
+		if (response==null){
+			throw new RuntimeException("Unhandled handler response: "+handlerResponse);
+		}
+		
+		if (!response.canContinue())
+			return response;
+
 		// Then create subboxes
 		if (box.getSubboxes() != null && box.getSubboxes().size() > 0) {
-			ret.setSubboxes(createBoxBeanList(req, res, box.getSubboxes()));
+			InternalResponse subBoxResponse = createBoxBeanList(req, res, box.getSubboxes());
+			switch(subBoxResponse.getCode()){
+			case ERROR_AND_CONTINUE:
+			case CONTINUE:
+				ret.setSubboxes(((InternalBoxBeanListResponse)subBoxResponse).getBeans());
+				break;
+			case STOP:
+			case ABORT:
+				response = new InternalResponse(handlerResponse);
+				break;
+			case CONTINUE_AND_REDIRECT:
+				ret.setSubboxes(((InternalBoxBeanListResponse)subBoxResponse).getBeans());
+				if (response.getCode()!=InternalResponseCode.CONTINUE_AND_REDIRECT)
+					response = new InternalBoxBeanWithRedirectResponse(ret, ((InternalBoxBeanListWithRedirectResponse)subBoxResponse).getRedirectUrl());
+				break;
+			}
 		}
-
-		return ret;
+		
+		
+		return response;
 	}
 
-	private List<BoxBean> createBoxBeanList(HttpServletRequest req, HttpServletResponse res, List<String> boxIds) {
+	private InternalResponse createBoxBeanList(HttpServletRequest req, HttpServletResponse res, List<String> boxIds) {
 		ArrayList<BoxBean> ret = new ArrayList<BoxBean>();
+		String redirectUrl = null;
 
 		for (String boxId : boxIds) {
-			ret.add(createBoxBean(req, res, webDataService.getBox(boxId)));
+			InternalResponse response = createBoxBean(req, res, webDataService.getBox(boxId));
+			if (!response.canContinue()){
+				//abort!
+				return response;
+			}
+			ret.add(((InternalBoxBeanResponse)response).getBean());
+			if (response.getCode()==InternalResponseCode.CONTINUE_AND_REDIRECT && redirectUrl==null)
+				redirectUrl = ((InternalBoxBeanListWithRedirectResponse)response).getRedirectUrl();
 		}
 
-		return ret;
+		return redirectUrl == null ? 
+				new InternalBoxBeanListResponse(ret) :
+				new InternalBoxBeanListWithRedirectResponse(ret, redirectUrl);
 	}
 
 	private BoxTypeBean createBoxTypeBean(String boxTypeId) {
@@ -428,6 +498,8 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		ret.setTitle(page.getTitle());
 		ret.setName(page.getName());
 
+		
+		
 		ret.addColumn1(createBoxBeanList(req, res, template.getC1first()));
 		ret.addColumn1(createBoxBeanList(req, res, page.getC1()));
 		ret.addColumn1(createBoxBeanList(req, res, template.getC1last()));
