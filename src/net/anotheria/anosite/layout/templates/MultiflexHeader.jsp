@@ -25,7 +25,7 @@
           <logic:equal name="site" property="languageSelector" value="true">
           <ul>
 
-            <li><a href="<bean:write name="site" property="linkToStartPage"/>?lang=EN" title="English homepage"><img src="simg/flag_italy.gif" alt="English homepage" /></a></li>
+            <li><a href="<bean:write name="site" property="linkToStartPage"/>?lang=EN" title="English homepage"><img src="simg/flag_gb.gif" alt="English homepage" /></a></li>
             <li><a href="<bean:write name="site" property="linkToStartPage"/>?lang=DE" title="Homepage auf Deutsch"><img src="simg/flag_germany.gif" alt="German homepage" /></a></li>
           </ul>
           </logic:equal>
