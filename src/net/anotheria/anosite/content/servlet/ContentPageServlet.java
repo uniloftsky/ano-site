@@ -463,9 +463,7 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 				List<String> gIds = item.getGuards();
 				for (String gid : gIds){
 					ConditionalGuard g = GuardFactory.getConditionalGuard(gid);
-					System.out.println("checking guard "+g);
 					if (!g.isConditionFullfilled(item, req)){
-						System.out.println("Guard: "+g+" not fullfiled");
 						do_break = true;
 						break;
 					}
