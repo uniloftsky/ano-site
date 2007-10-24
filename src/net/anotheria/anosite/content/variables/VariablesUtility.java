@@ -29,6 +29,7 @@ public class VariablesUtility {
 		
 		defaultProcessors.put(DefinitionPrefixes.PREFIX_IMAGE_LINK, new ImageLinkProcessor());
 		defaultProcessors.put(DefinitionPrefixes.PREFIX_FILE_LINK, new FileLinkProcessor());
+		defaultProcessors.put(DefinitionPrefixes.PREFIX_IMAGE, new ImageProcessor());
 	}
 	
 	
