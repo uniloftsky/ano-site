@@ -10,7 +10,7 @@
 <META http-equiv="Cache-Control" content="no-cache, must-revalidate">
 <META name="Expires" content="0">
 <META http-equiv="Content-Type" content="text/html; charset=windows-1251">
-<bean:message key="styles.common.link"/>
+<link href="<%=request.getContextPath()%>/css/admin.css" rel="stylesheet" type="text/css">
 <title>@Upload file</title>
 </head>
 <body topmargin="0" marginwidth="0" marginheight="0" onLoad="parent.stopState();">
@@ -48,7 +48,7 @@
 		<bean:write name="ano-web.file.fileBean" property="name"/>
 		</logic:equal>
 		<logic:equal name="ano-web.file.fileBean" property="filePresent" value="true">
-		<a target="_blank" href="/aoncms/cms/showTmpFile"><bean:write name="ano-web.file.fileBean" property="name"/></a>
+		<a target="_blank" href="<%=request.getContextPath()%>/cms/showTmpFile"><bean:write name="ano-web.file.fileBean" property="name"/></a>
 		</logic:equal>
 		&nbsp;|&nbsp;
 		Filesize:&nbsp;<bean:write name="ano-web.file.fileBean" property="size"/>

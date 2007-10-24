@@ -10,7 +10,7 @@
 <META http-equiv="Cache-Control" content="no-cache, must-revalidate">
 <META name="Expires" content="0">
 <META http-equiv="Content-Type" content="text/html; charset=windows-1251">
-<bean:message key="styles.common.link"/>
+<link href="<%=request.getContextPath()%>/css/admin.css" rel="stylesheet" type="text/css">
 <head>
 <title>@Upload file</title>
 <script language="JavaScript">
@@ -51,7 +51,7 @@
 <bean:message key="javascript.common.link"/>
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" class="hellerblau">
   <table border="0" width=100% cellspacing=0 cellpadding=0>
-  	<form id="upload" name="upload" target="answer" method="post" enctype="multipart/form-data" action="/aoncms/cms/fileUpload">
+  	<form id="upload" name="upload" target="answer" method="post" enctype="multipart/form-data" action="<%=request.getContextPath()%>/cms/fileUpload">
    <tr>
     <td class="hellerblau">
 	Datei<br> 
@@ -60,7 +60,7 @@
 <iframe 
 	id="answer"
 	name="answer"
-	src="<bean:message key="application.path"/>net/anotheria/webutils/jsp/UploadFileResult.jsp" 
+	src="<%=request.getContextPath()%>/net/anotheria/webutils/jsp/UploadFileResult.jsp" 
 	width="100%" 
 	height="20" 
 	scrolling="No" 
