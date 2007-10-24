@@ -56,9 +56,6 @@ import net.java.dev.moskito.web.MoskitoHttpServlet;
 
 import org.apache.log4j.Logger;
 
-import com.sun.xml.internal.ws.spi.runtime.InternalSoapEncoder;
-
-import sun.awt.SubRegionShowable;
 
 public class ContentPageServlet extends MoskitoHttpServlet {
 
@@ -128,7 +125,12 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		SiteBean siteBean = createSiteBean(template);
 		req.setAttribute("site", siteBean);
 		
-		PageBean pageBean = createPageBean(req, res, page, template);
+		InternalResponse pageResponse = createPageBean(req, res, page, template);
+		if (!pageResponse.canContinue()){
+			//todo log?
+			return;
+		}
+		PageBean pageBean = ((InternalPageBeanResponse)pageResponse).getPageBean();
 		if (pageBean.getTitle() == null || pageBean.getTitle().length() == 0)
 			pageBean.setTitle(siteBean.getTitle());
 		req.setAttribute("page", pageBean);
@@ -146,6 +148,13 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		List<BreadCrumbItemBean> breadcrumb = prepareBreadcrumb(page, site);
 		req.setAttribute("breadcrumbs", breadcrumb);
 		
+		//execute the final redirect
+		if (pageResponse.getCode()==InternalResponseCode.CONTINUE_AND_REDIRECT){
+			String redirectUrl = ((InternalPageBeanWithRedirectResponse)pageResponse).getRedirectUrl();
+			res.sendRedirect(redirectUrl);
+			return;
+		}
+		
 		String pageLayout = template.getLayout();
 		String layoutPage = layoutDataService.getPageLayout(pageLayout).getLayoutpage();
 		if (!layoutPage.startsWith("/"))
@@ -156,6 +165,8 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 			RequestDispatcher dispatcher = req.getRequestDispatcher(layoutPage);
 			dispatcher.forward(req, res);
 		}
+		
+		
 	}
 	
 	private List<String> getBoxIdsForRenderingStep(Pagex page, PageTemplate template, int step){
@@ -491,36 +502,133 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		return ret;
 	}
 
-	@SuppressWarnings("unchecked")
-	private PageBean createPageBean(HttpServletRequest req, HttpServletResponse res, Pagex page, PageTemplate template) {
+	private String getNewPageRedirectTargetIfApplies(InternalResponse response, String previousRedirectTarget){
+		if (previousRedirectTarget!=null)
+			return previousRedirectTarget;
+		if (response.getCode()==InternalResponseCode.CONTINUE_AND_REDIRECT)
+			return ((InternalBoxBeanListWithRedirectResponse)response).getRedirectUrl();
+		return null;
+	}
+	
+	private InternalResponse getNewPageResponse(InternalResponse current, InternalResponse previous){
+		if (previous.getCode()==InternalResponseCode.CONTINUE_AND_REDIRECT)
+			return previous;
+		return current;
+	}
+
+	private InternalResponse createPageBean(HttpServletRequest req, HttpServletResponse res, Pagex page, PageTemplate template) {
 		PageBean ret = new PageBean();
 
 		ret.setTitle(page.getTitle());
 		ret.setName(page.getName());
 
+		InternalResponse response = new InternalResponseContinue();
 		
+		InternalResponse call = null;
+		String redirectTarget = null;
 		
-		ret.addColumn1(createBoxBeanList(req, res, template.getC1first()));
-		ret.addColumn1(createBoxBeanList(req, res, page.getC1()));
-		ret.addColumn1(createBoxBeanList(req, res, template.getC1last()));
+		//c1
+		call = createBoxBeanList(req, res, template.getC1first());
+		if (!call.canContinue())
+			return new InternalResponse(call.getCode());
+		redirectTarget = getNewPageRedirectTargetIfApplies(call, redirectTarget);
+		response = getNewPageResponse(call, response);
+		ret.addColumn1(((InternalBoxBeanListResponse)call).getBeans());
 		
-		ret.addColumn2(createBoxBeanList(req, res, template.getC2first()));
-		ret.addColumn2(createBoxBeanList(req, res, page.getC2()));
-		ret.addColumn2(createBoxBeanList(req, res, template.getC2last()));
+		call = createBoxBeanList(req, res, page.getC1());
+		if (!call.canContinue())
+			return new InternalResponse(call.getCode());
+		redirectTarget = getNewPageRedirectTargetIfApplies(call, redirectTarget);
+		response = getNewPageResponse(call, response);
+		ret.addColumn1(((InternalBoxBeanListResponse)call).getBeans());
+		
+		call = createBoxBeanList(req, res, template.getC1last());
+		if (!call.canContinue())
+			return new InternalResponse(call.getCode());
+		redirectTarget = getNewPageRedirectTargetIfApplies(call, redirectTarget);
+		response = getNewPageResponse(call, response);
+		ret.addColumn1(((InternalBoxBeanListResponse)call).getBeans());
 
-		ret.addColumn3(createBoxBeanList(req, res, template.getC3first()));
-		ret.addColumn3(createBoxBeanList(req, res, page.getC3()));
-		ret.addColumn3(createBoxBeanList(req, res, template.getC3last()));
+		//c2
+		call = createBoxBeanList(req, res, template.getC2first());
+		if (!call.canContinue())
+			return new InternalResponse(call.getCode());
+		redirectTarget = getNewPageRedirectTargetIfApplies(call, redirectTarget);
+		response = getNewPageResponse(call, response);
+		ret.addColumn2(((InternalBoxBeanListResponse)call).getBeans());
 		
-		ret.addHeaderBoxes(createBoxBeanList(req, res, template.getHeader()));
-		ret.addHeaderBoxes(createBoxBeanList(req, res, page.getHeader()));
+		call = createBoxBeanList(req, res, page.getC2());
+		if (!call.canContinue())
+			return new InternalResponse(call.getCode());
+		redirectTarget = getNewPageRedirectTargetIfApplies(call, redirectTarget);
+		response = getNewPageResponse(call, response);
+		ret.addColumn2(((InternalBoxBeanListResponse)call).getBeans());
 		
-		ret.addFooterBoxes(createBoxBeanList(req, res, template.getFooter()));
-		ret.addFooterBoxes(createBoxBeanList(req, res, page.getFooter()));
+		call = createBoxBeanList(req, res, template.getC2last());
+		if (!call.canContinue())
+			return new InternalResponse(call.getCode());
+		redirectTarget = getNewPageRedirectTargetIfApplies(call, redirectTarget);
+		response = getNewPageResponse(call, response);
+		ret.addColumn2(((InternalBoxBeanListResponse)call).getBeans());
+		
+		//c3
+		call = createBoxBeanList(req, res, template.getC3first());
+		if (!call.canContinue())
+			return new InternalResponse(call.getCode());
+		redirectTarget = getNewPageRedirectTargetIfApplies(call, redirectTarget);
+		response = getNewPageResponse(call, response);
+		ret.addColumn3(((InternalBoxBeanListResponse)call).getBeans());
+		
+		call = createBoxBeanList(req, res, page.getC3());
+		if (!call.canContinue())
+			return new InternalResponse(call.getCode());
+		redirectTarget = getNewPageRedirectTargetIfApplies(call, redirectTarget);
+		response = getNewPageResponse(call, response);
+		ret.addColumn3(((InternalBoxBeanListResponse)call).getBeans());
+		
+		call = createBoxBeanList(req, res, template.getC3last());
+		if (!call.canContinue())
+			return new InternalResponse(call.getCode());
+		redirectTarget = getNewPageRedirectTargetIfApplies(call, redirectTarget);
+		response = getNewPageResponse(call, response);
+		ret.addColumn3(((InternalBoxBeanListResponse)call).getBeans());
 
 		
+		//header
+		call = createBoxBeanList(req, res, template.getHeader());
+		if (!call.canContinue())
+			return new InternalResponse(call.getCode());
+		redirectTarget = getNewPageRedirectTargetIfApplies(call, redirectTarget);
+		response = getNewPageResponse(call, response);
+		ret.addHeaderBoxes(((InternalBoxBeanListResponse)call).getBeans());
+		
+		call = createBoxBeanList(req, res, page.getHeader());
+		if (!call.canContinue())
+			return new InternalResponse(call.getCode());
+		redirectTarget = getNewPageRedirectTargetIfApplies(call, redirectTarget);
+		response = getNewPageResponse(call, response);
+		ret.addHeaderBoxes(((InternalBoxBeanListResponse)call).getBeans());
+		
+		//footer
+		call = createBoxBeanList(req, res, template.getFooter());
+		if (!call.canContinue())
+			return new InternalResponse(call.getCode());
+		redirectTarget = getNewPageRedirectTargetIfApplies(call, redirectTarget);
+		response = getNewPageResponse(call, response);
+		ret.addFooterBoxes(((InternalBoxBeanListResponse)call).getBeans());
+		
+		call = createBoxBeanList(req, res, page.getFooter());
+		if (!call.canContinue())
+			return new InternalResponse(call.getCode());
+		redirectTarget = getNewPageRedirectTargetIfApplies(call, redirectTarget);
+		response = getNewPageResponse(call, response);
+		ret.addFooterBoxes(((InternalBoxBeanListResponse)call).getBeans());
 
-		return ret;
+		
+		return redirectTarget == null ? 
+				new InternalPageBeanResponse(ret) :
+				new InternalPageBeanWithRedirectResponse(ret, redirectTarget);
+
 	}
 
 	private SiteBean createSiteBean(PageTemplate template) {
