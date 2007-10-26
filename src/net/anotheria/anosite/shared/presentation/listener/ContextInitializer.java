@@ -12,6 +12,7 @@ package net.anotheria.anosite.shared.presentation.listener;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import net.anotheria.anosite.cms.helper.BoxHelperUtility;
 import net.anotheria.util.Date;
 
 import org.apache.log4j.BasicConfigurator;
@@ -47,6 +48,7 @@ public class ContextInitializer implements ServletContextListener{
 
 	public void contextInitialized(ServletContextEvent event) {
 		log.info("CONTEXT INITIALIZED @ "+Date.currentDate());
+		BoxHelperUtility.setup();
 	}
 	
 }
