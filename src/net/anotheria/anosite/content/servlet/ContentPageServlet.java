@@ -271,6 +271,8 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 			//a redirect from subbox can override a continue from upper box
 			if (subResponse.getCode()==InternalResponseCode.CONTINUE_AND_REDIRECT && previous.getCode()==InternalResponseCode.CONTINUE)
 				previous = subResponse;
+			if(!subResponse.canContinue())
+				return new InternalResponse(InternalResponseCode.STOP);
 			
 		}
 		if (doRedirect){
