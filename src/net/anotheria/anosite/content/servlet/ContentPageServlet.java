@@ -104,6 +104,11 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		PageTemplate template = siteDataService.getPageTemplate(page.getTemplate());
 		
 		HashMap<String, BoxHandler> handlerCache = new HashMap<String, BoxHandler>();
+		if (!submit){
+			if ("true".equals(req.getParameter("submitFlag")))
+				submit = true;
+				
+		}
 		if (submit) {
 			InternalResponse response = processSubmit(req, res, page, template, handlerCache);
 			if (response.getCode()==InternalResponseCode.CONTINUE_AND_REDIRECT){
@@ -639,6 +644,8 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 			ret.setLanguageSelector(site.getLanguageselector());
 			if (site.getStartpage() != null && site.getStartpage().length() > 0)
 				ret.setLinkToStartPage(webDataService.getPagex(site.getStartpage()).getName() + ".html");
+			if (site.getSearchpage() != null && site.getSearchpage().length() > 0)
+				ret.setSearchTarget(webDataService.getPagex(site.getSearchpage()).getName() + ".html");
 		} catch (Exception e) {
 			log.warn("createSiteBean(" + template + ")", e);
 		}

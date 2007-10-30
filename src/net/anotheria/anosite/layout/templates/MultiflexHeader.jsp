@@ -88,15 +88,17 @@
         </logic:iterate>
         </ul>
 
+		<logic:equal name="site" property="showSearchDialog" value="true">
         <!-- Search form -->                  
         <div class="searchform">
-          <form action="index.html" method="get">
+          <form action="<bean:write name="site" property="searchTarget"/>" method="get">
 
             <fieldset>
-              <input name="field" class="field"  value=" Search..." />
+              <input name="criteria" class="field"  value=" Search..." />
               <input type="submit" name="button" class="button" value="GO!" />
             </fieldset>
           </form>
         </div>
+        </logic:equal>
       </div>
     </div>

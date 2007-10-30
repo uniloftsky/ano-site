@@ -26,6 +26,9 @@
 					<element type="field" name="startpage" comparable="true"> 
 	        		   	<decorator name="linkTargetName"/>
 					</element>
+					<element type="field" name="searchpage" comparable="true"> 
+	        		   	<decorator name="linkTargetName"/>
+					</element>
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
 	        		<element type="function" name="delete"/>
@@ -40,6 +43,7 @@
 						<element type="field" name="topNavi" /> 
 						<element type="field" name="mainNavi" /> 
 						<element type="field" name="startpage" /> 
+						<element type="field" name="searchpage" /> 
 						<element type="field" name="languageselector" /> 
 						<element type="empty"/>
 						<element type="list">

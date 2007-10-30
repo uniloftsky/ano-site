@@ -5,6 +5,7 @@ public class SiteBean {
 	private String subtitle;
 	private String linkToStartPage;
 	private boolean languageSelector;
+	private String searchTarget;
 	
 	public String getSubtitle() {
 		return subtitle;
@@ -29,5 +30,14 @@ public class SiteBean {
 	}
 	public void setLanguageSelector(boolean languageSelector) {
 		this.languageSelector = languageSelector;
+	}
+	public boolean isShowSearchDialog() {
+		return searchTarget!=null && searchTarget.length()>0;
+	}
+	public String getSearchTarget() {
+		return searchTarget;
+	}
+	public void setSearchTarget(String searchTarget) {
+		this.searchTarget = searchTarget;
 	}
 }
