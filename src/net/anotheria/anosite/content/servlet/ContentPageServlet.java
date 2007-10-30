@@ -253,6 +253,8 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 					}
 					//abort execution
 					return new InternalResponse(InternalResponseCode.STOP);
+				case STOP:
+					return new InternalResponse(InternalResponseCode.STOP);
 				case ABORT:
 					Exception e = ((ResponseAbort)response).getCause();
 					if (e == null)
@@ -393,6 +395,8 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 			response = new InternalBoxBeanWithRedirectResponse(ret, ((ResponseRedirectAfterProcessing)handlerResponse).getRedirectTarget());
 			break;
 		case STOP:
+			response = new InternalResponse(handlerResponse);
+			break;
 		case ABORT:
 			response = new InternalResponse(handlerResponse);
 		}
@@ -413,9 +417,9 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 				ret.setSubboxes(((InternalBoxBeanListResponse)subBoxResponse).getBeans());
 				break;
 			case STOP:
+				return subBoxResponse;
 			case ABORT:
-				response = new InternalResponse(handlerResponse);
-				break;
+				return subBoxResponse;
 			case CONTINUE_AND_REDIRECT:
 				ret.setSubboxes(((InternalBoxBeanListResponse)subBoxResponse).getBeans());
 				if (response.getCode()!=InternalResponseCode.CONTINUE_AND_REDIRECT)
@@ -424,20 +428,16 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 			}
 		}
 		
-		
 		return response;
 	}
 
 	private InternalResponse createBoxBeanList(HttpServletRequest req, HttpServletResponse res, List<String> boxIds) {
 		ArrayList<BoxBean> ret = new ArrayList<BoxBean>();
 		String redirectUrl = null;
-
 		for (String boxId : boxIds) {
 			InternalResponse response = createBoxBean(req, res, webDataService.getBox(boxId));
-			if (!response.canContinue()){
-				//abort!
+			if (!response.canContinue())
 				return response;
-			}
 			ret.add(((InternalBoxBeanResponse)response).getBean());
 			if (response.getCode()==InternalResponseCode.CONTINUE_AND_REDIRECT && redirectUrl==null)
 				redirectUrl = ((InternalBoxBeanListWithRedirectResponse)response).getRedirectUrl();
