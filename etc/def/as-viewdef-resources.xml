@@ -36,9 +36,9 @@
       			</dialog>
 	    	</section>
 	    	
-	    	<section title="ErrorMessages" type="module">
+	    	<section title="Messages" type="module">
 				<module>ASResourceData</module>
-				<document>ErrorMessage</document>
+				<document>Message</document>
 				<filter name="AZ" field="name"/>
 				<elements>
 					<element type="field" name="id" comparable="true">
@@ -53,7 +53,7 @@
 	        		<element type="function" name="duplicate"/>
 	        		<element type="function" name="delete"/>
 	      		</elements>
-	      		<dialog name="Edit" title="Edit TextResource">
+	      		<dialog name="Edit" title="Edit Message">
         			<elements>
 	       				<element type="empty"/>
 		       			<element type="field" name="id" readonly="true"/>
