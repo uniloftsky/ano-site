@@ -45,6 +45,8 @@
 						<element type="field" name="startpage" /> 
 						<element type="field" name="searchpage" /> 
 						<element type="field" name="languageselector" /> 
+						<element type="field" name="headerBackground" /> 
+						<element type="field" name="siteLogo" /> 
 						<element type="empty"/>
 						<element type="list">
 							<element type="function" name="updateAndClose"/>

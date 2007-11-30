@@ -74,6 +74,8 @@
         <link type="single" target="ASWebData.Pagex" name="startpage"/>
         <link type="single" target="ASWebData.Pagex" name="searchpage"/>
         <property type="boolean" name="languageselector"/>
+        <link type="single" target="ASResourceData.Image" name="headerBackground"/>
+        <link type="single" target="ASResourceData.Image" name="siteLogo"/>
   	</document>
   	<document name="NaviItem">
 		<property name="name" type="string" multilingual="true"/>
