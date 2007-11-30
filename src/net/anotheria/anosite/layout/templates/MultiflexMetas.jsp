@@ -3,7 +3,7 @@
 %><%@ taglib uri="/tags/struts-bean" prefix="bean"
 %><%@ taglib uri="/tags/struts-html" prefix="html"
 %><%@ taglib uri="/tags/struts-logic" prefix="logic"
-%> <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+%> <meta http-equiv="content-type" content="text/html; charset=iso-8859-15" />
   <meta http-equiv="cache-control" content="no-cache" />
   <meta http-equiv="expires" content="3600" />
   <meta name="revisit-after" content="2 days" />
