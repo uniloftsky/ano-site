@@ -12,4 +12,5 @@
 
 	<decorator name="linkTargetName" class="net.anotheria.anosite.decorator.LinkTargetNameDecorator"/>
 	<decorator name="fileSizeDecorator" class="net.anotheria.anosite.decorator.FileSizeDecorator"/>
+		
 </decorators>
