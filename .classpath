@@ -24,6 +24,6 @@
 	<classpathentry kind="lib" path="lib/ano-web.jar" sourcepath="/ano-web/java"/>
 	<classpathentry kind="lib" path="lib/moskito-web.jar"/>
 	<classpathentry kind="lib" path="lib/ano-db.jar" sourcepath="/ano-db/java"/>
-	<classpathentry kind="lib" path="lib/ano-doc.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ano-doc"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>
