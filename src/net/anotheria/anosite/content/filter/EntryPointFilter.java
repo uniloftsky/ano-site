@@ -39,8 +39,8 @@ public class EntryPointFilter implements Filter{
 			return;
 		HttpServletRequest req = (HttpServletRequest)sreq;
 		String domain = req.getServerName();
-		System.out.println("Request on domain: "+domain);
-		System.out.println(req.getContextPath()+" "+req.getServletPath()+" "+req.getPathInfo()+"?"+req.getQueryString());
+		//System.out.println("Request on domain: "+domain);
+		//System.out.println(req.getContextPath()+" "+req.getServletPath()+" "+req.getPathInfo()+"?"+req.getQueryString());
 		
 		EntryPoint forDomain = null;
 		EntryPoint defaultEntry = null;
@@ -49,13 +49,13 @@ public class EntryPointFilter implements Filter{
 		for (EntryPoint p : entryPoints){
 			if (defaultEntry == null && p.getDefaultEntry()){
 				defaultEntry = p;
-				System.out.println("\tFound default Entry: "+defaultEntry);
+				//System.out.println("\tFound default Entry: "+defaultEntry);
 			}
 			List<String> domains = p.getDomains();
 			for (String d : domains){
-				System.out.println("checking domain "+d);
+				//System.out.println("checking domain "+d);
 				if (d.equals(domain)){
-					System.out.println("found matching domain: "+d+" in entrypoint: "+p);
+					//System.out.println("found matching domain: "+d+" in entrypoint: "+p);
 					forDomain = p;
 					break;
 				}
