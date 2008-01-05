@@ -437,6 +437,32 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		ArrayList<BoxBean> ret = new ArrayList<BoxBean>();
 		String redirectUrl = null;
 		for (String boxId : boxIds) {
+			
+			/// ADDED GUARDS ///
+			Box box = webDataService.getBox(boxId);
+			boolean do_break = false;
+			//check the guards
+			try{
+				List<String> gIds = box.getGuards();
+				for (String gid : gIds){
+					ConditionalGuard g = GuardFactory.getConditionalGuard(gid);
+					if (!g.isConditionFullfilled(box, req)){
+						do_break = true;
+						break;
+					}
+						
+				}
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			
+			if (do_break){
+				continue;
+			}
+			
+			
+			/// END GUARDS HANDLING ///
+			
 			InternalResponse response = createBoxBean(req, res, webDataService.getBox(boxId));
 			if (!response.canContinue())
 				return response;
