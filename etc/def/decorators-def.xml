@@ -8,6 +8,7 @@
 	<!-- custom decorators -->
 	<decorator name="boxType" class="net.anotheria.anosite.decorator.BoxTypeDecorator"/>
 	<decorator name="subboxes" class="net.anotheria.anosite.decorator.BoxDecorator"/>
+	<decorator name="guards" class="net.anotheria.anosite.decorator.GuardDecorator"/>
 	<decorator name="naviitem" class="net.anotheria.anosite.decorator.NaviItemDecorator"/>
 
 	<decorator name="linkTargetName" class="net.anotheria.anosite.decorator.LinkTargetNameDecorator"/>

@@ -83,6 +83,9 @@
 					<element type="field" name="subboxes" comparable="true"> 
 						<decorator name="subboxes"/>
 					</element>
+					<element type="field" name="guards" comparable="true"> 
+						<decorator name="guards"/>
+					</element>
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
 	        		<element type="function" name="delete"/>
@@ -106,6 +109,7 @@
 		      			<element type="field" name="parameter8" /> 
 		      			<element type="field" name="parameter9" /> 
 		      			<element type="field" name="parameter10" /> 
+		      			<element type="field" name="guards" /> 
 						<element type="empty"/>
 						<element type="list">
 							<element type="function" name="updateAndClose"/>

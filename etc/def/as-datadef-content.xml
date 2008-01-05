@@ -49,5 +49,10 @@
 		<property name="parameter8" type="string"/>
 		<property name="parameter9" type="string"/>
 		<property name="parameter10" type="string"/>
+		<property name="guards" type="list">
+	        <content>
+				<link name="guard" type="single" target="ASFederatedData.GuardDef"/>
+        	</content>
+        </property>
 	</document>
   </module>
