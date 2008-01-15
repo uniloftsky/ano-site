@@ -6,9 +6,11 @@ import java.util.List;
 import net.anotheria.anodoc.data.Document;
 import net.anotheria.anodoc.data.NoSuchDocumentException;
 import net.anotheria.anodoc.data.NoSuchPropertyException;
+import net.anotheria.anosite.gen.asfederateddata.service.ASFederatedDataServiceException;
 import net.anotheria.anosite.gen.asfederateddata.service.ASFederatedDataServiceFactory;
 import net.anotheria.anosite.gen.asfederateddata.service.IASFederatedDataService;
 import net.anotheria.asg.data.DataObject;
+import net.anotheria.asg.exception.ASGRuntimeException;
 import net.anotheria.asg.util.decorators.IAttributeDecorator;
 
 public class GuardDecorator implements IAttributeDecorator{
@@ -52,6 +54,8 @@ public class GuardDecorator implements IAttributeDecorator{
 					name = service.getGuardDef(id).getName();
 				}catch(NoSuchDocumentException e){
 					name = "*DELETED*";
+				}catch(ASFederatedDataServiceException e){
+					name = "*ERR-"+e.getMessage()+"*";
 				}
 				if (title.length()>0)
 					title += ", ";

@@ -6,6 +6,7 @@ import net.anotheria.anosite.gen.asfederateddata.service.ASFederatedDataServiceF
 import net.anotheria.anosite.gen.asfederateddata.service.IASFederatedDataService;
 import net.anotheria.anosite.gen.aswebdata.data.Box;
 import net.anotheria.asg.data.DataObject;
+import net.anotheria.asg.exception.ASGRuntimeException;
 import net.anotheria.asg.util.decorators.IAttributeDecorator;
 
 public class BoxTypeDecorator implements IAttributeDecorator{
@@ -25,6 +26,8 @@ public class BoxTypeDecorator implements IAttributeDecorator{
 			name = "*** DELETED ***";
 		}catch(RuntimeException e){
 			name = "*** ERR: "+e.getMessage()+ " ***";
+		}catch(ASGRuntimeException e){
+			name = "*** ASG-ERR: "+e.getMessage()+ " ***";
 		}
 		return name + " ["+linkValue+"]";
 	}

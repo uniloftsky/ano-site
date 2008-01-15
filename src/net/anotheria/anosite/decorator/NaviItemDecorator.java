@@ -11,6 +11,7 @@ import net.anotheria.anosite.gen.assitedata.data.Site;
 import net.anotheria.anosite.gen.aswebdata.service.ASWebDataServiceFactory;
 import net.anotheria.anosite.gen.aswebdata.service.IASWebDataService;
 import net.anotheria.asg.data.DataObject;
+import net.anotheria.asg.exception.ASGRuntimeException;
 import net.anotheria.asg.util.decorators.IAttributeDecorator;
 import net.anotheria.util.StringUtils;
 
@@ -55,6 +56,8 @@ public class NaviItemDecorator implements IAttributeDecorator{
 					name = service.getPagex(id).getName();
 				}catch(NoSuchDocumentException e){
 					name = "*DELETED*";
+				}catch(ASGRuntimeException e){
+					name = "*ERR-"+e.getMessage()+"*";
 				}
 				if (title.length()>0)
 					title += ", ";

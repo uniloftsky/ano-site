@@ -17,6 +17,7 @@ import net.anotheria.anosite.gen.aswebdata.data.Pagex;
 import net.anotheria.anosite.gen.aswebdata.service.ASWebDataServiceFactory;
 import net.anotheria.anosite.gen.aswebdata.service.IASWebDataService;
 import net.anotheria.asg.data.DataObject;
+import net.anotheria.asg.exception.ASGRuntimeException;
 import net.anotheria.asg.util.decorators.IAttributeDecorator;
 
 public class LinkTargetNameDecorator implements IAttributeDecorator{
@@ -61,12 +62,14 @@ public class LinkTargetNameDecorator implements IAttributeDecorator{
 			name = "*** NoProp ***";
 		}catch(RuntimeException e){
 			name = "*** ERR: "+e.getMessage()+" ***";
+		}catch(ASGRuntimeException e){
+			name = "*** ASG-ERR: "+e.getMessage()+" ***";
 		}
 
 		return name + " ["+linkValue+"]";
 	}
 	
-	private String getTargetNameForNaviItem(NaviItem item, String attributeName){
+	private String getTargetNameForNaviItem(NaviItem item, String attributeName) throws ASGRuntimeException{
 		if (attributeName.equals("internalLink")){
 			return webDataService.getPagex(item.getInternalLink()).getName();
 		}
@@ -74,7 +77,7 @@ public class LinkTargetNameDecorator implements IAttributeDecorator{
 		
 	}
 	
-	private String getTargetNameForTemplate(PageTemplate template, String attributeName){
+	private String getTargetNameForTemplate(PageTemplate template, String attributeName) throws ASGRuntimeException{
 		if (attributeName.equals("site")){
 			return siteDataService.getSite(template.getSite()).getName();
 		}
@@ -84,14 +87,14 @@ public class LinkTargetNameDecorator implements IAttributeDecorator{
 		return "Unknown attribute: "+attributeName;
 	}
 	
-	private String getTargetNameForSite(Site site, String attributeName){
+	private String getTargetNameForSite(Site site, String attributeName) throws ASGRuntimeException{
 		if (attributeName.equals("startpage")){
 			return webDataService.getPagex(site.getStartpage()).getName();
 		}
 		return "Unknown attribute: "+attributeName;
 	}
 
-	private String getTargetNameForEntryPoint(EntryPoint entry, String attributeName){
+	private String getTargetNameForEntryPoint(EntryPoint entry, String attributeName)throws ASGRuntimeException{
 		if (attributeName.equals("startPage")){
 			return webDataService.getPagex(entry.getStartPage()).getName();
 		}
@@ -103,7 +106,7 @@ public class LinkTargetNameDecorator implements IAttributeDecorator{
 		return "Unknown attribute: "+attributeName;
 	}
 
-	private String getTargetNameForBox(Box box, String attributeName){
+	private String getTargetNameForBox(Box box, String attributeName)throws ASGRuntimeException{
 		if (attributeName.equals("handler")){
 			return federatedDataService.getBoxHandlerDef(box.getHandler()).getName();
 		}
@@ -113,7 +116,7 @@ public class LinkTargetNameDecorator implements IAttributeDecorator{
 		return "UnknownAttr: "+attributeName;
 	}
 
-	private String getTargetNameForPage(Pagex page, String attributeName){
+	private String getTargetNameForPage(Pagex page, String attributeName)throws ASGRuntimeException{
 		if (attributeName.equals("template")){
 			return siteDataService.getPageTemplate(page.getTemplate()).getName();
 		}

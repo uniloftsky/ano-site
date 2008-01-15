@@ -22,21 +22,25 @@ import net.anotheria.anosite.content.bean.SiteBean;
 import net.anotheria.anosite.content.bean.StylesheetBean;
 import net.anotheria.anosite.content.variables.VariablesUtility;
 import net.anotheria.anosite.gen.asfederateddata.data.BoxType;
+import net.anotheria.anosite.gen.asfederateddata.service.ASFederatedDataServiceException;
 import net.anotheria.anosite.gen.asfederateddata.service.ASFederatedDataServiceFactory;
 import net.anotheria.anosite.gen.asfederateddata.service.IASFederatedDataService;
 import net.anotheria.anosite.gen.aslayoutdata.service.ASLayoutDataServiceFactory;
 import net.anotheria.anosite.gen.aslayoutdata.service.IASLayoutDataService;
 import net.anotheria.anosite.gen.asresourcedata.data.TextResource;
+import net.anotheria.anosite.gen.asresourcedata.service.ASResourceDataServiceException;
 import net.anotheria.anosite.gen.asresourcedata.service.ASResourceDataServiceFactory;
 import net.anotheria.anosite.gen.asresourcedata.service.IASResourceDataService;
 import net.anotheria.anosite.gen.assitedata.data.NaviItem;
 import net.anotheria.anosite.gen.assitedata.data.PageTemplate;
 import net.anotheria.anosite.gen.assitedata.data.Site;
+import net.anotheria.anosite.gen.assitedata.service.ASSiteDataServiceException;
 import net.anotheria.anosite.gen.assitedata.service.ASSiteDataServiceFactory;
 import net.anotheria.anosite.gen.assitedata.service.IASSiteDataService;
 import net.anotheria.anosite.gen.aswebdata.data.Box;
 import net.anotheria.anosite.gen.aswebdata.data.Pagex;
 import net.anotheria.anosite.gen.aswebdata.data.PagexDocument;
+import net.anotheria.anosite.gen.aswebdata.service.ASWebDataServiceException;
 import net.anotheria.anosite.gen.aswebdata.service.ASWebDataServiceFactory;
 import net.anotheria.anosite.gen.aswebdata.service.IASWebDataService;
 import net.anotheria.anosite.guard.ConditionalGuard;
@@ -52,6 +56,7 @@ import net.anotheria.anosite.handler.ResponseRedirectImmediately;
 import net.anotheria.anosite.handler.ResponseStop;
 import net.anotheria.anosite.shared.InternalResponseCode;
 import net.anotheria.anosite.util.AnositeConstants;
+import net.anotheria.asg.exception.ASGRuntimeException;
 import net.java.dev.moskito.web.MoskitoHttpServlet;
 
 import org.apache.log4j.Logger;
@@ -79,15 +84,23 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 
 	@Override
 	protected void moskitoDoGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		processRequest(req, res, false);
+		try{
+			processRequest(req, res, false);
+		}catch(ASGRuntimeException e){
+			throw new ServletException("ASG Runtime Exception: "+e.getMessage());
+		}
 	}
 
 	@Override
 	protected void moskitoDoPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		processRequest(req, res, true);
+		try{
+			processRequest(req, res, true);
+		}catch(ASGRuntimeException e){
+			throw new ServletException("ASG Runtime Exception: "+e.getMessage());
+		}
 	}
 
-	protected void processRequest(HttpServletRequest req, HttpServletResponse res, boolean submit) throws ServletException, IOException {
+	protected void processRequest(HttpServletRequest req, HttpServletResponse res, boolean submit) throws ServletException, IOException, ASGRuntimeException {
 
 		prepareTextResources(req);
 
@@ -206,7 +219,7 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		throw new RuntimeException("Error, step "+step+" is unknown!");
 	}
 
-	private InternalResponse processSubmit(HttpServletRequest req, HttpServletResponse res, Pagex page, PageTemplate template, HashMap<String, BoxHandler> handlerCache) {
+	private InternalResponse processSubmit(HttpServletRequest req, HttpServletResponse res, Pagex page, PageTemplate template, HashMap<String, BoxHandler> handlerCache) throws ASGRuntimeException{
 		
 		InternalResponse progress = new InternalResponseContinue();
 		int step = 0;
@@ -220,7 +233,7 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 	
 	}
 
-	private InternalResponse processSubmit(HttpServletRequest req, HttpServletResponse res, List<String> boxIds, HashMap<String, BoxHandler> handlerCache, InternalResponse previous) {
+	private InternalResponse processSubmit(HttpServletRequest req, HttpServletResponse res, List<String> boxIds, HashMap<String, BoxHandler> handlerCache, InternalResponse previous) throws ASGRuntimeException{
 		if (boxIds == null || boxIds.size() == 0)
 			return previous;
 		boolean doRedirect = false;
@@ -346,7 +359,7 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		return ret;
 	}
 
-	private InternalResponse createBoxBean(HttpServletRequest req, HttpServletResponse res, Box box) {
+	private InternalResponse createBoxBean(HttpServletRequest req, HttpServletResponse res, Box box) throws ASGRuntimeException{
 		BoxBean ret = new BoxBean();
 
 		ret.setName(box.getName());
@@ -433,7 +446,7 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		return response;
 	}
 
-	private InternalResponse createBoxBeanList(HttpServletRequest req, HttpServletResponse res, List<String> boxIds) {
+	private InternalResponse createBoxBeanList(HttpServletRequest req, HttpServletResponse res, List<String> boxIds) throws ASGRuntimeException{
 		ArrayList<BoxBean> ret = new ArrayList<BoxBean>();
 		String redirectUrl = null;
 		for (String boxId : boxIds) {
@@ -476,7 +489,7 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 				new InternalBoxBeanListWithRedirectResponse(ret, redirectUrl);
 	}
 
-	private BoxTypeBean createBoxTypeBean(String boxTypeId) {
+	private BoxTypeBean createBoxTypeBean(String boxTypeId) throws ASFederatedDataServiceException{
 		BoxType type = federatedDataService.getBoxType(boxTypeId);
 		BoxTypeBean bean = new BoxTypeBean();
 		bean.setName(type.getName());
@@ -484,7 +497,7 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		return bean;
 	}
 
-	private List<NaviItemBean> createNaviItemList(List<String> idList, HttpServletRequest req) {
+	private List<NaviItemBean> createNaviItemList(List<String> idList, HttpServletRequest req) throws ASSiteDataServiceException, ASWebDataServiceException{
 		List<NaviItemBean> ret = new ArrayList<NaviItemBean>(idList.size());
 		for (String id : idList) {
 			NaviItemBean bean = new NaviItemBean();
@@ -547,7 +560,7 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		return current;
 	}
 
-	private InternalResponse createPageBean(HttpServletRequest req, HttpServletResponse res, Pagex page, PageTemplate template) {
+	private InternalResponse createPageBean(HttpServletRequest req, HttpServletResponse res, Pagex page, PageTemplate template) throws ASGRuntimeException{
 		PageBean ret = new PageBean();
 
 		ret.setTitle(page.getTitle());
@@ -701,7 +714,7 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 	}
 
 
-	private void prepareTextResources(HttpServletRequest req) {
+	private void prepareTextResources(HttpServletRequest req) throws ASResourceDataServiceException {
 		List<TextResource> resources = resourceDataService.getTextResources();
 		for (TextResource r : resources)
 			req.setAttribute("res." + r.getName(), VariablesUtility.replaceVariables(req, r.getValue()));
