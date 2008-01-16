@@ -67,7 +67,7 @@ public class EntryPointFilter implements Filter{
 			}
 			
 			EntryPoint myEntryPoint = forDomain == null ? defaultEntry : forDomain;
-			System.out.println("Will use entry point "+myEntryPoint);
+			//System.out.println("Will use entry point "+myEntryPoint);
 			Pagex targetPage = null;
 			if (myEntryPoint==null){
 				//ok, no entry point defined, lets find first site and its homepage.
@@ -98,7 +98,7 @@ public class EntryPointFilter implements Filter{
 			}
 			
 			String redirect = req.getContextPath()+req.getServletPath()+targetPage.getName()+".html";
-			System.out.println("Redirecting to: "+redirect);
+			log.info("Redirecting to: "+redirect);
 			((HttpServletResponse)sres).sendRedirect(redirect);
 		}catch(ASGRuntimeException e){
 			throw new ServletException(e);
