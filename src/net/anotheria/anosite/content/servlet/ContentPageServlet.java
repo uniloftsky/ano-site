@@ -114,6 +114,23 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		
 		String pageName = extractPageName(req);
 		Pagex page = getPageByName(pageName);
+		
+		//new check for https.
+		boolean secure = req.isSecure();
+		boolean secureRequired = page.getHttpsonly();
+		
+		if (!(secure==secureRequired)){
+			String redirectTarget = secureRequired ? 
+					"https://" : "http://";
+			redirectTarget+= req.getServerName();
+			redirectTarget+= requestURI;
+			log.info("making secure switch to "+redirectTarget);
+			res.sendRedirect(redirectTarget);
+			return;
+		}
+		
+		//--->
+		
 		PageTemplate template = siteDataService.getPageTemplate(page.getTemplate());
 		
 		HashMap<String, BoxHandler> handlerCache = new HashMap<String, BoxHandler>();
@@ -227,7 +244,7 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 			progress = processSubmit(req, res, getBoxIdsForRenderingStep(page, template, step), handlerCache, progress);
 			step++;
 		}
-		System.out.println("Returning at step: "+step+" : "+progress);
+		log.debug("Returning at step: "+step+" : "+progress);
 		return progress;
 		
 	
@@ -254,7 +271,7 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 						doRedirect = true;
 						redirectTarget = ((AbstractRedirectResponse)response).getRedirectTarget();
 					}else{
-						System.out.println("box "+box+" trying to rewrite redirect, denied");
+						log.warn("box "+box+" trying to rewrite redirect, denied");
 					}
 					break;
 				case CANCEL_AND_REDIRECT:
@@ -708,7 +725,7 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		try {
 			return webDataService.getPagexsByProperty(PagexDocument.PROP_NAME, pageName).get(0);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("getPageByName", e);
 		}
 		throw new ServletException("Page " + pageName + " not found.");
 	}
