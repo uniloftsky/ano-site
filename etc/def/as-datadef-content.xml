@@ -28,6 +28,7 @@
 				<link name="box" type="single" target="ASWebData.Box"/>
         	</content>
         </property>
+		<property type="boolean" name="httpsonly"/>
 	</document>
 	<document name="Box">
 		<property name="name" type="string"/>
