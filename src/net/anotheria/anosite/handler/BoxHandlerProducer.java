@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.anotheria.anosite.content.bean.BoxBean;
 import net.anotheria.anosite.gen.aswebdata.data.Box;
+import net.anotheria.anosite.util.AnositeConstants;
 import net.java.dev.moskito.core.predefined.ActionStats;
 import net.java.dev.moskito.core.predefined.Constants;
 import net.java.dev.moskito.core.producers.IStats;
@@ -59,7 +60,7 @@ public class BoxHandlerProducer implements IStatsProducer{
 	}
 
 	public String getSubsystem() {
-		return "ano-site";
+		return AnositeConstants.AS_MOSKITO_SUBSYSTEM;
 	}
 	
 	BoxHandlerResponse process(HttpServletRequest req, HttpServletResponse res, Box box, BoxBean bean, BoxHandler target){

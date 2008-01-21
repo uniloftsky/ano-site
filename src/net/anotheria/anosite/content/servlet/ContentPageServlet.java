@@ -60,6 +60,7 @@ import net.anotheria.asg.exception.ASGRuntimeException;
 import net.java.dev.moskito.web.MoskitoHttpServlet;
 
 import org.apache.log4j.Logger;
+import org.omg.CORBA.portable.BoxedValueHelper;
 
 
 public class ContentPageServlet extends MoskitoHttpServlet {
@@ -72,6 +73,9 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 	private IASLayoutDataService layoutDataService;
 	private IASResourceDataService resourceDataService;
 
+	private BlueprintCallExecutor pageExecutor;
+	private BlueprintCallExecutor boxExecutor;
+	
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 
@@ -80,6 +84,9 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		federatedDataService = ASFederatedDataServiceFactory.createASFederatedDataService();
 		layoutDataService = ASLayoutDataServiceFactory.createASLayoutDataService();
 		resourceDataService = ASResourceDataServiceFactory.createASResourceDataService();
+		
+		pageExecutor = new PageBeanCreator();
+		boxExecutor  = new BoxBeanCreator();
 	}
 
 	@Override
@@ -160,7 +167,18 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		SiteBean siteBean = createSiteBean(template);
 		req.setAttribute("site", siteBean);
 		
-		InternalResponse pageResponse = createPageBean(req, res, page, template);
+		
+		///////////////// PAGE START ////////////////////
+		//OLD - InternalResponse pageResponse = createPageBean(req, res, page, template);
+		InternalResponse pageResponse = null;
+		BlueprintProducer pageProducer = BlueprintProducersFactory.getBlueprintProducer("Page-"+page.getId()+"-"+page.getName(), "page", AnositeConstants.AS_MOSKITO_SUBSYSTEM);
+		try{
+			pageResponse = (InternalResponse) pageProducer.execute(pageExecutor, req, res, page, template);
+		}catch(Exception e){
+			log.error(e);
+			throw new ServletException(e);
+		}
+		///////////////// PAGE END //////////////////////
 		if (!pageResponse.canContinue()){
 			//todo log?
 			return;
@@ -493,7 +511,18 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 			
 			/// END GUARDS HANDLING ///
 			
-			InternalResponse response = createBoxBean(req, res, webDataService.getBox(boxId));
+			InternalResponse response = null;
+			BlueprintProducer boxProducer = BlueprintProducersFactory.getBlueprintProducer("Box-"+box.getId()+"-"+box.getName(), "box", AnositeConstants.AS_MOSKITO_SUBSYSTEM);
+			try{
+				response = (InternalResponse)boxProducer.execute(boxExecutor, req, res, box);
+			}catch(Exception e){
+				log.error(e);
+				throw new ASGRuntimeException(e);
+			}
+
+			
+			
+			
 			if (!response.canContinue())
 				return response;
 			ret.add(((InternalBoxBeanResponse)response).getBean());
@@ -735,6 +764,26 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		List<TextResource> resources = resourceDataService.getTextResources();
 		for (TextResource r : resources)
 			req.setAttribute("res." + r.getName(), VariablesUtility.replaceVariables(req, r.getValue()));
+	}
+	
+	class PageBeanCreator implements BlueprintCallExecutor{
+		public Object execute(Object... parameters)  throws ASGRuntimeException{
+			return createPageBean( 
+					(HttpServletRequest)parameters[0], 
+					(HttpServletResponse)parameters[1], 
+					(Pagex)parameters[2], 
+					(PageTemplate)parameters[3]
+			);
+		}
+	}
+	class BoxBeanCreator implements BlueprintCallExecutor{
+		public Object execute(Object... parameters)  throws ASGRuntimeException{
+			return createBoxBean( 
+					(HttpServletRequest)parameters[0], 
+					(HttpServletResponse)parameters[1], 
+					(Box)parameters[2] 
+			);
+		}
 	}
 
 }

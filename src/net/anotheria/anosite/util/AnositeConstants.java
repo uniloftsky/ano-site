@@ -17,4 +17,7 @@ public class AnositeConstants {
 	public static final String V_LANG_EN = "EN";
 	
 	public static final String FLAG_XML_REQUEST = "xmlrequest";
+
+
+	public static final String AS_MOSKITO_SUBSYSTEM = "ano-site";
 }
