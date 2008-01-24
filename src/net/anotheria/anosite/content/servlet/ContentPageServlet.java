@@ -754,7 +754,7 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		try {
 			return webDataService.getPagexsByProperty(PagexDocument.PROP_NAME, pageName).get(0);
 		} catch (Exception e) {
-			log.error("getPageByName", e);
+			log.error("getPageByName("+pageName+")", e);
 		}
 		throw new ServletException("Page " + pageName + " not found.");
 	}
