@@ -12,5 +12,9 @@
 		<property type="string" name="name"/>
 		<property type="string" name="city" multilingual="true"/>
 		<link name="state" type="single" target="ASGeographicData.State"/>
+	</document>
+	<document name="Language">
+		<property type="string" name="name" multilingual="true"/>®
+		<property type="string" name="language" multilingual="true"/>
 	</document>		
   </module>
