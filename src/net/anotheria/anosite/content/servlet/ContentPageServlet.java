@@ -57,10 +57,12 @@ import net.anotheria.anosite.handler.ResponseStop;
 import net.anotheria.anosite.shared.InternalResponseCode;
 import net.anotheria.anosite.util.AnositeConstants;
 import net.anotheria.asg.exception.ASGRuntimeException;
+import net.java.dev.moskito.core.blueprint.BlueprintCallExecutor;
+import net.java.dev.moskito.core.blueprint.BlueprintProducer;
+import net.java.dev.moskito.core.blueprint.BlueprintProducersFactory;
 import net.java.dev.moskito.web.MoskitoHttpServlet;
 
 import org.apache.log4j.Logger;
-import org.omg.CORBA.portable.BoxedValueHelper;
 
 
 public class ContentPageServlet extends MoskitoHttpServlet {
@@ -136,7 +138,7 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 			return;
 		}
 		
-		//--->
+		// end check for https --->
 		
 		PageTemplate template = siteDataService.getPageTemplate(page.getTemplate());
 		
