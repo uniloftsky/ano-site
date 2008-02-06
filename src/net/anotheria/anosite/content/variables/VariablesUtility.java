@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import net.anotheria.util.StringUtils;
 
 public class VariablesUtility {
+	public static final String DEFAULT_VALUE  = "*UNSET*";
 	public static final char LINE_DELIMITER = '\n';
 	public static final char WORD_DELIMITER = ' ';
 	
@@ -30,6 +31,14 @@ public class VariablesUtility {
 		defaultProcessors.put(DefinitionPrefixes.PREFIX_IMAGE_LINK, new ImageLinkProcessor());
 		defaultProcessors.put(DefinitionPrefixes.PREFIX_FILE_LINK, new FileLinkProcessor());
 		defaultProcessors.put(DefinitionPrefixes.PREFIX_IMAGE, new ImageProcessor());
+		
+		p = new ConditionProcessor();
+		defaultProcessors.put(DefinitionPrefixes.PREFIX_IF, p);
+		defaultProcessors.put(DefinitionPrefixes.PREFIX_IF_NOT, p);
+		defaultProcessors.put(DefinitionPrefixes.PREFIX_PRESENT, p);
+		defaultProcessors.put(DefinitionPrefixes.PREFIX_NOT_PRESENT, p);
+		defaultProcessors.put(DefinitionPrefixes.PREFIX_EQUALS, p);
+		defaultProcessors.put(DefinitionPrefixes.PREFIX_NOT_EQUALS, p);
 	}
 	
 	
@@ -51,16 +60,25 @@ public class VariablesUtility {
 	public static String replaceVariables(HttpServletRequest req, String src, Map<String,VariablesProcessor> processors){
 
 		String myS = StringUtils.removeChar(src, '\r');
-		String lines[] = StringUtils.tokenize(myS, '\n');
-		
+//		String lines[] = StringUtils.tokenize(myS, '\n');
+//		Is tokenizing by line needed? Stub \r creates only 1 token!
+		String lines[] = StringUtils.tokenize(myS, '\r');
 		String totalRet = "";
 		for (String s : lines){
 			 
-			List<String> vars = StringUtils.extractTags(s, '{', '}');
+			List<String> vars = StringUtils.extractSuperTags(src, '{', '}','|');
 			Map<String, String> varValues = new HashMap<String, String>();
 		
+//			System.out.println("Tags:");
+//			for(String v: vars)
+//				System.out.println(v);
+			
 			for (String var : vars){
-				String varValue = replaceInWord(req, var, processors);
+//				System.out.println("var:" + var);
+				String sVar = StringUtils.surroundWith(replaceVariables(req, StringUtils.strip(var, 1, 1), processors),'{','}');
+//				System.out.println("sVar:" + sVar);
+				String varValue = replaceInWord(req, sVar, processors);
+//				System.out.println("varValue:" + varValue);
 				if (varValue!=null && !varValue.equals(var))
 					varValues.put(var, varValue);
 			}
@@ -76,6 +94,7 @@ public class VariablesUtility {
 				totalRet += "\n";
 			totalRet += ret;
 		}
+//		System.out.println("Result: " + totalRet);
 		return totalRet;
 	}
 
@@ -93,13 +112,13 @@ public class VariablesUtility {
 				return StringUtils.strip(varName, 1, 1);
 		}
 		
-		String defaultValue  = "*UNSET*";
 		String tokens[] = StringUtils.tokenize(varName, ':');
 		if (tokens.length<2){
 			return "Wrong format "+varName+" expected: {prefix:varname[:default value]}";
 		}
 		String prefix = tokens[0];
 		String var = tokens[1];
+		String defaultValue = DEFAULT_VALUE;
 		if (tokens.length>2)
 			defaultValue = tokens[2];
 		VariablesProcessor processor = processors.get(prefix);
@@ -115,7 +134,7 @@ public class VariablesUtility {
 		
 		String t1 = "Hallo mein {c:spacer} und {\"test\"} und {c:euro}";
 		System.out.println(t1+" -> "+replaceVariables(null, t1));
-		
+		test2();
 		//System.out.println(replaceVariables(null, test, "VAR"));
 	}
 	
@@ -135,6 +154,43 @@ public class VariablesUtility {
 		System.out.println(src);
 		System.out.println(" ==                 =================== ");
 		System.out.println(replaceVariables(null, src));
+	}
+	
+	public static void test2(){
+		String src = "c{if:{present:1:false}:{present:2:present}}c";
+		String res = VariablesUtility.replaceVariables(null, src);
+		System.out.println(src + "\t=====>\t" + res);
+		System.out.println("Expected: cc");
+		System.out.println("---------------------------------------");
+		src = "c{if:{present:1:true}:{present:2:present}}c";
+		res = VariablesUtility.replaceVariables(null, src);
+		System.out.println(src + "\t=====>\t" + res);
+		System.out.println("Expected: cpresentc");
+		System.out.println("---------------------------------------");
+		src = "c{if:{present:1:true}:{present:2:mumu}}c";
+		res = VariablesUtility.replaceVariables(null, src);
+		System.out.println(src + "\t=====>\t" + res);
+		System.out.println("Expected: cmumuc");
+		System.out.println("---------------------------------------");
+		src = "c{if:{notPresent::true}:notPresent}c";
+		res = VariablesUtility.replaceVariables(null, src);
+		System.out.println(src + "\t=====>\t" + res);
+		System.out.println("Expected: cnotPresentc");
+		System.out.println("---------------------------------------");
+		src = "c{equals:{present:1:true}:{present:2:mumu}}c";
+		res = VariablesUtility.replaceVariables(null, src);
+		System.out.println(src + "\t=====>\t" + res);
+		System.out.println("Expected: cfalsec");
+		System.out.println("---------------------------------------");
+		src = "c{notEquals:{present:1:true}:{present:2:mumu}}c";
+		res = VariablesUtility.replaceVariables(null, src);
+		System.out.println(src + "\t=====>\t" + res);
+		System.out.println("Expected: ctruec");
+		System.out.println("---------------------------------------");
+		src = "{present:1:Some text when something\npresente!}";
+		res = VariablesUtility.replaceVariables(null, src);
+		System.out.println(src + "\t=====>\t" + res);
+		System.out.println("Expected: Some text when something\npresente!");
 	}
 
 }

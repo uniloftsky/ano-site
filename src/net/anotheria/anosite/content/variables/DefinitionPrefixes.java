@@ -11,4 +11,11 @@ public interface DefinitionPrefixes {
 	public static final String PREFIX_IMAGE_LINK ="imagelink";
 	public static final String PREFIX_FILE_LINK ="filelink";
 	public static final String PREFIX_IMAGE = "image";
+	
+	public static final String PREFIX_IF = "if";
+	public static final String PREFIX_IF_NOT = "ifNot";
+	public static final String PREFIX_PRESENT = "present";
+	public static final String PREFIX_NOT_PRESENT = "notPresent";
+	public static final String PREFIX_EQUALS = "equals";
+	public static final String PREFIX_NOT_EQUALS = "notEquals";
 }
