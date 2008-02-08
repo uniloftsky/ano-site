@@ -17,6 +17,7 @@ public class VariablesUtility {
 	public static final char TAG_END = '}';
 	
 	public static final String QUOTE = "\"";
+	public static final char ESCAPE_CHAR = '\\';
 	
 	private static Map<String, VariablesProcessor> defaultProcessors = new HashMap<String, VariablesProcessor>();
 	
@@ -58,19 +59,18 @@ public class VariablesUtility {
 	}
 	
 	public static String replaceVariables(HttpServletRequest req, String src, Map<String,VariablesProcessor> processors){
-
-		String myS = StringUtils.removeChar(src, '\r');
+//		String myS = StringUtils.removeChar(src, '\r');
 //		String lines[] = StringUtils.tokenize(myS, '\n');
-//		Is tokenizing by line needed? Stub \r creates only 1 token!
-		String lines[] = StringUtils.tokenize(myS, '\r');
+//		Is tokenizing by line needed?
+		String lines[] = new String[]{src};
 		String totalRet = "";
 		for (String s : lines){
 			 
-			List<String> vars = StringUtils.extractSuperTags(src, '{', '}','|');
+			List<String> vars = StringUtils.extractSuperTags(src, '{', '}',ESCAPE_CHAR);
 			Map<String, String> varValues = new HashMap<String, String>();
 		
 //			System.out.println("Tags:");
-//			for(String v: vars)
+			for(String v: vars)
 //				System.out.println(v);
 			
 			for (String var : vars){
@@ -112,7 +112,10 @@ public class VariablesUtility {
 				return StringUtils.strip(varName, 1, 1);
 		}
 		
-		String tokens[] = StringUtils.tokenize(varName, ':');
+		String tokens[] = StringUtils.tokenize(varName, ':',ESCAPE_CHAR);
+//		System.out.println("===== VarName:  " + varName);
+//		for(String t:tokens)
+//			System.out.println(t);
 		if (tokens.length<2){
 			return "Wrong format "+varName+" expected: {prefix:varname[:default value]}";
 		}
@@ -191,6 +194,12 @@ public class VariablesUtility {
 		res = VariablesUtility.replaceVariables(null, src);
 		System.out.println(src + "\t=====>\t" + res);
 		System.out.println("Expected: Some text when something\npresente!");
+		System.out.println("---------------------------------------");
+		src = "{if:{equals:2:2}:Hello3!\nI Like to meet with you!}";
+		res = VariablesUtility.replaceVariables(null, src);
+		System.out.println(src + "\t=====>\t" + res);
+		System.out.println("Expected: Hello3!\nI Like to meet with you!");
+		
 	}
 
 }
