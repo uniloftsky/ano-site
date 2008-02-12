@@ -58,6 +58,12 @@ public class VariablesUtility {
 		return replaceVariables(req, src, defaultProcessors);
 	}
 	
+	public static Map<String, VariablesProcessor> getDefaultProcessors(){
+		HashMap<String, VariablesProcessor> ret = new HashMap<String, VariablesProcessor>();
+		ret.putAll(defaultProcessors);
+		return ret;
+	}
+	
 	public static String replaceVariables(HttpServletRequest req, String src, Map<String,VariablesProcessor> processors){
 //		String myS = StringUtils.removeChar(src, '\r');
 //		String lines[] = StringUtils.tokenize(myS, '\n');
