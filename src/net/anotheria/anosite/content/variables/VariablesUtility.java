@@ -1,4 +1,4 @@
-package net.anotheria.anosite.content.variables;
+ package net.anotheria.anosite.content.variables;
 
 import java.util.HashMap;
 import java.util.List;
@@ -46,6 +46,13 @@ public class VariablesUtility {
 	public static void addProcessor(String prefix, VariablesProcessor processor){
 		defaultProcessors.put(prefix, processor);
 	}
+
+	public static Map<String, VariablesProcessor> getDefaultProcessors(){
+		 HashMap<String, VariablesProcessor> ret = new HashMap<String, VariablesProcessor>();
+		 ret.putAll(defaultProcessors);
+		 return ret;
+	}
+	
 	/**
 	 * Replaces variables in string s with attributes from the request req. If dummy is not NULL it will be inserted instead of 
 	 * variable value.
@@ -58,27 +65,20 @@ public class VariablesUtility {
 		return replaceVariables(req, src, defaultProcessors);
 	}
 	
-	public static Map<String, VariablesProcessor> getDefaultProcessors(){
-		HashMap<String, VariablesProcessor> ret = new HashMap<String, VariablesProcessor>();
-		ret.putAll(defaultProcessors);
-		return ret;
-	}
+	
 	
 	public static String replaceVariables(HttpServletRequest req, String src, Map<String,VariablesProcessor> processors){
-//		String myS = StringUtils.removeChar(src, '\r');
+		String myS = StringUtils.removeChar(src, '\r');
 //		String lines[] = StringUtils.tokenize(myS, '\n');
 //		Is tokenizing by line needed?
-		String lines[] = new String[]{src};
-		String totalRet = "";
-		for (String s : lines){
+//		String lines[] = new String[]{myS};
+//		String totalRet = "";
+//		for (String s : lines){
 			 
-			List<String> vars = StringUtils.extractSuperTags(src, '{', '}',ESCAPE_CHAR);
+			List<String> vars = StringUtils.extractSuperTags(myS, '{', '}',ESCAPE_CHAR);
 			Map<String, String> varValues = new HashMap<String, String>();
 		
 //			System.out.println("Tags:");
-			for(String v: vars)
-//				System.out.println(v);
-			
 			for (String var : vars){
 //				System.out.println("var:" + var);
 				String sVar = StringUtils.surroundWith(replaceVariables(req, StringUtils.strip(var, 1, 1), processors),'{','}');
@@ -89,19 +89,20 @@ public class VariablesUtility {
 					varValues.put(var, varValue);
 			}
 		
-			String ret = s;
+			String ret = myS;
 			for (String k : varValues.keySet()){
 				String v = varValues.get(k);
 				while(ret.indexOf(k)!=-1)
 					ret = StringUtils.replaceOnce(ret, k, v);
 			}
-
-			if (totalRet.length()>0)
-				totalRet += "\n";
-			totalRet += ret;
-		}
-//		System.out.println("Result: " + totalRet);
-		return totalRet;
+			return ret;
+//			if (totalRet.length()>0)
+//				totalRet += "\n";
+//			totalRet += ret;
+//		}
+	
+////		System.out.println("Result: " + totalRet);
+//		return totalRet;
 	}
 
 	private static String replaceInWord(HttpServletRequest req, String word, Map<String,VariablesProcessor> processors){
