@@ -2,14 +2,18 @@ package net.anotheria.anosite.content.variables;
 
 import javax.servlet.http.HttpServletRequest;
 
+import net.anotheria.util.StringUtils;
+
 public class ConditionProcessor implements VariablesProcessor{
 
 	public static final String TRUE = "true";
 	public static final String FALSE = "false";
 	
 	public String replace(String prefix, String variable, String defValue, HttpServletRequest req) {
-		if(DefinitionPrefixes.PREFIX_IF.equals(prefix))
-			return TRUE.equals(variable)? defValue: "";
+		if(DefinitionPrefixes.PREFIX_IF.equals(prefix)){
+			String[] ret = StringUtils.tokenize(defValue, ';');
+			return TRUE.equals(variable)? ret[0] : ret.length > 1? ret[1]:"";
+		}
 		if(DefinitionPrefixes.PREFIX_IF_NOT.equals(prefix))
 			return !TRUE.equals(variable)? defValue: "";
 		
