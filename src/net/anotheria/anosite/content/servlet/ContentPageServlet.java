@@ -96,6 +96,7 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		try{
 			processRequest(req, res, false);
 		}catch(ASGRuntimeException e){
+			log.error("moskitoDoGet", e);
 			throw new ServletException("ASG Runtime Exception: "+e.getMessage());
 		}
 	}
@@ -105,6 +106,7 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		try{
 			processRequest(req, res, true);
 		}catch(ASGRuntimeException e){
+			log.error("moskitoDoPut", e);
 			throw new ServletException("ASG Runtime Exception: "+e.getMessage());
 		}
 	}
@@ -133,7 +135,7 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 					"https://" : "http://";
 			redirectTarget+= req.getServerName();
 			redirectTarget+= requestURI;
-			log.info("making secure switch to "+redirectTarget);
+			log.debug("making secure switch to "+redirectTarget);
 			res.sendRedirect(redirectTarget);
 			return;
 		}
