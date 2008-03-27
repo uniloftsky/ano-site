@@ -196,9 +196,11 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 		Site site = siteDataService.getSite(template.getSite());
 		List<NaviItemBean> topNavi = createNaviItemList(site.getTopNavi(), req);
 		req.setAttribute("topNavi", topNavi);
+		req.setAttribute("topNaviSize", topNavi.size());
 		
-		List<NaviItemBean> mainNavi = createNaviItemList(site.getMainNavi(), req);
+		List<NaviItemBean> mainNavi = createNaviItemList(site.getMainNavi(), req);		
 		req.setAttribute("mainNavi", mainNavi);
+		req.setAttribute("mainNaviSize", mainNavi.size());
 		// navi end
 		
 		//prepare breadcrumb
@@ -582,15 +584,26 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 			} else {
 				if (item.getInternalLink().length() > 0) {
 					String pageId = item.getInternalLink();
-					bean.setLink(webDataService.getPagex(pageId).getName() + ".html");
+					String pageName = webDataService.getPagex(pageId).getName();
+					bean.setLink(pageName + ".html");
+					if(extractPageName(req).equals(pageName))
+						bean.setSelected(true);
 				} else {
 					bean.setLink("#");
 				}
 			}
 			ret.add(bean);
 			List<String> subNaviIds = item.getSubNavi();
-			if (subNaviIds.size() > 0)
-				bean.setSubNavi(createNaviItemList(subNaviIds, req));
+			if (subNaviIds.size() > 0){
+				List<NaviItemBean> subNavi = createNaviItemList(subNaviIds, req);
+				if(!bean.isSelected())
+					for(NaviItemBean subBean: subNavi)
+						if(subBean.isSelected()){
+							bean.setSelected(true);
+							break;
+						}
+				bean.setSubNavi(subNavi);
+			}
 		}
 
 		return ret;

@@ -8,6 +8,7 @@ public class NaviItemBean {
 	private String name;
 	private String link;
 	private String title;
+	private boolean selected;
 	
 	private List<NaviItemBean> subNavi;
 	
@@ -60,6 +61,14 @@ public class NaviItemBean {
 
 	public void setSubNavi(List<NaviItemBean> subNavi) {
 		this.subNavi = subNavi;
+	}
+
+	public boolean isSelected() {
+		return selected;
+	}
+
+	public void setSelected(boolean selected) {
+		this.selected = selected;
 	}
 
 }
