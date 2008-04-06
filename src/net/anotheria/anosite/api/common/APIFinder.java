@@ -22,6 +22,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.anotheria.anosite.api.activity.ActivityAPI;
+import net.anotheria.anosite.api.activity.ActivityAPIFactory;
 import net.anotheria.anosite.api.content.ContentAPI;
 import net.anotheria.anosite.api.content.ContentAPIFactory;
 import net.java.dev.moskito.core.dynamic.MoskitoInvokationProxy;
@@ -53,18 +55,18 @@ public class APIFinder {
 		}
 	}
 	
-	public static API findAPI(Class<? extends API> identifier){
+	public static<T  extends API> T findAPI(Class<T> identifier){
 		log.debug("find api: "+identifier);
-		API loaded = apis.get(identifier);
+		T loaded =(T) apis.get(identifier);
 		log.debug(" loaded: "+loaded);
 		if (loaded != null)
 			return loaded;
 		synchronized (apis) {
-			API doubleChecked = apis.get(identifier);
+			T doubleChecked = (T)apis.get(identifier);
 			log.debug("\t doubleChecked: "+doubleChecked);
 			if (doubleChecked!=null)
 				return doubleChecked;
-			API created = createAPI(identifier);
+			T created = createAPI(identifier);
 			log.info(" created api: "+created+" for "+identifier);
 			apis.put(identifier, created);
 			log.debug(" calling init "+identifier);
@@ -78,14 +80,14 @@ public class APIFinder {
 		}
 	}
 	
-	private synchronized static API createAPI(Class<? extends API> identifier){
+	private synchronized static<T extends API> T createAPI(Class<T> identifier){
 		APIFactory factory = factories.get(identifier);
 		if (factory==null)
 			throw new NoSuchAPIException(identifier.getName());
 		
 		log.debug("------ START creation API "+identifier);
 		
-		API newAPI = factory.createAPI();
+		T newAPI = (T)factory.createAPI();
 		
 		log.debug("\tcreated new instance: "+newAPI);
 		
@@ -122,7 +124,7 @@ public class APIFinder {
 				"default",
 				interfaces
 			);
-			API ret = (API) proxy.createProxy(); 
+			T ret = (T) proxy.createProxy(); 
 			//log.debug("\t created proxy, returning proxy:"+proxy+", ret: "+ret);
 			return ret;
 			//return newAPI;
@@ -141,6 +143,7 @@ public class APIFinder {
 		factories = APIConfig.getFactories();
 		
 		factories.put(ContentAPI.class, new ContentAPIFactory());
+		factories.put(ActivityAPI.class, new ActivityAPIFactory());
 	}
 	
 	public static void addAPIFactory(Class<? extends API> apiClass, APIFactory factoryObject){
