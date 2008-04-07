@@ -60,16 +60,16 @@ public abstract class AbstractAPIImpl implements API{
 		return new StringBuilder(getSessionAttributePrefix()).append(name).toString();
 	}
 	
-	protected APIContext getContext(){
-		return APIContext.getCallContext();
+	protected APICallContext getCallContext(){
+		return APICallContext.getCallContext();
 	}
 	
 	protected APISession getSession(){
-		return getContext().getCurrentSession();
+		return getCallContext().getCurrentSession();
 	}
 	
 	protected Locale getCurrentLocale(){
-		return getContext().getCurrentLocale();
+		return getCallContext().getCurrentLocale();
 	}
 	
 	protected long getExpirePeriodForAttribute(@SuppressWarnings("unused") String name){

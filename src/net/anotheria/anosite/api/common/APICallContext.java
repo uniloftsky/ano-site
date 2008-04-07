@@ -8,7 +8,7 @@ import net.anotheria.anosite.api.session.APISession;
 
 
 
-public class APIContext {
+public class APICallContext {
 	
 	public static final Locale DEFAULT_LOCALE = new Locale("de", "DE");
 	
@@ -16,10 +16,32 @@ public class APIContext {
 	private APISession currentSession;
 	private Map<String, Object> scope = new HashMap<String, Object>();
 	
+	private String currentUserId;
+	private String currentEditorId;
+	
+	
+	public String getCurrentUserId() {
+		return currentUserId;
+	}
+
+	public void setCurrentUserId(String currentUserId) {
+		this.currentUserId = currentUserId;
+	}
+
+	public String getCurrentEditorId() {
+		return currentEditorId;
+	}
+
+	public void setCurrentEditorId(String currentEditorId) {
+		this.currentEditorId = currentEditorId;
+	}
+
 	public void reset(){
 		currentLocale = null;
 		currentSession = null;
 		scope = new HashMap<String, Object>();
+		currentUserId = null;
+		currentEditorId = null;
 	}
 
 	public void setAttribute(String name, Object value) {
@@ -54,21 +76,33 @@ public class APIContext {
 	
 	@Override
 	public String toString(){
-		return "session: "+currentSession+", locale: "+currentLocale.toString()+", scope contains "+scope.size()+" elements.";
+		return "User: " +(isMember() ? getCurrentUserId() : "guest")+" session: "+currentSession+", locale: "+currentLocale.toString()+", scope contains "+scope.size()+" elements.";
+	}
+	
+	public boolean isGuest(){
+		return !isMember();
+	}
+	
+	public boolean isMember(){
+		return currentUserId!=null;
+	}
+	
+	public boolean isEditor(){
+		return currentEditorId != null;
 	}
 
 	
 	////////////// END ////////////////////
 
-	private static ThreadLocal<APIContext> apiContext = new ThreadLocal<APIContext>(){
+	private static ThreadLocal<APICallContext> apiCallContext = new ThreadLocal<APICallContext>(){
 		@Override
-		protected synchronized APIContext initialValue(){
-			return new APIContext();
+		protected synchronized APICallContext initialValue(){
+			return new APICallContext();
 		}
 	};
 	
-	public static APIContext getCallContext(){
-		return apiContext.get();
+	public static APICallContext getCallContext(){
+		return apiCallContext.get();
 	}
 
 

@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import net.anotheria.anosite.api.activity.ActivityAPI;
-import net.anotheria.anosite.api.common.APIContext;
+import net.anotheria.anosite.api.common.APICallContext;
 import net.anotheria.anosite.api.common.APIFinder;
 import net.anotheria.anosite.api.session.APISession;
 import net.anotheria.anosite.api.session.APISessionManager;
@@ -55,7 +55,7 @@ public class APIFilter implements Filter{
 	protected APISession initSession(HttpServletRequest req) {		
 
 		
-		APIContext currentContext = APIContext.getCallContext();
+		APICallContext currentContext = APICallContext.getCallContext();
 		currentContext.reset();
 		
 		
@@ -79,9 +79,8 @@ public class APIFilter implements Filter{
 		
 		
 		currentContext.setCurrentSession(apiSession);
-		
-		
 		currentContext.setCurrentLocale(req.getLocale());
+		currentContext.setCurrentUserId(apiSession.getCurrentUserId());
 
 		return apiSession;
 	}

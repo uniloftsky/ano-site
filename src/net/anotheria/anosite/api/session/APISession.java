@@ -66,4 +66,8 @@ public interface APISession {
 	
 	public void cleanupOnLogout();
 	
+
+	public String getCurrentUserId(); 
+	
+	public String getCurrentEditorId();
 }

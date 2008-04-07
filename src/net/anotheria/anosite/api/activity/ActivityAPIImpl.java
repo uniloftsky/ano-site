@@ -10,7 +10,7 @@ public class ActivityAPIImpl extends AbstractAPIImpl implements ActivityAPI{
 		String lastUrl = (String)getAttributeFromSession("LAST_URL");
 		if (lastUrl!=null)
 			System.out.print(lastUrl +" -> ");
-		System.out.println(url);
+		System.out.println(url+ "("+getCallContext()+")");
 		setAttributeInSession("LAST_URL", url);
 	}
 	

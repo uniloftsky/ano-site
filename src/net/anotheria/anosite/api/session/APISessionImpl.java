@@ -16,6 +16,9 @@ public class APISessionImpl implements APISession {
 	private String userAgent;
 	private String referenceId;
 	
+	private String currentUserId;
+	private String currentEditorId;
+	
 	private static Logger log;
 	static {
 		log = Logger.getLogger(APISessionImpl.class);
@@ -111,6 +114,22 @@ public class APISessionImpl implements APISession {
 	public void setReferenceId(String referenceId) {
     	this.referenceId = referenceId;
     }
+
+	public String getCurrentUserId() {
+		return currentUserId;
+	}
+
+	public void setCurrentUserId(String currentUserId) {
+		this.currentUserId = currentUserId;
+	}
+
+	public String getCurrentEditorId() {
+		return currentEditorId;
+	}
+
+	public void setCurrentEditorId(String currentEditorId) {
+		this.currentEditorId = currentEditorId;
+	}
 	
 }
 

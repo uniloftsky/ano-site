@@ -9,6 +9,8 @@ import net.anotheria.anosite.api.activity.ActivityAPI;
 import net.anotheria.anosite.api.activity.ActivityAPIFactory;
 import net.anotheria.anosite.api.content.ContentAPI;
 import net.anotheria.anosite.api.content.ContentAPIFactory;
+import net.anotheria.anosite.api.generic.login.LoginAPI;
+import net.anotheria.anosite.api.generic.login.LoginAPIFactory;
 import net.java.dev.moskito.core.dynamic.MoskitoInvokationProxy;
 import net.java.dev.moskito.core.predefined.ServiceStatsCallHandler;
 import net.java.dev.moskito.core.predefined.ServiceStatsCallHandlerWithCallSysout;
@@ -127,6 +129,7 @@ public class APIFinder {
 		
 		factories.put(ContentAPI.class, new ContentAPIFactory());
 		factories.put(ActivityAPI.class, new ActivityAPIFactory());
+		factories.put(LoginAPI.class, new LoginAPIFactory());
 	}
 	
 	public static<T extends API> void addAPIFactory(Class<T> apiClass, APIFactory<T> factoryObject){
