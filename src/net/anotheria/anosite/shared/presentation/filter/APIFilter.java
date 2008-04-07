@@ -34,6 +34,7 @@ public class APIFilter implements Filter{
 			return; 
 		
 		HttpServletRequest req = (HttpServletRequest) sreq;
+		@SuppressWarnings("unused")
 		APISession session = initSession(req);
 		
 		String url = req.getRequestURL().toString();

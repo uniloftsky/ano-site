@@ -1,11 +1,10 @@
 package net.anotheria.anosite.api.activity;
 
-import net.anotheria.anosite.api.common.API;
 import net.anotheria.anosite.api.common.APIFactory;
 
-public class ActivityAPIFactory implements APIFactory{
+public class ActivityAPIFactory implements APIFactory<ActivityAPI>{
 
-	public API createAPI() {
+	public ActivityAPI createAPI() {
 		return new ActivityAPIImpl();
 	}
 

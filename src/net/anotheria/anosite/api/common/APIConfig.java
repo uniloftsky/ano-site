@@ -1,20 +1,3 @@
-/* ------------------------------------------------------------------------- *
-$Source$
-$Author$
-$Date$
-$Revision$
-
-
-Copyright 2004-2005 by FriendScout24 GmbH, Munich, Germany.
-All rights reserved.
-
-This software is the confidential and proprietary information
-of FriendScout24 GmbH. ("Confidential Information").  You
-shall not disclose such Confidential Information and shall use
-it only in accordance with the terms of the license agreement
-you entered into with FriendScout24 GmbH.
-See www.friendscout24.de for details.
-** ------------------------------------------------------------------------- */
 package net.anotheria.anosite.api.common;
 
 import java.util.ArrayList;
@@ -46,6 +29,7 @@ public class APIConfig {
 	
 	}
 	
+	@SuppressWarnings("unused")
 	private static void addAlias(Class<? extends API> interfaceClass, Class<? extends API> aliasClass){
 		List<Class<? extends API>> aliases = aliasMap.get(interfaceClass);
 		if (aliases==null){
@@ -59,9 +43,9 @@ public class APIConfig {
 		return aliasMap.get(source);
 	}
 	
-	public static final Map<Class<? extends API>,APIFactory> getFactories(){
+	public static final Map<Class<? extends API>, APIFactory<? extends API>> getFactories(){
 		
-		Map<Class<? extends API>,APIFactory> ret = new HashMap<Class<? extends API>,APIFactory>();
+		Map<Class<? extends API>,APIFactory<? extends API>> ret = new HashMap<Class<? extends API>,APIFactory<? extends API>>();
 		
 		//ret.put(ISystemMailAPI.class, new MailAPIFactory());
 		return ret;

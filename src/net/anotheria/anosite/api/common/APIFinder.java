@@ -1,20 +1,3 @@
-/* ------------------------------------------------------------------------- *
-$Source$
-$Author$
-$Date$
-$Revision$
-
-
-Copyright 2004-2005 by FriendScout24 GmbH, Munich, Germany.
-All rights reserved.
-
-This software is the confidential and proprietary information
-of FriendScout24 GmbH. ("Confidential Information").  You
-shall not disclose such Confidential Information and shall use
-it only in accordance with the terms of the license agreement
-you entered into with FriendScout24 GmbH.
-See www.friendscout24.de for details.
-** ------------------------------------------------------------------------- */
 package net.anotheria.anosite.api.common;
 
 import java.util.Collection;
@@ -36,7 +19,7 @@ import org.apache.log4j.Logger;
 public class APIFinder {
 	
 	private static Map<Class<? extends API>, API> apis;
-	private static Map<Class<? extends API>, APIFactory> factories;
+	private static Map<Class<? extends API>, APIFactory<? extends API>> factories;
 	
 	private static Logger log;
 	
@@ -57,7 +40,7 @@ public class APIFinder {
 	
 	public static<T  extends API> T findAPI(Class<T> identifier){
 		log.debug("find api: "+identifier);
-		T loaded =(T) apis.get(identifier);
+		T loaded = (T) apis.get(identifier);
 		log.debug(" loaded: "+loaded);
 		if (loaded != null)
 			return loaded;
@@ -81,13 +64,13 @@ public class APIFinder {
 	}
 	
 	private synchronized static<T extends API> T createAPI(Class<T> identifier){
-		APIFactory factory = factories.get(identifier);
+		APIFactory<T> factory = (APIFactory<T>)factories.get(identifier);
 		if (factory==null)
 			throw new NoSuchAPIException(identifier.getName());
 		
 		log.debug("------ START creation API "+identifier);
 		
-		T newAPI = (T)factory.createAPI();
+		T newAPI = factory.createAPI();
 		
 		log.debug("\tcreated new instance: "+newAPI);
 		
@@ -146,7 +129,7 @@ public class APIFinder {
 		factories.put(ActivityAPI.class, new ActivityAPIFactory());
 	}
 	
-	public static void addAPIFactory(Class<? extends API> apiClass, APIFactory factoryObject){
+	public static<T extends API> void addAPIFactory(Class<T> apiClass, APIFactory<T> factoryObject){
 		APIConfig.getFactories().put(apiClass, factoryObject);
 	}
 	
