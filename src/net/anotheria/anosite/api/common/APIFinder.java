@@ -127,13 +127,10 @@ public class APIFinder {
 		//das ist die stelle zum customizen
 		factories = APIConfig.getFactories();
 		
-		factories.put(ContentAPI.class, new ContentAPIFactory());
-		factories.put(ActivityAPI.class, new ActivityAPIFactory());
-		factories.put(LoginAPI.class, new LoginAPIFactory());
 	}
 	
 	public static<T extends API> void addAPIFactory(Class<T> apiClass, APIFactory<T> factoryObject){
-		APIConfig.getFactories().put(apiClass, factoryObject);
+		factories.put(apiClass, factoryObject);
 	}
 	
 	static Collection<API> getAPIs(){
