@@ -4,4 +4,8 @@
 		<element>Premium</element>
 		<element>Member</element>
 	</enumeration>
+	<enumeration name="ActionCommandDef">
+		<element>Redirect</element>
+		<element>Forward</element>
+	</enumeration>
 </datatypes>

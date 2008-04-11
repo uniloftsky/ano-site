@@ -1,0 +1,30 @@
+  <module name="ASGenericAction">
+	<document name="GenericActionDef">
+		<property name="name" type="string"/>
+		<property name="clazz" type="string"/>
+	</document>
+  </module>
+  <module name="ASCustomAction">
+	<document name="CustomActionDef">
+		<property name="name" type="string"/>
+		<property name="clazz" type="string"/>
+	</document>
+	<document name="ActionMappingDef">
+		<!-- Used for linking -->
+		<property name="name" type="string"/>
+		<link type="single" target="ASAction.ActionDef" name="action"/>
+		<property name="url" type="string"/>
+		<link type="single" target="ASWebData.Pagex" name="page"/>
+		<property name="command" type="enumeration" enumeration="ActionCommandDef"/>
+	</document>
+  </module>
+  <module name="ASAction" storageType="federation">
+	<federatedmodule name="ASGenericAction" key="G"/>
+	<federatedmodule name="ASCustomAction"  key="C"/>
+	<mapping sourceDocument="ActionDef" targetDocument="G.GenericActionDef"/>
+	<mapping sourceDocument="ActionDef" targetDocument="C.CustomActionDef"/>
+	<document name="ActionDef">
+		<property name="name" type="string"/>
+		<property name="clazz" type="string"/>
+	</document>
+  </module>
