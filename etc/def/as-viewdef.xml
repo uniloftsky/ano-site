@@ -5,5 +5,6 @@
 	<!--@include:as-viewdef-definitions.xml -->
 	<!--@include:as-viewdef-resources.xml -->
 	<!--@include:as-viewdef-georesources.xml -->
+	<!--@include:as-viewdef-actions.xml -->
 
  
