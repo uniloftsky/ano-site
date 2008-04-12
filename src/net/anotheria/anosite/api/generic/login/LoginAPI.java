@@ -9,6 +9,8 @@ public interface LoginAPI extends API{
 	
 	public void logoutMe() throws APIException;
 
+	public boolean isLogedIn() throws APIException;
+
 	/**
 	 * Adds a login preprocessor. Each login preprocessor is called before a user can actually login. LoginPreprocessor can prevent login by throwing an exception.
 	 * @param preProcessor

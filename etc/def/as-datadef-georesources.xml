@@ -1,20 +1,24 @@
   <module name="ASGeographicData">
 	<document name="Country">
 		<property type="string" name="name"/>
-		<property type="string" name="country" multilingual="true"/>
+		<property type="string" name="description" multilingual="true"/>
+		<property name="priority" type="enumeration" enumeration="Priority"/>
 	</document>
 	<document name="State">
 		<property type="string" name="name"/>
-		<property type="string" name="state" multilingual="true"/>
+		<property type="string" name="description" multilingual="true"/>
 		<link name="country" type="single" target="ASGeographicData.Country"/>
+		<property name="priority" type="enumeration" enumeration="Priority"/>
 	</document>
 	<document name="City">
 		<property type="string" name="name"/>
-		<property type="string" name="city" multilingual="true"/>
+		<property type="string" name="description" multilingual="true"/>
 		<link name="state" type="single" target="ASGeographicData.State"/>
+		<property name="priority" type="enumeration" enumeration="Priority"/>
 	</document>
 	<document name="Language">
-		<property type="string" name="name" multilingual="true"/>®
-		<property type="string" name="language" multilingual="true"/>
+		<property type="string" name="name"/>
+		<property type="string" name="description" multilingual="true"/>
+		<property name="priority" type="enumeration" enumeration="Priority"/>
 	</document>		
   </module>

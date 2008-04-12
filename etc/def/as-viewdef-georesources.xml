@@ -13,7 +13,8 @@
 					<element type="field" name="name" comparable="default"> 
 						<decorator name="editLink"/>
 					</element>
-					<element type="field" name="country" comparable="true"/>
+					<element type="field" name="description" comparable="true"/>
+					<element type="field" name="priority" comparable="true"/>
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
 	        		<element type="function" name="delete"/>
@@ -23,7 +24,8 @@
 	       				<element type="empty"/>
 		       			<element type="field" name="id" readonly="true"/>
 		      			<element type="field" name="name" /> 
-		      			<element type="field" name="country"/>
+		      			<element type="field" name="description"/>
+		      			<element type="field" name="priority" />
 						<element type="empty"/>
 						<element type="list">
 							<element type="function" name="updateAndClose"/>
@@ -47,8 +49,9 @@
 					<element type="field" name="name" comparable="default"> 
 						<decorator name="editLink"/>
 					</element>
-					<element type="field" name="state" comparable="true"/>
+					<element type="field" name="description" comparable="true"/>
 					<element type="field" name="country" comparable="true"/>
+					<element type="field" name="priority" comparable="true"/>
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
 	        		<element type="function" name="delete"/>
@@ -58,8 +61,9 @@
 	       				<element type="empty"/>
 		       			<element type="field" name="id" readonly="true"/>
 		      			<element type="field" name="name" />
-						<element type="field" name="state" />
-		      			<element type="field" name="country" /> 
+						<element type="field" name="description" />
+		      			<element type="field" name="country" />
+		      			<element type="field" name="priority" /> 
 						<element type="empty"/>
 						<element type="list">
 							<element type="function" name="updateAndClose"/>
@@ -83,8 +87,9 @@
 					<element type="field" name="name" comparable="default"> 
 						<decorator name="editLink"/>
 					</element>
-					<element type="field" name="city" comparable="true"/>
+					<element type="field" name="description" comparable="true"/>
 					<element type="field" name="state" comparable="true"/>
+					<element type="field" name="priority" comparable="true"/>
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
 	        		<element type="function" name="delete"/>
@@ -94,8 +99,9 @@
 	       				<element type="empty"/>
 		       			<element type="field" name="id" readonly="true"/>
 		      			<element type="field" name="name" />
-						<element type="field" name="city" />
+						<element type="field" name="description" />
 						<element type="field" name="state" /> 
+						<element type="field" name="priority" />
 						<element type="empty"/>
 						<element type="list">
 							<element type="function" name="updateAndClose"/>
@@ -119,7 +125,8 @@
 					<element type="field" name="name" comparable="default"> 
 						<decorator name="editLink"/>
 					</element>
-					<element type="field" name="language" comparable="true"/>
+					<element type="field" name="description" comparable="true"/>
+					<element type="field" name="priority" comparable="true"/>
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
 	        		<element type="function" name="delete"/>
@@ -129,7 +136,8 @@
 	       				<element type="empty"/>
 		       			<element type="field" name="id" readonly="true"/>
 		      			<element type="field" name="name" /> 
-		      			<element type="field" name="language"/>
+		      			<element type="field" name="description"/>
+		      			<element type="field" name="priority" />
 						<element type="empty"/>
 						<element type="list">
 							<element type="function" name="updateAndClose"/>

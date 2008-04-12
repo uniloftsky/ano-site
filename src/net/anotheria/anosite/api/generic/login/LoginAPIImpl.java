@@ -36,6 +36,10 @@ public class LoginAPIImpl extends AbstractAPIImpl implements LoginAPI{
 		//call postprocessors
 		
 	}
+	
+	public boolean isLogedIn() throws APIException {
+		return getCallContext().getCurrentUserId() != null;
+	}
 
 	public void addLogoutPostprocessor(LogoutPostProcessor preProcessor) {
 		// TODO Auto-generated method stub
