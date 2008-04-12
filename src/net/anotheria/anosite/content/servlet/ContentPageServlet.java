@@ -55,17 +55,17 @@ import net.anotheria.anosite.handler.ResponseRedirectAfterProcessing;
 import net.anotheria.anosite.handler.ResponseRedirectImmediately;
 import net.anotheria.anosite.handler.ResponseStop;
 import net.anotheria.anosite.shared.InternalResponseCode;
+import net.anotheria.anosite.shared.presentation.servlet.BaseAnoSiteServlet;
 import net.anotheria.anosite.util.AnositeConstants;
 import net.anotheria.asg.exception.ASGRuntimeException;
 import net.java.dev.moskito.core.blueprint.BlueprintCallExecutor;
 import net.java.dev.moskito.core.blueprint.BlueprintProducer;
 import net.java.dev.moskito.core.blueprint.BlueprintProducersFactory;
-import net.java.dev.moskito.web.MoskitoHttpServlet;
 
 import org.apache.log4j.Logger;
 
 
-public class ContentPageServlet extends MoskitoHttpServlet {
+public class ContentPageServlet extends BaseAnoSiteServlet {
 
 	private static Logger log = Logger.getLogger(ContentPageServlet.class);
 
@@ -758,13 +758,7 @@ public class ContentPageServlet extends MoskitoHttpServlet {
 	}
 
 	private String extractPageName(HttpServletRequest req) {
-		String servletPath = req.getServletPath();
-		if (servletPath.length() > 0 && servletPath.charAt(0) == '/')
-			servletPath = servletPath.substring(1);
-		int indexOfDot = servletPath.indexOf('.');
-		if (indexOfDot != -1)
-			servletPath = servletPath.substring(0, indexOfDot);
-		return servletPath;
+		return extractArtifactName(req);
 	}
 
 	private Pagex getPageByName(String pageName) throws ServletException {
