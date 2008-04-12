@@ -14,6 +14,7 @@
 		<property name="name" type="string"/>
 		<link type="single" target="ASAction.ActionDef" name="action"/>
 		<property name="url" type="string"/>
+		<property name="parameters" type="string"/>
 		<link type="single" target="ASWebData.Pagex" name="page"/>
 		<property name="command" type="enumeration" enumeration="ActionCommandDef"/>
 	</document>
