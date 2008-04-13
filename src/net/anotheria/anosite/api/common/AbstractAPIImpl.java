@@ -13,6 +13,11 @@ public abstract class AbstractAPIImpl implements API{
 	
 	private String ATTRIBUTE_PREFIX = getClass().getName()+".";
 	private static APIConfig apiConfig;
+	
+	public static final long HOUR = 1000L*60*60;
+	public static final long DAY = HOUR*24;
+	
+	public static final long MINUTE = 1000L*60;
 
 	protected AbstractAPIImpl(){
 		log = Logger.getLogger(this.getClass());
@@ -71,6 +76,11 @@ public abstract class AbstractAPIImpl implements API{
 	protected Locale getCurrentLocale(){
 		return getCallContext().getCurrentLocale();
 	}
+	
+	protected String getCurrentUserId(){
+		return getCallContext().getCurrentUserId();
+	}
+	
 	
 	protected long getExpirePeriodForAttribute(@SuppressWarnings("unused") String name){
 		return getDefaultExpirePeriodForAttribute();
