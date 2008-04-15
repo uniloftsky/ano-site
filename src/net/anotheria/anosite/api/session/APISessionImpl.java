@@ -19,6 +19,8 @@ public class APISessionImpl implements APISession {
 	private String currentUserId;
 	private String currentEditorId;
 	
+	private Map<String, Object> actionScope;
+	
 	private static Logger log;
 	static {
 		log = Logger.getLogger(APISessionImpl.class);
@@ -27,6 +29,7 @@ public class APISessionImpl implements APISession {
 	APISessionImpl(String anId){
 		id = anId;
 		attributes = new ConcurrentHashMap<String,AttributeWrapper>();
+		actionScope = new ConcurrentHashMap<String, Object>();
 	}
 
 	public Object getAttribute(String key) {
@@ -131,5 +134,17 @@ public class APISessionImpl implements APISession {
 		this.currentEditorId = currentEditorId;
 	}
 	
+	public void addAttributeToActionScope(String name, Object attribute){
+		actionScope.put(name, attribute);
+	}
+	
+	public Map<String,Object> getActionScope(){
+		return actionScope;
+	}
+	
+	public void resetActionScope(){
+		actionScope.clear();
+	}
+
 }
 

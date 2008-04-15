@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
@@ -13,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.anotheria.anodoc.data.NoSuchDocumentException;
+import net.anotheria.anosite.api.common.APICallContext;
+import net.anotheria.anosite.api.session.APISessionImpl;
 import net.anotheria.anosite.content.bean.BoxBean;
 import net.anotheria.anosite.content.bean.BoxTypeBean;
 import net.anotheria.anosite.content.bean.BreadCrumbItemBean;
@@ -141,6 +144,16 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		}
 		
 		// end check for https --->
+		
+		
+		//copy attributes from action scope if any 
+		Map<String,Object> actionScope =  ((APISessionImpl)APICallContext.getCallContext().getCurrentSession()).getActionScope();
+		
+		for (String key : actionScope.keySet())
+			req.setAttribute(key, actionScope.get(key));
+		
+		((APISessionImpl)APICallContext.getCallContext().getCurrentSession()).resetActionScope();
+		// end action scope 
 		
 		PageTemplate template = siteDataService.getPageTemplate(page.getTemplate());
 		

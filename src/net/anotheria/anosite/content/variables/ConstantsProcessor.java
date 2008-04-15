@@ -11,6 +11,9 @@ public class ConstantsProcessor implements VariablesProcessor{
 	static{
 		constants.put("spacer", "&nbsp;");
 		constants.put("euro", "&euro;");
+		constants.put("form", "form");
+		constants.put("input", "input");
+		constants.put("textarea", "textarea");
 	}
 
 	public String replace(String prefix, String variable, String defValue, HttpServletRequest req) {
