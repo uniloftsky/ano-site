@@ -4,6 +4,8 @@ import java.util.Locale;
 
 import net.anotheria.anosite.api.session.APISession;
 import net.anotheria.anosite.api.session.PolicyHelper;
+import net.anotheria.anosite.api.validation.ValidationError;
+import net.anotheria.anosite.api.validation.ValidationException;
 
 import org.apache.log4j.Logger;
 
@@ -95,4 +97,19 @@ public abstract class AbstractAPIImpl implements API{
 	protected static APIConfig getApiConfig() {
 		return apiConfig;
 	}
+	
+	//////// VALIDATION /////
+	protected void addValidationError(String cmsKey, String description){
+		addValidationError(new ValidationError(cmsKey, description));
+	}
+	
+	protected void addValidationError(ValidationError error){
+		APICallContext.getCallContext().addValidationError(error);
+	}
+	
+	protected void checkValidationAndThrowException(){
+		if (APICallContext.getCallContext().hasValidationErrors())
+			throw new ValidationException(APICallContext.getCallContext().getValidationErrors());
+	}
+	
 }

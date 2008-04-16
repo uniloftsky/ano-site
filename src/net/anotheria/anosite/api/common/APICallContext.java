@@ -1,10 +1,13 @@
 package net.anotheria.anosite.api.common;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 import net.anotheria.anosite.api.session.APISession;
+import net.anotheria.anosite.api.validation.ValidationError;
 
 
 
@@ -18,6 +21,8 @@ public class APICallContext {
 	
 	private String currentUserId;
 	private String currentEditorId;
+	
+	private List<ValidationError> validationErrors;
 	
 	
 	public String getCurrentUserId() {
@@ -42,6 +47,7 @@ public class APICallContext {
 		scope = new HashMap<String, Object>();
 		currentUserId = null;
 		currentEditorId = null;
+		validationErrors = new ArrayList<ValidationError>();
 	}
 
 	public void setAttribute(String name, Object value) {
@@ -90,7 +96,27 @@ public class APICallContext {
 	public boolean isEditor(){
 		return currentEditorId != null;
 	}
+	
+	public void addValidationError(ValidationError error){
+		validationErrors.add(error);
+	}
+	
+	public void addValidationErrors(List<ValidationError> errors){
+		validationErrors.addAll(errors);
+	}
+	
+	public List<ValidationError> getValidationErrors() {
+		return validationErrors;
+	}
 
+	public void setValidationErrors(List<ValidationError> validationErrors) {
+		this.validationErrors = validationErrors;
+	}
+
+	public boolean hasValidationErrors(){
+		return validationErrors.size()>0;
+	}
+	
 	
 	////////////// END ////////////////////
 
@@ -104,6 +130,7 @@ public class APICallContext {
 	public static APICallContext getCallContext(){
 		return apiCallContext.get();
 	}
+
 
 
 }
