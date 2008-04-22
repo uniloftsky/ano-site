@@ -99,8 +99,8 @@ public abstract class AbstractAPIImpl implements API{
 	}
 	
 	//////// VALIDATION /////
-	protected void addValidationError(String cmsKey, String description){
-		addValidationError(new ValidationError(cmsKey, description));
+	protected void addValidationError(String field, String cmsKey, String description){
+		addValidationError(new ValidationError(field, cmsKey, description));
 	}
 	
 	protected void addValidationError(ValidationError error){

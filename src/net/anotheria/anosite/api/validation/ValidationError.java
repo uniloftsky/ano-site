@@ -1,6 +1,7 @@
 package net.anotheria.anosite.api.validation;
 
 public class ValidationError {
+	private String field;
 	private String message;
 	private String cmsKey;
 	
@@ -8,7 +9,8 @@ public class ValidationError {
 		
 	}
 	
-	public ValidationError(String aCmsKey, String aMessage){
+	public ValidationError(String aField, String aCmsKey, String aMessage){
+		field = aField;
 		cmsKey = aCmsKey;
 		message = aMessage;
 	}
@@ -26,5 +28,13 @@ public class ValidationError {
 	}
 	public void setCmsKey(String cmsKey) {
 		this.cmsKey = cmsKey;
+	}
+
+	public String getField() {
+		return field;
+	}
+
+	public void setField(String field) {
+		this.field = field;
 	}
 }

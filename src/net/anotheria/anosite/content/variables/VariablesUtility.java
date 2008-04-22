@@ -94,7 +94,6 @@ public class VariablesUtility {
 
 	
 	private static ContentElement createContentElementInDynamic(String elementText, char dynamicTagStart, char dynamicTagEnd){
-//		System.out.println("Create element from source: " + elementText);
 		if(elementText.charAt(0) != dynamicTagStart)
 			return new StaticElement(elementText);
 		String varName = StringUtils.strip(elementText, 1, 1);
@@ -142,6 +141,11 @@ public class VariablesUtility {
 		String ret = processor.replace(prefix, var, defaultValue, req);
 //		System.out.println("RET: " + ret);
 		return ret;
+	}
+	
+	public static final void main(String[] args){
+		String src = "{ {}adf}";
+		System.out.println(replaceVariables(null, src));
 	}
 	
 }
