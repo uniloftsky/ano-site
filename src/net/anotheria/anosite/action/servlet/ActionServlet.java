@@ -59,6 +59,8 @@ public class ActionServlet extends BaseAnoSiteServlet {
 		try{
 			ActionCommand ret = action.execute(req, res, mapping);
 			out("Action returned: "+ret);
+			if (ret==null)
+				return;
 			
 			switch(ret.getType()){
 			case Forward:
