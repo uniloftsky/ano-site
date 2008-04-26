@@ -11,6 +11,8 @@ import net.anotheria.anosite.api.content.ContentAPI;
 import net.anotheria.anosite.api.content.ContentAPIFactory;
 import net.anotheria.anosite.api.generic.login.LoginAPI;
 import net.anotheria.anosite.api.generic.login.LoginAPIFactory;
+import net.anotheria.anosite.api.generic.observation.ObservationAPI;
+import net.anotheria.anosite.api.generic.observation.ObservationAPIFactory;
 import net.anotheria.util.StringUtils;
 
 public class APIConfig {
@@ -56,6 +58,7 @@ public class APIConfig {
 		ret.put(ContentAPI.class, new ContentAPIFactory());
 		ret.put(ActivityAPI.class, new ActivityAPIFactory());
 		ret.put(LoginAPI.class, new LoginAPIFactory());
+		ret.put(ObservationAPI.class, new ObservationAPIFactory());
 
 		
 		//ret.put(ISystemMailAPI.class, new MailAPIFactory());
