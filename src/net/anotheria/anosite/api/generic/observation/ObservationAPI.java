@@ -24,5 +24,4 @@ public interface ObservationAPI extends API{
 	 * @param userId the userId of the updated user.
 	 */
 	public void fireSubjectUpdateForUser(String subject, String originator, String userId);
-
 }
