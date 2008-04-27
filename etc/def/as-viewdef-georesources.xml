@@ -13,6 +13,7 @@
 					<element type="field" name="name" comparable="default"> 
 						<decorator name="editLink"/>
 					</element>
+					<element type="field" name="code" comparable="true"/>
 					<element type="field" name="description" comparable="true"/>
 					<element type="field" name="priority" comparable="true"/>
 	        		<element type="function" name="edit"/>
@@ -24,6 +25,7 @@
 	       				<element type="empty"/>
 		       			<element type="field" name="id" readonly="true"/>
 		      			<element type="field" name="name" /> 
+		      			<element type="field" name="code"/>
 		      			<element type="field" name="description"/>
 		      			<element type="field" name="priority" />
 						<element type="empty"/>
@@ -125,6 +127,7 @@
 					<element type="field" name="name" comparable="default"> 
 						<decorator name="editLink"/>
 					</element>
+					<element type="field" name="code" comparable="true"/>
 					<element type="field" name="description" comparable="true"/>
 					<element type="field" name="priority" comparable="true"/>
 	        		<element type="function" name="edit"/>
@@ -135,7 +138,8 @@
         			<elements>
 	       				<element type="empty"/>
 		       			<element type="field" name="id" readonly="true"/>
-		      			<element type="field" name="name" /> 
+		      			<element type="field" name="name" />
+		      			<element type="field" name="code"/> 
 		      			<element type="field" name="description"/>
 		      			<element type="field" name="priority" />
 						<element type="empty"/>

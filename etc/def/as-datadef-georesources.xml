@@ -1,6 +1,7 @@
   <module name="ASGeographicData">
 	<document name="Country">
 		<property type="string" name="name"/>
+		<property type="string" name="code"/>
 		<property type="string" name="description" multilingual="true"/>
 		<property name="priority" type="enumeration" enumeration="Priority"/>
 	</document>
@@ -18,6 +19,7 @@
 	</document>
 	<document name="Language">
 		<property type="string" name="name"/>
+		<property type="string" name="code"/>
 		<property type="string" name="description" multilingual="true"/>
 		<property name="priority" type="enumeration" enumeration="Priority"/>
 	</document>		

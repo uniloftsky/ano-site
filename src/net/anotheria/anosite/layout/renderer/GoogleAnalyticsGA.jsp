@@ -13,4 +13,6 @@ document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.
 var pageTracker = _gat._getTracker("<bean:write name="box" property="parameter1"/>");
 pageTracker._initData();
 pageTracker._trackPageview();
+<bean:define id="__boxlist" toScope="request" name="box" property="subboxes"/>
+<jsp:include page="../templates/ListIterator.jsp" flush="false"/>
 </script>
