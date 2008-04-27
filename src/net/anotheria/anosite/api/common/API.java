@@ -1,5 +1,10 @@
 package net.anotheria.anosite.api.common;
 
+/**
+ * Base interface for all api-class interfaces.
+ * @author another
+ *
+ */
 public interface API {
 	
 	/**

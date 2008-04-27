@@ -10,7 +10,12 @@ import net.anotheria.anosite.api.session.APISession;
 import net.anotheria.anosite.api.validation.ValidationError;
 
 
-
+/**
+ * A context in which the api is executed. The context is assigned to the Thread (as ThreadLocal) and therefore don't need to be synchronized. 
+ * However, the context is killed as soon as the thread finishes execution.
+ * @author another
+ *
+ */
 public class APICallContext {
 	
 	public static final Locale DEFAULT_LOCALE = new Locale("de", "DE");
@@ -41,6 +46,9 @@ public class APICallContext {
 		this.currentEditorId = currentEditorId;
 	}
 
+	/**
+	 * Called upon association with a Thread, to remove all tracks of the previous service.
+	 */
 	public void reset(){
 		currentLocale = null;
 		currentSession = null;
