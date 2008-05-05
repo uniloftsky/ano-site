@@ -86,7 +86,7 @@ public class ActionServlet extends BaseAnoSiteServlet {
 	}
 	
 	private void out(Object o){
-		System.out.println("[ActionServlet] "+o);
+		log.debug("[ActionServlet] "+o);
 	}
 
 }
