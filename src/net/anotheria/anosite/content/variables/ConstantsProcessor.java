@@ -16,6 +16,8 @@ public class ConstantsProcessor implements VariablesProcessor{
 		constants.put("textarea", "textarea");
 		constants.put("lbrace", "{");
 		constants.put("rbrace", "}");
+		constants.put("colon", ":");
+		constants.put("semicolon", ";");
 	}
 
 	public String replace(String prefix, String variable, String defValue, HttpServletRequest req) {
