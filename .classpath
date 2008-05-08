@@ -8,9 +8,7 @@
 	<classpathentry kind="lib" path="/ano-libs/lib/activation.jar"/>
 	<classpathentry kind="lib" path="/ano-libs/lib/ano-comm.jar"/>
 	<classpathentry kind="lib" path="/ano-libs/lib/ano-db.jar"/>
-	<classpathentry kind="lib" path="/ano-libs/lib/ano-doc.jar"/>
 	<classpathentry kind="lib" path="/ano-libs/lib/ano-search.jar"/>
-	<classpathentry kind="lib" path="/ano-libs/lib/ano-util.jar"/>
 	<classpathentry kind="lib" path="/ano-libs/lib/ano-web.jar"/>
 	<classpathentry kind="lib" path="/ano-libs/lib/BlowfishJ.jar"/>
 	<classpathentry kind="lib" path="/ano-libs/lib/commons-beanutils.jar"/>

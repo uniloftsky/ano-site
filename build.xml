@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<project name="ptcms" default="all" basedir=".">
+<project name="ano-site" default="all" basedir=".">
 	
 	<property name="output.dir" value="${basedir}/build"/>
 	<property name="classes.dir" value="${output.dir}/classes"/>
@@ -8,6 +8,8 @@
 	<property name="src" value="${basedir}/src"/>
 
 	<property name="lib.project" value="${basedir}/lib"/>
+	<property name="lib.shared" value="${basedir}/../ano-libs/lib"/>
+
 
 	<property name="etc" value="${basedir}/etc"/>
 	<property name="html" value="${basedir}/web"/>
@@ -40,6 +42,10 @@
 			<classpath>
 				<fileset dir="${lib.project}">
 					<include name="**/*.jar"/>
+				</fileset>
+				<fileset dir="${lib.shared}">
+					<include name="**/*.jar"/>
+					<exclude name="**/ano-site.jar"/>
 				</fileset>
 			</classpath>
 		</javac>
@@ -89,12 +95,21 @@
 	</target>
 	
 	<target name="prepare.webapp">
+		<mkdir dir="${webapp.tmp.dir}"/>
 		<!-- copy libs -->
 		<copy toDir="${webapp.lib}" flatten="true"> 
 			<fileset dir="${lib.project}">
 				<include name="**/*.jar"/>
 				<exclude name="**/moskito-demo.jar"/>
 				<exclude name="**/servlet-api.jar"/>
+				<exclude name="**/*-src.jar"/>
+				<exclude name="**/moskito-webui-jsps.jar"/>
+			</fileset>
+			<fileset dir="${lib.shared}">
+				<include name="**/*.jar"/>
+				<exclude name="**/moskito-demo.jar"/>
+				<exclude name="**/servlet-api.jar"/>
+				<exclude name="**/jsp-api.jar"/>
 				<exclude name="**/*-src.jar"/>
 				<exclude name="**/moskito-webui-jsps.jar"/>
 			</fileset>
@@ -139,7 +154,7 @@
 				<fileset dir="${webapp.lib}">
 					<include name="**/*.jar"/>
 				</fileset>
-				<fileset dir="${lib.project}">
+				<fileset dir="${lib.shared}">
 					<include name="**/servlet-api.jar"/>
 				</fileset>
 			</classpath>
@@ -160,10 +175,10 @@
 	
 	<target name="javadoc" depends="compile">
 		<mkdir dir="${javadoc.dest}/${project.name}"/>
-	    <javadoc source="1.5" packagenames="de.payback.pt.*" 
+	    <javadoc source="1.6" packagenames="de.payback.pt.*" 
 	    	private="true" author="true"
 	    	sourcepath="${src}" destdir="${javadoc.dest}/${project.name}" 
-	    	bottom="Copyright &#169; 2007 Loyalty Partners. All Rights Reserved.&lt;br/&gt;"
+	    	bottom="Copyright &#169; 2007-2008 Anotheria.net. All Rights Reserved.&lt;br/&gt;"
 		>
 		<classpath>
 	        <fileset dir="${lib.project}">
@@ -173,7 +188,7 @@
 	      <tag name="created" scope="all" description="Created: " />
 	      <link href="http://java.sun.com/j2se/1.5.0/docs/api"/>
 	      <link href="http://struts.apache.org/1.x/struts-core/apidocs/"/>
-	      <link href="http://java.sun.com/products/servlet/2.2/javadoc/"/>
+	      <link href="http://java.sun.com/products/servlet/2.3/javadoc/"/>
 	      <link href="http://www.jdom.org/docs/apidocs/"/>
 	      <link href="http://moskito.anotheria.net/javadoc/core/"/>
 	      <link href="http://moskito.anotheria.net/javadoc/web/"/>

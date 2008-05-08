@@ -8,6 +8,7 @@
 	<property name="src" value="${basedir}/src"/>
 	<property name="config" value="${basedir}/etc/config"/>
 	<property name="lib.project" value="${basedir}/lib"/>
+	<property name="lib.shared" value="${basedir}/../ano-libs/lib"/>
 	
 	<property name="dist.dir" value="${basedir}/dist"/>
 	<property name="lib.dest" value="${dist.dir}/lib"/>
@@ -23,6 +24,10 @@
 		<pathelement path="${classes.dir}"/>
 		<fileset dir="${lib.project}">
 			<include name="**/*.jar"/>
+		</fileset>
+		<fileset dir="${lib.shared}">
+			<include name="**/*.jar"/>
+			<exclude name="**/ano-site.jar"/>
 		</fileset>
 	</path>
 
@@ -56,6 +61,10 @@
 			<classpath>
 				<fileset dir="${lib.project}"> 
 					<include name="**/*.jar"/>
+				</fileset>
+				<fileset dir="${lib.shared}">
+					<include name="**/*.jar"/>
+					<exclude name="**/ano-site.jar"/>
 				</fileset>
 			</classpath>
 		</javac>
