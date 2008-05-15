@@ -171,6 +171,13 @@
 	    </copy>
 	</target>
 	
+	<target name="deploy" depends="dist">
+		<copy todir="${basedir}/../ano-libs/lib">
+			<fileset file="${dist.dir}/${target.jar.name}"></fileset>
+		</copy>
+	</target>
+
+		
 	<target name="all" depends="dist"/>
 	
 	<target name="javadoc" depends="compile">
