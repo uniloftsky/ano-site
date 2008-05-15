@@ -1,8 +1,11 @@
 package net.anotheria.anosite.api.common;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import net.anotheria.anosite.api.session.APISession;
+import net.anotheria.anosite.api.session.ContentAwareAttribute;
 import net.anotheria.anosite.api.session.PolicyHelper;
 import net.anotheria.anosite.api.validation.ValidationError;
 import net.anotheria.anosite.api.validation.ValidationException;
@@ -110,6 +113,25 @@ public abstract class AbstractAPIImpl implements API{
 	protected void checkValidationAndThrowException(){
 		if (APICallContext.getCallContext().hasValidationErrors())
 			throw new ValidationException(APICallContext.getCallContext().getValidationErrors());
+	}
+	
+	/////////////
+	public static<T> List<T> createContentCachingList(){
+		return new ContentCachingList<T>();
+	}
+	
+	
+	
+}
+
+class ContentCachingList<T> extends ArrayList<T> implements ContentAwareAttribute{
+
+	public boolean deleteOnChange() {
+		return true;
+	}
+
+	public void notifyContentChange(String documentName, String documentId) {
+		throw new RuntimeException("Not supported");
 	}
 	
 }

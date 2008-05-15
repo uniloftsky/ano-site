@@ -2,6 +2,7 @@ package net.anotheria.anosite.api.session;
 
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import net.anotheria.util.IdCodeGenerator;
@@ -16,22 +17,18 @@ public class APISessionManager {
 	private Storage<String, APISession> sessions;
 	private Storage<String, String> referenceIds;
 	
-	private static APISessionManager instance;
+	private static APISessionManager instance = new APISessionManager();
 
 	private List<APISessionManagerListener> listeners;
-	protected Logger log;
+	protected Logger log = Logger.getLogger(this.getClass());
 
 	private APISessionManager(){
 		sessions = new StorageFactory<String, APISession>().createConcurrentHashMapStorage("sessions");
 		referenceIds = new StorageFactory<String, String>().createConcurrentHashMapStorage("session-refIds");
-		log = Logger.getLogger(this.getClass());
 		listeners = new ArrayList<APISessionManagerListener>();
 	}
 	
-	public static synchronized APISessionManager getInstance() {
-		if(instance == null) {
-			instance = new APISessionManager();
-		}
+	public static APISessionManager getInstance() {
 		return instance;
 	}	
 	public APISession createSession(String referenceId){
@@ -111,5 +108,19 @@ public class APISessionManager {
 
 	public void addAPISessionManagerListener(APISessionManagerListener listener){
 		listeners.add(listener);
+	}
+	
+	public void propagateContentChangeEvent(ContentChangeEvent event){
+		
+		System.out.println("Propagating API SEssion event: "+event);
+		
+		Collection<APISession> allSessions = sessions.values();
+		for (APISession s : allSessions){
+			try{
+				((APISessionImpl)s).propagateContentChangeEvent(event);
+			}catch(Exception e){
+				log.warn("propagateContentChangeEvent("+event+") in session "+s, e);
+			}
+		}
 	}
 }

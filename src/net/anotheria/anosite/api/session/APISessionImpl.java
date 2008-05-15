@@ -145,6 +145,19 @@ public class APISessionImpl implements APISession {
 	public void resetActionScope(){
 		actionScope.clear();
 	}
+	
+	void propagateContentChangeEvent(ContentChangeEvent event){
+		Collection<AttributeWrapper> sAttributes = getAttributes();
+		for (AttributeWrapper w : sAttributes){
+			Object obj = w.getValue();
+			if (obj instanceof ContentAwareAttribute){
+				if (((ContentAwareAttribute)obj).deleteOnChange())
+					removeAttribute(w.getKey());
+				else
+					((ContentAwareAttribute)obj).notifyContentChange(event.getDocumentName(), event.getDocumentId());
+			}
+		}
+	}
 
 }
 
