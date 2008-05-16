@@ -12,7 +12,8 @@ import net.anotheria.anosite.api.validation.ValidationError;
 
 /**
  * A context in which the api is executed. The context is assigned to the Thread (as ThreadLocal) and therefore don't need to be synchronized. 
- * However, the context is killed as soon as the thread finishes execution.
+ * However, the context is killed (or lost) as soon as the thread finishes execution.
+ * Important: If you start a new thread it does NOT share the same context, and hence same session.
  * @author another
  *
  */
@@ -29,6 +30,9 @@ public class APICallContext {
 	
 	private List<ValidationError> validationErrors;
 	
+	private APICallContext(){
+		reset();
+	}
 	
 	public String getCurrentUserId() {
 		return currentUserId;
@@ -50,7 +54,7 @@ public class APICallContext {
 	 * Called upon association with a Thread, to remove all tracks of the previous service.
 	 */
 	public void reset(){
-		currentLocale = null;
+		currentLocale = DEFAULT_LOCALE;
 		currentSession = null;
 		scope = new HashMap<String, Object>();
 		currentUserId = null;
@@ -90,7 +94,10 @@ public class APICallContext {
 	
 	@Override
 	public String toString(){
-		return "User: " +(isMember() ? getCurrentUserId() : "guest")+" session: "+currentSession+", locale: "+currentLocale.toString()+", scope contains "+scope.size()+" elements.";
+		return "User: " +
+			(isMember() ? getCurrentUserId() : "guest")+
+			" session: "+currentSession+", locale: "+currentLocale+
+			", scope contains "+scope.size()+" elements.";
 	}
 	
 	public boolean isGuest(){
@@ -125,8 +132,24 @@ public class APICallContext {
 		return validationErrors.size()>0;
 	}
 	
+	/**
+	 * Used by the api if you want to span a new thread but share the values with that thread. As soon as the parameters are shared 
+	 * each thread works on its own copy which is not shared.
+	 * @param anotherContext the APICallContext to copy from
+	 */
+	void copyFromAnotherContext(APICallContext anotherContext){
+		System.out.println("copying from "+anotherContext+" into "+this);
+		currentLocale = anotherContext.currentLocale;
+		currentSession = anotherContext.currentSession;
+		scope = new HashMap<String, Object>(); scope.putAll(anotherContext.scope);
+		currentUserId = anotherContext.currentUserId;
+		currentEditorId = anotherContext.currentEditorId;
+		validationErrors = new ArrayList<ValidationError>(); validationErrors.addAll(anotherContext.validationErrors);
+	}
+	
 	
 	////////////// END ////////////////////
+	
 
 	private static ThreadLocal<APICallContext> apiCallContext = new ThreadLocal<APICallContext>(){
 		@Override

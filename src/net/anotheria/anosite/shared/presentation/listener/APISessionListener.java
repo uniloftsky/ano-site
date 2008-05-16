@@ -9,8 +9,9 @@ import org.apache.log4j.Logger;
 
 public class APISessionListener implements HttpSessionListener{
 
+	private static Logger log = Logger.getLogger(APISessionListener.class);
+
 	public void sessionCreated(HttpSessionEvent event) {
-		//System.out.println("Session CREATED: "+event.getSession().getId());
 		
 	}
 
@@ -18,8 +19,10 @@ public class APISessionListener implements HttpSessionListener{
 		try{
 			APISessionManager.getInstance().destroyAPISessionByReferenceId(event.getSession().getId());
 		}catch(Exception e){
-			Logger log = Logger.getLogger(this.getClass());
-			log.error("APISessionManager.destroyAPISessionByReferenceId failed:", e);
+			if (log!=null)
+				log.error("APISessionManager.destroyAPISessionByReferenceId failed:", e);
+			else
+				System.err.println(this.getClass()+" log is null!");
 		}
 	}
 
