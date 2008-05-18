@@ -151,10 +151,17 @@ public class APICallContext {
 	////////////// END ////////////////////
 	
 
-	private static ThreadLocal<APICallContext> apiCallContext = new ThreadLocal<APICallContext>(){
+	private static InheritableThreadLocal<APICallContext> apiCallContext = new InheritableThreadLocal<APICallContext>(){
 		@Override
 		protected synchronized APICallContext initialValue(){
 			return new APICallContext();
+		}
+
+		@Override
+		protected APICallContext childValue(APICallContext parentValue) {
+			APICallContext ret = new APICallContext();
+			ret.copyFromAnotherContext(parentValue);
+			return ret;
 		}
 	};
 	

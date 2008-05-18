@@ -119,18 +119,7 @@ public abstract class AbstractAPIImpl implements API{
 	public static<T> List<T> createContentCachingList(){
 		return new ContentCachingList<T>();
 	}
-	
-	public static Thread spawnThread(Runnable runnable){
-		final APICallContext outerContext = APICallContext.getCallContext();
-		Thread ret = new Thread(runnable){
-			public void run(){
-				APICallContext.getCallContext().copyFromAnotherContext(outerContext);
-				super.run();
-			}
-		};
-		return ret;
-	}
-	
+
 }
 
 class ContentCachingList<T> extends ArrayList<T> implements ContentAwareAttribute{
