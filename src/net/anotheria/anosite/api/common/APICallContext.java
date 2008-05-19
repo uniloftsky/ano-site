@@ -138,7 +138,6 @@ public class APICallContext {
 	 * @param anotherContext the APICallContext to copy from
 	 */
 	void copyFromAnotherContext(APICallContext anotherContext){
-		System.out.println("copying from "+anotherContext+" into "+this);
 		currentLocale = anotherContext.currentLocale;
 		currentSession = anotherContext.currentSession;
 		scope = new HashMap<String, Object>(); scope.putAll(anotherContext.scope);
