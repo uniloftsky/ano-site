@@ -23,4 +23,10 @@
 		<property type="string" name="description" multilingual="true"/>
 		<property name="priority" type="enumeration" enumeration="Priority"/>
 	</document>		
+	<document name="ZipCodeRegion">
+		<property type="string" name="zipCode"/>
+		<link name="country" type="single" target="ASGeographicData.Country"/>
+		<property type="float" name="latitude"/>
+		<property type="float" name="longitude"/>
+	</document>
   </module>
