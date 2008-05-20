@@ -49,6 +49,12 @@ public class SubjectUpdateEvent {
 	public long getTimestamp() {
 		return timestamp;
 	}
+	public String getTargetUserId() {
+		return targetUserId;
+	}
+	public void setTargetUserId(String targetUserId) {
+		this.targetUserId = targetUserId;
+	}
 
 	@Override
 	public String toString(){
@@ -57,5 +63,7 @@ public class SubjectUpdateEvent {
 		b.append(", T: ").append(getTimestamp()).append(", D: ").append(new Date(getTimestamp()));
 		return b.toString();
 	}
+
+	
 	
 }
