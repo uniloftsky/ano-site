@@ -81,6 +81,8 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	private BlueprintCallExecutor pageExecutor;
 	private BlueprintCallExecutor boxExecutor;
 	
+	public static final String OVERRIDE_PAGE_TITLE = "CP.OverridePageTitle";
+	
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 
@@ -200,9 +202,14 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			//todo log?
 			return;
 		}
+		
+		String titleOverride = (String)req.getAttribute(OVERRIDE_PAGE_TITLE);
+		
 		PageBean pageBean = ((InternalPageBeanResponse)pageResponse).getPageBean();
 		if (pageBean.getTitle() == null || pageBean.getTitle().length() == 0)
 			pageBean.setTitle(siteBean.getTitle());
+		if (titleOverride!=null && titleOverride.length()>0)
+			pageBean.setTitle(titleOverride);
 		req.setAttribute("page", pageBean);
 		
 		// prepare navi
