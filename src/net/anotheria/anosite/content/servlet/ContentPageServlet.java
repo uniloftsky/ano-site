@@ -654,6 +654,22 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		InternalResponse call = null;
 		String redirectTarget = null;
 		
+		
+		//header
+		call = createBoxBeanList(req, res, template.getHeader());
+		if (!call.canContinue())
+			return new InternalResponse(call.getCode());
+		redirectTarget = getNewPageRedirectTargetIfApplies(call, redirectTarget);
+		response = getNewPageResponse(call, response);
+		ret.addHeaderBoxes(((InternalBoxBeanListResponse)call).getBeans());
+		
+		call = createBoxBeanList(req, res, page.getHeader());
+		if (!call.canContinue())
+			return new InternalResponse(call.getCode());
+		redirectTarget = getNewPageRedirectTargetIfApplies(call, redirectTarget);
+		response = getNewPageResponse(call, response);
+		ret.addHeaderBoxes(((InternalBoxBeanListResponse)call).getBeans());
+		
 		//c1
 		call = createBoxBeanList(req, res, template.getC1first());
 		if (!call.canContinue())
@@ -719,22 +735,6 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		redirectTarget = getNewPageRedirectTargetIfApplies(call, redirectTarget);
 		response = getNewPageResponse(call, response);
 		ret.addColumn3(((InternalBoxBeanListResponse)call).getBeans());
-
-		
-		//header
-		call = createBoxBeanList(req, res, template.getHeader());
-		if (!call.canContinue())
-			return new InternalResponse(call.getCode());
-		redirectTarget = getNewPageRedirectTargetIfApplies(call, redirectTarget);
-		response = getNewPageResponse(call, response);
-		ret.addHeaderBoxes(((InternalBoxBeanListResponse)call).getBeans());
-		
-		call = createBoxBeanList(req, res, page.getHeader());
-		if (!call.canContinue())
-			return new InternalResponse(call.getCode());
-		redirectTarget = getNewPageRedirectTargetIfApplies(call, redirectTarget);
-		response = getNewPageResponse(call, response);
-		ret.addHeaderBoxes(((InternalBoxBeanListResponse)call).getBeans());
 		
 		//footer
 		call = createBoxBeanList(req, res, template.getFooter());
