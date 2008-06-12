@@ -1,10 +1,10 @@
 package net.anotheria.anosite.tags.shared;
 
 import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.tagext.TagSupport;
+import javax.servlet.jsp.tagext.BodyTagSupport;
 
 
-public class BaseTagSupport extends TagSupport{
+public class BaseBodyTagSupport extends BodyTagSupport{
 	
 	private String scope;
 	private String id;
