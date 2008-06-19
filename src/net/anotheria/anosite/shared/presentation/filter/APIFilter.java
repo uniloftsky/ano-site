@@ -1,6 +1,7 @@
 package net.anotheria.anosite.shared.presentation.filter;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -16,7 +17,7 @@ import net.anotheria.anosite.api.common.APICallContext;
 import net.anotheria.anosite.api.common.APIFinder;
 import net.anotheria.anosite.api.session.APISession;
 import net.anotheria.anosite.api.session.APISessionManager;
-
+import net.anotheria.anosite.util.AnositeConstants;
 
 public class APIFilter implements Filter{
 
@@ -79,9 +80,10 @@ public class APIFilter implements Filter{
 		
 		
 		currentContext.setCurrentSession(apiSession);
-		currentContext.setCurrentLocale(req.getLocale());
+		
+//		currentContext.setCurrentLocale(req.getLocale());
+		currentContext.setCurrentLocale(getLocale(req));
 		currentContext.setCurrentUserId(apiSession.getCurrentUserId());
-
 		return apiSession;
 	}
 
@@ -90,4 +92,10 @@ public class APIFilter implements Filter{
 		session.setAttribute("API_SESSION_ID", apiSession.getId());
 		return apiSession;
 	}
+	
+	private Locale getLocale(HttpServletRequest req){
+		Locale ret = (Locale)req.getAttribute(AnositeConstants.SA_LOCALE);
+		return ret != null? ret: req.getLocale();
+	}
+	
 }
