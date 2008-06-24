@@ -94,7 +94,7 @@ public class APIFilter implements Filter{
 	}
 	
 	private Locale getLocale(HttpServletRequest req){
-		Locale ret = (Locale)req.getAttribute(AnositeConstants.SA_LOCALE);
+		Locale ret = (Locale)req.getSession().getAttribute(AnositeConstants.SA_LOCALE);
 		return ret != null? ret: req.getLocale();
 	}
 	
