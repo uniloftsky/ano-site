@@ -37,11 +37,17 @@
         	</content>
         </property>
         <!-- 
-			 PageTemplate also has its own header and footer boxes. Header 
-             boxes are rendered in the head tag, thus allowing you to embed own javascript or styles, or metas, or whatever.
+			 Meta boxes are rendered in the head tag, thus allowing you to embed own javascript or styles, or metas, or whatever.
+			 PageTemplate also has its own header and footer boxes. 
+             Header boxes are rendered immediately after the <body> tag. 
              Footer boxes are rendered immediately before the </body> tag. 
 			 Both, header and footer boxes in page template are rendered BEFORE the header and footer boxes in the page.
         -->
+        <property name="meta" type="list">
+	        <content>
+				<link name="box" type="single" target="ASWebData.Box"/>
+        	</content>
+        </property>
 		<property name="header" type="list">
 	        <content>
 				<link name="box" type="single" target="ASWebData.Box"/>

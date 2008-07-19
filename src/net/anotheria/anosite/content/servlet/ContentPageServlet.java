@@ -251,30 +251,32 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	private List<String> getBoxIdsForRenderingStep(Pagex page, PageTemplate template, int step){
 		switch(step){
 		case 0:
+			return template.getMeta();
+		case 1:
 			return template.getHeader();
-		case 1: 
+		case 2: 
 			return page.getHeader();
-		case 2:
-			return template.getC1first();
 		case 3:
-			return template.getC2first();
+			return template.getC1first();
 		case 4:
-			return template.getC3first();
+			return template.getC2first();
 		case 5:
-			return page.getC1();
+			return template.getC3first();
 		case 6:
-			return page.getC2();
+			return page.getC1();
 		case 7:
-			return page.getC3();
+			return page.getC2();
 		case 8:
-			return template.getC1last();
+			return page.getC3();
 		case 9:
-			return template.getC2last();
+			return template.getC1last();
 		case 10:
-			return template.getC3last();
+			return template.getC2last();
 		case 11:
+			return template.getC3last();
+		case 12:
 			return template.getFooter();
-		case 12: 
+		case 13: 
 			return page.getFooter();
 		}
 		throw new RuntimeException("Error, step "+step+" is unknown!");
@@ -284,7 +286,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		
 		InternalResponse progress = new InternalResponseContinue();
 		int step = 0;
-		while(progress.canContinue() && step<13){
+		while(progress.canContinue() && step<14){
 			progress = processSubmit(req, res, getBoxIdsForRenderingStep(page, template, step), handlerCache, progress);
 			step++;
 		}
@@ -654,6 +656,13 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		InternalResponse call = null;
 		String redirectTarget = null;
 		
+		//meta
+		call = createBoxBeanList(req, res, template.getMeta());
+		if (!call.canContinue())
+			return new InternalResponse(call.getCode());
+		redirectTarget = getNewPageRedirectTargetIfApplies(call, redirectTarget);
+		response = getNewPageResponse(call, response);
+		ret.addMetaBoxes(((InternalBoxBeanListResponse)call).getBeans());
 		
 		//header
 		call = createBoxBeanList(req, res, template.getHeader());

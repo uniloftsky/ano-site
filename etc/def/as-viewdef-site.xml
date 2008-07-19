@@ -141,6 +141,9 @@
 					<element type="field" name="c3last" comparable="true"> 
 						<decorator name="subboxes"/>
 					</element>
+					<element type="field" name="meta" comparable="true"> 
+						<decorator name="subboxes"/>
+					</element>
 					<element type="field" name="header" comparable="true"> 
 						<decorator name="subboxes"/>
 					</element>
@@ -166,6 +169,7 @@
 						<element type="field" name="c2last" />
 						<element type="field" name="c3last" />
 						<element type="empty"/>
+						<element type="field" name="meta" />
 						<element type="field" name="header" />
 						<element type="field" name="footer" />
 						<element type="empty"/>

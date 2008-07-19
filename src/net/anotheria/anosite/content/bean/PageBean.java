@@ -10,6 +10,7 @@ public class PageBean {
 	private List<BoxBean> column2;
 	private List<BoxBean> column3;
 	
+	private List<BoxBean> metaBoxes;
 	private List<BoxBean> headerBoxes;
 	private List<BoxBean> footerBoxes;
 
@@ -18,6 +19,7 @@ public class PageBean {
 		column2 = new ArrayList<BoxBean>();
 		column3 = new ArrayList<BoxBean>();
 		
+		metaBoxes = new ArrayList<BoxBean>();
 		headerBoxes = new ArrayList<BoxBean>();
 		footerBoxes = new ArrayList<BoxBean>();
 	}
@@ -70,6 +72,10 @@ public class PageBean {
 		column3.addAll(boxes);
 	}
 	
+	public void addMetaBoxes(List<BoxBean> boxes){
+		metaBoxes.addAll(boxes);
+	}
+	
 	public void addHeaderBoxes(List<BoxBean> boxes){
 		headerBoxes.addAll(boxes);
 	}
@@ -96,6 +102,14 @@ public class PageBean {
 
 	public void setColumn3(List<BoxBean> column3) {
 		this.column3 = column3;
+	}
+	
+	public List<BoxBean> getMetaBoxes() {
+		return metaBoxes;
+	}
+	
+	public void setMetaBoxes(List<BoxBean> headerBoxes) {
+		this.metaBoxes = headerBoxes;
 	}
 
 	public List<BoxBean> getFooterBoxes() {
