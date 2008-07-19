@@ -5,16 +5,19 @@
 		<property type="string" name="description" multilingual="true"/>
 		<property name="priority" type="enumeration" enumeration="Priority"/>
 	</document>
-	<document name="State">
-		<property type="string" name="name"/>
-		<property type="string" name="description" multilingual="true"/>
-		<link name="country" type="single" target="ASGeographicData.Country"/>
-		<property name="priority" type="enumeration" enumeration="Priority"/>
-	</document>
+	<!--<document name="Region">
+  		<property name="priority" type="enumeration" enumeration="Priority"/>
+  		<property name="byDefault" type="boolean" />
+  		<property name="name" type="string"/>  		
+  		<property name="value" type="enumeration" enumeration="Region"/>
+  		<property name="description" type="string" multilingual="true"/>
+  		<link name="country" type="single" target="ASGeographicData.Country"/>
+  	</document>
+  		 -->
 	<document name="City">
 		<property type="string" name="name"/>
 		<property type="string" name="description" multilingual="true"/>
-		<link name="state" type="single" target="ASGeographicData.State"/>
+		<!-- <link name="region" type="single" target="ASGeographicData.Region"/>-->
 		<property name="priority" type="enumeration" enumeration="Priority"/>
 	</document>
 	<document name="Language">
@@ -23,10 +26,5 @@
 		<property type="string" name="description" multilingual="true"/>
 		<property name="priority" type="enumeration" enumeration="Priority"/>
 	</document>		
-	<document name="ZipCodeRegion">
-		<property type="string" name="zipCode"/>
-		<link name="country" type="single" target="ASGeographicData.Country"/>
-		<property type="float" name="latitude"/>
-		<property type="float" name="longitude"/>
-	</document>
+
   </module>
