@@ -73,6 +73,16 @@ public class ActionCommand {
 		this.parameters = parameters;
 	}
 	
+	public void addParameters(String someParameters){
+		if (parameters!=null && parameters.length()>0){
+			if (!(someParameters.charAt(0)=='&'))
+				parameters+='&';
+			parameters += someParameters;
+		}else{
+			parameters = someParameters;
+		}
+	}
+	
 	public String toString(){
 		return getType()+" "+getTarget();
 	}
