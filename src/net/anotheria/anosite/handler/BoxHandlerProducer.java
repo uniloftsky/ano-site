@@ -6,6 +6,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 
 import net.anotheria.anosite.content.bean.BoxBean;
 import net.anotheria.anosite.gen.aswebdata.data.Box;
@@ -24,6 +26,7 @@ import net.java.dev.moskito.core.usecase.running.RunningUseCaseContainer;
 public class BoxHandlerProducer implements IStatsProducer{
 
 
+	private static Logger log = Logger.getLogger(BoxHandlerProducer.class);
 	private String producerId;
 	
 	private ActionStats processStats;
@@ -76,6 +79,7 @@ public class BoxHandlerProducer implements IStatsProducer{
 			return target.process(req, res, box, bean);
 		}  catch (Exception e) {
 			processStats.notifyError();
+			log.error("Box Handler processing failure: ", e);
 			return new ResponseAbort(e);
 		} finally {
 			long duration = System.nanoTime() - startTime;
@@ -102,6 +106,7 @@ public class BoxHandlerProducer implements IStatsProducer{
 			return target.submit(req, res, box);
 		}  catch (Exception e) {
 			processStats.notifyError();
+			log.error("Box Handler submiting failure: ", e);
 			return new ResponseAbort(e);
 		} finally {
 			long duration = System.nanoTime() - startTime;
