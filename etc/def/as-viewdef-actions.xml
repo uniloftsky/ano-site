@@ -51,9 +51,6 @@
 				<filter name="AZ" field="name"/>
 				<elements>
 					<element type="field" name="id" comparable="true">
-	        		   	<decorator name="idToA">
-	        		 		<rule>3</rule>
-	        		   	</decorator>
 					</element>
 					<element type="field" name="name" comparable="default"/> 
 	        		<element type="function" name="edit"/>
