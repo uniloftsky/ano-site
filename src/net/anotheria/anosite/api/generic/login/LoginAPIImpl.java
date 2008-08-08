@@ -60,6 +60,12 @@ public class LoginAPIImpl extends AbstractAPIImpl implements LoginAPI{
 		
 	}
 	
+	public String getLogedUserId() throws APIException {
+		if(!isLogedIn())
+			throw new APIException("No loged in users!");
+		return getCallContext().getCurrentUserId();
+	}
+	
 	public boolean isLogedIn() throws APIException {
 		return getCallContext().getCurrentUserId() != null;
 	}

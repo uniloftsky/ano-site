@@ -8,6 +8,8 @@ public interface LoginAPI extends API{
 	public void logInUser(String userId) throws APIException;
 	
 	public void logoutMe() throws APIException;
+	
+	public String getLogedUserId() throws APIException;
 
 	public boolean isLogedIn() throws APIException;
 
