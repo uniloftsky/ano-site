@@ -10,9 +10,12 @@ public class FileLinkProcessor extends XLinkProcessor{
 	@Override
 	protected String getFileName(String variable) {
 		try{
-			return service.getFileLinksByProperty(FileLink.PROP_NAME, variable).get(0).getFile();
+			String ret = service.getFileLinksByProperty(FileLink.PROP_NAME, variable).get(0).getFile();
+			if(ret == null)
+				throw new RuntimeException("FileName is null!");
+			return ret;
 		}catch(Exception e){
-			e.printStackTrace();
+			getLog().error("getFileName(" + variable + ") failure: ", e);
 			return null;
 		}
 	}

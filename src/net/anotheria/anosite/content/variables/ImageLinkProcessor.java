@@ -10,9 +10,12 @@ public class ImageLinkProcessor extends XLinkProcessor{
 	@Override
 	protected String getFileName(String variable) {
 		try{
-			return service.getImagesByProperty(Image.PROP_NAME, variable).get(0).getImage();
+			String ret = service.getImagesByProperty(Image.PROP_NAME, variable).get(0).getImage();
+			if(ret == null)
+				throw new RuntimeException("FileName is null!");
+			return ret;
 		}catch(Exception e){
-			e.printStackTrace();
+			getLog().error("getFileName(" + variable + ") failure: ", e);
 			return null;
 		}
 	}
