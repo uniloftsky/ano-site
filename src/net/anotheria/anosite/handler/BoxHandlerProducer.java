@@ -79,7 +79,6 @@ public class BoxHandlerProducer implements IStatsProducer{
 			return target.process(req, res, box, bean);
 		}  catch (Exception e) {
 			processStats.notifyError();
-			log.error("Box Handler processing failure: ", e);
 			return new ResponseAbort(e);
 		} finally {
 			long duration = System.nanoTime() - startTime;
@@ -106,7 +105,6 @@ public class BoxHandlerProducer implements IStatsProducer{
 			return target.submit(req, res, box);
 		}  catch (Exception e) {
 			processStats.notifyError();
-			log.error("Box Handler submiting failure: ", e);
 			return new ResponseAbort(e);
 		} finally {
 			long duration = System.nanoTime() - startTime;

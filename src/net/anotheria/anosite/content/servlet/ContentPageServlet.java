@@ -477,6 +477,9 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			break;
 		case ABORT:
 			response = new InternalResponse(handlerResponse);
+			//FIX: BoxHanler.process exceptions logging 
+			Exception e = ((ResponseAbort)handlerResponse).getCause();
+			log.error("createBoxBean() for Box[" + box.getId() + "] failure: ", e);
 		}
 		
 		if (response==null){
