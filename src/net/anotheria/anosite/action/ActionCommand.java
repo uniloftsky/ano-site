@@ -17,7 +17,7 @@ public class ActionCommand {
 	public ActionCommand(ActionMappingDef def) {
 		url = def.getUrl();
 		//HOT FIX: avoids NoSuchDocumentException if page is not set
-		page = def.getPage() != null && def.getPage().length() != 0? ActionHelper.getPageNameForAction(def): null;
+		page = def.getPage() != null && def.getPage().length() > 0? ActionHelper.getPageNameForAction(def): null;
 		parameters = def.getParameters();
 		type = cms2enum(def.getCommand());
 	}
