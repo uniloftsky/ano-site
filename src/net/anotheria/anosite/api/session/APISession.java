@@ -39,6 +39,11 @@ public interface APISession {
 	 * This policy enables the attribute to survive the session clean-up on logout.
 	 */
 	public int POLICY_SURVIVE_LOGOUT = 32;
+
+	/**
+	 * This policy enables the attribute to survive the session clean-up on login.
+	 */
+	public int POLICY_SURVIVE_LOGIN = 64;
 	
 	public int POLICY_DEFAULT = POLICY_LOCAL;
 	
@@ -65,6 +70,8 @@ public interface APISession {
 	public void setUserAgent(String anUserAgent);
 	
 	public void cleanupOnLogout();
+	
+	public void cleanupOnLogin();
 	
 
 	public String getCurrentUserId(); 

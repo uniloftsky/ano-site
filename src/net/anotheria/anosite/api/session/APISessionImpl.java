@@ -92,6 +92,13 @@ public class APISessionImpl implements APISession {
 		}
 	}
 	
+	public void cleanupOnLogin() {
+		for (AttributeWrapper w : getAttributes()){
+			if (!PolicyHelper.isPolicySet(w.getPolicy(), POLICY_SURVIVE_LOGIN))
+				attributes.remove(w.getKey());
+		}
+	}
+	
 	Collection<AttributeWrapper> getAttributes(){
 		return attributes.values();
 	}
