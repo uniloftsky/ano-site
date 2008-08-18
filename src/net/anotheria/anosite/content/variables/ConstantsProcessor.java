@@ -20,6 +20,8 @@ public class ConstantsProcessor implements VariablesProcessor{
 		constants.put("rbrace", "}");
 		constants.put("colon", ":");
 		constants.put("semicolon", ";");
+		constants.put("raquo", "&raquo;");
+		constants.put("laquo", "&laquo;");
 	}
 
 	public String replace(String prefix, String variable, String defValue, HttpServletRequest req) {
