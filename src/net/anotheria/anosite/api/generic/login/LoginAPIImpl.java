@@ -5,7 +5,6 @@ import java.util.List;
 
 import net.anotheria.anosite.api.common.APIException;
 import net.anotheria.anosite.api.common.AbstractAPIImpl;
-import net.anotheria.anosite.api.generic.login.processors.SessionCleanupOnLoginProcessor;
 import net.anotheria.anosite.api.generic.login.processors.SessionCleanupOnLogoutProcessor;
 import net.anotheria.anosite.api.session.APISessionImpl;
 
@@ -26,7 +25,6 @@ public class LoginAPIImpl extends AbstractAPIImpl implements LoginAPI{
 		logoutPreProcessors = new ArrayList<LogoutPreProcessor>();
 		logoutPostProcessors = new ArrayList<LogoutPostProcessor>();
 		
-		addLoginPostprocessor(new SessionCleanupOnLoginProcessor());
 		addLogoutPostprocessor(new SessionCleanupOnLogoutProcessor());
 		
 	}
