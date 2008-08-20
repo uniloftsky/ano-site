@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.anotheria.anosite.api.common.APIException;
+import net.anotheria.anosite.api.common.APIFinder;
 import net.anotheria.anosite.api.common.AbstractAPIImpl;
 import net.anotheria.anosite.api.generic.login.processors.SessionCleanupOnLogoutProcessor;
+import net.anotheria.anosite.api.generic.observation.ObservationAPI;
+import net.anotheria.anosite.api.generic.observation.ObservationSubjects;
 import net.anotheria.anosite.api.session.APISessionImpl;
 
 public class LoginAPIImpl extends AbstractAPIImpl implements LoginAPI{
@@ -15,6 +18,8 @@ public class LoginAPIImpl extends AbstractAPIImpl implements LoginAPI{
 
 	private List<LogoutPreProcessor>  logoutPreProcessors;
 	private List<LogoutPostProcessor> logoutPostProcessors;
+	
+	private ObservationAPI observationAPI = APIFinder.findAPI(ObservationAPI.class);
 	
 	public void init(){
 		super.init();
@@ -47,6 +52,8 @@ public class LoginAPIImpl extends AbstractAPIImpl implements LoginAPI{
 		getCallContext().setCurrentUserId(userId);
 		
 		callLoginPostprocessors(userId);
+		
+		observationAPI.fireSubjectUpdateForCurrentUser(ObservationSubjects.LOGIN, this.getClass().getName());
 	}
 
 	public void logoutMe() throws APIException {
@@ -59,6 +66,7 @@ public class LoginAPIImpl extends AbstractAPIImpl implements LoginAPI{
 		
 		callLogoutPostprocessors(userId);
 		
+		observationAPI.fireSubjectUpdateForCurrentUser(ObservationSubjects.LOGOUT, this.getClass().getName());
 	}
 	
 	public String getLogedUserId() throws APIException {
