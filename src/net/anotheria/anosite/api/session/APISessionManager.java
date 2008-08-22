@@ -48,6 +48,10 @@ public class APISessionManager {
 		for (AttributeWrapper w : wrappers)
 			target.setAttributeWrapper(w);
 		
+		
+		target.setCurrentEditorId(source.getCurrentEditorId());
+		target.setCurrentUserId(source.getCurrentUserId());
+		
 		return target;
 	}
 	
