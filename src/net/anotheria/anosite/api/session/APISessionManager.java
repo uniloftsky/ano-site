@@ -42,6 +42,7 @@ public class APISessionManager {
 		APISessionImpl source = (APISessionImpl)getSession(sourceSessionId);
 		if (source==null)
 			return null;
+		
 		APISessionImpl target = (APISessionImpl)createSession(referenceId);
 		Collection<AttributeWrapper> wrappers = source.getAttributes();
 		for (AttributeWrapper w : wrappers)
