@@ -30,7 +30,26 @@ public class APISessionManager {
 	
 	public static APISessionManager getInstance() {
 		return instance;
-	}	
+	}
+
+	/**
+	 * Creates a new session and copies all attributes (incl. policies) into it. If policy REUSE_WRAPPER is used, modified attributes will be modified in both sessions.
+	 * @param sourceSessionId
+	 * @param referenceId
+	 * @return
+	 */
+	public APISession createSessionCopy(String sourceSessionId, String referenceId){
+		APISessionImpl source = (APISessionImpl)getSession(sourceSessionId);
+		if (source==null)
+			return null;
+		APISessionImpl target = (APISessionImpl)createSession(referenceId);
+		Collection<AttributeWrapper> wrappers = source.getAttributes();
+		for (AttributeWrapper w : wrappers)
+			target.setAttributeWrapper(w);
+		
+		return target;
+	}
+	
 	public APISession createSession(String referenceId){
 		APISession s = new APISessionImpl(IdCodeGenerator.generateCode(30));
 		((APISessionImpl)s).setReferenceId(referenceId);

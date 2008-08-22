@@ -21,10 +21,11 @@ import net.anotheria.anosite.util.AnositeConstants;
 
 public class APIFilter implements Filter{
 
+	public static final String PARAM_COPY_SESSION = "srcsession";
+	
 	private ActivityAPI activityAPI;
 	
 	public void destroy() {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -35,6 +36,12 @@ public class APIFilter implements Filter{
 			return; 
 		
 		HttpServletRequest req = (HttpServletRequest) sreq;
+		
+		
+		String copySessionParam = req.getParameter(PARAM_COPY_SESSION); 
+		if (copySessionParam!=null && copySessionParam.length()>0)
+			copySession(req, copySessionParam);
+		
 		@SuppressWarnings("unused")
 		APISession session = initSession(req);
 		
@@ -46,6 +53,13 @@ public class APIFilter implements Filter{
 		activityAPI.notifyMyActivity(url);
 		
 		chain.doFilter(sreq, sres);
+		
+	}
+	
+	private void copySession(HttpServletRequest req, String copySessionParameter){
+		HttpSession session = req.getSession(true);
+		APISession apiSession = APISessionManager.getInstance().createSessionCopy(copySessionParameter, session.getId());
+		session.setAttribute("API_SESSION_ID", apiSession.getId());
 		
 	}
 

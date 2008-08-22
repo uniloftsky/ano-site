@@ -57,6 +57,7 @@ import net.anotheria.anosite.handler.ResponseContinue;
 import net.anotheria.anosite.handler.ResponseRedirectAfterProcessing;
 import net.anotheria.anosite.handler.ResponseRedirectImmediately;
 import net.anotheria.anosite.handler.ResponseStop;
+import net.anotheria.anosite.shared.AnositeConfig;
 import net.anotheria.anosite.shared.InternalResponseCode;
 import net.anotheria.anosite.shared.presentation.servlet.BaseAnoSiteServlet;
 import net.anotheria.anosite.util.AnositeConstants;
@@ -82,6 +83,8 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	private BlueprintCallExecutor boxExecutor;
 	
 	public static final String OVERRIDE_PAGE_TITLE = "CP.OverridePageTitle";
+	
+	private AnositeConfig config = AnositeConfig.getInstance();
 	
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
@@ -133,7 +136,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		
 		//new check for https.
 		boolean secure = req.isSecure();
-		boolean secureRequired = page.getHttpsonly();
+		boolean secureRequired = page.getHttpsonly() && config.enforceHttps();
 		
 		if (!(secure==secureRequired)){
 			String redirectTarget = secureRequired ? 
