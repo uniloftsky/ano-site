@@ -12,7 +12,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import net.anotheria.anodoc.util.context.CallContext;
 import net.anotheria.anosite.api.activity.ActivityAPI;
 import net.anotheria.anosite.api.common.APICallContext;
 import net.anotheria.anosite.api.common.APIFinder;
