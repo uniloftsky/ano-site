@@ -12,6 +12,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import net.anotheria.anodoc.util.context.CallContext;
 import net.anotheria.anosite.api.activity.ActivityAPI;
 import net.anotheria.anosite.api.common.APICallContext;
 import net.anotheria.anosite.api.common.APIFinder;
@@ -107,8 +108,11 @@ public class APIFilter implements Filter{
 		return apiSession;
 	}
 	
+	//TODO don't use http session anymore. Only use it to store api sessionid.
 	private Locale getLocale(HttpServletRequest req){
 		Locale ret = (Locale)req.getSession().getAttribute(AnositeConstants.SA_LOCALE);
+		if (ret==null)
+			ret = (Locale)APICallContext.getCallContext().getCurrentSession().getAttribute(AnositeConstants.SA_LOCALE);
 		return ret != null? ret: req.getLocale();
 	}
 	
