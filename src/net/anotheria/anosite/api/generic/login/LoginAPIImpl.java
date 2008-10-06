@@ -118,7 +118,7 @@ public class LoginAPIImpl extends AbstractAPIImpl implements LoginAPI{
 			}catch(ProcessorException e){
 				throw e;
 			}catch(Exception e){
-				log.error("Exception in logi—utpreprocessor: "+p,e);
+				log.error("Exception in logoutPreProcessor: "+p,e);
 			}
 		}
 	}
