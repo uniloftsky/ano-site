@@ -19,7 +19,7 @@ public class LoginAPIImpl extends AbstractAPIImpl implements LoginAPI{
 	private List<LogoutPreProcessor>  logoutPreProcessors;
 	private List<LogoutPostProcessor> logoutPostProcessors;
 	
-	private ObservationAPI observationAPI = APIFinder.findAPI(ObservationAPI.class);
+	private ObservationAPI observationAPI;
 	
 	public void init(){
 		super.init();
@@ -31,6 +31,8 @@ public class LoginAPIImpl extends AbstractAPIImpl implements LoginAPI{
 		logoutPostProcessors = new ArrayList<LogoutPostProcessor>();
 		
 		addLogoutPostprocessor(new SessionCleanupOnLogoutProcessor());
+		
+		observationAPI = APIFinder.findAPI(ObservationAPI.class);
 		
 	}
 
