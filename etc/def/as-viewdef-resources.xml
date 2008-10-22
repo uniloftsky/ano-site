@@ -35,40 +35,7 @@
         			</elements>
       			</dialog>
 	    	</section>
-	    	
-	    	<section title="Messages" type="module">
-				<module>ASResourceData</module>
-				<document>Message</document>
-				<filter name="AZ" field="name"/>
-				<elements>
-					<element type="field" name="id" comparable="true">
-	        		   	<decorator name="idToA">
-	        		 		<rule>3</rule>
-	        		   	</decorator>
-					</element>
-					<element type="field" name="name" comparable="default"> 
-	        		   	<decorator name="editLink"/>
-					</element>
-	        		<element type="function" name="edit"/>
-	        		<element type="function" name="duplicate"/>
-	        		<element type="function" name="delete"/>
-	      		</elements>
-	      		<dialog name="Edit" title="Edit Message">
-        			<elements>
-	       				<element type="empty"/>
-		       			<element type="field" name="id" readonly="true"/>
-		      			<element type="field" name="name" /> 
-		      			<element type="field" name="message" rich="true"/> 
-						<element type="empty"/>
-						<element type="list">
-							<element type="function" name="updateAndClose"/>
-							<element type="function" name="updateAndStay"/>
-							<element type="function" name="cancel"/>
-						</element>
-        			</elements>
-      			</dialog>
-	    	</section>
-	    	
+	    		    	
 	    	<section title="Mail Templates" type="module">
 				<module>ASResourceData</module>
 				<document>MailTemplate</document>
