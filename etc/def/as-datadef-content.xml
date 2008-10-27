@@ -37,7 +37,7 @@
 		<link name="handler" type="single" target="ASFederatedData.BoxHandlerDef"/>
 		<property name="subboxes" type="list">
 	        <content>
-				<link name="type" type="single" target="ASWebData.Box"/>
+				<link name="type" type="single" target="Box"/>
         	</content>
         </property>
 		<property name="parameter1" type="string"/>
@@ -55,5 +55,27 @@
 				<link name="guard" type="single" target="ASFederatedData.GuardDef"/>
         	</content>
         </property>
+		<property name="attributes" type="list">
+	        <content>
+				<link name="attribute" type="single" target="Attribute"/>
+        	</content>
+        </property>
 	</document>
+
+	<document name="Attribute">
+		<property name="name" type="string"/>
+		<property name="key" type="string"/>
+		<property name="value" type="string"/>
+		<property name="subattributes" type="list">
+	        <content>
+				<link name="type" type="single" target="Attribute"/>
+        	</content>
+        </property>
+		<property name="guards" type="list">
+	        <content>
+				<link name="guard" type="single" target="ASFederatedData.GuardDef"/>
+        	</content>
+        </property>
+	</document>
+
   </module>
