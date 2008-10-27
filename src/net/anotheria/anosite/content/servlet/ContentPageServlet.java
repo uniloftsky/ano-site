@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import net.anotheria.anodoc.data.NoSuchDocumentException;
 import net.anotheria.anosite.api.common.APICallContext;
 import net.anotheria.anosite.api.session.APISessionImpl;
+import net.anotheria.anosite.content.bean.AttributeBean;
+import net.anotheria.anosite.content.bean.AttributeMap;
 import net.anotheria.anosite.content.bean.BoxBean;
 import net.anotheria.anosite.content.bean.BoxTypeBean;
 import net.anotheria.anosite.content.bean.BreadCrumbItemBean;
@@ -40,6 +42,7 @@ import net.anotheria.anosite.gen.assitedata.data.Site;
 import net.anotheria.anosite.gen.assitedata.service.ASSiteDataServiceException;
 import net.anotheria.anosite.gen.assitedata.service.ASSiteDataServiceFactory;
 import net.anotheria.anosite.gen.assitedata.service.IASSiteDataService;
+import net.anotheria.anosite.gen.aswebdata.data.Attribute;
 import net.anotheria.anosite.gen.aswebdata.data.Box;
 import net.anotheria.anosite.gen.aswebdata.data.Pagex;
 import net.anotheria.anosite.gen.aswebdata.data.PagexDocument;
@@ -430,6 +433,9 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 
 		ret.setName(box.getName());
 		ret.setId(box.getId());
+		
+		AttributeMap attributeMap = createAttributeMap(req, res, box);
+		System.out.println("Box: "+box+", attribute map: "+attributeMap);
 
 		ret.setContent(VariablesUtility.replaceVariables(req, box.getContent()));
 		ret.setParameter1(VariablesUtility.replaceVariables(req, box.getParameter1()));
@@ -831,5 +837,50 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			);
 		}
 	}
+	
+	
+	private AttributeMap createAttributeMap(HttpServletRequest req, HttpServletResponse res, Box box) throws ASGRuntimeException{
+		List<String> attributeIds = box.getAttributes();
+		
+		List<Attribute> attributes = createAttributes(req, res, attributeIds);
+		AttributeMap ret = new AttributeMap();
+		for (Attribute a : attributes){
+			ret.setAttribute(new AttributeBean(a.getKey(), a.getName(), a.getValue()));
+		}
+		
+		return ret;
+	}
 
+	private List<Attribute> createAttributes(HttpServletRequest req, HttpServletResponse res, List<String> ids) throws ASGRuntimeException{
+		ArrayList<Attribute> ret = new ArrayList<Attribute>();
+		
+		
+		
+		for (String id : ids){
+			boolean do_break = false;
+			Attribute a = webDataService.getAttribute(id);
+
+			List<String> gIds = a.getGuards();
+			for (String gid : gIds){
+				//first check guards
+				ConditionalGuard g = null;
+				try{
+					g = GuardFactory.getConditionalGuard(gid);
+					if (!g.isConditionFullfilled(a, req)){
+						do_break = true;
+						break;
+					}
+				}catch(Exception e){
+					log.warn("exception in guard: "+g+", attr id: "+id+", caught.", e);
+				}
+			}
+			
+			if (do_break){
+				continue;
+			}
+			
+		}
+		
+		return ret;
+	}
 }
