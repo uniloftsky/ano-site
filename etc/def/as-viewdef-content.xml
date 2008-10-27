@@ -116,7 +116,7 @@
 		      			<element type="field" name="parameter9" /> 
 		      			<element type="field" name="parameter10" /> 
 		      			<element type="field" name="guards" /> 
-		      			<element type="field" name="attributed" /> 
+		      			<element type="field" name="attributes" /> 
 						<element type="empty"/>
 						<element type="list">
 							<element type="function" name="updateAndClose"/>
