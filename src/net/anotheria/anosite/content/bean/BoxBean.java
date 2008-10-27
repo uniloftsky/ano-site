@@ -21,6 +21,7 @@ public class BoxBean {
 	private String parameter9;
 	private String parameter10;
 	
+	private AttributeMap attributes;
 	
 	public BoxBean(){
 		subboxes = new ArrayList<BoxBean>();
@@ -125,5 +126,13 @@ public class BoxBean {
 	
 	public String getTypeName(){
 		return type.getName();
+	}
+
+	public AttributeMap getAttributes() {
+		return attributes;
+	}
+
+	public void setAttributes(AttributeMap attributes) {
+		this.attributes = attributes;
 	}
 }

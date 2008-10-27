@@ -437,6 +437,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		
 		AttributeMap attributeMap = createAttributeMap(req, res, box);
 		APICallContext.getCallContext().setAttribute(AttributeMap.CALL_CONTEXT_SCOPE_NAME, attributeMap);
+		ret.setAttributes(attributeMap);
 		
 		ret.setContent(VariablesUtility.replaceVariables(req, box.getContent()));
 		ret.setParameter1(VariablesUtility.replaceVariables(req, box.getParameter1()));
@@ -466,8 +467,8 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		if (handlerResponse.getResponseCode()==InternalResponseCode.CANCEL_AND_REDIRECT){
 			try{
 				res.sendRedirect(((ResponseRedirectImmediately)handlerResponse).getRedirectTarget());
-			}catch(IOException ignored){
-				ignored.printStackTrace();
+			}catch(IOException e){
+				log.warn("Couldn't send redirect to "+((ResponseRedirectImmediately)handlerResponse).getRedirectTarget()+", aborting execution.", e);
 			}
 			handlerResponse = new ResponseStop();
 		}
@@ -493,6 +494,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		}
 		
 		if (response==null){
+			log.error("Response is null!");
 			throw new RuntimeException("Unhandled handler response: "+handlerResponse);
 		}
 		
@@ -531,18 +533,19 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			Box box = webDataService.getBox(boxId);
 			boolean do_break = false;
 			//check the guards
-			try{
-				List<String> gIds = box.getGuards();
-				for (String gid : gIds){
-					ConditionalGuard g = GuardFactory.getConditionalGuard(gid);
+			List<String> gIds = box.getGuards();
+			for (String gid : gIds){
+				ConditionalGuard g = null;
+				try{
+					g = GuardFactory.getConditionalGuard(gid);
 					if (!g.isConditionFullfilled(box, req)){
 						do_break = true;
 						break;
 					}
 						
+				}catch(Exception e){
+					log.warn("Caught error in guard processing ( guard: "+g+", gid: "+gid+", boxid: "+boxId+")",e);
 				}
-			}catch(Exception e){
-				e.printStackTrace();
 			}
 			
 			if (do_break){
