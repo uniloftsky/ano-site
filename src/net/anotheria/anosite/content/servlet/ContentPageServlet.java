@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.anotheria.anodoc.data.NoSuchDocumentException;
+import net.anotheria.anodoc.util.context.CallContext;
 import net.anotheria.anosite.api.common.APICallContext;
 import net.anotheria.anosite.api.session.APISessionImpl;
 import net.anotheria.anosite.content.bean.AttributeBean;
@@ -435,8 +436,8 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		ret.setId(box.getId());
 		
 		AttributeMap attributeMap = createAttributeMap(req, res, box);
-		System.out.println("Box: "+box+", attribute map: "+attributeMap);
-
+		APICallContext.getCallContext().setAttribute(AttributeMap.CALL_CONTEXT_SCOPE_NAME, attributeMap);
+		
 		ret.setContent(VariablesUtility.replaceVariables(req, box.getContent()));
 		ret.setParameter1(VariablesUtility.replaceVariables(req, box.getParameter1()));
 		ret.setParameter2(VariablesUtility.replaceVariables(req, box.getParameter2()));
@@ -843,6 +844,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		List<String> attributeIds = box.getAttributes();
 		
 		List<Attribute> attributes = createAttributes(req, res, attributeIds);
+		
 		AttributeMap ret = new AttributeMap();
 		for (Attribute a : attributes){
 			ret.setAttribute(new AttributeBean(a.getKey(), a.getName(), a.getValue()));
@@ -878,6 +880,8 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			if (do_break){
 				continue;
 			}
+			
+			ret.add(a);
 			
 		}
 		

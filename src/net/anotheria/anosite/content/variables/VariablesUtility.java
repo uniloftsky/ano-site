@@ -34,6 +34,7 @@ public class VariablesUtility {
 		defaultProcessors.put(DefinitionPrefixes.PREFIX_CONTEXT_ATTRIBUTE, p);
 		defaultProcessors.put(DefinitionPrefixes.PREFIX_API_CALL_CONTEXT_ATTRIBUTE, p);
 		defaultProcessors.put(DefinitionPrefixes.PREFIX_API_SESSION_ATTRIBUTE, p);
+		defaultProcessors.put(DefinitionPrefixes.PREFIX_BOX_ATTRIBUTE, p);
 		
 		defaultProcessors.put(DefinitionPrefixes.PREFIX_IMAGE_LINK, new ImageLinkProcessor());
 		defaultProcessors.put(DefinitionPrefixes.PREFIX_FILE_LINK, new FileLinkProcessor());

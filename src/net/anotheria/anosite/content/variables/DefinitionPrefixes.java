@@ -8,6 +8,7 @@ public interface DefinitionPrefixes {
 	public static final String PREFIX_SESSION_AND_DELETE_ATTRIBUTE = "sda";
 	public static final String PREFIX_CONTEXT_ATTRIBUTE = "ca";
 	public static final String PREFIX_API_SESSION_ATTRIBUTE = "api_sa";
+	public static final String PREFIX_BOX_ATTRIBUTE = "ba";
 	public static final String PREFIX_CONSTANT = "c";
 	
 	public static final String PREFIX_IMAGE_LINK ="imagelink";
