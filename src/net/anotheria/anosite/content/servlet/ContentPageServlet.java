@@ -595,18 +595,19 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			
 			boolean do_break = false;
 			//check the guards
-			try{
-				List<String> gIds = item.getGuards();
-				for (String gid : gIds){
-					ConditionalGuard g = GuardFactory.getConditionalGuard(gid);
+			List<String> gIds = item.getGuards();
+			for (String gid : gIds){
+				ConditionalGuard g = null;
+				try{
+					g = GuardFactory.getConditionalGuard(gid);
 					if (!g.isConditionFullfilled(item, req)){
 						do_break = true;
 						break;
 					}
-						
+				}catch(Exception e){
+					log.warn("Error in guard, caught (guard: "+g+", gid: "+gid+", naviitem: "+item+", itemId: "+id+")", e);
 				}
-			}catch(Exception e){
-				e.printStackTrace();
+					
 			}
 			
 			if (do_break){
