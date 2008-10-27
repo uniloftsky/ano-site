@@ -6,15 +6,15 @@ import java.util.List;
 import net.anotheria.anodoc.data.Document;
 import net.anotheria.anodoc.data.NoSuchDocumentException;
 import net.anotheria.anodoc.data.NoSuchPropertyException;
-import net.anotheria.anosite.gen.asfederateddata.service.ASFederatedDataServiceException;
-import net.anotheria.anosite.gen.asfederateddata.service.ASFederatedDataServiceFactory;
-import net.anotheria.anosite.gen.asfederateddata.service.IASFederatedDataService;
+import net.anotheria.anosite.gen.aswebdata.service.ASWebDataServiceException;
+import net.anotheria.anosite.gen.aswebdata.service.ASWebDataServiceFactory;
+import net.anotheria.anosite.gen.aswebdata.service.IASWebDataService;
 import net.anotheria.asg.data.DataObject;
 import net.anotheria.asg.util.decorators.IAttributeDecorator;
 
-public class GuardDecorator implements IAttributeDecorator{
+public class AttributeDecorator implements IAttributeDecorator{
 	
-	private static IASFederatedDataService service = ASFederatedDataServiceFactory.createASFederatedDataService();
+	private static IASWebDataService service = ASWebDataServiceFactory.createASWebDataService();
 	
 	public String decorate(DataObject doc, String attributeName, String rule) {
 		try{
@@ -50,10 +50,10 @@ public class GuardDecorator implements IAttributeDecorator{
 			for (String id : ids){
 				String name ;
 				try{
-					name = service.getGuardDef(id).getName();
+					name = service.getAttribute(id).getName();
 				}catch(NoSuchDocumentException e){
 					name = "*DELETED*";
-				}catch(ASFederatedDataServiceException e){
+				}catch(ASWebDataServiceException e){
 					name = "*ERR-"+e.getMessage()+"*";
 				}
 				if (title.length()>0)
