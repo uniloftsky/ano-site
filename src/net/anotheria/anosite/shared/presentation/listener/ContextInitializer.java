@@ -13,6 +13,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import net.anotheria.anosite.cms.helper.BoxHelperUtility;
+import net.anotheria.anosite.config.Config;
 import net.anotheria.util.Date;
 
 import org.apache.log4j.BasicConfigurator;
@@ -49,6 +50,9 @@ public class ContextInitializer implements ServletContextListener{
 	public void contextInitialized(ServletContextEvent event) {
 		log.info("CONTEXT INITIALIZED @ "+Date.currentDate());
 		BoxHelperUtility.setup();
+		
+		Config cfg = Config.getInstance();
+		System.out.println("System configured as "+cfg.getSystemName());
 	}
 	
 }
