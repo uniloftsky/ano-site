@@ -560,7 +560,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			try{
 				response = (InternalResponse)boxProducer.execute(boxExecutor, req, res, box);
 			}catch(Exception e){
-				log.error(e);
+				log.error("???", e);
 				throw new ASGRuntimeException(e);
 			}
 
