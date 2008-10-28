@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.anotheria.anodoc.data.NoSuchDocumentException;
-import net.anotheria.anodoc.util.context.CallContext;
 import net.anotheria.anosite.api.common.APICallContext;
 import net.anotheria.anosite.api.session.APISessionImpl;
 import net.anotheria.anosite.content.bean.AttributeBean;
@@ -546,11 +545,12 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 				}catch(Exception e){
 					log.warn("Caught error in guard processing ( guard: "+g+", gid: "+gid+", boxid: "+boxId+")",e);
 				}
+
+				if (do_break){
+					continue;
+				}
 			}
 			
-			if (do_break){
-				continue;
-			}
 			
 			
 			/// END GUARDS HANDLING ///
