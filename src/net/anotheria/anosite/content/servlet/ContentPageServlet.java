@@ -545,11 +545,11 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 				}catch(Exception e){
 					log.warn("Caught error in guard processing ( guard: "+g+", gid: "+gid+", boxid: "+boxId+")",e);
 				}
-
-				if (do_break){
-					continue;
-				}
 			}
+			if (do_break){
+				continue;
+			}
+			
 			
 			
 			
