@@ -885,7 +885,10 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 				continue;
 			}
 			
-			ret.add(a);
+			if (a.getSubattributes().size()==0)
+				ret.add(a);
+			else
+				ret.addAll(createAttributes(req, res, a.getSubattributes()));
 			
 		}
 		
