@@ -3,6 +3,7 @@ package net.anotheria.anosite.content.variables;
 import javax.servlet.http.HttpServletRequest;
 
 import net.anotheria.anosite.api.common.APICallContext;
+import net.anotheria.anosite.content.bean.AttributeBean;
 import net.anotheria.anosite.content.bean.AttributeMap;
 
 public class AttributeProcessor implements VariablesProcessor {
@@ -26,8 +27,10 @@ public class AttributeProcessor implements VariablesProcessor {
 		if (prefix.equals(DefinitionPrefixes.PREFIX_CONTEXT_ATTRIBUTE))
 			ret = req.getSession().getServletContext().getAttribute(variable);
 		
-		if (DefinitionPrefixes.PREFIX_BOX_ATTRIBUTE.equals(prefix))
-			ret = ((AttributeMap)APICallContext.getCallContext().getAttribute(AttributeMap.CALL_CONTEXT_SCOPE_NAME)).getAttribute(variable).getValue();
+		if (DefinitionPrefixes.PREFIX_BOX_ATTRIBUTE.equals(prefix)){
+			AttributeBean bean = ((AttributeMap)APICallContext.getCallContext().getAttribute(AttributeMap.CALL_CONTEXT_SCOPE_NAME)).getAttribute(variable); 
+			ret = bean == null ? null : bean.getValue();
+		}
 		
 		return ret == null ? defValue : ret.toString();
 	}
