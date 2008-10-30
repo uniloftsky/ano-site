@@ -571,7 +571,9 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 				return response;
 			ret.add(((InternalBoxBeanResponse)response).getBean());
 			if (response.getCode()==InternalResponseCode.CONTINUE_AND_REDIRECT && redirectUrl==null)
-				redirectUrl = ((InternalBoxBeanListWithRedirectResponse)response).getRedirectUrl();
+//				redirectUrl = ((InternalBoxBeanListWithRedirectResponse)response).getRedirectUrl();
+				//Fixing of the class casting bug that is occured when BoxHandler.process() return RedirectAfterProcessing
+				redirectUrl = ((InternalBoxBeanWithRedirectResponse)response).getRedirectUrl();
 		}
 
 		return redirectUrl == null ? 

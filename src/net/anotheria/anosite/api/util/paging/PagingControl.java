@@ -105,6 +105,10 @@ public class PagingControl {
 		return moreHitsAvailable;
 	}
 	
+	public int getCurrentPageNumber(){
+		return currentPage;
+	}
+	
 	public int getNextPageNumber(){
 		return currentPage + 1;
 	}
@@ -112,4 +116,5 @@ public class PagingControl {
 	public int getPreviousPageNumber(){
 		return currentPage-1;
 	}
+	
 }
