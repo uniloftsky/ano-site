@@ -5,6 +5,8 @@ import java.util.List;
 
 public class PageBean {
 	private String title;
+	private String keywords;
+	private String description;
 	private String name;
 	private List<BoxBean> column1;
 	private List<BoxBean> column2;
@@ -126,5 +128,21 @@ public class PageBean {
 
 	public void setHeaderBoxes(List<BoxBean> headerBoxes) {
 		this.headerBoxes = headerBoxes;
+	}
+
+	public String getKeywords() {
+		return keywords;
+	}
+
+	public void setKeywords(String keywords) {
+		this.keywords = keywords;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }
