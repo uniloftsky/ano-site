@@ -3,7 +3,6 @@ package net.anotheria.anosite.action.servlet.cms;
 import net.anotheria.anosite.action.Action;
 import net.anotheria.anosite.gen.asaction.data.ActionDef;
 import net.anotheria.anosite.gen.asaction.service.ASActionServiceFactory;
-import net.anotheria.anosite.gen.asaction.service.ASActionServiceImpl;
 import net.anotheria.anosite.gen.asaction.service.IASActionService;
 import net.anotheria.anosite.gen.ascustomaction.data.ActionMappingDef;
 
