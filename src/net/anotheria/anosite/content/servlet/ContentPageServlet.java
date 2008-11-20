@@ -216,6 +216,12 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			pageBean.setTitle(siteBean.getTitle());
 		if (titleOverride!=null && titleOverride.length()>0)
 			pageBean.setTitle(titleOverride);
+		
+		if (pageBean.getKeywords()==null || pageBean.getKeywords().length()==0)
+			pageBean.setKeywords(siteBean.getKeywords());
+		if (pageBean.getDescription()==null || pageBean.getDescription().length()==0)
+			pageBean.setDescription(siteBean.getDescription());
+		
 		req.setAttribute("page", pageBean);
 		
 		// prepare navi
@@ -668,6 +674,8 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		PageBean ret = new PageBean();
 
 		ret.setTitle(page.getTitle());
+		ret.setKeywords(page.getKeywords());
+		ret.setDescription(page.getDescription());
 		ret.setName(page.getName());
 
 		InternalResponse response = new InternalResponseContinue();
@@ -793,6 +801,8 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			Site site = siteDataService.getSite(template.getSite());
 			ret.setSubtitle(site.getSubtitle());
 			ret.setTitle(site.getTitle());
+			ret.setKeywords(site.getKeywords());
+			ret.setDescription(site.getDescription());
 			ret.setLanguageSelector(site.getLanguageselector());
 			if (site.getStartpage() != null && site.getStartpage().length() > 0)
 				ret.setLinkToStartPage(webDataService.getPagex(site.getStartpage()).getName() + ".html");
