@@ -2,6 +2,8 @@
 	<document name="Pagex">
 		<property type="string" name="name"/>
 		<property type="string" name="title" multilingual="true"/>
+		<property type="string" name="keywords" multilingual="true"/>
+		<property type="string" name="description" multilingual="true"/>
 		<link type="single" target="ASSiteData.PageTemplate" name="template"/>
 		<property name="c1" type="list">
 	        <content>

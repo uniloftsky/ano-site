@@ -40,6 +40,8 @@
 		      			<element type="field" name="name" /> 
 		      			<element type="field" name="title" /> 
 		      			<element type="field" name="subtitle" /> 
+						<element type="field" name="keywords"/>
+						<element type="field" name="description" />
 						<element type="field" name="topNavi" /> 
 						<element type="field" name="mainNavi" /> 
 						<element type="field" name="startpage" /> 
