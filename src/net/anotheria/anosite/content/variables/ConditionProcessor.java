@@ -26,6 +26,8 @@ public class ConditionProcessor implements VariablesProcessor{
 			return isEquals(variable, defValue)? TRUE: FALSE;
 		if(DefinitionPrefixes.PREFIX_NOT_EQUALS.equals(prefix))
 			return !isEquals(variable, defValue)? TRUE: FALSE;
+		if(DefinitionPrefixes.PREFIX_IN_RANGE.equals(prefix))
+			return inRange(variable, defValue)? TRUE: FALSE;
 		
 		return "";
 	}
@@ -38,5 +40,21 @@ public class ConditionProcessor implements VariablesProcessor{
 		if(s1 == null || s2 == null)
 			return false;
 		return s1.equals(s2);
+	}
+	
+	protected boolean inRange(String s1, String s2){
+		if(s1 == null || s2 == null)
+			return false;
+		String[] rangeTokens = StringUtils.tokenize(s1, '-');
+		if(rangeTokens.length != 2)
+			return false;
+		try{
+			int rangeMin = Integer.parseInt(rangeTokens[0]);
+			int rangeMax = Integer.parseInt(rangeTokens[1]);
+			int value = Integer.parseInt(s2);
+			return rangeMin <= value && value <= rangeMax;
+		}catch(NumberFormatException e){
+		}
+		return false;
 	}
 }

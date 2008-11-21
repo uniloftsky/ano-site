@@ -21,4 +21,5 @@ public interface DefinitionPrefixes {
 	public static final String PREFIX_NOT_PRESENT = "notPresent";
 	public static final String PREFIX_EQUALS = "equals";
 	public static final String PREFIX_NOT_EQUALS = "notEquals";
+	public static final String PREFIX_IN_RANGE = "inRange";
 }
