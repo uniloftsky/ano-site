@@ -1,0 +1,9 @@
+#DB driver and vendor
+#driver=org.postgresql.Driver
+#vendor=postgresql
+
+#Application DataBase info
+#db=@applicationName@
+#username=test
+#password=123456
+#host=localhost

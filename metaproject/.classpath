@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="etc/appdata"/>
+	<classpathentry kind="src" path="generated/java"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ano-doc"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ano-site"/>
+	<classpathentry kind="lib" path="/ano-libs/lib/activation.jar"/>
+	<classpathentry kind="lib" path="/ano-libs/lib/ano-comm.jar" sourcepath="/ano-comm"/>
+	<classpathentry kind="lib" path="/ano-libs/lib/ano-db.jar"/>
+	<classpathentry kind="lib" path="/ano-libs/lib/ano-doc.jar"/>
+	<classpathentry kind="lib" path="/ano-libs/lib/ano-search.jar" sourcepath="/ano-search"/>
+	<classpathentry kind="lib" path="/ano-libs/lib/ano-site.jar" sourcepath="/home/kobitskiy/eclipse-workspaces/Anotheria/ano-site/src"/>
+	<classpathentry kind="lib" path="/ano-libs/lib/ano-util.jar" sourcepath="/ano-util/java"/>
+	<classpathentry kind="lib" path="/ano-libs/lib/ano-web.jar"/>
+	<classpathentry kind="lib" path="/ano-libs/lib/BlowfishJ.jar"/>
+	<classpathentry kind="lib" path="/ano-libs/lib/commons-beanutils.jar"/>
+	<classpathentry kind="lib" path="/ano-libs/lib/commons-codec-1.3.jar"/>
+	<classpathentry kind="lib" path="/ano-libs/lib/commons-collections.jar"/>
+	<classpathentry kind="lib" path="/ano-libs/lib/commons-dbcp.jar"/>
+	<classpathentry kind="lib" path="/ano-libs/lib/commons-digester.jar"/>
+	<classpathentry kind="lib" path="/ano-libs/lib/commons-fileupload.jar"/>
+	<classpathentry kind="lib" path="/ano-libs/lib/commons-httpclient-3.0.1.jar"/>
+	<classpathentry kind="lib" path="/ano-libs/lib/commons-jci-core-1.0-406301.jar"/>
+	<classpathentry kind="lib" path="/ano-libs/lib/commons-lang.jar"/>
+	<classpathentry kind="lib" path="/ano-libs/lib/commons-lang-2.2.jar"/>
+	<classpathentry kind="lib" path="/ano-libs/lib/commons-logging.jar"/>
+	<classpathentry kind="lib" path="/ano-libs/lib/commons-logging-1.1.jar"/>
+	<classpathentry kind="lib" path="/ano-libs/lib/commons-logging-adapters-1.1.jar"/>
+	<classpathentry kind="lib" path="/ano-libs/lib/commons-logging-api-1.1.jar"/>
+	<classpathentry kind="lib" path="/ano-libs/lib/commons-pool.jar"/>
+	<classpathentry kind="lib" path="/ano-libs/lib/commons-resources.jar"/>
+	<classpathentry kind="lib" path="/ano-libs/lib/commons-services.jar"/>
+	<classpathentry kind="lib" path="/ano-libs/lib/commons-validator.jar"/>
+	<classpathentry kind="lib" path="/ano-libs/lib/cos.jar"/>
+	<classpathentry kind="lib" path="/ano-libs/lib/jakarta-oro-2.0.8.jar"/>
+	<classpathentry kind="lib" path="/ano-libs/lib/jdom.jar"/>
+	<classpathentry kind="lib" path="/ano-libs/lib/jsp-api.jar"/>
+	<classpathentry kind="lib" path="/ano-libs/lib/log4j-1.2.8.jar"/>
+	<classpathentry kind="lib" path="/ano-libs/lib/mail.jar"/>
+	<classpathentry kind="lib" path="/ano-libs/lib/moskito-core.jar" sourcepath="/moskito-core/src"/>
+	<classpathentry kind="lib" path="/ano-libs/lib/moskito-util.jar" sourcepath="/ano-util"/>
+	<classpathentry kind="lib" path="/ano-libs/lib/moskito-web.jar" sourcepath="/moskito-web"/>
+	<classpathentry kind="lib" path="/ano-libs/lib/moskito-webui.jar"/>
+	<classpathentry kind="lib" path="/ano-libs/lib/moskito-webui-config.jar"/>
+	<classpathentry kind="lib" path="/ano-libs/lib/moskito-webui-jsps.jar"/>
+	<classpathentry kind="lib" path="/ano-libs/lib/postgresql-8.2-504.jdbc3.jar"/>
+	<classpathentry kind="lib" path="/ano-libs/lib/servlet-api.jar"/>
+	<classpathentry kind="lib" path="/ano-libs/lib/struts.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ano-util"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

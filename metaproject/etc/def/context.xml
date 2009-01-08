@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+  <context>
+    <package>net.anotheria.anosite.gen</package>
+    <owner>@applicationOwner@</owner>
+    <applicationName>@applicationName@</applicationName>
+    <applicationURLPath>@applicationURLPath@</applicationURLPath>
+    <servletMapping>cms</servletMapping>
+	<encoding>iso-8859-15</encoding>
+	<languages>
+		<supported>
+			<language>EN</language>
+		</supported>
+		<default>
+			<language>EN</language>
+		</default>
+	</languages>
+  </context>
+

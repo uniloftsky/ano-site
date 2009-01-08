@@ -1,0 +1,5 @@
+#This file is used for the mail server configuration.
+mail.smtp.host=localhost
+mail.smtp.user=user
+mail.smtp.password=password
+#mail.smtp.debug=true
