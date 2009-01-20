@@ -15,7 +15,7 @@ public class ImageLinkProcessor extends XLinkProcessor{
 				throw new RuntimeException("FileName is null!");
 			return ret;
 		}catch(Exception e){
-			getLog().error("getFileName(" + variable + ") failure: ", e);
+			getLog().warn("getFileName(" + variable + ") failure: ", e);
 			return null;
 		}
 	}
