@@ -44,11 +44,13 @@ public class APIFinder {
 	
 	public static<T  extends API> T findAPI(Class<T> identifier){
 		log.debug("find api: "+identifier);
+		@SuppressWarnings("unchecked")
 		T loaded = (T) apis.get(identifier);
 		log.debug(" loaded: "+loaded);
 		if (loaded != null)
 			return loaded;
 		synchronized (apis) {
+			@SuppressWarnings("unchecked")
 			T doubleChecked = (T)apis.get(identifier);
 			log.debug("\t doubleChecked: "+doubleChecked);
 			if (doubleChecked!=null)
@@ -68,6 +70,7 @@ public class APIFinder {
 	}
 	
 	private synchronized static<T extends API> T createAPI(Class<T> identifier){
+		@SuppressWarnings("unchecked")
 		APIFactory<T> factory = (APIFactory<T>)factories.get(identifier);
 		if (factory==null){
 			//if no factory is configured but mocking is enabled we create a mock-api on the fly.
