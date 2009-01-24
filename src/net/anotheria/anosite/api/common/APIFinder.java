@@ -5,18 +5,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.anotheria.anosite.api.activity.ActivityAPI;
-import net.anotheria.anosite.api.activity.ActivityAPIFactory;
-import net.anotheria.anosite.api.content.ContentAPI;
-import net.anotheria.anosite.api.content.ContentAPIFactory;
-import net.anotheria.anosite.api.generic.login.LoginAPI;
-import net.anotheria.anosite.api.generic.login.LoginAPIFactory;
+import net.anotheria.anosite.api.mock.APIMaskImpl;
+import net.anotheria.anosite.api.mock.APIMockImpl;
 import net.java.dev.moskito.core.dynamic.MoskitoInvokationProxy;
 import net.java.dev.moskito.core.predefined.ServiceStatsCallHandler;
 import net.java.dev.moskito.core.predefined.ServiceStatsCallHandlerWithCallSysout;
 import net.java.dev.moskito.core.predefined.ServiceStatsFactory;
 
 import org.apache.log4j.Logger;
+
+
 
 public class APIFinder {
 	
@@ -30,6 +28,10 @@ public class APIFinder {
 		//BasicConfigurator.configure();
 		init();
 	}
+	
+	private static boolean maskingEnabled = false;
+	private static boolean mockingEnabled = false;
+	
 	
 	@SuppressWarnings("unchecked")
 	public static API findAPI(String identifier){
@@ -67,8 +69,12 @@ public class APIFinder {
 	
 	private synchronized static<T extends API> T createAPI(Class<T> identifier){
 		APIFactory<T> factory = (APIFactory<T>)factories.get(identifier);
-		if (factory==null)
+		if (factory==null){
+			//if no factory is configured but mocking is enabled we create a mock-api on the fly.
+			if (isMockingEnabled())
+				return createMockAPI(identifier);
 			throw new NoSuchAPIException(identifier.getName());
+		}
 		
 		log.debug("------ START creation API "+identifier);
 		
@@ -80,6 +86,13 @@ public class APIFinder {
 			if (newAPI instanceof TestModeAware)
 				((TestModeAware)newAPI).setTestMode(true);
 		}
+		
+		//masking
+		if (isMaskingEnabled()){
+			APIMaskImpl<T> maskedAPI = new APIMaskImpl<T>(newAPI, identifier);
+			newAPI = maskedAPI.createAPIProxy();
+		}//masking end
+		
 		
 		//newAPI.init();
 		
@@ -135,5 +148,32 @@ public class APIFinder {
 	
 	static Collection<API> getAPIs(){
 		return apis.values(); 
+	}
+	
+	private static<T extends API> T createMockAPI(Class<T> identifier){
+		APIMockImpl<T> mock = new APIMockImpl<T>(identifier);
+		return mock.createAPIProxy();
+	
+	}
+	
+
+	public static boolean isMaskingEnabled() {
+		return maskingEnabled;
+	}
+
+	public static void setMaskingEnabled(boolean aMaskingEnabled) {
+		maskingEnabled = aMaskingEnabled;
+	}
+
+	public static boolean isMockingEnabled() {
+		return mockingEnabled;
+	}
+
+	public static void setMockingEnabled(boolean aMockingEnabled) {
+		mockingEnabled = aMockingEnabled;
+	}
+	
+	public static boolean isInTestingMode(){
+		return isMockingEnabled() || isMaskingEnabled();
 	}
 }
