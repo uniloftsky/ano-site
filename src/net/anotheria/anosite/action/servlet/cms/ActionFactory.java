@@ -12,8 +12,6 @@ public class ActionFactory {
 	
 	public static final Action createAction(ActionMappingDef def){
 		String actionId = def.getAction();
-		System.out.println("ActionID: "+actionId);
-		
 		
 		try{
 			ActionDef ad = service.getActionDef(actionId);
