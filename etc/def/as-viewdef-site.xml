@@ -231,5 +231,44 @@
       			</dialog>
 	    	</section>
 
+			<!-- PageAlias -->
+			<section title="EntryPoint" type="module">
+				<module>ASSiteData</module>
+				<document>PageAlias</document>
+				<filter name="AZ" field="name"/>
+				<elements>
+					<element type="field" name="id" comparable="true">
+	        		   	<decorator name="idToA">
+	        		 		<rule>3</rule>
+	        		   	</decorator>
+					</element>
+					<element type="field" name="name" comparable="default"> 
+	        		   	<decorator name="editLink"/>
+					</element>
+					<element type="field" name="targetPage" comparable="true"> 
+	        		   	<decorator name="linkTargetName"/>
+					</element>
+					<element type="field" name="pathes" comparable="true"/> 
+	        		<element type="function" name="edit"/>
+	        		<element type="function" name="duplicate"/>
+	        		<element type="function" name="delete"/>
+	      		</elements>
+	      		<dialog name="Edit" title="Edit EntryPoint">
+        			<elements>
+	       				<element type="empty"/>
+		       			<element type="field" name="id" readonly="true"/>
+		      			<element type="field" name="name" /> 
+						<element type="field" name="targetPage" /> 
+						<element type="field" name="pathes" /> 
+						<element type="empty"/>
+						<element type="list">
+							<element type="function" name="updateAndClose"/>
+							<element type="function" name="updateAndStay"/>
+							<element type="function" name="cancel"/>
+						</element>
+        			</elements>
+      			</dialog>
+	    	</section>
+
     	</sections>
 	</view>

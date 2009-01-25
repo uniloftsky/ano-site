@@ -114,4 +114,13 @@
         	</content>
         </property>
   	</document>
+  	<document name="PageAlias">
+		<property name="name" type="string"/>
+		<link name="targetPage" type="single" target="ASWebData.Pagex"/>
+		<property name="pathes" type="list">
+	        <content>
+				<property name="path" type="string"/>
+        	</content>
+        </property>
+  	</document>
  </module>
