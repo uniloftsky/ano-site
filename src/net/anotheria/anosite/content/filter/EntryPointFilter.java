@@ -38,6 +38,7 @@ public class EntryPointFilter implements Filter{
 	public void doFilter(ServletRequest sreq, ServletResponse sres, FilterChain chain) throws IOException, ServletException {
 		if (!(sreq instanceof HttpServletRequest))
 			return;
+		
 		HttpServletRequest req = (HttpServletRequest)sreq;
 		String domain = req.getServerName();
 		//System.out.println("Request on domain: "+domain);
