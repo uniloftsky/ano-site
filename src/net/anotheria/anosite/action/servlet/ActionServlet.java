@@ -33,8 +33,6 @@ public class ActionServlet extends BaseAnoSiteServlet {
 	}
 	
 	private void execute(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		
-		
 		String actionMappingName = getActionMappingName(req);
 		out("Calling actionmapping: "+actionMappingName);
 		
@@ -52,7 +50,7 @@ public class ActionServlet extends BaseAnoSiteServlet {
 		
 		Action action = ActionFactory.createAction(def);
 		if (action==null){
-			log.warn("Couldn't create an action isnstance...");
+			log.warn("Couldn't create an action instance...");
 			return;
 		}
 		

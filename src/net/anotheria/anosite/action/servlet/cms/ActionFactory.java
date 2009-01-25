@@ -1,5 +1,7 @@
 package net.anotheria.anosite.action.servlet.cms;
 
+import org.apache.log4j.Logger;
+
 import net.anotheria.anosite.action.Action;
 import net.anotheria.anosite.gen.asaction.data.ActionDef;
 import net.anotheria.anosite.gen.asaction.service.ASActionServiceFactory;
@@ -10,6 +12,8 @@ public class ActionFactory {
 	
 	private static IASActionService service = ASActionServiceFactory.createASActionService();
 	
+	private static Logger log = Logger.getLogger(ActionFactory.class);
+	
 	public static final Action createAction(ActionMappingDef def){
 		String actionId = def.getAction();
 		
@@ -19,7 +23,7 @@ public class ActionFactory {
 			Action ret = (Action)Class.forName(clazz).newInstance();
 			return ret;
 		}catch(Exception e){
-			e.printStackTrace();
+			log.error("createAction("+def+")", e);
 		}
 		
 		return null;
