@@ -232,7 +232,7 @@
 	    	</section>
 
 			<!-- PageAlias -->
-			<section title="EntryPoint" type="module">
+			<section title="PageAlias" type="module">
 				<module>ASSiteData</module>
 				<document>PageAlias</document>
 				<filter name="AZ" field="name"/>
