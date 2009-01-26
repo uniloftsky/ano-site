@@ -8,6 +8,7 @@ import net.anotheria.anosite.gen.aslayoutdata.service.ASLayoutDataServiceFactory
 import net.anotheria.anosite.gen.aslayoutdata.service.IASLayoutDataService;
 import net.anotheria.anosite.gen.assitedata.data.EntryPoint;
 import net.anotheria.anosite.gen.assitedata.data.NaviItem;
+import net.anotheria.anosite.gen.assitedata.data.PageAlias;
 import net.anotheria.anosite.gen.assitedata.data.PageTemplate;
 import net.anotheria.anosite.gen.assitedata.data.Site;
 import net.anotheria.anosite.gen.assitedata.service.ASSiteDataServiceFactory;
@@ -56,6 +57,9 @@ public class LinkTargetNameDecorator implements IAttributeDecorator{
 			if (doc instanceof EntryPoint){
 				name = getTargetNameForEntryPoint((EntryPoint)doc, attributeName);
 			}
+			if (doc instanceof PageAlias){
+				name = getTargetNameForPageAlias((PageAlias)doc, attributeName);
+			}
 		}catch(NoSuchDocumentException e){
 			name = "*** DELETED ***";
 		}catch(NoSuchPropertyException e){
@@ -101,6 +105,14 @@ public class LinkTargetNameDecorator implements IAttributeDecorator{
 		
 		if (attributeName.equals("startSite")){
 			return siteDataService.getSite(entry.getStartSite()).getName();
+		}
+		
+		return "Unknown attribute: "+attributeName;
+	}
+
+	private String getTargetNameForPageAlias(PageAlias entry, String attributeName)throws ASGRuntimeException{
+		if (attributeName.equals("targetPage")){
+			return webDataService.getPagex(entry.getTargetPage()).getName();
 		}
 		
 		return "Unknown attribute: "+attributeName;
