@@ -92,9 +92,11 @@
         		    <element type="field" name="size" comparable="false">
         		    	<decorator name="fileSizeDecorator"/>
         		    </element>
+        		    <!--
          		    <element type="field" name="pixels" comparable="false">
         		    	<decorator name="imageSizeDecorator"/>
-        		    </element>                   
+        		    </element>
+        		    -->                   
         		    <element type="function" name="edit"/>
                     <element type="function" name="duplicate"/>
                     <element type="function" name="delete"/>
