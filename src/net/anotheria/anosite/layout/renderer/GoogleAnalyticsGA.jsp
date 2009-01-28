@@ -11,8 +11,11 @@ document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.
 </script>
 <script type="text/javascript">
 var pageTracker = _gat._getTracker("<%=box.getAttributes().getAttribute("trackerId").getValue()%>");
+<%-- instead of this the nextline _setAllowHash should do the same job but also work on different domains --%>
+<%--
 pageTracker._initData();
 pageTracker._setDomainName("none");
+--%>
 pageTracker._setAllowHash(false);
 pageTracker._setAllowLinker(true);
 pageTracker._trackPageview();
