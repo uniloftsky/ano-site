@@ -11,7 +11,6 @@ document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.
 </script>
 <script type="text/javascript">
 var pageTracker = _gat._getTracker("<%=box.getAttributes().getAttribute("trackerId").getValue()%>");
-pageTracker._initData();
 pageTracker._setDomainName("c-date.com");
 pageTracker._setAllowHash(false);
 pageTracker._setAllowLinker(true);
