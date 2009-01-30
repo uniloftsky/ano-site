@@ -11,7 +11,8 @@ document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.
 </script>
 <script type="text/javascript">
 var pageTracker = _gat._getTracker("<%=box.getAttributes().getAttribute("trackerId").getValue()%>");
-pageTracker._setDomainName(none);
+pageTracker._initData();
+pageTracker._setDomainName("none");
 pageTracker._setAllowLinker(true);
 pageTracker._trackPageview();
 <bean:define id="__boxlist" toScope="request" name="box" property="subboxes"/>
