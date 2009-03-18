@@ -123,4 +123,8 @@
         	</content>
         </property>
   	</document>
+  	<document name="RedirectUrl">
+		<property name="in" type="string"/>
+		<property name="out" type="string"/>
+  	</document>
  </module>
