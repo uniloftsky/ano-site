@@ -315,6 +315,10 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		String redirectTarget = null;
 		for (String id : boxIds) {
 			Box box = webDataService.getBox(id);
+			
+			if(disabledByGuards(req, box))
+				continue;
+			
 			String handlerId = box.getHandler();
 			
 			
@@ -529,36 +533,33 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		return response;
 	}
 
+	private boolean disabledByGuards(HttpServletRequest req, Box box){
+		//check the guards
+		List<String> gIds = box.getGuards();
+		for (String gid : gIds){
+			ConditionalGuard g = null;
+			try{
+				g = GuardFactory.getConditionalGuard(gid);
+				if (!g.isConditionFullfilled(box, req)){
+					return true;
+				}
+				
+			}catch(Exception e){
+				log.warn("Caught error in guard processing ( guard: "+g+", gid: "+gid+", boxid: "+box.getId()+")",e);
+			}
+		}
+		return false;
+	}
+	
 	private InternalResponse createBoxBeanList(HttpServletRequest req, HttpServletResponse res, List<String> boxIds) throws ASGRuntimeException{
 		ArrayList<BoxBean> ret = new ArrayList<BoxBean>();
 		String redirectUrl = null;
 		for (String boxId : boxIds) {
-			
-			/// ADDED GUARDS ///
+
 			Box box = webDataService.getBox(boxId);
-			boolean do_break = false;
-			//check the guards
-			List<String> gIds = box.getGuards();
-			for (String gid : gIds){
-				ConditionalGuard g = null;
-				try{
-					g = GuardFactory.getConditionalGuard(gid);
-					if (!g.isConditionFullfilled(box, req)){
-						do_break = true;
-						break;
-					}
-						
-				}catch(Exception e){
-					log.warn("Caught error in guard processing ( guard: "+g+", gid: "+gid+", boxid: "+boxId+")",e);
-				}
-			}
-			if (do_break){
+			
+			if (disabledByGuards(req, box))
 				continue;
-			}
-			
-			
-			
-			
 			/// END GUARDS HANDLING ///
 			
 			InternalResponse response = null;
