@@ -12,14 +12,12 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
-
-import com.sun.media.jai.opimage.URLRIF;
-
 import net.anotheria.anosite.gen.assitedata.data.RedirectUrl;
 import net.anotheria.anosite.gen.assitedata.service.ASSiteDataServiceException;
 import net.anotheria.anosite.gen.assitedata.service.ASSiteDataServiceFactory;
 import net.anotheria.anosite.gen.assitedata.service.IASSiteDataService;
+
+import org.apache.log4j.Logger;
 
 public class RedirectFilter implements Filter{
 	private IASSiteDataService siteDataService;
