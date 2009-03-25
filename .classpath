@@ -43,5 +43,6 @@
 	<classpathentry kind="lib" path="/ano-libs/lib/postgresql-8.2-504.jdbc3.jar"/>
 	<classpathentry kind="lib" path="/ano-libs/lib/servlet-api.jar"/>
 	<classpathentry kind="lib" path="/ano-libs/lib/struts.jar"/>
+	<classpathentry kind="lib" path="/ano-libs/lib/ano-util.jar" sourcepath="/ano-util/java"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>
