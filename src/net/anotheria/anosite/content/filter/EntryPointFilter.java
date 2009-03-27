@@ -98,7 +98,9 @@ public class EntryPointFilter implements Filter{
 				return;
 			}
 			
-			String redirect = req.getContextPath()+req.getServletPath()+targetPage.getName()+".html";
+			String urlQuery = req.getQueryString();
+			urlQuery = urlQuery != null && urlQuery.length() > 0? "?" + urlQuery:"";
+			String redirect = req.getContextPath()+req.getServletPath()+targetPage.getName()+".html" + urlQuery;
 			log.info("Redirecting to: "+redirect);
 			((HttpServletResponse)sres).sendRedirect(redirect);
 		}catch(ASGRuntimeException e){

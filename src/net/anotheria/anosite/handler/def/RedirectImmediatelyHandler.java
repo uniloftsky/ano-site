@@ -23,7 +23,9 @@ public class RedirectImmediatelyHandler extends AbstractBoxHandler{
 	}
 	
 	private BoxHandlerResponse getRedirection(HttpServletRequest req, HttpServletResponse res, Box box){
-		String redirectTarget = box.getParameter1();
+		String urlQuery = req.getQueryString();
+		urlQuery = urlQuery != null && urlQuery.length() > 0? "?" + urlQuery:"";
+		String redirectTarget = box.getParameter1() + urlQuery;
 		return new ResponseRedirectImmediately(redirectTarget);
 	}
 }

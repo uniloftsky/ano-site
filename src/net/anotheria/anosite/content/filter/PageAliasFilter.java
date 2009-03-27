@@ -51,7 +51,9 @@ public class PageAliasFilter implements Filter{
 				if (alias.getPathes()!=null && alias.getPathes().indexOf(path)!=-1){
 					log.info("found page alias hit "+path+" to page: "+alias.getTargetPage());
 					Pagex target = webDataService.getPagex(alias.getTargetPage());
-					((HttpServletResponse)sres).sendRedirect("/"+target.getName()+".html");
+					String urlQuery = req.getQueryString();
+					urlQuery = urlQuery != null && urlQuery.length() > 0? "?" + urlQuery:"";
+					((HttpServletResponse)sres).sendRedirect("/"+target.getName()+".html" + urlQuery);
 					return;
 				}
 			}
