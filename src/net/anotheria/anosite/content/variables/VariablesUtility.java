@@ -23,6 +23,9 @@ public class VariablesUtility {
 	public static final String QUOTE = "\"";
 	public static final char ESCAPE_CHAR = '\\';
 	
+	
+//	private static final Logger log = Logger.getLogger(VariablesUtility.class);
+	
 	private static Map<String, VariablesProcessor> defaultProcessors = new HashMap<String, VariablesProcessor>();
 	
 	static{
@@ -76,6 +79,8 @@ public class VariablesUtility {
 	
 	
 	public static String replaceVariables(HttpServletRequest req, String src, Map<String,VariablesProcessor> processors){
+		if(src == null || src.length() == 0)
+			return src;
 		List<ContentElement> index = indexSource(src);
 		return replaceVariables(req, index, processors);
 	}
