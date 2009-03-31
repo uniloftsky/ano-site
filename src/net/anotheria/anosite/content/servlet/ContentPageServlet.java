@@ -1,6 +1,13 @@
 package net.anotheria.anosite.content.servlet;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -135,7 +142,25 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		req.setAttribute(AnositeConstants.RA_CURRENT_URI, requestURI);
 		
 		String pageName = extractPageName(req);
+		boolean errorPage = pageName!=null && (pageName.equals("404") || pageName.equals("500"));
+		
 		Pagex page = getPageByName(pageName);
+		if (page==null){
+			//ok, page not found, first we are trying to fall back to file system.
+			boolean foundOnFs = !submit && fallBackToFileSystem(req, res);
+			if (foundOnFs)
+				return;
+		}
+		
+		//we have an error 
+		if (page==null){
+			if (errorPage)
+				throw new ServletException("Page: "+pageName+" not found.");
+			APICallContext.getCallContext().getCurrentSession().setAttribute("404.sourcePageName", pageName);
+			res.sendRedirect(req.getContextPath()+"/"+"404.html");
+			return ;
+		}
+		
 		
 		//new check for https.
 		boolean secure = req.isSecure();
@@ -824,9 +849,9 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		try {
 			return webDataService.getPagexsByProperty(PagexDocument.PROP_NAME, pageName).get(0);
 		} catch (Exception e) {
-			log.error("getPageByName("+pageName+")", e);
+			//ignore -> 
 		}
-		throw new ServletException("Page " + pageName + " not found.");
+		return null;
 	}
 
 
@@ -906,5 +931,49 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		}
 		
 		return ret;
+	}
+	
+	public static final Charset MY_FS_CHARSET = Charset.forName("ISO-8859-15");
+
+	
+	private boolean fallBackToFileSystem(HttpServletRequest req, HttpServletResponse res){
+		String requestURI = req.getRequestURI();
+		if (requestURI.indexOf("..")!=-1)
+			throw new IllegalArgumentException("Filename contains illegal characters: "+requestURI);
+		String fileName = "webapps"+requestURI;
+		if (log.isDebugEnabled())
+			log.debug("Trying to load file: "+fileName);
+		File f = new File(fileName);
+		if (!f.exists())
+			return false;
+		
+		FileInputStream fIn = null;
+		
+		try{
+			fIn = new FileInputStream(f);
+			BufferedReader reader = new BufferedReader(new InputStreamReader(fIn, MY_FS_CHARSET));
+			int r = -1;
+			OutputStreamWriter out = new OutputStreamWriter(res.getOutputStream(), MY_FS_CHARSET);
+			BufferedWriter writer = new BufferedWriter(out);
+			while( (r=reader.read())!=-1){
+				//System.out.println((char)r);
+				writer.write(r);
+			}
+			writer.flush();
+			writer.close();
+		}catch(IOException e){
+			log.error("fallBackToFileSystem(URI: "+requestURI+")", e);
+			return false;
+		}finally{
+			if (fIn!=null){
+				try{
+					fIn.close();
+				}catch(IOException ignored){}
+			}
+		}
+
+		
+		
+		return true;
 	}
 }
