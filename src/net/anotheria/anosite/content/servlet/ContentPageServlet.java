@@ -940,10 +940,14 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		String requestURI = req.getRequestURI();
 		if (requestURI.indexOf("..")!=-1)
 			throw new IllegalArgumentException("Filename contains illegal characters: "+requestURI);
-		String fileName = "webapps"+requestURI;
+		String prefix = "webapps";
+		if (req.getContextPath()==null || req.getContextPath().length()==0)
+			prefix += "/ROOT";
+		String fileName = prefix+requestURI;
 		if (log.isDebugEnabled())
 			log.debug("Trying to load file: "+fileName);
 		File f = new File(fileName);
+		System.out.println("Loading uri: "+requestURI+" from file "+fileName+", exists: "+f.exists());
 		if (!f.exists())
 			return false;
 		
