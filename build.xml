@@ -201,4 +201,12 @@
 	      <link href="http://moskito.anotheria.net/javadoc/web/"/>
 	    </javadoc>
 	</target>
+
+    <target name="run">
+          <ant antfile="junit.xml" target="run"/>
+    </target>
+
+    <target name="run-junits">
+        <ant antfile="junit.xml" target="all"/>
+    </target>
 </project>
