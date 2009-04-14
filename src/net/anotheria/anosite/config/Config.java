@@ -1,15 +1,17 @@
 package net.anotheria.anosite.config;
 
-import net.java.dev.moskito.core.configuration.ConfigurationServiceFactory;
-import net.java.dev.moskito.core.configuration.IConfigurable;
+import org.configureme.ConfigurationManager;
+import org.configureme.annotations.Configure;
+import org.configureme.annotations.ConfigureMe;
 
-public class Config implements IConfigurable{
-	private String value;
+
+@ConfigureMe (name="testconfig")
+public class Config{
+	@Configure private String value;
 	
 	public static final String DEF_VALUE = "default";
-	public static final String KEY_SYSTEM_NAME = "system.name"; 
 	
-	private String systemName;
+	@Configure private String systemName;
 
 	private static Config instance;
 	
@@ -21,37 +23,21 @@ public class Config implements IConfigurable{
 			if(instance != null)
 				return instance;
 			instance = new Config();
+			ConfigurationManager.INSTANCE.configure(instance);
 			return instance;
 		}
 	}
 	
 	private Config(){
 		value = DEF_VALUE;
-		ConfigurationServiceFactory.getConfigurationService().addConfigurable(this);
 	}
 	
-	public String getConfigurationName() {
-		return "testconfig";
+	public void setValue(String aValue){
+		value = aValue;
 	}
-
-	public void notifyConfigurationFinished() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void notifyConfigurationStarted() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setProperty(String key, String aValue) {
-		//System.out.println("Set: "+key+", value:"+aValue);
-		if ("value".equals(key))
-			this.value = aValue;
-		
-		if (KEY_SYSTEM_NAME.equals(key))
-			systemName = aValue;
-		
+	
+	public void setSystemName(String aValue){
+		systemName = aValue;
 	}
 	
 	public String getValue(){
@@ -64,14 +50,14 @@ public class Config implements IConfigurable{
 	}
 	
 	public boolean isSystemTest(){
-		return ConfigConst.MODE_TEST.equals(systemName);
+		return systemName.startsWith(ConfigConst.MODE_TEST);
 	}
 	
 	public boolean isSystemDevelop(){
-		return ConfigConst.MODE_DEVELOP.equals(systemName);
+		return systemName.startsWith(ConfigConst.MODE_DEVELOP);
 	}
 	
 	public boolean isSystemProduction(){
-		return ConfigConst.MODE_PRODUCTION.equals(systemName);
+		return systemName.startsWith(ConfigConst.MODE_PRODUCTION);
 	}
 }

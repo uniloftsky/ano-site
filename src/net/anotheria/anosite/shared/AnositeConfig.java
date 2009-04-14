@@ -1,42 +1,27 @@
 package net.anotheria.anosite.shared;
 
-import net.java.dev.moskito.core.configuration.ConfigurationServiceFactory;
-import net.java.dev.moskito.core.configuration.IConfigurable;
+import org.configureme.ConfigurationManager;
+import org.configureme.annotations.Configure;
+import org.configureme.annotations.ConfigureMe;
 
-public class AnositeConfig implements IConfigurable{
+@ConfigureMe
+public class AnositeConfig{
 	private static AnositeConfig instance = new AnositeConfig();
 	
 	public static final String CFG_ENFORCE_HTTPS = "enforcehttps";
 	
-	private boolean enforceHttps = true;
+	@Configure private boolean enforceHttps = true;
 	
 	
 	public static AnositeConfig getInstance(){ return instance; }
 		
 	private AnositeConfig(){
-		ConfigurationServiceFactory.getConfigurationService().addConfigurable(this);
+		ConfigurationManager.INSTANCE.configure(this);
 	}
-
-
-	@Override
-	public String getConfigurationName() {
-		return "anosite";
-	}
-
-	@Override
-	public void notifyConfigurationFinished() {
-	}
-
-	@Override
-	public void notifyConfigurationStarted() {
-	}
-
-	@Override
-	public void setProperty(String name, String value) {
-		if (CFG_ENFORCE_HTTPS.equals(name))
-			enforceHttps = value.equals("true");
-	}
-
 	
 	public boolean enforceHttps(){ return enforceHttps; }
+	
+	public void setEnforceHttps(boolean aValue){
+		enforceHttps = aValue;
+	}
 }
