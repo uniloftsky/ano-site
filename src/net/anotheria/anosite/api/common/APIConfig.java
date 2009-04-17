@@ -5,10 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.configureme.ConfigurationManager;
-import org.configureme.annotations.Configure;
-import org.configureme.annotations.ConfigureMe;
-
 import net.anotheria.anosite.api.activity.ActivityAPI;
 import net.anotheria.anosite.api.activity.ActivityAPIFactory;
 import net.anotheria.anosite.api.content.ContentAPI;
@@ -17,6 +13,8 @@ import net.anotheria.anosite.api.generic.login.LoginAPI;
 import net.anotheria.anosite.api.generic.login.LoginAPIFactory;
 import net.anotheria.anosite.api.generic.observation.ObservationAPI;
 import net.anotheria.anosite.api.generic.observation.ObservationAPIFactory;
+
+import org.configureme.ConfigurationManager;
 
 public class APIConfig {
 

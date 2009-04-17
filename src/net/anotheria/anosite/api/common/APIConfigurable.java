@@ -9,7 +9,6 @@ public class APIConfigurable {
 	@Configure	private boolean testMode;
 	
 	public APIConfigurable(){
-		System.out.println("%%%%% ======= %%%%%");
 	}
 
 	public boolean isVerboseMethodCalls() {
