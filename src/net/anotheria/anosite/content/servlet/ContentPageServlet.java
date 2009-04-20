@@ -96,6 +96,8 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	
 	private AnositeConfig config = AnositeConfig.getInstance();
 	
+	public static final String BEAN_ANOSITE_VERBOSITY = "anosite.verbose";
+	
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 
@@ -132,6 +134,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	protected void processRequest(HttpServletRequest req, HttpServletResponse res, boolean submit) throws ServletException, IOException, ASGRuntimeException {
 
 		prepareTextResources(req);
+		req.setAttribute(BEAN_ANOSITE_VERBOSITY, config.verbose() ? Boolean.TRUE : Boolean.FALSE);
 
 		String requestURI = req.getRequestURI();
 		String queryString = req.getQueryString();
