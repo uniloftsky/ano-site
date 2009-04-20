@@ -8,10 +8,8 @@ import org.configureme.annotations.ConfigureMe;
 public class AnositeConfig{
 	private static AnositeConfig instance = new AnositeConfig();
 	
-	public static final String CFG_ENFORCE_HTTPS = "enforcehttps";
-	
 	@Configure private boolean enforceHttps = true;
-	
+	@Configure private boolean verbose = false;
 	
 	public static AnositeConfig getInstance(){ return instance; }
 		
@@ -23,5 +21,11 @@ public class AnositeConfig{
 	
 	public void setEnforceHttps(boolean aValue){
 		enforceHttps = aValue;
+	}
+	
+	public boolean verbose() { return verbose; }
+	
+	public void setVerbose(boolean aValue){
+		verbose = aValue;
 	}
 }
