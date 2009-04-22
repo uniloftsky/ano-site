@@ -950,7 +950,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		if (log.isDebugEnabled())
 			log.debug("Trying to load file: "+fileName);
 		File f = new File(fileName);
-		System.out.println("Loading uri: "+requestURI+" from file "+fileName+", exists: "+f.exists());
+		log.debug("Loading uri: "+requestURI+" from file "+fileName+", exists: "+f.exists());
 		if (!f.exists())
 			return false;
 		
