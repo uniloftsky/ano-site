@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import net.anotheria.anosite.api.common.APICallContext;
+
 
 /**
  * Represent Variable names for CallendarProcessor.
@@ -177,7 +179,7 @@ public enum CalendarVariableNames {
     }
 
     /**
-     * Returns currentValue for selected variable.
+     * Returns currentValue for selected variable. With Locale - from <a>ApiCallContext.currentLocale</a>
      *
      * @param format incoming String param - which represent some date Format pattern
      * @return String variable value
@@ -186,7 +188,7 @@ public enum CalendarVariableNames {
         SimpleDateFormat dateFormat;
         format = isFormatValid(format) ? format : this.defaultFormatPattern;
         try {
-            dateFormat = new SimpleDateFormat(format);
+            dateFormat = new SimpleDateFormat(format, APICallContext.getCallContext().getCurrentLocale());
         } catch (IllegalArgumentException e) {
             log.error("Unsupported DateFormat pattern - " + format + " used for variable - " + this.getVariableName());
             dateFormat = new SimpleDateFormat(this.defaultFormatPattern);
