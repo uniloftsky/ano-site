@@ -41,12 +41,16 @@ public class CalendarProcessorTestCase extends TestCase {
      */
     public void testMonthWithFormats() {
         //Checking Month in diff Formats
-        String currentDate = processor.replace("", CalendarVariableNames.currentMonth.getVariableName() + ":MMMMM", "test!!!!", null);
-        assertNotNull("should not be null", currentDate);
+    	String variable = CalendarVariableNames.currentMonth.getVariableName() + ":MMMMM";
+    	String currentDate = processor.replace("", variable, "test!!!!", null);
+    	System.out.println(variable + " replaced with " + currentDate);
+    	assertNotNull("should not be null", currentDate);
         log.debug("Date = " + currentDate);
         //System.out.println(currentDate);
 
-        currentDate = processor.replace("", CalendarVariableNames.currentMonth.getVariableName() + ":M", "test!!!!", null);
+        variable = CalendarVariableNames.currentMonth.getVariableName() + ":M"; 
+        currentDate = processor.replace("", variable, "test!!!!", null);
+        System.out.println(variable + " replaced with " + currentDate);
         assertNotNull("should not be null", currentDate);
         log.debug("Date = " + currentDate);
         //System.out.println(currentDate);
