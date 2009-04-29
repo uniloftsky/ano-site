@@ -1,0 +1,30 @@
+<ivy-module version="2.0">
+    <info organisation="anotheria.net" module="ano-site"/>
+	<configurations >
+		<conf name="jar" />
+	</configurations>	
+	<publications>
+		<artifact name="ano-site" type="jar" ext="jar" conf="jar"/>
+    </publications>
+    <dependencies>
+        <dependency org="org.apache" name="log4j" rev="stable" transitive="false"/>
+        <dependency org="org.apache" name="struts" rev="stable" transitive="false"/>
+
+        <dependency org="org.apache.commons" name="commons-beanutils" rev="stable" transitive="false"/>
+
+        <dependency org="javax" name="servlet-api" rev="stable" transitive="false"/>
+        <dependency org="javax" name="jsp-api" rev="stable" transitive="false"/>
+
+
+        <dependency org="java.net" name="moskito-core" rev="latest" transitive="true" changing="true"/>
+        <dependency org="java.net" name="moskito-web" rev="latest" transitive="true" changing="true"/>
+        <dependency org="java.net" name="moskito-util" rev="latest" transitive="true" changing="true"/>
+
+        <dependency org="java.net" name="configureme" rev="latest" transitive="true" changing="true"/>
+        <dependency org="org.json" name="json" rev="stable" transitive="false" />
+        
+        <dependency org="anotheria.net" name="ano-util" rev="latest" transitive="true" changing="true"/>
+        <dependency org="anotheria.net" name="ano-doc"  rev="latest" transitive="true" changing="true"/>
+        <dependency org="anotheria.net" name="ano-web"  rev="latest" transitive="true" changing="true"/>
+    </dependencies>
+</ivy-module>
