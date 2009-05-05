@@ -43,31 +43,65 @@ public interface APISession {
 	
 	public int POLICY_DEFAULT = POLICY_LOCAL;
 	
-	public static final String ATTRIBUTE_GUEST_SESSION_ID = "__guestSessionId";
-	
+	/**
+	 * Sets the object in the session under the given name under the usage of the default policy.
+	 * @param key the name of the attribute in the session
+	 * @param value the object to store in the session.
+	 */
 	public void setAttribute(String key, Object value);
 	
+	/**
+	 * Sets the object as session attribute into the session under the given policy.
+	 * @param key the name under which the attribute is stored.
+	 * @param policy the policy to be applied to the attribute. See POLICY_ constants for details.
+	 * @param value the value to store in the session.
+	 */
 	public void setAttribute(String key, int policy, Object value);
+	
 	
 	public void setAttribute(String key, int policy, Object value, long expiresWhen);
 
+	/**
+	 * Returns the session attribute with the given key.
+	 * @param key the key under which the attribute is stored.
+	 * @return the stored attribute or null if no attribute under that name is stored.
+	 */
 	public Object getAttribute(String key);
-	
+	/**
+	 * Removes the attribute with under the given key. If no such attribute is present the method returns without failing.
+	 * @param key the attribute name(key) to remove
+	 */
 	public void removeAttribute(String key);
 	
+	/**
+	 * Returns the session id.
+	 * @return
+	 */
 	public String getId();
-	
+	/**
+	 * Returns the ip adress.
+	 * @return
+	 */
 	public String getIpAddress();
-	
+	/**
+	 * Sets the ip adress which is associated with this session.
+	 * @param anIpAddress
+	 */
 	public void setIpAddress(String anIpAddress);
 	
 	public String getUserAgent();
 	
 	public void setUserAgent(String anUserAgent);
 	
+	/**
+	 * Called whenever the user performs an explicit logout
+	 */
 	public void cleanupOnLogout();
 	
-
+	/**
+	 * Returns the id of the currently logged in user.
+	 * @return
+	 */
 	public String getCurrentUserId(); 
 	
 	public String getCurrentEditorId();

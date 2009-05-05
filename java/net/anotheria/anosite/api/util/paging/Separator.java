@@ -17,6 +17,10 @@ See www.friendscout24.de for details.
 ** ------------------------------------------------------------------------- */
 package net.anotheria.anosite.api.util.paging;
 
+/**
+ * A PagingElement flavour used to represent a separator.
+ * @author lrosenberg
+ */
 public class Separator extends PagingElement{
 
 	@Override
@@ -43,15 +47,4 @@ public class Separator extends PagingElement{
 	public boolean isSeparator() {
 		return true;
 	}
-
 }
-
-/* ------------------------------------------------------------------------- *
- * $Log$
- * Revision 1.1  2006/09/20 08:09:20  lrosenberg
- * *** empty log message ***
- *
- * Revision 1.1  2006/08/04 15:47:49  lrosenberg
- * *** empty log message ***
- *
- */
