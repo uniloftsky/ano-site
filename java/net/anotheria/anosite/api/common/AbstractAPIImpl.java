@@ -12,11 +12,22 @@ import net.anotheria.anosite.api.validation.ValidationException;
 
 import org.apache.log4j.Logger;
 
+/**
+ * A base class for API implementation which provides basic functionality. One of the things this class is providing are the so-called 'private' attributes.
+ * If an attribute is set via setAttribute method in the AbstractAPI instead of directly getCurrentSession().setAttribute() the name of the attribute is prefixed 
+ * by the name of the API Implementation class, which allows multiple apis to store attributes under the same name without disturbing each other's values. 
+ * If an API AAPIImpl and BAPIImpl both stores an attribute under "foo" it is stored internally under "x.y.z.AAPIImpl.foo" and "x.y.v.BAPIImpl.foo", therefore
+ * allowing the API Implementations to use sound names for attributes without carying for exclusivity.  
+ * @author lrosenberg
+ *
+ */
 public abstract class AbstractAPIImpl implements API{
-	
+	/**
+	 * A protected log instance is created in the constructor.
+	 */
 	protected Logger log;
 	
-	private String ATTRIBUTE_PREFIX = getClass().getName()+".";
+	private final String ATTRIBUTE_PREFIX = getClass().getName()+".";
 	private static APIConfig apiConfig;
 	
 	public static final long HOUR = 1000L*60*60;
@@ -29,12 +40,17 @@ public abstract class AbstractAPIImpl implements API{
 		apiConfig = new APIConfig();
 	}
 	
-	public void deInit() {
+	@Override public void deInit() {
 	}
 
-	public void init() {
+	@Override public void init() {
 	}
 
+	/**
+	 * Sets a private attribute in session
+	 * @param name
+	 * @param attribute
+	 */
 	protected void setAttributeInSession(String name, Object attribute){
 		getSession().setAttribute(getPrivateAttributeName(name), attribute);
 	}
@@ -58,30 +74,59 @@ public abstract class AbstractAPIImpl implements API{
 		return getSession().getAttribute(getPrivateAttributeName(name));
 	}
 	
+	/**
+	 * Removes a private attribute from session.
+	 * @param key
+	 */
 	public void removeAttributeFromSession(String key) {
 		getSession().removeAttribute(getPrivateAttributeName(key));
 	}
 	
+	/**
+	 * Returns the prefix for all internally stored attributes.
+	 * @return
+	 */
 	private String getSessionAttributePrefix(){
 		return ATTRIBUTE_PREFIX;
 	}
 	
+	/**
+	 * Returns a 'private' attribute name which allows to reduce the visibility of the attribute.
+	 * @param name
+	 * @return
+	 */
 	protected String getPrivateAttributeName(String name){
 		return new StringBuilder(getSessionAttributePrefix()).append(name).toString();
 	}
 	
+	/**
+	 * Returns the current CallContext. Convenience method.
+	 * @return
+	 */
 	protected APICallContext getCallContext(){
 		return APICallContext.getCallContext();
 	}
 	
+	/**
+	 * Returns the current session from the CallContext. Convenience method.
+	 * @return
+	 */
 	protected APISession getSession(){
 		return getCallContext().getCurrentSession();
 	}
 	
+	/**
+	 * Returns the current locale from the CallContext. Convenience method.
+	 * @return
+	 */
 	protected Locale getCurrentLocale(){
 		return getCallContext().getCurrentLocale();
 	}
 	
+	/**
+	 * Returns the current userId from the CallContext. Convenience method.
+	 * @return
+	 */
 	protected String getCurrentUserId(){
 		return getCallContext().getCurrentUserId();
 	}

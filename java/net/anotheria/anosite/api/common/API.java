@@ -2,18 +2,17 @@ package net.anotheria.anosite.api.common;
 
 /**
  * Base interface for all api-class interfaces.
- * @author another
- *
+ * @author lrosenberg
  */
 public interface API {
 	
 	/**
 	 * Called when an api instance is first created.
 	 */
-	public void init();
+	void init();
 	
 	/**
 	 * Called immediately before shutdown.
 	 */
-	public void deInit();
+	void deInit();
 }
