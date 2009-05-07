@@ -61,6 +61,7 @@
 		       			<element type="field" name="id" readonly="true"/>
 		      			<element type="field" name="name" /> 
 		      			<element type="field" name="sender" />
+						<element type="field" name="senderName"/>
 		      			<element type="field" name="subject" />
 		      			<element type="field" name="message" /> 
 		      			<element type="field" name="plainMessage" />
