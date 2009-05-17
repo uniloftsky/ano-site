@@ -14,13 +14,25 @@ import net.java.dev.moskito.core.predefined.ServiceStatsFactory;
 
 import org.apache.log4j.Logger;
 
-
-
+/**
+ * The utility for API resolution.
+ * @author lrosenberg
+ *
+ */
 public class APIFinder {
 	
+	/**
+	 * Storage for API instances.
+	 */
 	private static Map<Class<? extends API>, API> apis;
+	/**
+	 * Inernal storage for API factories.
+	 */
 	private static Map<Class<? extends API>, APIFactory<? extends API>> factories;
 	
+	/**
+	 * Logger.
+	 */
 	private static Logger log;
 	
 	static{
@@ -29,7 +41,15 @@ public class APIFinder {
 		init();
 	}
 	
+	/**
+	 * True if masking is enabled. If masking is enabled any created API will be proxied by a masking api which allows to overwrite any single method in the API
+	 * by putting it in the MaskMethodRegistry. Masking must be enabled before usage (in @BeforeClass method of your unittest).
+	 */
 	private static boolean maskingEnabled = false;
+	/**
+	 * True if mocking is enabled. If mocking is enabled any non existing, not registered API will be created on the fly and proxied by a mocking api,
+	 * which allows to call single API methods by putting them in the MockMethodRegistry. Mocking must be enabled before usage (in @BeforeClass method of your unittest).
+	 */
 	private static boolean mockingEnabled = false;
 	
 	
@@ -42,6 +62,12 @@ public class APIFinder {
 		}
 	}
 	
+	/**
+	 * Returns the implementation for the given API interface clazz.
+	 * @param <T> the API class.
+	 * @param identifier T.class.
+	 * @return an implementation of T.
+	 */
 	public static<T  extends API> T findAPI(Class<T> identifier){
 		log.debug("find api: "+identifier);
 		@SuppressWarnings("unchecked")
@@ -69,6 +95,12 @@ public class APIFinder {
 		}
 	}
 	
+	/**
+	 * Creates a new instance of T.
+	 * @param <T> the API class to create.
+	 * @param identifier a pattern.
+	 * @return
+	 */
 	private synchronized static<T extends API> T createAPI(Class<T> identifier){
 		@SuppressWarnings("unchecked")
 		APIFactory<T> factory = (APIFactory<T>)factories.get(identifier);
@@ -105,12 +137,16 @@ public class APIFinder {
 			Class<? extends API>[] interfaces;
 			List<Class<? extends API>> aliases = APIConfig.getAliases(identifier);
 			if (aliases!=null && aliases.size()>0){
-				interfaces = new Class[aliases.size()+2];
+				@SuppressWarnings("unchecked") 
+				Class<? extends API>[] _interfaces = (Class<? extends API>[]) new Class[aliases.size()+2];
+				interfaces = _interfaces;
 				int i = 2;
 				for (Class<? extends API> a : aliases)
 					interfaces[i++] = a;
 			}else{
-				interfaces = new Class[2];
+				@SuppressWarnings("unchecked") 
+				Class<? extends API>[] _interfaces = (Class<? extends API>[]) new Class[2];
+				interfaces = _interfaces;
 			}
 			
 			interfaces[0] = identifier;
@@ -125,7 +161,7 @@ public class APIFinder {
 				"default",
 				interfaces
 			);
-			T ret = (T) proxy.createProxy(); 
+			@SuppressWarnings("unchecked")T ret = (T) proxy.createProxy(); 
 			//log.debug("\t created proxy, returning proxy:"+proxy+", ret: "+ret);
 			return ret;
 			//return newAPI;
@@ -176,6 +212,10 @@ public class APIFinder {
 		mockingEnabled = aMockingEnabled;
 	}
 	
+	/**
+	 * Returns true if either mocking or masking is enabled.
+	 * @return
+	 */
 	public static boolean isInTestingMode(){
 		return isMockingEnabled() || isMaskingEnabled();
 	}

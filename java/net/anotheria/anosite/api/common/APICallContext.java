@@ -65,10 +65,10 @@ public class APICallContext {
 
 	/**
 	 * Sets the currentUserId. This is a site-specific feature, the call context doesn't evaluate the userId.
-	 * @param currentUserId any string which is meaningful to the application.
+	 * @param aCurrentUserId any string which is meaningful to the application.
 	 */
-	public void setCurrentUserId(String currentUserId) {
-		this.currentUserId = currentUserId;
+	public void setCurrentUserId(String aCurrentUserId) {
+		currentUserId = aCurrentUserId;
 	}
 
 	/**
@@ -81,10 +81,10 @@ public class APICallContext {
 
 	/**
 	 * Sets the current editor id.
-	 * @param currentEditorId the username of the editor as in users.xml (for now).
+	 * @param aCurrentEditorId the username of the editor as in users.xml (for now).
 	 */
-	public void setCurrentEditorId(String currentEditorId) {
-		this.currentEditorId = currentEditorId;
+	public void setCurrentEditorId(String aCurrentEditorId) {
+		currentEditorId = aCurrentEditorId;
 	}
 
 	/**
