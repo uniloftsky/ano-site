@@ -3,28 +3,50 @@ package net.anotheria.anosite.api.generic.login;
 import net.anotheria.anosite.api.common.API;
 import net.anotheria.anosite.api.common.APIException;
 
+/**
+ * Basic API for login/out purposes.
+ * @author another
+ *
+ */
 public interface LoginAPI extends API{
+	/**
+	 * Logs the user with the given id in.
+	 * @param userId the userId to log in.
+	 * @throws APIException
+	 */
+	void logInUser(String userId) throws APIException;
+	/**
+	 * Logouts the current user.
+	 * @throws APIException
+	 */
+	void logoutMe() throws APIException;
 	
-	public void logInUser(String userId) throws APIException;
-	
-	public void logoutMe() throws APIException;
-	
-	public String getLogedUserId() throws APIException;
+	/**
+	 * Returns the id of the currently logged in user.
+	 * @return
+	 * @throws APIException
+	 */
+	String getLogedUserId() throws APIException;
 
-	public boolean isLogedIn() throws APIException;
+	/**
+	 * Returns true if there is a current userid.
+	 * @return
+	 * @throws APIException
+	 */
+	boolean isLogedIn() throws APIException;
 
 	/**
 	 * Adds a login preprocessor. Each login preprocessor is called before a user can actually login. LoginPreprocessor can prevent login by throwing an exception.
 	 * @param preProcessor
 	 */
-	public void addLoginPreprocessor(LoginPreProcessor preProcessor);
+	void addLoginPreprocessor(LoginPreProcessor preProcessor);
 	/**
 	 * Adds a login post processor. Each login postprocessor is called _after_ a user logins. LoginPostProcessor can't prevent login.
 	 * @param postProcessor
 	 */
-	public void addLoginPostprocessor(LoginPostProcessor postProcessor);
+	void addLoginPostprocessor(LoginPostProcessor postProcessor);
 	
-	public void addLogoutPreprocessor(LogoutPreProcessor preProcessor);
+	void addLogoutPreprocessor(LogoutPreProcessor preProcessor);
 	
-	public void addLogoutPostprocessor(LogoutPostProcessor preProcessor);
+	void addLogoutPostprocessor(LogoutPostProcessor preProcessor);
 }

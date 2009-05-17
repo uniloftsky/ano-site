@@ -11,6 +11,11 @@ import net.anotheria.anosite.api.generic.observation.ObservationAPI;
 import net.anotheria.anosite.api.generic.observation.ObservationSubjects;
 import net.anotheria.anosite.api.session.APISessionImpl;
 
+/**
+ * An implementation for the login api.
+ * @author lrosenberg
+ *
+ */
 public class LoginAPIImpl extends AbstractAPIImpl implements LoginAPI{
 	
 	private List<LoginPreProcessor>  loginPreProcessors;
