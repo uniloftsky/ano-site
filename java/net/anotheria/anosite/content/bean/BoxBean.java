@@ -3,26 +3,80 @@ package net.anotheria.anosite.content.bean;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Representation of a box for the jsp usage.
+ * @author lrosenberg
+ */
 public class BoxBean {
+	/**
+	 * The type of the box.
+	 */
 	private BoxTypeBean type;
+	/**
+	 * List with subboxes.
+	 */
 	private List<BoxBean> subboxes;
-	
+	/**
+	 * Value of the content attribute.
+	 */
 	private String content;
+	/**
+	 * Value of the name attribute.
+	 */
 	private String name;
+	/**
+	 * Document id of the box.
+	 */
 	private String id;
+	/**
+	 * Value of parameter1.
+	 */
 	private String parameter1;
+	/**
+	 * Value of parameter2.
+	 */
 	private String parameter2;
+	/**
+	 * Value of parameter3.
+	 */
 	private String parameter3;
+	/**
+	 * Value of parameter4.
+	 */
 	private String parameter4;
+	/**
+	 * Value of parameter5.
+	 */
 	private String parameter5;
+	/**
+	 * Value of parameter6.
+	 */
 	private String parameter6;
+	/**
+	 * Value of parameter7.
+	 */
 	private String parameter7;
+	/**
+	 * Value of parameter8.
+	 */
 	private String parameter8;
+	/**
+	 * Value of parameter9.
+	 */
 	private String parameter9;
+	/**
+	 * Value of parameter10.
+	 */
 	private String parameter10;
 	
+	/**
+	 * Attributes assigned to the box.
+	 */
 	private AttributeMap attributes;
 	
+	/**
+	 * Creates a new BoxBean.
+	 */
 	public BoxBean(){
 		subboxes = new ArrayList<BoxBean>();
 	}
