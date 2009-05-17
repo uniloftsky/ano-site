@@ -26,7 +26,9 @@ public abstract class AbstractAPIImpl implements API{
 	 * A protected log instance is created in the constructor.
 	 */
 	protected Logger log;
-	
+	/**
+	 * The attribute prefix which is used on all attributes put via setAttributeInSession... methods to prevent name collision.
+	 */
 	private final String ATTRIBUTE_PREFIX = getClass().getName()+".";
 	private static APIConfig apiConfig;
 	
@@ -47,14 +49,20 @@ public abstract class AbstractAPIImpl implements API{
 	}
 
 	/**
-	 * Sets a private attribute in session
-	 * @param name
-	 * @param attribute
+	 * Sets a private attribute in session.
+	 * @param name the name of the attribute.
+	 * @param attribute the value of the attribute.
 	 */
 	protected void setAttributeInSession(String name, Object attribute){
 		getSession().setAttribute(getPrivateAttributeName(name), attribute);
 	}
 	
+	/**
+	 * Sets attribute in session honouring the specified policy(ies).
+	 * @param name the name of the attribute.
+	 * @param policy the policy of the attribute. Multiple policies can be ORed.
+	 * @param attribute the value of the attribute.
+	 */
 	protected void setAttributeInSession(String name, int policy, Object attribute){
 		if (PolicyHelper.isAutoExpiring(policy))
 			setAttributeInSession(name, policy, attribute, System.currentTimeMillis()+getExpirePeriodForAttribute(name));
@@ -131,11 +139,18 @@ public abstract class AbstractAPIImpl implements API{
 		return getCallContext().getCurrentUserId();
 	}
 	
-	
-	protected long getExpirePeriodForAttribute(@SuppressWarnings("unused") String name){
+	/**
+	 * Called to determine the expiration period for an attribute. This can be overwritten to parametrize the default expiration values.
+	 * @param name name of the attribute.
+	 * @return duration of the expiaration period in millis.
+	 */
+	protected long getExpirePeriodForAttribute(String name){
 		return getDefaultExpirePeriodForAttribute();
 	}
-	
+	/**
+	 * Returns the default expiration period. Returned by not overwritten version of getExpirePeriodForAttribute(name).
+	 * @return
+	 */
 	protected long getDefaultExpirePeriodForAttribute(){
 		return APISession.DEFAULT_EXPIRE_PERIOD;
 	}
