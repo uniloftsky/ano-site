@@ -1,5 +1,9 @@
 package net.anotheria.anosite.content.variables;
 
+/**
+ * Set of constants for CalendarVariableNames enum. Due to compilation problems in 1.6 (forward declaration) moved from CalendarVariableNames in a separate class.
+ * @author lrosenberg.
+ */
 public class CalendarVariableNamesConstants {
     /**
      * Default Date format for currentDate
@@ -22,5 +26,8 @@ public class CalendarVariableNamesConstants {
      */
     public static final String TIME_DEFAULT_FORMAT = "HH:mm:ss";
 
-
+    /**
+     * Prevent from initialization.
+     */
+    private CalendarVariableNamesConstants(){;}
 }
