@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import net.anotheria.anosite.api.common.APICallContext;
-
+import static net.anotheria.anosite.content.variables.CalendarVariableNamesConstants.*;
 
 /**
  * Represent Variable names for CallendarProcessor.
@@ -19,7 +19,7 @@ public enum CalendarVariableNames {
     /**
      * @see net.anotheria.anosite.content.variables.CalendarVariableNames Constructor
      */
-    currentDate("currentDate", CalendarVariableNames.DATE_DEFAULT_FORMAT) {
+    currentDate("currentDate", DATE_DEFAULT_FORMAT) {
 
         @Override
         List<String> getAllowedFormats() {
@@ -29,7 +29,7 @@ public enum CalendarVariableNames {
     /**
      * @see net.anotheria.anosite.content.variables.CalendarVariableNames Constructor
      */
-    currentDay("currentDay", CalendarVariableNames.DAY_DEFAULT_FORMAT) {
+    currentDay("currentDay", DAY_DEFAULT_FORMAT) {
 
         @Override
         List<String> getAllowedFormats() {
@@ -39,7 +39,7 @@ public enum CalendarVariableNames {
     /**
      * @see net.anotheria.anosite.content.variables.CalendarVariableNames Constructor
      */
-    currentMonth("currentMonth", CalendarVariableNames.MONTH_DEFAULT_FORMAT) {
+    currentMonth("currentMonth", MONTH_DEFAULT_FORMAT) {
         @Override
         List<String> getAllowedFormats() {
             return getAllowedMonthFormats();
@@ -48,7 +48,7 @@ public enum CalendarVariableNames {
     /**
      * @see net.anotheria.anosite.content.variables.CalendarVariableNames Constructor
      */
-    currentYear("currentYear", CalendarVariableNames.YEAR_DEFAULT_FORMAT) {
+    currentYear("currentYear", YEAR_DEFAULT_FORMAT) {
 
         @Override
         List<String> getAllowedFormats() {
@@ -58,7 +58,7 @@ public enum CalendarVariableNames {
     /**
      * @see net.anotheria.anosite.content.variables.CalendarVariableNames Constructor
      */
-    currentTime("currentTime", CalendarVariableNames.TIME_DEFAULT_FORMAT) {
+    currentTime("currentTime", TIME_DEFAULT_FORMAT) {
 
         @Override
         List<String> getAllowedFormats() {
@@ -66,27 +66,6 @@ public enum CalendarVariableNames {
         }};
 
     private static final Logger log = Logger.getLogger(CalendarVariableNames.class);
-
-    /**
-     * Default Date format for currentDate
-     */
-    public static final String DATE_DEFAULT_FORMAT = "yyyy.MM.dd  HH:mm:ss";
-    /**
-     * Default Date format for currentDay
-     */
-    public static final String DAY_DEFAULT_FORMAT = "dd";
-    /**
-     * Default Date format for currentMonth
-     */
-    public static final String MONTH_DEFAULT_FORMAT = "MMMM";
-    /**
-     * Default Date format for currentYear
-     */
-    public static final String YEAR_DEFAULT_FORMAT = "yyyy";
-    /**
-     * Default Date format for currentTime
-     */
-    public static final String TIME_DEFAULT_FORMAT = "HH:mm:ss";
 
 
     /**
