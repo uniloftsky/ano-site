@@ -18,6 +18,7 @@ import net.anotheria.anosite.gen.assitedata.service.IASSiteDataService;
 import net.anotheria.anosite.gen.aswebdata.data.Pagex;
 import net.anotheria.anosite.gen.aswebdata.service.ASWebDataServiceFactory;
 import net.anotheria.anosite.gen.aswebdata.service.IASWebDataService;
+import net.anotheria.anosite.gen.shared.service.AnoDocConfigurator;
 import net.anotheria.asg.exception.ASGRuntimeException;
 
 import org.apache.log4j.Logger;
@@ -36,6 +37,7 @@ public class PageAliasFilter implements Filter{
 		if (!(sreq instanceof HttpServletRequest))
 			return;
 		HttpServletRequest req = (HttpServletRequest)sreq;
+		req.setCharacterEncoding(AnoDocConfigurator.getEncoding());
 
 		
 		String path = req.getServletPath();

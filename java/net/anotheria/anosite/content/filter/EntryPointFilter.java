@@ -19,6 +19,7 @@ import net.anotheria.anosite.gen.assitedata.service.IASSiteDataService;
 import net.anotheria.anosite.gen.aswebdata.data.Pagex;
 import net.anotheria.anosite.gen.aswebdata.service.ASWebDataServiceFactory;
 import net.anotheria.anosite.gen.aswebdata.service.IASWebDataService;
+import net.anotheria.anosite.gen.shared.service.AnoDocConfigurator;
 import net.anotheria.asg.exception.ASGRuntimeException;
 
 import org.apache.log4j.Logger;
@@ -40,6 +41,8 @@ public class EntryPointFilter implements Filter{
 			return;
 		
 		HttpServletRequest req = (HttpServletRequest)sreq;
+		req.setCharacterEncoding(AnoDocConfigurator.getEncoding());
+
 		String domain = req.getServerName();
 		//System.out.println("Request on domain: "+domain);
 		//System.out.println(req.getContextPath()+" "+req.getServletPath()+" "+req.getPathInfo()+"?"+req.getQueryString());

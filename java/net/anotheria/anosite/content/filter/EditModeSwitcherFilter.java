@@ -10,6 +10,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
+import net.anotheria.anosite.gen.shared.service.AnoDocConfigurator;
 import net.anotheria.anosite.util.AnositeConstants;
 
 public class EditModeSwitcherFilter implements Filter{
@@ -27,6 +28,8 @@ public class EditModeSwitcherFilter implements Filter{
 		if (!(sreq instanceof HttpServletRequest))
 			return;
 		HttpServletRequest req = (HttpServletRequest)sreq;
+		req.setCharacterEncoding(AnoDocConfigurator.getEncoding());
+		
 		String p = req.getParameter(PARAM_SWITCH_MODE);
 		if (p!=null && p.length()>0){
 			if (p.equals(PARAM_VALUE_EDIT_MODE))

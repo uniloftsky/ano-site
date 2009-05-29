@@ -31,8 +31,9 @@ public class LanguageFilter implements Filter{
 			return;
 		}
 		
-		
+	
 		HttpServletRequest req = (HttpServletRequest)rq;
+		req.setCharacterEncoding(AnoDocConfigurator.getEncoding());
 		HttpSession session = req.getSession();
 		
 		String pLang = req.getParameter(PARAM_LANGUAGE); 
