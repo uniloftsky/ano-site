@@ -3,7 +3,6 @@ package net.anotheria.anosite.content.variables;
 import junit.framework.TestCase;
 import org.apache.log4j.Logger;
 
-import java.util.Date;
 import java.text.SimpleDateFormat;
 
 import net.anotheria.anosite.api.common.APICallContext;
