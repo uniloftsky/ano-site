@@ -18,17 +18,18 @@ import net.anotheria.asg.exception.ASGRuntimeException;
 public interface BoxHandler {
 	
 	/**
-	 * Called in first processing cycle if a form submit has been detected (post requst or special indicator parameters).
+	 * Called in first processing cycle if a form submit has been detected (post requst or special indicator parameters). Note: 
+	 * Usage of submit in handlers is discouraged, use actions whenever possible.
 	 * @param req
 	 * @param res
 	 * @param box
 	 * @return
 	 * @throws ASGRuntimeException
 	 */
-	public BoxHandlerResponse submit(HttpServletRequest req, HttpServletResponse res, Box box) throws ASGRuntimeException;
+	BoxHandlerResponse submit(HttpServletRequest req, HttpServletResponse res, Box box) throws ASGRuntimeException;
 	
 	/**
-	 * Called in second processing cycle
+	 * Called in second processing cycle.
 	 * @param req the http servlet request
 	 * @param res the http servler response
 	 * @param box the box this handler has been associated with (and which was currently processed).
@@ -36,5 +37,5 @@ public interface BoxHandler {
 	 * @return
 	 * @throws ASGRuntimeException
 	 */
-	public BoxHandlerResponse process(HttpServletRequest req, HttpServletResponse res, Box box, BoxBean bean) throws ASGRuntimeException;
+	BoxHandlerResponse process(HttpServletRequest req, HttpServletResponse res, Box box, BoxBean bean) throws ASGRuntimeException;
 }
