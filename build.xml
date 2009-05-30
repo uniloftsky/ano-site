@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <project name="ano-site" default="dist" basedir=".">
-	<import file="../build/anosite-project.xml"/>	
+	<import file="../build/anodoc-project.xml"/>	
 
 	<!-- 
 		checkout svn://svn.anotheria.net/opensource/build/trunk as ../build 
