@@ -51,6 +51,9 @@ public class VariablesUtility {
 		defaultProcessors.put(DefinitionPrefixes.PREFIX_EQUALS, p);
 		defaultProcessors.put(DefinitionPrefixes.PREFIX_NOT_EQUALS, p);
 		defaultProcessors.put(DefinitionPrefixes.PREFIX_IN_RANGE, p);
+
+        //adding TextResourceProcessor
+        defaultProcessors.put(TextResourceProcessor.PREFIX, new TextResourceProcessor());
 	}
 	
 
