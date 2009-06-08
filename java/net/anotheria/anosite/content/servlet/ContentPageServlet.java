@@ -81,6 +81,8 @@ import org.apache.log4j.Logger;
 
 public class ContentPageServlet extends BaseAnoSiteServlet {
 
+	private static final long serialVersionUID = -2697998321193246382L;
+
 	private static Logger log = Logger.getLogger(ContentPageServlet.class);
 
 	private IASWebDataService webDataService;
@@ -232,8 +234,13 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			throw new ServletException(e);
 		}
 		///////////////// PAGE END //////////////////////
+
+		if (pageResponse.getCode() == InternalResponseCode.ABORT) {
+			res.sendRedirect(req.getContextPath()+"/"+"500.html");
+		}
+		
 		if (!pageResponse.canContinue()){
-			//todo log?
+			//TODO log?
 			return;
 		}
 		
@@ -528,6 +535,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			//FIX: BoxHanler.process exceptions logging 
 			Exception e = ((ResponseAbort)handlerResponse).getCause();
 			log.error("createBoxBean() for Box[" + box.getId() + "] failure: ", e);
+			throw new ASGRuntimeException(e);
 		}
 		
 		if (response==null){
@@ -595,7 +603,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			try{
 				response = (InternalResponse)boxProducer.execute(boxExecutor, req, res, box);
 			}catch(Exception e){
-				log.error("???", e);
+				log.error(e.getMessage(), e);
 				throw new ASGRuntimeException("box: "+box+", "+e.getMessage());
 			}
 
