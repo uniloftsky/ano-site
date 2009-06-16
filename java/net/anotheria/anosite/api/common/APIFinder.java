@@ -7,6 +7,8 @@ import java.util.Map;
 
 import net.anotheria.anosite.api.mock.APIMaskImpl;
 import net.anotheria.anosite.api.mock.APIMockImpl;
+import net.anotheria.anosite.api.mock.MockMethodRegistry;
+import net.anotheria.anosite.api.mock.MaskMethodRegistry;
 import net.java.dev.moskito.core.dynamic.MoskitoInvokationProxy;
 import net.java.dev.moskito.core.predefined.ServiceStatsCallHandler;
 import net.java.dev.moskito.core.predefined.ServiceStatsCallHandlerWithCallSysout;
@@ -219,4 +221,16 @@ public class APIFinder {
 	public static boolean isInTestingMode(){
 		return isMockingEnabled() || isMaskingEnabled();
 	}
+
+    /**
+     * Only for cleaaning  collections in jUnits!!! 
+     */
+    public static void cleanUp(){
+        if(apis!=null)
+            apis.clear();
+        if(factories!=null)
+            factories.clear();
+    }
+
+
 }
