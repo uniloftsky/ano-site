@@ -7,4 +7,10 @@
 	<!--@include:as-viewdef-georesources.xml -->
 	<!--@include:as-viewdef-actions.xml -->
 
- 
+
+	<!--  AnoSite supports following embedded user roles
+		developer: a developer who works on the code, has access to almost anything.
+		editor: the content editor, has access to content only.
+		producer: the designer or html producer who can access site meta info and layout
+		we suggest that you also insert an admin role to protect sensitive information like payment.
+	 --> 

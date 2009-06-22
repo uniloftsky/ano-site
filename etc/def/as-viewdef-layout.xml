@@ -1,6 +1,6 @@
    <!-- Layout view, here everything is defined -->
 
-	<view name="Layout" title="Layout">
+	<view name="Layout" title="Layout" requiredroles="developer,producer">
 		<sections>
 
 			<!-- Section PageStyle -->

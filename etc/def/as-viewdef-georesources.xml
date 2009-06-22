@@ -1,4 +1,4 @@
-	<view name="GeoResources" title="GeoResources">
+	<view name="GeoResources" title="GeoResources" requiredroles="developer,editor">
 		<sections>
 	    	<section title="Country" type="module">
 				<module>ASGeographicData</module>

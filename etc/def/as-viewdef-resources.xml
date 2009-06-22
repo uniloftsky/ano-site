@@ -1,4 +1,4 @@
-	<view name="Resources" title="Resources">
+	<view name="Resources" title="Resources" requiredroles="developer,editor,producer">
 		<sections>
 			<section title="Text" type="module">
 				<module>ASResourceData</module>
