@@ -210,10 +210,6 @@
 			net.anotheria.@applicationName@.shared.presentation.listener.ContextInitializer
 		</listener-class>
 	</listener>
-	<listener>
-		<listener-class>
-			net.anotheria.@applicationName@.shared.presentation.listener.SessionInitializer
-		</listener-class>
-	</listener>
+
 	
 </web-app> 

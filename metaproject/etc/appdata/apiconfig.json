@@ -1,0 +1,6 @@
+{
+	verboseMethodCalls: false,
+	dev: {
+		verboseMethodCalls: true,
+	},
+}

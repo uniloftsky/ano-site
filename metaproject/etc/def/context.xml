@@ -14,5 +14,9 @@
 			<language>EN</language>
 		</default>
 	</languages>
+	<options>
+		<option name="rmi">false</option>
+		<option name="inmemory">false</option>
+	</options>
   </context>
 

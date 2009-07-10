@@ -1,0 +1,18 @@
+{
+	//verbosity means that extra debug output will be added in generated html.
+	verbose: false,
+	dev:{
+		enforceHttps: false,
+		verbose: true,
+	},
+
+	test: {
+		enforceHttps: true,
+	},
+	
+	
+	prod: {
+		enforceHttps: true,
+	},
+	
+}

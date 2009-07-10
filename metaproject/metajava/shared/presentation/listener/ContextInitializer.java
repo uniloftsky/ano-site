@@ -3,15 +3,15 @@ package net.anotheria.@applicationName@.shared.presentation.listener;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import net.anotheria.anosite.config.Config;
+
 
 public class ContextInitializer implements ServletContextListener {
 
 	public void contextInitialized(ServletContextEvent event) {
 
-//		Config cfg = new Config();
 		configureAPI();
-		System.out.println("--- @applicationName@ INITIALIZED --- ");
-//		System.out.println("System configured as "+cfg.getSystemName());
+		System.out.println("--- @applicationName@ "+ Config.getInstance().getSystemName() +" INITIALIZED --- ");
 	}
 	
 	public void contextDestroyed(ServletContextEvent event) {

@@ -1,0 +1,12 @@
+{
+	registryHost: "localhost",
+
+	dev:{
+	},
+
+	test:{	
+	},
+
+	prod:{
+	},
+}

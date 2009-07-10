@@ -1,0 +1,14 @@
+{
+	value: "xyz,or whatever the master chief develop wishes",
+	test: {
+		systemName: "TEST/INTEGRATION",
+	},
+	
+	prod: {
+		systemName: "PRODUCTION",
+	},
+	
+	dev: {
+		systemName: "DEVELOP",
+	},
+}

@@ -1,0 +1,12 @@
+{
+	directory: "/work/data/@applicationName@/files",
+	
+	dev:{
+	},
+
+	test:{	
+	},
+
+	prod:{
+	},
+}

@@ -9,11 +9,10 @@
 	<decorator name="boxType" class="net.anotheria.anosite.decorator.BoxTypeDecorator"/>
 	<decorator name="subboxes" class="net.anotheria.anosite.decorator.BoxDecorator"/>
 	<decorator name="guards" class="net.anotheria.anosite.decorator.GuardDecorator"/>
+	<decorator name="attributes" class="net.anotheria.anosite.decorator.AttributeDecorator"/>
 	<decorator name="naviitem" class="net.anotheria.anosite.decorator.NaviItemDecorator"/>
+
 	<decorator name="linkTargetName" class="net.anotheria.anosite.decorator.LinkTargetNameDecorator"/>
 	<decorator name="fileSizeDecorator" class="net.anotheria.anosite.decorator.FileSizeDecorator"/>
-	<decorator name="attributes" class="net.anotheria.anosite.decorator.AttributeDecorator"/>
-	
-	<!-- @applicationName@ decorators -->
-		
+	<decorator name="imageSizeDecorator" class="net.anotheria.anosite.decorator.ImageSizeDecorator"/>
 </decorators>

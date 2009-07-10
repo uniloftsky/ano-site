@@ -1,0 +1,17 @@
+{
+	host: "",
+	user: "",
+	password: "",
+	debug: false,
+	
+	dev:{
+	},
+
+	test:{	
+	},
+
+	prod:{
+	},
+
+}
+
