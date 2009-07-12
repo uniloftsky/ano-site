@@ -6,7 +6,7 @@
 
 	<property name="src" value="${basedir}/src"/>
 	
-    <import file="../build/web-default-project.xml"/>
+	<import file="../build/anosite-project.xml"/>
 	
    <path id="test.classpath">
     <pathelement location="${classes.dir}" />

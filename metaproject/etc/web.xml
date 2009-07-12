@@ -15,7 +15,9 @@
 			<init-param>
 				<param-name>config</param-name>
 				<param-value>
+<!-- 
 					/WEB-INF/classes/struts-config-moskito.xml,
+-->
 					/WEB-INF/classes/struts-config-cms.xml,
 					/WEB-INF/classes/struts-config-content.xml,
 					/WEB-INF/classes/struts-config-layout.xml,
