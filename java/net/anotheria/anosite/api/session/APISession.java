@@ -1,5 +1,7 @@
 package net.anotheria.anosite.api.session;
 
+import net.anotheria.anosite.api.common.NoLoggedInUserException;
+
 public interface APISession {
 	
 	public static final long DEFAULT_EXPIRE_PERIOD = 1000L*60*5; // 5minutes
@@ -101,8 +103,9 @@ public interface APISession {
 	/**
 	 * Returns the id of the currently logged in user.
 	 * @return
+	 * @throws NoLoggedInUserException if no logged in user in current Session
 	 */
-	public String getCurrentUserId(); 
+	public String getCurrentUserId()  throws NoLoggedInUserException; 
 	
 	public String getCurrentEditorId();
 }

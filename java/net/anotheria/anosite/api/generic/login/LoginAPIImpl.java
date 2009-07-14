@@ -6,10 +6,12 @@ import java.util.List;
 import net.anotheria.anosite.api.common.APIException;
 import net.anotheria.anosite.api.common.APIFinder;
 import net.anotheria.anosite.api.common.AbstractAPIImpl;
+import net.anotheria.anosite.api.common.NoLoggedInUserException;
 import net.anotheria.anosite.api.generic.login.processors.SessionCleanupOnLogoutProcessor;
 import net.anotheria.anosite.api.generic.observation.ObservationAPI;
 import net.anotheria.anosite.api.generic.observation.ObservationSubjects;
 import net.anotheria.anosite.api.session.APISessionImpl;
+import net.anotheria.util.StringUtils;
 
 /**
  * An implementation for the login api.
@@ -64,26 +66,32 @@ public class LoginAPIImpl extends AbstractAPIImpl implements LoginAPI{
 	}
 
 	public void logoutMe() throws APIException {
-		
-		String userId = getCallContext().getCurrentUserId();
-		callLogoutPreprocessors(userId);
-		
-		((APISessionImpl)getSession()).setCurrentUserId(null);
-		getCallContext().setCurrentUserId(null);
-		
-		callLogoutPostprocessors(userId);
-		
-		observationAPI.fireSubjectUpdateForCurrentUser(ObservationSubjects.LOGOUT, this.getClass().getName());
+		try{
+			String userId = getCallContext().getCurrentUserId();
+			callLogoutPreprocessors(userId);
+			
+			((APISessionImpl)getSession()).setCurrentUserId(null);
+			getCallContext().setCurrentUserId(null);
+			
+			callLogoutPostprocessors(userId);
+			
+			observationAPI.fireSubjectUpdateForCurrentUser(ObservationSubjects.LOGOUT, this.getClass().getName());
+		}catch(NoLoggedInUserException ignored){};
 	}
 	
-	public String getLogedUserId() throws APIException {
+	@Override
+	public String getLogedUserId() throws NoLoggedInUserException {
 		if(!isLogedIn())
 			throw new APIException("No loged in users!");
 		return getCallContext().getCurrentUserId();
 	}
 	
 	public boolean isLogedIn() throws APIException {
-		return getCallContext().getCurrentUserId() != null;
+		try{
+			return !StringUtils.isEmpty(getCallContext().getCurrentUserId());
+		}catch(NoLoggedInUserException e){
+			return false;
+		}
 	}
 
 	public void addLogoutPostprocessor(LogoutPostProcessor postProcessor) {

@@ -8,6 +8,7 @@ import java.util.Map;
 
 import net.anotheria.anosite.api.session.APISession;
 import net.anotheria.anosite.api.validation.ValidationError;
+import net.anotheria.util.StringUtils;
 
 
 /**
@@ -58,8 +59,11 @@ public class APICallContext {
 	/**
 	 * Returns the currentUserId if such concept is supported by the site.
 	 * @return the userid used to log in in the site if required.
+	 * @throws NoLoggedInUserException if no users logged in
 	 */
-	public String getCurrentUserId() {
+	public String getCurrentUserId() throws NoLoggedInUserException{ 
+		if(StringUtils.isEmpty(currentUserId))
+			throw new NoLoggedInUserException();
 		return currentUserId;
 	}
 

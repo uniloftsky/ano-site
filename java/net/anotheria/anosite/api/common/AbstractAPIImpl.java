@@ -135,7 +135,7 @@ public abstract class AbstractAPIImpl implements API{
 	 * Returns the current userId from the CallContext. Convenience method.
 	 * @return
 	 */
-	protected String getCurrentUserId(){
+	protected String getCurrentUserId() throws NoLoggedInUserException{
 		return getCallContext().getCurrentUserId();
 	}
 	
@@ -182,6 +182,7 @@ public abstract class AbstractAPIImpl implements API{
 
 }
 
+@SuppressWarnings("serial")
 class ContentCachingList<T> extends ArrayList<T> implements ContentAwareAttribute{
 
 	public boolean deleteOnChange() {

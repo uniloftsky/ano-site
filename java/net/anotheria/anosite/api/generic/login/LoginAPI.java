@@ -2,6 +2,7 @@ package net.anotheria.anosite.api.generic.login;
 
 import net.anotheria.anosite.api.common.API;
 import net.anotheria.anosite.api.common.APIException;
+import net.anotheria.anosite.api.common.NoLoggedInUserException;
 
 /**
  * Basic API for login/out purposes.
@@ -24,9 +25,9 @@ public interface LoginAPI extends API{
 	/**
 	 * Returns the id of the currently logged in user.
 	 * @return
-	 * @throws APIException
+	 * @throws NoLoggedInUserException if no logged in user in current session
 	 */
-	String getLogedUserId() throws APIException;
+	String getLogedUserId() throws NoLoggedInUserException, APIException;
 
 	/**
 	 * Returns true if there is a current userid.
