@@ -169,6 +169,7 @@ public class APISessionImpl implements APISession {
     	this.referenceId = referenceId;
     }
 
+	//TODO FIXME This is a really bad habbit to throw the exception here!!! This have to be fixed!!!
 	@Override public String getCurrentUserId() {
 		if(StringUtils.isEmpty(currentUserId))
 			throw new NoLoggedInUserException();
