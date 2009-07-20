@@ -23,9 +23,8 @@
 	<classpathentry kind="lib" path="lib/servlet-api.jar"/>
 	<classpathentry kind="lib" path="lib/struts.jar"/>
 	<classpathentry kind="lib" path="lib/xalan.jar"/>
-	<classpathentry kind="lib" path="/build-aos/lib/hamcrest-library.jar"/>
-	<classpathentry kind="lib" path="/build-aos/lib/jmock-junit4.jar"/>
-	<classpathentry kind="lib" path="/build-aos/lib/jmock.jar"/>
-	<classpathentry kind="lib" path="/build-aos/lib/junit.jar"/>
+	<classpathentry kind="lib" path="lib/hamcrest-library.jar"/>
+	<classpathentry kind="lib" path="lib/jmock.jar"/>
+	<classpathentry kind="lib" path="lib/junit.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>

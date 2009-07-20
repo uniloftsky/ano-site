@@ -26,5 +26,11 @@
         <dependency org="anotheria.net" name="ano-util" rev="latest" transitive="true" changing="true"/>
         <dependency org="anotheria.net" name="ano-doc"  rev="latest" transitive="true" changing="true"/>
         <dependency org="anotheria.net" name="ano-web"  rev="latest" transitive="true" changing="true"/>
+        
+        <!-- Needed by unit tests: -->
+        <dependency org="org" name="jmock" rev="stable" transitive="false"/>
+        <dependency org="org" name="hamcrest-library" rev="stable" transitive="false"/>
+        <dependency org="org" name="junit" rev="stable" transitive="false"/>
+        
     </dependencies>
 </ivy-module>
