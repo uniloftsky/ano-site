@@ -1,7 +1,7 @@
 package net.anotheria.anosite.api.generic.login;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import net.anotheria.anosite.api.common.APIException;
 import net.anotheria.anosite.api.common.APIFinder;
@@ -20,22 +20,35 @@ import net.anotheria.util.StringUtils;
  */
 public class LoginAPIImpl extends AbstractAPIImpl implements LoginAPI{
 	
+	/**
+	 * Login preprocessors. Each of them get called before each login. Can cancel a login.
+	 */
 	private List<LoginPreProcessor>  loginPreProcessors;
+	/**
+	 * Login postprocessors.
+	 */
 	private List<LoginPostProcessor> loginPostProcessors;
-
+	/**
+	 * Logout preprocessors.
+	 */
 	private List<LogoutPreProcessor>  logoutPreProcessors;
+	/**
+	 * Logout postprocessors.
+	 */
 	private List<LogoutPostProcessor> logoutPostProcessors;
-	
+	/**
+	 * Link to the ObservationAPI. Used to announce changes in user logged in state.
+	 */
 	private ObservationAPI observationAPI;
 	
-	public void init(){
+	@Override public void init(){
 		super.init();
 		
-		loginPreProcessors = new ArrayList<LoginPreProcessor>();
-		loginPostProcessors = new ArrayList<LoginPostProcessor>();
+		loginPreProcessors = new CopyOnWriteArrayList<LoginPreProcessor>();
+		loginPostProcessors = new CopyOnWriteArrayList<LoginPostProcessor>();
 		
-		logoutPreProcessors = new ArrayList<LogoutPreProcessor>();
-		logoutPostProcessors = new ArrayList<LogoutPostProcessor>();
+		logoutPreProcessors = new CopyOnWriteArrayList<LogoutPreProcessor>();
+		logoutPostProcessors = new CopyOnWriteArrayList<LogoutPostProcessor>();
 		
 		addLogoutPostprocessor(new SessionCleanupOnLogoutProcessor());
 		
@@ -43,18 +56,23 @@ public class LoginAPIImpl extends AbstractAPIImpl implements LoginAPI{
 		
 	}
 
-
+	/**
+	 * Adds a login postprocessor. Threadsafe.
+	 */
 	public void addLoginPostprocessor(LoginPostProcessor postProcessor) {
 		loginPostProcessors.add(postProcessor);
 		
 	}
 
+	/**
+	 * Adds a login preprocessor. Threadsafe.
+	 */
 	public void addLoginPreprocessor(LoginPreProcessor preProcessor) {
 		loginPreProcessors.add(preProcessor);
 		
 	}
 
-	public void logInUser(String userId) throws APIException {
+	@Override public void logInUser(String userId) throws APIException {
 		callLoginPreprocessors(userId);
 		
 		((APISessionImpl)getSession()).setCurrentUserId(userId);
@@ -65,7 +83,7 @@ public class LoginAPIImpl extends AbstractAPIImpl implements LoginAPI{
 		observationAPI.fireSubjectUpdateForCurrentUser(ObservationSubjects.LOGIN, this.getClass().getName());
 	}
 
-	public void logoutMe() throws APIException {
+	@Override public void logoutMe() throws APIException {
 		try{
 			String userId = getCallContext().getCurrentUserId();
 			callLogoutPreprocessors(userId);
@@ -86,7 +104,7 @@ public class LoginAPIImpl extends AbstractAPIImpl implements LoginAPI{
 		return getCallContext().getCurrentUserId();
 	}
 	
-	public boolean isLogedIn() throws APIException {
+	@Override public boolean isLogedIn() throws APIException {
 		try{
 			return !StringUtils.isEmpty(getCallContext().getCurrentUserId());
 		}catch(NoLoggedInUserException e){
