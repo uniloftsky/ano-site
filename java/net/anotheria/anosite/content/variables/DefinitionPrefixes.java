@@ -19,14 +19,20 @@ public interface DefinitionPrefixes {
 	 */
 	public static final String PREFIX_API_CALL_CONTEXT_ATTRIBUTE = "api_cca";
 	/**
-	 * (API) Session attribute.
+	 * (Http) Session attribute.
 	 */
 	public static final String PREFIX_SESSION_ATTRIBUTE = "sa";
 	/**
-	 * Session attribute which is one time readable.
+	 * (Http) Session attribute which is one time readable.
 	 */
 	public static final String PREFIX_SESSION_AND_DELETE_ATTRIBUTE = "sda";
+	/**
+	 * Servlet context attribute.
+	 */
 	public static final String PREFIX_CONTEXT_ATTRIBUTE = "ca";
+	/**
+	 * Api session attribute.
+	 */
 	public static final String PREFIX_API_SESSION_ATTRIBUTE = "api_sa";
 	/**
 	 * Box attribute.
