@@ -135,8 +135,20 @@ public abstract class AbstractAPIImpl implements API{
 	 * Returns the current userId from the CallContext. Convenience method.
 	 * @return
 	 */
-	protected String getCurrentUserId() throws NoLoggedInUserException{
+	protected String getCurrentUserId() {
 		return getCallContext().getCurrentUserId();
+	}
+	/**
+	 * Returns the current userid from the CallContext. The difference between this method and the getCurrentUserId method, is that this method will throw an Exception if 
+	 * no user is logged in. This allows api methods to rely on this check and not to check theirself anymore.
+	 * @return
+	 */
+	protected String getLoggedInUserId() throws NoLoggedInUserException{
+		String userId = getCurrentUserId();
+		if (userId==null || userId.length()==0){
+			throw new NoLoggedInUserException("No logged in user.");
+		}
+		return userId;
 	}
 	
 	/**

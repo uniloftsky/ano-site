@@ -15,7 +15,6 @@ import javax.servlet.http.HttpSession;
 import net.anotheria.anosite.api.activity.ActivityAPI;
 import net.anotheria.anosite.api.common.APICallContext;
 import net.anotheria.anosite.api.common.APIFinder;
-import net.anotheria.anosite.api.common.NoLoggedInUserException;
 import net.anotheria.anosite.api.session.APISession;
 import net.anotheria.anosite.api.session.APISessionManager;
 import net.anotheria.anosite.util.AnositeConstants;
@@ -98,11 +97,7 @@ public class APIFilter implements Filter{
 		
 //		currentContext.setCurrentLocale(req.getLocale());
 		currentContext.setCurrentLocale(getLocale(req));
-		try{
-			currentContext.setCurrentUserId(apiSession.getCurrentUserId());
-		}catch(NoLoggedInUserException e){
-			currentContext.setCurrentUserId(null);
-		};
+		currentContext.setCurrentUserId(apiSession.getCurrentUserId());
 		return apiSession;
 	}
 

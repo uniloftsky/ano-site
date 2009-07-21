@@ -59,12 +59,8 @@ public class APICallContext {
 	/**
 	 * Returns the currentUserId if such concept is supported by the site.
 	 * @return the userid used to log in in the site if required.
-	 * @throws NoLoggedInUserException if no users logged in
 	 */
-	//TODO FIXME This is a really bad habbit to throw the exception here!!! This have to be fixed!!!
-	public String getCurrentUserId() throws NoLoggedInUserException{ 
-		if(StringUtils.isEmpty(currentUserId))
-			throw new NoLoggedInUserException();
+	public String getCurrentUserId() { 
 		return currentUserId;
 	}
 

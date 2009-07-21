@@ -5,9 +5,6 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import net.anotheria.anosite.api.common.NoLoggedInUserException;
-import net.anotheria.util.StringUtils;
-
 import org.apache.log4j.Logger;
 
 
@@ -169,10 +166,7 @@ public class APISessionImpl implements APISession {
     	this.referenceId = referenceId;
     }
 
-	//TODO FIXME This is a really bad habbit to throw the exception here!!! This have to be fixed!!!
 	@Override public String getCurrentUserId() {
-		if(StringUtils.isEmpty(currentUserId))
-			throw new NoLoggedInUserException();
 		return currentUserId;
 	}
 
