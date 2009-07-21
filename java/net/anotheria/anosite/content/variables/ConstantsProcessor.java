@@ -24,7 +24,7 @@ public class ConstantsProcessor implements VariablesProcessor{
 		constants.put("laquo", "&laquo;");
 	}
 
-	public String replace(String prefix, String variable, String defValue, HttpServletRequest req) {
+	@Override public String replace(String prefix, String variable, String defValue, HttpServletRequest req) {
 		String val = constants.get(variable);
 		return val == null ? 
 				"Unknown constants: "+variable : val;
