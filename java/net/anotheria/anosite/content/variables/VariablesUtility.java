@@ -99,18 +99,22 @@ public class VariablesUtility {
 	}
 	
 	/**
-	 * Replaces variables in string s with attributes from the request req. If dummy is not NULL it will be inserted instead of 
-	 * variable value.
+	 * Replaces variable expressions in the given string src with help of default processors.
 	 * @param req
-	 * @param s
-	 * @param dummy
+	 * @param src
 	 * @return
 	 */
 	public static String replaceVariables(HttpServletRequest req, String src){
 		return replaceVariables(req, src, defaultProcessors);
 	}
 	
-	
+	/**
+	 * Replaces variable expressions in the given string src with the help of submitted processors. Useful for variable customization.
+	 * @param req
+	 * @param src
+	 * @param processors
+	 * @return
+	 */
 	public static String replaceVariables(HttpServletRequest req, String src, Map<String,VariablesProcessor> processors){
 		if(src == null || src.length() == 0)
 			return src;
