@@ -4,6 +4,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 
+/**
+ * Basic processor for links to external resources like files or images.
+ * @author another
+ *
+ */
 public abstract class XLinkProcessor implements VariablesProcessor{
 
 	private Logger log;
@@ -12,7 +17,7 @@ public abstract class XLinkProcessor implements VariablesProcessor{
 		log = Logger.getLogger(this.getClass());
 	}
 	
-	public Logger getLog() {
+	protected Logger getLog() {
 		return log;
 	}
 

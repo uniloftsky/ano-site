@@ -2,11 +2,26 @@ package net.anotheria.anosite.content.bean;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Represents a CMS page for rendering.
+ * @author lrosenberg
+ */
 public class PageBean {
+	/**
+	 * Title of the page.
+	 */
 	private String title;
+	/**
+	 * Keywords of the page if differ from site-wide keywords.
+	 */
 	private String keywords;
+	/**
+	 * Description of the page if differ from site-wide description.
+	 */
 	private String description;
+	/**
+	 * 
+	 */
 	private String name;
 	private List<BoxBean> column1;
 	private List<BoxBean> column2;

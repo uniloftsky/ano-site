@@ -1,12 +1,36 @@
 package net.anotheria.anosite.content.bean;
-
+/**
+ * This bean represents the site object from the cms prepared for usage in a (jsp) template.
+ * @author lrosenberg
+ */
 public class SiteBean {
+	/**
+	 * Site title (html-head).
+	 */
 	private String title;
+	/**
+	 * Site subtitle.
+	 */
 	private String subtitle;
+	/**
+	 * Keywords for the head meta section.
+	 */
 	private String keywords;
+	/**
+	 * Description for the head meta section.
+	 */
 	private String description;
+	/**
+	 * Link to the start page to render a "Home" or "Start" button.
+	 */
 	private String linkToStartPage;
+	/**
+	 * If true, the site should offer a language selector.
+	 */
 	private boolean languageSelector;
+	/**
+	 * Url to call for the search action if applicable.
+	 */
 	private String searchTarget;
 	
 	public String getSubtitle() {

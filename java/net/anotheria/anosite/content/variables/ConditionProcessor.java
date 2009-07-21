@@ -9,7 +9,7 @@ public class ConditionProcessor implements VariablesProcessor{
 	public static final String TRUE = "true";
 	public static final String FALSE = "false";
 	
-	public String replace(String prefix, String variable, String defValue, HttpServletRequest req) {
+	@Override public String replace(String prefix, String variable, String defValue, HttpServletRequest req) {
 		if(DefinitionPrefixes.PREFIX_IF.equals(prefix)){
 			String[] ret = StringUtils.tokenize(defValue, ';');
 			return TRUE.equals(variable)? ret[0] : ret.length > 1? ret[1]:"";

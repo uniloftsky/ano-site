@@ -4,6 +4,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import net.anotheria.asg.data.DataObject;
 
+/**
+ * A guard which only returns true if the desired attribute is in session.
+ * @author another
+ *
+ */
 public abstract class SessionFlagPresentGuard implements ConditionalGuard{
 
 	public boolean isConditionFullfilled(DataObject object, HttpServletRequest req) {

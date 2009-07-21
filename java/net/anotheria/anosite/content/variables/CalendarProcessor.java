@@ -5,12 +5,16 @@ import org.apache.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 
 /**
+ * Variable processor for dates.
  * @author: h3llka
  */
 public class CalendarProcessor implements VariablesProcessor {
+	/**
+	 * Logger.
+	 */
     private static final Logger log = Logger.getLogger(CalendarProcessor.class);
 
-    @Override
+    
     /**
      * Returns variable value for incoming variable param. If format - which represented by <a>defValue</a> - valid,
      * then variable value will be represented in  current format, else default format will be used.
@@ -24,7 +28,7 @@ public class CalendarProcessor implements VariablesProcessor {
      * @param req request instance
      * @return variable value
      */
-    public String replace(String prefix, String variable, String defValue, HttpServletRequest req) {
+    @Override public String replace(String prefix, String variable, String defValue, HttpServletRequest req) {
         try {
             CalendarVariableNames variableName = CalendarVariableNames.valueOf(CalendarVariableNames.class, variable);
             return variableName.getVariableValue(defValue);

@@ -5,8 +5,15 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Variables processor for constants. Useful for html tags with colide with variables processor syntax for example &amp;nbsp; etc.
+ * @author another
+ *
+ */
 public class ConstantsProcessor implements VariablesProcessor{
-	
+	/**
+	 * Map with constants.
+	 */
 	private static Map<String,String> constants = new HashMap<String, String>();
 	static{
 		constants.put("spacer", "&nbsp;");
@@ -29,5 +36,4 @@ public class ConstantsProcessor implements VariablesProcessor{
 		return val == null ? 
 				"Unknown constants: "+variable : val;
 	}
-
 }
