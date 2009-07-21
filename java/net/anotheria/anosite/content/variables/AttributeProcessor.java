@@ -8,7 +8,7 @@ import net.anotheria.anosite.content.bean.AttributeMap;
 
 public class AttributeProcessor implements VariablesProcessor {
 
-	public String replace(String prefix, String variable, String defValue, HttpServletRequest req) {
+	@Override public String replace(String prefix, String variable, String defValue, HttpServletRequest req) {
 		Object ret = null;
 		if("NONE".equals(defValue))
 			defValue = "";
