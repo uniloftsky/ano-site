@@ -13,7 +13,10 @@ import net.anotheria.anosite.gen.aslayoutdata.service.ASLayoutDataServiceExcepti
 import net.anotheria.anosite.gen.aslayoutdata.service.ASLayoutDataServiceFactory;
 import net.anotheria.anosite.gen.aslayoutdata.service.IASLayoutDataService;
 import net.java.dev.moskito.web.MoskitoHttpServlet;
-
+/**
+ * This servlet is responsible for delivering the styles to the users browser.
+ * @author lrosenberg
+ */
 public class StyleSheetServlet extends MoskitoHttpServlet{
 	
 	private IASLayoutDataService layoutDataService;

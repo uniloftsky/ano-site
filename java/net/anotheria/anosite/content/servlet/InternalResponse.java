@@ -3,7 +3,16 @@ package net.anotheria.anosite.content.servlet;
 import net.anotheria.anosite.handler.BoxHandlerResponse;
 import net.anotheria.anosite.shared.InternalResponseCode;
 
+/**
+ * Used to transform more than one parameter about execution back to the caller. Usually contains instructions for the caller what to do next. For example
+ * an internal response can contain the instruction to abort execution or to continue normally.
+ * @author another
+ *
+ */
 public class InternalResponse {
+	/**
+	 * Responses code.
+	 */
 	private InternalResponseCode code;
 	
 	public InternalResponse(){
