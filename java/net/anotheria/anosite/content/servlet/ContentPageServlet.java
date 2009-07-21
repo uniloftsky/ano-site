@@ -85,20 +85,40 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 
 	private static Logger log = Logger.getLogger(ContentPageServlet.class);
 
+	/**
+	 * WebDataService for boxes and pages.
+	 */
 	private IASWebDataService webDataService;
+	/**
+	 * Site service for layout and site objects.
+	 */
 	private IASSiteDataService siteDataService;
+	/**
+	 * Federated data.
+	 */
 	private IASFederatedDataService federatedDataService;
 	private IASLayoutDataService layoutDataService;
 	private IASResourceDataService resourceDataService;
 
+	/**
+	 * PageExecutor for monitoring.
+	 */
 	private BlueprintCallExecutor pageExecutor;
+	/**
+	 * BoxExecutor for monitoring.
+	 */
 	private BlueprintCallExecutor boxExecutor;
-	
+	/**
+	 * Parameter which allows to override the title stored in the page object.
+	 */
 	public static final String OVERRIDE_PAGE_TITLE = "CP.OverridePageTitle";
 	
 	private AnositeConfig config = AnositeConfig.getInstance();
 	
 	public static final String BEAN_ANOSITE_VERBOSITY = "anosite.verbose";
+	
+	public static final Charset MY_FS_CHARSET = Charset.forName("ISO-8859-15");
+
 	
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
@@ -133,6 +153,15 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		}
 	}
 
+	/**
+	 * Processes the incoming request.
+	 * @param req the httpservletrequest.
+	 * @param res the httpservletresponse.
+	 * @param submit true if the request was submitted via post (for calling submit in handlers).
+	 * @throws ServletException 
+	 * @throws IOException
+	 * @throws ASGRuntimeException
+	 */
 	protected void processRequest(HttpServletRequest req, HttpServletResponse res, boolean submit) throws ServletException, IOException, ASGRuntimeException {
 
 		prepareTextResources(req);
@@ -295,6 +324,17 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		
 	}
 	
+	/**
+	 * Returns the ids of the boxes for the given rendering step and rendered page.
+	 * As for now there are 13 rendering steps:
+	 * template meta, template header, page header, template c1first, template c2 first, template c3 first,
+	 * page c1, page c2, page c3,
+	 * template c1last, template c2 last, template c3 last, template footer, page footer.
+	 * @param page
+	 * @param template
+	 * @param step
+	 * @return
+	 */
 	private List<String> getBoxIdsForRenderingStep(Pagex page, PageTemplate template, int step){
 		switch(step){
 		case 0:
@@ -408,7 +448,13 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		return previous;
 	}
 
-	 
+
+	/**
+	 * Creates a breadcrumb (users path along the navigation) for sites that supports it.
+	 * @param page
+	 * @param site
+	 * @return
+	 */
 	private List<BreadCrumbItemBean> prepareBreadcrumb(Pagex page, Site site){
 		List<BreadCrumbItemBean> ret = new ArrayList<BreadCrumbItemBean>();
 		try{
@@ -472,7 +518,15 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		
 		return ret;
 	}
-
+	
+	/**
+	 * Creates the bean for a single box.
+	 * @param req
+	 * @param res
+	 * @param box
+	 * @return
+	 * @throws ASGRuntimeException
+	 */
 	private InternalResponse createBoxBean(HttpServletRequest req, HttpServletResponse res, Box box) throws ASGRuntimeException{
 		BoxBean ret = new BoxBean();
 
@@ -569,6 +623,12 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		return response;
 	}
 
+	/**
+	 * Returns true if the box is disabled by conditional guards and should be ignored.
+	 * @param req
+	 * @param box
+	 * @return
+	 */
 	private boolean disabledByGuards(HttpServletRequest req, Box box){
 		//check the guards
 		List<String> gIds = box.getGuards();
@@ -587,6 +647,14 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		return false;
 	}
 	
+	/**
+	 * Creates a list of boxbeans for corresponding boxids. Boxes that are guarded by conditional guards will be ignored if the guards say so.
+	 * @param req
+	 * @param res
+	 * @param boxIds
+	 * @return
+	 * @throws ASGRuntimeException
+	 */
 	private InternalResponse createBoxBeanList(HttpServletRequest req, HttpServletResponse res, List<String> boxIds) throws ASGRuntimeException{
 		ArrayList<BoxBean> ret = new ArrayList<BoxBean>();
 		String redirectUrl = null;
@@ -624,6 +692,12 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 				new InternalBoxBeanListWithRedirectResponse(ret, redirectUrl);
 	}
 
+	/**
+	 * Creates the box type bean for the boxTypeId.
+	 * @param boxTypeId
+	 * @return
+	 * @throws ASFederatedDataServiceException
+	 */
 	private BoxTypeBean createBoxTypeBean(String boxTypeId) throws ASFederatedDataServiceException{
 		BoxType type = federatedDataService.getBoxType(boxTypeId);
 		BoxTypeBean bean = new BoxTypeBean();
@@ -831,6 +905,11 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 
 	}
 
+	/**
+	 * Creates the site bean based on the template used by the page.
+	 * @param template
+	 * @return
+	 */
 	private SiteBean createSiteBean(PageTemplate template) {
 		SiteBean ret = new SiteBean();
 
@@ -852,6 +931,11 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		return ret;
 	}
 
+	/**
+	 * Returns the page name referenced in the request.
+	 * @param req
+	 * @return
+	 */
 	private String extractPageName(HttpServletRequest req) {
 		return extractArtifactName(req);
 	}
@@ -944,9 +1028,14 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		return ret;
 	}
 	
-	public static final Charset MY_FS_CHARSET = Charset.forName("ISO-8859-15");
 
-	
+	/**
+	 * Tries to load a file from filesystem (in case page wasn't found) and returns true if its done successfully. This is useful for integration of 
+	 * simple html pages.
+	 * @param req
+	 * @param res
+	 * @return
+	 */
 	private boolean fallBackToFileSystem(HttpServletRequest req, HttpServletResponse res){
 		String requestURI = req.getRequestURI();
 		if (requestURI.indexOf("..")!=-1)
