@@ -18,18 +18,24 @@ import net.anotheria.anosite.api.common.APIFinder;
 import net.anotheria.anosite.api.session.APISession;
 import net.anotheria.anosite.api.session.APISessionManager;
 import net.anotheria.anosite.util.AnositeConstants;
-
+/**
+ * The filter which performs bounding of a user request and session to the previously created or new APISession and APICallContext.
+ * @author lrosenberg
+ *
+ */
 public class APIFilter implements Filter{
 
 	public static final String PARAM_COPY_SESSION = "srcsession";
-	
+	/**
+	 * The activity api, which is notified about all actions by the user.
+	 */
 	private ActivityAPI activityAPI;
 	
-	public void destroy() {
+	@Override public void destroy() {
 		
 	}
 
-	public void doFilter(ServletRequest sreq, ServletResponse sres,
+	@Override public void doFilter(ServletRequest sreq, ServletResponse sres,
 			FilterChain chain) throws IOException, ServletException {
 
 		if (!(sreq instanceof HttpServletRequest))
@@ -63,10 +69,15 @@ public class APIFilter implements Filter{
 		
 	}
 
-	public void init(FilterConfig config) throws ServletException {
+	@Override public void init(FilterConfig config) throws ServletException {
 		activityAPI = APIFinder.findAPI(ActivityAPI.class);
 	}
 
+	/**
+	 * Initializes the APISession.
+	 * @param req
+	 * @return
+	 */
 	protected APISession initSession(HttpServletRequest req) {		
 
 		
@@ -101,6 +112,11 @@ public class APIFilter implements Filter{
 		return apiSession;
 	}
 
+	/**
+	 * Creates a new APISession.
+	 * @param session
+	 * @return
+	 */
 	private APISession createAPISession(HttpSession session) {
 		APISession apiSession = APISessionManager.getInstance().createSession(session.getId());
 		session.setAttribute("API_SESSION_ID", apiSession.getId());

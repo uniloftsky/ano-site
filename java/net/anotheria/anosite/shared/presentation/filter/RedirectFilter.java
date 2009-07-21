@@ -19,6 +19,11 @@ import net.anotheria.anosite.gen.assitedata.service.IASSiteDataService;
 
 import org.apache.log4j.Logger;
 
+/**
+ * This filter performs ano-site feature of redirecting. Redirects are stored in IASSiteDataService.redirectUrls.
+ * @author another
+ *
+ */
 public class RedirectFilter implements Filter{
 	private IASSiteDataService siteDataService;
 	
