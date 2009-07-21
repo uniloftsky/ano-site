@@ -5,7 +5,18 @@ import javax.servlet.http.HttpServletRequest;
 import net.anotheria.anosite.api.common.APICallContext;
 import net.anotheria.anosite.content.bean.AttributeBean;
 import net.anotheria.anosite.content.bean.AttributeMap;
-
+/**
+ * This processor supports a various range of attributes:
+ * PREFIX_API_CALL_CONTEXT_ATTRIBUTE
+ * PREFIX_API_SESSION_ATTRIBUTE
+ * PREFIX_REQUEST_ATTRIBUTE
+ * PREFIX_SESSION_ATTRIBUTE
+ * PREFIX_SESSION_AND_DELETE_ATTRIBUTE
+ * PREFIX_CONTEXT_ATTRIBUTE
+ * PREFIX_BOX_ATTRIBUTE
+ * @author lrosenberg
+ *
+ */
 public class AttributeProcessor implements VariablesProcessor {
 
 	@Override public String replace(String prefix, String variable, String defValue, HttpServletRequest req) {
