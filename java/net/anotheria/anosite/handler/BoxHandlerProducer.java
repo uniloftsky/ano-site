@@ -6,9 +6,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
-
-
 import net.anotheria.anosite.content.bean.BoxBean;
 import net.anotheria.anosite.gen.aswebdata.data.Box;
 import net.anotheria.anosite.util.AnositeConstants;
@@ -22,16 +19,28 @@ import net.java.dev.moskito.core.usecase.running.ExistingRunningUseCase;
 import net.java.dev.moskito.core.usecase.running.PathElement;
 import net.java.dev.moskito.core.usecase.running.RunningUseCase;
 import net.java.dev.moskito.core.usecase.running.RunningUseCaseContainer;
-
+/**
+ * A stats producer for boxhandler for embedding into moskito.
+ * @author another
+ *
+ */
 public class BoxHandlerProducer implements IStatsProducer{
-
-
-	private static Logger log = Logger.getLogger(BoxHandlerProducer.class);
+	/**
+	 * The id of the producer.
+	 */
 	private String producerId;
-	
+	/**
+	 * Stats for process method.
+	 */
 	private ActionStats processStats;
+	/**
+	 * Stats for submit method.
+	 */
 	private ActionStats submitStats;
-	private List<IStats> myStats;
+	/**
+	 * Cached list with stats.
+	 */
+	private final List<IStats> myStats;
 	
 	public BoxHandlerProducer (String aProducerId){
 		producerId = aProducerId;
@@ -50,19 +59,19 @@ public class BoxHandlerProducer implements IStatsProducer{
 		return Constants.DEFAULT_INTERVALS;
 	}
 	
-	public String getCategory() {
+	@Override public String getCategory() {
 		return "box-handler";
 	}
 
-	public String getProducerId() {
+	@Override public String getProducerId() {
 		return producerId;
 	}
 
-	public List<IStats> getStats() {
+	@Override public List<IStats> getStats() {
 		return myStats;
 	}
 
-	public String getSubsystem() {
+	@Override public String getSubsystem() {
 		return AnositeConstants.AS_MOSKITO_SUBSYSTEM;
 	}
 	
