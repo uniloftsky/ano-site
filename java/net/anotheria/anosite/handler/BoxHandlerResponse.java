@@ -5,7 +5,7 @@ import net.anotheria.anosite.shared.InternalResponseCode;
 public abstract class BoxHandlerResponse {
 	public abstract InternalResponseCode getResponseCode();
 	
-	public String toString(){
+	@Override public String toString(){
 		return getResponseCode().toString();
 	}
 }
