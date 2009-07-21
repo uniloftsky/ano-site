@@ -18,6 +18,7 @@ import net.anotheria.util.Date;
 
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
+import org.apache.log4j.xml.DOMConfigurator;
 
 
 
@@ -38,7 +39,7 @@ public class ContextInitializer implements ServletContextListener{
 		//System.out.println("new file: "+new File(".").getAbsolutePath());
 		//PropertyConfigurator.configureAndWatch("webapps/ROOT/WEB-INF/classes/log4j.properties");
 		BasicConfigurator.configure();
-		//DOMConfigurator.configureAndWatch("webapps/ROOT/WEB-INF/classes/log4j.xml");
+		DOMConfigurator.configureAndWatch("webapps/ROOT/WEB-INF/classes/log4j.xml");
 		log = Logger.getLogger(ContextInitializer.class);
 	}
 	

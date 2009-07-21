@@ -8,7 +8,6 @@ import java.util.Map;
 
 import net.anotheria.anosite.api.session.APISession;
 import net.anotheria.anosite.api.validation.ValidationError;
-import net.anotheria.util.StringUtils;
 
 
 /**
@@ -218,8 +217,8 @@ public class APICallContext {
 	 * Sets the list of validation errors, reseting previously set or added errors.
 	 * @param validationErrors the validation errors to set.
 	 */
-	public void setValidationErrors(List<ValidationError> validationErrors) {
-		this.validationErrors = validationErrors;
+	public void setValidationErrors(List<ValidationError> someValidationErrors) {
+		validationErrors = someValidationErrors;
 	}
 
 	/**
@@ -247,7 +246,9 @@ public class APICallContext {
 	
 	////////////// END ////////////////////
 	
-
+	/**
+	 * The thread local variable associated with the current thread.
+	 */
 	private static InheritableThreadLocal<APICallContext> apiCallContext = new InheritableThreadLocal<APICallContext>(){
 		@Override protected synchronized APICallContext initialValue(){
 			return new APICallContext();

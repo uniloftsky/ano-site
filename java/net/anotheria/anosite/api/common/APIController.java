@@ -13,7 +13,9 @@ public class APIController {
 
 	APIController() {
 	}
-
+	/**
+	 * Called on application shutdown.
+	 */
 	public void notifyShutdown() {
 		info("API is going down ... ");
 		Collection<API> apis = APIFinder.getAPIs();
@@ -28,6 +30,9 @@ public class APIController {
 
 	}
 
+	/*
+	 * Called on application start.
+	 */
 	public void notifyStart() {
 	}
 

@@ -174,14 +174,23 @@ public abstract class AbstractAPIImpl implements API{
 	}
 	
 	//////// VALIDATION /////
+	/**
+	 * Adds a validation error to the current context.
+	 */
 	protected void addValidationError(String field, String cmsKey, String description){
 		addValidationError(new ValidationError(field, cmsKey, description));
 	}
 	
+	/**
+	 * Adds a validation error to the current context.
+	 * @param error 
+	 */
 	protected void addValidationError(ValidationError error){
 		APICallContext.getCallContext().addValidationError(error);
 	}
-	
+	/**
+	 * Used to abort execution if validation is unsuccessful.
+	 */
 	protected void checkValidationAndThrowException(){
 		if (APICallContext.getCallContext().hasValidationErrors())
 			throw new ValidationException(APICallContext.getCallContext().getValidationErrors());
