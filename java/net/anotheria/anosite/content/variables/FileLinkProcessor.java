@@ -4,8 +4,16 @@ import net.anotheria.anosite.gen.asresourcedata.data.FileLink;
 import net.anotheria.anosite.gen.asresourcedata.service.ASResourceDataServiceFactory;
 import net.anotheria.anosite.gen.asresourcedata.service.IASResourceDataService;
 
+/**
+ * Processor for links to files (for example PDF) which are uploaded via IASResourceDataService.
+ * @author lrosenberg
+ *
+ */
 public class FileLinkProcessor extends XLinkProcessor{
-	private static IASResourceDataService service = ASResourceDataServiceFactory.createASResourceDataService();
+	/**
+	 * Service to lookup files.
+	 */
+	private static final IASResourceDataService service = ASResourceDataServiceFactory.createASResourceDataService();
 
 	@Override
 	protected String getFileName(String variable) {
@@ -19,6 +27,4 @@ public class FileLinkProcessor extends XLinkProcessor{
 			return null;
 		}
 	}
-	
-	
 }
