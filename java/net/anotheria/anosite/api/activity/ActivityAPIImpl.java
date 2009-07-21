@@ -4,13 +4,10 @@ import net.anotheria.anosite.api.common.AbstractAPIImpl;
 
 public class ActivityAPIImpl extends AbstractAPIImpl implements ActivityAPI{
 
-	//this is just a test impl of a test api
+	//this is just a test impl of a test api sofar.
+	//In the future we will use this api to detect users inactivity.
 	
-	public void notifyMyActivity(String url) {
-//		String lastUrl = (String)getAttributeFromSession("LAST_URL");
-//		if (lastUrl!=null)
-//			System.out.print(lastUrl +" -> ");
-//		System.out.println(url+ "("+getCallContext()+")");
+	@Override public void notifyMyActivity(String url) {
 		setAttributeInSession("LAST_URL", url);
 	}
 	

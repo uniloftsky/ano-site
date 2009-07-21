@@ -2,9 +2,14 @@ package net.anotheria.anosite.api.activity;
 
 import net.anotheria.anosite.api.common.APIFactory;
 
+/**
+ * Factory for the activity api.
+ * @author lrosenberg
+ *
+ */
 public class ActivityAPIFactory implements APIFactory<ActivityAPI>{
 
-	public ActivityAPI createAPI() {
+	@Override public ActivityAPI createAPI() {
 		return new ActivityAPIImpl();
 	}
 
