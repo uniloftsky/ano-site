@@ -12,21 +12,47 @@ import net.anotheria.anosite.content.variables.element.DynamicElement;
 import net.anotheria.anosite.content.variables.element.StaticElement;
 import net.anotheria.util.StringUtils;
 
+/**
+ * Utility for replacement of expressions with variables in texts. An expression consists of three parts:
+ * {prefix:name:defaultValue}. The prefix tells the variable utility which processor to use, the name and default value are submitted to the processor in question.
+ * @author lrosenberg
+ */
 public class VariablesUtility {
+	/**
+	 * The default value if no 'fallback' default value is specified.
+	 */
 	public static final String DEFAULT_VALUE  = "*UNSET*";
+	/**
+	 * Line delimiter for line parsing. The Variables utility only supports expression in a single line.
+	 */
 	public static final char LINE_DELIMITER = '\n';
+	/**
+	 * Word delimiter.
+	 */
 	public static final char WORD_DELIMITER = ' ';
-	
+	/**
+	 * A tag (expression) starts with this character.
+	 */
 	public static final char TAG_START = '{';
+	/**
+	 * A tag (expression) ends with this character.
+	 */
 	public static final char TAG_END = '}';
 	
+	/**
+	 * Contant for quoting.
+	 */
 	public static final String QUOTE = "\"";
+	/**
+	 * Escape char for special characters in the expressions.
+	 */
 	public static final char ESCAPE_CHAR = '\\';
 	
 	
-//	private static final Logger log = Logger.getLogger(VariablesUtility.class);
-	
-	private static Map<String, VariablesProcessor> defaultProcessors = new HashMap<String, VariablesProcessor>();
+	/**
+	 * Map with preconfigured processors.
+	 */
+	private static final Map<String, VariablesProcessor> defaultProcessors = new HashMap<String, VariablesProcessor>();
 	
 	static{
 		defaultProcessors.put(DefinitionPrefixes.PREFIX_CONSTANT, new ConstantsProcessor());
@@ -57,7 +83,11 @@ public class VariablesUtility {
 	}
 	
 
-	
+	/**
+	 * Adds a processor to this variable utility.
+	 * @param prefix prefix for processor mapping.
+	 * @param processor processor.
+	 */
 	public static void addProcessor(String prefix, VariablesProcessor processor){
 		defaultProcessors.put(prefix, processor);
 	}
@@ -154,10 +184,4 @@ public class VariablesUtility {
 //		System.out.println("RET: " + ret);
 		return ret;
 	}
-	
-	public static final void main(String[] args){
-		String src = "{ {}adf}";
-		System.out.println(replaceVariables(null, src));
-	}
-	
 }

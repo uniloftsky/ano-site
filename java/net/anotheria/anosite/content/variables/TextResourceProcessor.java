@@ -24,6 +24,7 @@ public class TextResourceProcessor implements VariablesProcessor {
         init();
     }
 
+    //FIXME why does the processor need an init() method?
     /**
      * Init for service!
      */

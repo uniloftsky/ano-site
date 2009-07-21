@@ -20,15 +20,32 @@ public class PageBean {
 	 */
 	private String description;
 	/**
-	 * 
+	 * Name of the page.
 	 */
 	private String name;
+	/**
+	 * List of boxes in first column.
+	 */
 	private List<BoxBean> column1;
+	/**
+	 * List of boxes in second column.
+	 */
 	private List<BoxBean> column2;
+	/**
+	 * List of boxes in third column.
+	 */
 	private List<BoxBean> column3;
-	
+	/**
+	 * List of boxes in the meta part (html head part).
+	 */
 	private List<BoxBean> metaBoxes;
+	/**
+	 * List of header boxes (before the start or the main content columns).
+	 */
 	private List<BoxBean> headerBoxes;
+	/**
+	 * List of footer boxes (after the main content columns).
+	 */
 	private List<BoxBean> footerBoxes;
 
 	public PageBean() {
@@ -69,7 +86,7 @@ public class PageBean {
 		column3.add(aBox);
 	}
 
-	public String toString(){
+	@Override public String toString(){
 		return getName()+" c1: "+column1.size()+", c2: "+column2.size()+", c3: "+column3.size()+" boxes.";
 	}
 
