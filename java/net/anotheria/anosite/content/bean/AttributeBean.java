@@ -1,8 +1,22 @@
 package net.anotheria.anosite.content.bean;
 
+/**
+ * A bean that contains the data from a net.anotheria.anosite.gen.aswebdata.data.Attribute for rendering.
+ * @author lrosenberg
+ *
+ */
 public class AttributeBean {
+	/**
+	 * Key property.
+	 */
 	private String key;
+	/**
+	 * Name property.
+	 */
 	private String name;
+	/**
+	 * Value property.
+	 */
 	private String value;
 	
 	public AttributeBean(){
@@ -15,7 +29,7 @@ public class AttributeBean {
 		value = aValue;
 	}
 	
-	public String toString(){
+	@Override public String toString(){
 		return getName()+": "+getKey()+" = "+getValue();
 	}
 	
