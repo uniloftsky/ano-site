@@ -1,6 +1,18 @@
 <?xml version="1.0"?>
 
 <project name="ano-site" default="dist" basedir=".">
+	
+	<target name="jar" depends="compile">
+		<jar jarfile="${dist.dir}/${target.jar.name}" index="false">
+         	<fileset dir="${classes.dir}">
+         		<include name="**/*"/>
+         		<exclude name="net/anotheria/anosite/gen/*"/>
+         		<exclude name="/net/anotheria/anosite/gen/*"/>
+         	</fileset>
+		</jar>
+	</target>
+
+	
 	<import file="../build/anodoc-project.xml"/>	
 
 	<!-- 
