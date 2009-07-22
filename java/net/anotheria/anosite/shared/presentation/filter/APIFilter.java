@@ -30,8 +30,9 @@ public class APIFilter implements Filter{
 	 * The activity api, which is notified about all actions by the user.
 	 */
 	private ActivityAPI activityAPI;
-	
-	@Override public void destroy() {
+    private static final String CURRENT_USER_ID = "currentUserId";
+
+    @Override public void destroy() {
 		
 	}
 
@@ -109,10 +110,24 @@ public class APIFilter implements Filter{
 //		currentContext.setCurrentLocale(req.getLocale());
 		currentContext.setCurrentLocale(getLocale(req));
 		currentContext.setCurrentUserId(apiSession.getCurrentUserId());
+        //setting proper editor id - if so.
+        setEditorId(currentContext,session);
 		return apiSession;
 	}
 
-	/**
+    /**
+     * Checking HttpSession for currentUserId-  which is currently ---> editorId
+     * @param currentContext APICallContext instance
+     * @param session Http sesion itself
+     */
+    private void setEditorId(APICallContext currentContext, HttpSession session) {
+        Object editorId = session!=null&&session.getAttribute(CURRENT_USER_ID)!=null? (String) session.getAttribute(CURRENT_USER_ID) :null;
+        if(editorId!=null && editorId instanceof String && !((String)editorId).isEmpty()){
+            currentContext.setCurrentEditorId((String) editorId);
+        }
+    }
+
+    /**
 	 * Creates a new APISession.
 	 * @param session
 	 * @return

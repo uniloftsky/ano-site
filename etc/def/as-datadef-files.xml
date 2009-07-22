@@ -1,4 +1,5 @@
   <module name="Images">
+    <listener class="net.anotheria.anosite.cms.listener.CRUDLogListener"/>  
 	<document name="Image">
 		<property name="name" type="string"/>
 		<property name="title" type="string" multilingual="true"/>

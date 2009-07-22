@@ -1,4 +1,5 @@
   <module name="ASSiteData">
+    <listener class="net.anotheria.anosite.cms.listener.CRUDLogListener"/>  
 	<document name="PageTemplate">
 		<property type="string" name="name"/>
 		<link name="layout" type="single" target="ASLayoutData.PageLayout"/>

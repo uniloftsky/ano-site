@@ -1,10 +1,12 @@
   <module name="ASGenericAction">
+    <listener class="net.anotheria.anosite.cms.listener.CRUDLogListener"/>
 	<document name="GenericActionDef">
 		<property name="name" type="string"/>
 		<property name="clazz" type="string"/>
 	</document>
   </module>
   <module name="ASCustomAction">
+    <listener class="net.anotheria.anosite.cms.listener.CRUDLogListener"/> 
 	<document name="CustomActionDef">
 		<property name="name" type="string"/>
 		<property name="clazz" type="string"/>
@@ -20,6 +22,7 @@
 	</document>
   </module>
   <module name="ASAction" storageType="federation">
+    <listener class="net.anotheria.anosite.cms.listener.CRUDLogListener"/>
 	<federatedmodule name="ASGenericAction" key="G"/>
 	<federatedmodule name="ASCustomAction"  key="C"/>
 	<mapping sourceDocument="ActionDef" targetDocument="G.GenericActionDef"/>
