@@ -3,12 +3,19 @@
 <project name="ano-site" default="dist" basedir=".">
 	
 	<target name="jar" depends="compile">
+		<echo>Using specially overriden jar target from local build file to prevent generated classes from being jared</echo>
 		<jar jarfile="${dist.dir}/${target.jar.name}" index="false">
-         	<fileset dir="${classes.dir}">
-         		<include name="**/*"/>
-         		<exclude name="net/anotheria/anosite/gen/*"/>
-         		<exclude name="/net/anotheria/anosite/gen/*"/>
-         	</fileset>
+         	<fileset dir="${classes.dir}" excludes="net/anotheria/anosite/gen/**">
+	       	</fileset>
+			<manifest>
+			      <!-- Who is building this jar? -->
+			      <attribute name="Built-By" value="${user.name}"/>
+			      <!-- Information about the program itself -->
+			      <attribute name="Implementation-Vendor" value="anotheria.net"/>
+			      <attribute name="Implementation-Title" value="${project.name}"/>
+			      <attribute name="Implementation-Version" value="TBD"/>
+			    </manifest>
+
 		</jar>
 	</target>
 
