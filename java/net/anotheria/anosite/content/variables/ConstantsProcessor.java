@@ -18,6 +18,7 @@ public class ConstantsProcessor implements VariablesProcessor{
 	static{
 		constants.put("spacer", "&nbsp;");
 		constants.put("euro", "&euro;");
+		constants.put("copyright", "&#169;");
 		constants.put("EUR", "&euro;");
 		constants.put("CHF", "CHF");
 		constants.put("form", "form");
