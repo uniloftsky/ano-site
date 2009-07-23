@@ -50,6 +50,7 @@ public class ContextInitializer implements ServletContextListener{
 
 	public void contextInitialized(ServletContextEvent event) {
 		log.info("CONTEXT INITIALIZED @ "+Date.currentDate());
+		CMSSelfTest.performSelfTest();
 		BoxHelperUtility.setup();
 		
 		Config cfg = Config.getInstance();

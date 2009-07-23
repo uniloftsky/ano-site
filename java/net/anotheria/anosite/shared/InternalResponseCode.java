@@ -1,5 +1,9 @@
 package net.anotheria.anosite.shared;
 
+/**
+ * A code which signalizes how to perform further rendering.
+ * @author lrosenberg
+ */
 public enum InternalResponseCode {
 	/**
 	 * Continue execution
