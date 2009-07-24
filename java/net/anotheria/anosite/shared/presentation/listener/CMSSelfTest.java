@@ -34,6 +34,12 @@ public final class CMSSelfTest {
 		ensureGuardExists("System is Develop", "net.anotheria.anosite.guard.SystemIsDevelopGuard");
 		ensureGuardExists("System is Production", "net.anotheria.anosite.guard.SystemIsProductionGuard");
 		ensureGuardExists("System is Test", "net.anotheria.anosite.guard.SystemIsTestGuard");
+		
+		//context language guards
+		ensureGuardExists("RussianContextLanguage", "net.anotheria.anosite.guard.ContextLanguageIsRussianGuard");
+		ensureGuardExists("GermanContextLanguage", "net.anotheria.anosite.guard.ContextLanguageIsGermanGuard");
+		ensureGuardExists("EnglishContextLanguage", "net.anotheria.anosite.guard.ContextLanguageIsEnglishGuard");
+		
 	}
 	
 	private static void ensureGuardExists(String name, String clazz){
