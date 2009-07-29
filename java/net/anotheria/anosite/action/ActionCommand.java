@@ -4,14 +4,30 @@ import net.anotheria.anosite.action.servlet.cms.ActionHelper;
 import net.anotheria.anosite.gen.ascustomaction.data.ActionMappingDef;
 import net.anotheria.anosite.gen.shared.data.ActionCommandDefUtils;
 
+/**
+ * ActionCommand is the result of an action execution. By returning an ActionCommand the action 'tells' the ActionServlet how to perform further.
+ * @author another
+ *
+ */
 public class ActionCommand {
+	/**
+	 * Target url.
+	 */
 	private String url;
+	/**
+	 * Target page.
+	 */
 	private String page;
+	/**
+	 * Type of command (redirect, forward or none).
+	 */
 	private CommandType type;
+	/**
+	 * Parameters.
+	 */
 	private String parameters;
 	
 	public ActionCommand() {
-		// TODO Auto-generated constructor stub
 	}
 	
 	public ActionCommand(ActionMappingDef def) {
@@ -41,6 +57,11 @@ public class ActionCommand {
 		this.type = type;
 	}
 	
+	/**
+	 * Returns the target for the redirect or forward.
+	 * First the url paraemter is checked, if no url parameter is specified, page parameter is considered and the url to the specified page is returned.
+	 * @return
+	 */
 	public String getTarget(){
 		String targetUrl =  url == null || url.trim().length() == 0 ? 
 				getPageUrl() : url;
@@ -84,7 +105,7 @@ public class ActionCommand {
 		}
 	}
 	
-	public String toString(){
+	@Override public String toString(){
 		return getType()+" "+getTarget();
 	}
 	
