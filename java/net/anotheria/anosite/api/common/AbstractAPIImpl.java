@@ -30,12 +30,23 @@ public abstract class AbstractAPIImpl implements API{
 	 * The attribute prefix which is used on all attributes put via setAttributeInSession... methods to prevent name collision.
 	 */
 	private final String ATTRIBUTE_PREFIX = getClass().getName()+".";
+	/**
+	 * Instance of the config.
+	 */
 	private static APIConfig apiConfig;
-	
-	public static final long HOUR = 1000L*60*60;
-	public static final long DAY = HOUR*24;
-	
+
+	/**
+	 * Constant for MINUTE in milliseconds.
+	 */
 	public static final long MINUTE = 1000L*60;
+	/**
+	 * Constant for HOUR in milliseconds.
+	 */
+	public static final long HOUR = MINUTE*60;
+	/**
+	 * Constant for DAY in milliseconds.
+	 */
+	public static final long DAY = HOUR*24;
 
 	protected AbstractAPIImpl(){
 		log = Logger.getLogger(this.getClass());
