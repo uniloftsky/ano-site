@@ -1,5 +1,10 @@
 package net.anotheria.anosite.api.content;
 
+/**
+ * Yet empty.
+ * @author another
+ *
+ */
 public class ContentAPIImpl implements ContentAPI{
 
 	@Override public void deInit() {
