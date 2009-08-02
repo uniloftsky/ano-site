@@ -6,7 +6,7 @@ import net.anotheria.anosite.api.common.NoLoggedInUserException;
 
 /**
  * Basic API for login/out purposes.
- * @author another
+ * @author lrosenberg
  *
  */
 public interface LoginAPI extends API{
@@ -46,8 +46,14 @@ public interface LoginAPI extends API{
 	 * @param postProcessor
 	 */
 	void addLoginPostprocessor(LoginPostProcessor postProcessor);
-	
+	/**
+	 * Adds a logout preprocessor.
+	 * @param preProcessor
+	 */
 	void addLogoutPreprocessor(LogoutPreProcessor preProcessor);
-	
+	/**
+	 * Adds a logout postprocessor.
+	 * @param preProcessor
+	 */
 	void addLogoutPostprocessor(LogoutPostProcessor preProcessor);
 }

@@ -59,7 +59,7 @@ public class LoginAPIImpl extends AbstractAPIImpl implements LoginAPI{
 	/**
 	 * Adds a login postprocessor. Threadsafe.
 	 */
-	public void addLoginPostprocessor(LoginPostProcessor postProcessor) {
+	@Override public void addLoginPostprocessor(LoginPostProcessor postProcessor) {
 		loginPostProcessors.add(postProcessor);
 		
 	}
@@ -67,7 +67,7 @@ public class LoginAPIImpl extends AbstractAPIImpl implements LoginAPI{
 	/**
 	 * Adds a login preprocessor. Threadsafe.
 	 */
-	public void addLoginPreprocessor(LoginPreProcessor preProcessor) {
+	@Override public void addLoginPreprocessor(LoginPreProcessor preProcessor) {
 		loginPreProcessors.add(preProcessor);
 		
 	}
@@ -97,8 +97,7 @@ public class LoginAPIImpl extends AbstractAPIImpl implements LoginAPI{
 		}catch(NoLoggedInUserException ignored){};
 	}
 	
-	@Override
-	public String getLogedUserId() throws NoLoggedInUserException {
+	@Override public String getLogedUserId() throws NoLoggedInUserException {
 		if(!isLogedIn())
 			throw new APIException("No loged in users!");
 		return getCallContext().getCurrentUserId();
@@ -112,16 +111,19 @@ public class LoginAPIImpl extends AbstractAPIImpl implements LoginAPI{
 		}
 	}
 
-	public void addLogoutPostprocessor(LogoutPostProcessor postProcessor) {
+	@Override public void addLogoutPostprocessor(LogoutPostProcessor postProcessor) {
 		logoutPostProcessors.add(postProcessor);
 	}
 
-	public void addLogoutPreprocessor(LogoutPreProcessor preProcessor) {
+	@Override public void addLogoutPreprocessor(LogoutPreProcessor preProcessor) {
 		logoutPreProcessors.add(preProcessor);
 		
 	}
 	
 	//////////
+	/**
+	 * Calls all login preprocessors.
+	 */
 	private void callLoginPreprocessors(String userId) throws APIException{
 		for (LoginPreProcessor p : loginPreProcessors){
 			try{
@@ -134,6 +136,10 @@ public class LoginAPIImpl extends AbstractAPIImpl implements LoginAPI{
 		}
 	}
 	
+	/**
+	 * Calls all login postprocessors.
+	 * @param userId
+	 */
 	private void callLoginPostprocessors(String userId) {
 		for (LoginPostProcessor p : loginPostProcessors){
 			try{
@@ -144,6 +150,11 @@ public class LoginAPIImpl extends AbstractAPIImpl implements LoginAPI{
 		}
 	}
 
+	/**
+	 * Calls all logout preprocessors.
+	 * @param userId
+	 * @throws APIException
+	 */
 	private void callLogoutPreprocessors(String userId) throws APIException{
 		for (LogoutPreProcessor p : logoutPreProcessors){
 			try{
@@ -156,6 +167,10 @@ public class LoginAPIImpl extends AbstractAPIImpl implements LoginAPI{
 		}
 	}
 
+	/**
+	 * Calls all logout postprocessors.
+	 * @param userId
+	 */
 	private void callLogoutPostprocessors(String userId) {
 		for (LogoutPostProcessor p : logoutPostProcessors){
 			try{

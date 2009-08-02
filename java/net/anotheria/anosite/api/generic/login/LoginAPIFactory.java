@@ -6,7 +6,7 @@ import net.anotheria.anosite.api.common.APIFactory;
  */
 public class LoginAPIFactory implements APIFactory<LoginAPI>{
 
-	public LoginAPI createAPI() {
+	@Override public LoginAPI createAPI() {
 		return new LoginAPIImpl();
 	}
 
