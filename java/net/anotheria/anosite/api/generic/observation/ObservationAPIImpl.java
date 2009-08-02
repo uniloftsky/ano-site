@@ -55,6 +55,11 @@ public class ObservationAPIImpl extends AbstractAPIImpl implements ObservationAP
 			unRegisterObserver(observer, subject);
 	}
 	
+	/**
+	 * Unregisters an observer for a subject
+	 * @param observer
+	 * @param subject
+	 */
 	private void unRegisterObserver(Observer observer, String subject) {
 		log.debug("Unregistering observer: "+observer+", for subject: "+subject);
 		List<Observer> observers = subjects.get(subject);
@@ -68,6 +73,11 @@ public class ObservationAPIImpl extends AbstractAPIImpl implements ObservationAP
 			registerObserver(subject, observer);
 	}
 	
+	/**
+	 * Registers an observer for the subject internally.
+	 * @param subject
+	 * @param observer
+	 */
 	private void registerObserver(String subject, Observer observer) {
 		log.debug("Registering observer: "+observer+", for subject: "+subject);
 		List<Observer> observers = subjects.get(subject);
