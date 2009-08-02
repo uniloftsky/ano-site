@@ -1,5 +1,10 @@
 package net.anotheria.anosite.api.mock;
 
+/**
+ * A mock method which always return a predefined integer value.
+ * @author another
+ *
+ */
 public class ReturnIntegerMockMethod extends ReturnObjectMockMethod{
 	
 	public ReturnIntegerMockMethod(int aValue){

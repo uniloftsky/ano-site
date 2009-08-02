@@ -1,6 +1,5 @@
 package net.anotheria.anosite.api.generic.observation;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 

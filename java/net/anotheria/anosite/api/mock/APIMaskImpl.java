@@ -5,16 +5,34 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 import net.anotheria.anosite.api.common.API;
+import net.anotheria.anosite.api.common.APIFinder;
 
 import org.apache.log4j.Logger;
 
-
+/**
+ * This is a masking api implementation which is used as wrapper to an underlying api implementation and allows masking of methods.
+ * @see MaskMethodRegistry
+ * @see APIFinder
+ * @author lrosenberg
+ */
 public class APIMaskImpl <T extends API> implements API, InvocationHandler{
-	
+	/**
+	 * Underlying 'masked' api impl.
+	 */
 	private T maskedInstance;
+	/**
+	 * Clazz file of the api.
+	 */
 	private Class<T> maskedClazz;
+	/**
+	 * Logger.
+	 */
 	private static Logger log = Logger.getLogger(APIMockImpl.class);
-	
+	/**
+	 * Created a new masked api.
+	 * @param aMaskedInstance
+	 * @param aMaskedClazz
+	 */
 	public APIMaskImpl(T aMaskedInstance, Class<T> aMaskedClazz){
 		maskedInstance = aMaskedInstance;
 		maskedClazz = aMaskedClazz;
@@ -45,6 +63,15 @@ public class APIMaskImpl <T extends API> implements API, InvocationHandler{
 		return method.invoke(this, args);
 	}
 
+	/**
+	 * Called for each potentially masked methods. This method looks up the method signature in the MaskMethodRegistry. If it finds a fitting method, the method will be called, otherwise the 
+	 * call will be performed on the underlying implementation.
+	 * @param proxy
+	 * @param method
+	 * @param args
+	 * @return
+	 * @throws Throwable
+	 */
 	private Object invokeOnMasked(Object proxy, Method method, Object[] args) throws Throwable{
 		if (log.isDebugEnabled())
 			log.debug("Called method: "+method+" in "+maskedClazz.getName());

@@ -7,7 +7,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import net.anotheria.anosite.api.common.API;
 
 import org.apache.log4j.Logger;
-
+/**
+ * A registry for mocking methods.
+ * @author another
+ *
+ */
 public class MockMethodRegistry {
 	private static Logger log = Logger.getLogger(MockMethodRegistry.class);
 	private static Map<Method, APIMockMethod> methods = new ConcurrentHashMap<Method, APIMockMethod>();

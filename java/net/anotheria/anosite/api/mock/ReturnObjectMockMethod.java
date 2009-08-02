@@ -1,9 +1,15 @@
 package net.anotheria.anosite.api.mock;
 
 import java.lang.reflect.Method;
-
+/**
+ * A mock method which always return a predefined value.
+ * @author lrosenberg
+ *
+ */
 public class ReturnObjectMockMethod implements APIMockMethod{
-
+	/**
+	 * The value to return.
+	 */
 	private Object value;
 	
 	public ReturnObjectMockMethod(Object aValue){
