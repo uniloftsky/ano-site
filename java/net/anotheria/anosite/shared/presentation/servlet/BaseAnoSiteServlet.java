@@ -4,6 +4,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import net.java.dev.moskito.web.MoskitoHttpServlet;
 
+/**
+ * Base servlet class for anosite servlets.
+ * @author another
+ *
+ */
 public abstract class BaseAnoSiteServlet extends MoskitoHttpServlet{
 	protected static String extractArtifactName(HttpServletRequest req) {
 		String servletPath = req.getServletPath();
