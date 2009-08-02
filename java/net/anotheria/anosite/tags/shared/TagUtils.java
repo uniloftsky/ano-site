@@ -1,8 +1,5 @@
 package net.anotheria.anosite.tags.shared;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 
@@ -13,25 +10,43 @@ import org.apache.struts.util.ResponseUtils;
 public class TagUtils {
 
 	private static Logger log = Logger.getLogger(TagUtils.class);
-	private static Map<String, Integer> scopes = new HashMap<String, Integer>();
 	
-	
-	static {
-		scopes.put("page", Integer.valueOf(PageContext.PAGE_SCOPE));
-		scopes.put("request", Integer.valueOf(PageContext.REQUEST_SCOPE));
-		scopes.put("session", Integer.valueOf(PageContext.SESSION_SCOPE));
-		scopes.put("application", Integer.valueOf(PageContext.APPLICATION_SCOPE));
+	private static enum Scope{
+		/**
+		 * page scope.
+		 */
+		page(PageContext.PAGE_SCOPE),
+		/**
+		 * request scope.
+		 */
+		request(PageContext.REQUEST_SCOPE),
+		/**
+		 * session scope.
+		 */
+		session(PageContext.SESSION_SCOPE),
+		/**
+		 * application scope.
+		 */
+		application(PageContext.APPLICATION_SCOPE);
+		/**
+		 * Corresponding constant value in PageContext.
+		 */
+		private int pageContextScope;
+		
+		private Scope(int aPageContextScope){
+			pageContextScope = aPageContextScope;
+		}
+		
+		public int getPageContextScope(){
+			return pageContextScope;
+		}
+		
+		
+		
 	}
 	
-	
 	public static int getScope(String scopeName) throws JspException {
-		Integer scope = scopes.get(scopeName.toLowerCase());
-
-		if (scope == null) {
-			throw new JspException("Unknown scope " + scopeName);
-		}
-
-		return scope.intValue();
+		return Scope.valueOf(scopeName).getPageContextScope();
     }
 	
 	
@@ -86,20 +101,45 @@ public class TagUtils {
 		return bean;
 	}
 	
+	/**
+	 * Puts an attribute into target scope.
+	 * @param pageContext
+	 * @param aScope
+	 * @param anObjectName
+	 * @param anBean
+	 * @throws JspException
+	 */
 	public static void putAttribute(PageContext pageContext, String aScope, String anObjectName, Object anBean) throws JspException {
 		if(aScope == null || aScope.length() == 0)
 			aScope = "page";
 		pageContext.setAttribute(anObjectName, anBean, getScope(aScope));
 	}
 	
+	/**
+	 * Writes a string to the page.
+	 * @param pageContext
+	 * @param s
+	 * @throws JspException
+	 */
 	protected static void write(PageContext pageContext, String s) throws JspException{
 		ResponseUtils.write(pageContext, s);		
 	}
 	
+	/**
+	 * Writes a string to the page and appends an empty line.
+	 * @param pageContext
+	 * @param s
+	 * @throws JspException
+	 */
 	protected static void writeLn(PageContext pageContext, String s) throws JspException{
 		write(pageContext, s+"\n");		
 	}
 
+	/**
+	 * Quotes a string with double quotes.
+	 * @param s
+	 * @return
+	 */
 	protected static String quote(String s){
 		return "\""+s+"\"";
 	}
