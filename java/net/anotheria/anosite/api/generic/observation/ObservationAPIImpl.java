@@ -26,8 +26,7 @@ public class ObservationAPIImpl extends AbstractAPIImpl implements ObservationAP
 		if (observers == null || observers.size() == 0)
 			return;
 		SubjectUpdateEvent event = new SubjectUpdateEvent(subject, originator);
-		for (Iterator<Observer> it = observers.iterator(); it.hasNext(); ){
-			Observer anObserver = it.next();
+		for (Observer anObserver : observers){
 			try{
 				anObserver.notifySubjectUpdatedForCurrentUser(event);
 			}catch(Exception e){
@@ -42,8 +41,7 @@ public class ObservationAPIImpl extends AbstractAPIImpl implements ObservationAP
 		if (observers == null || observers.size() == 0)
 			return;
 		SubjectUpdateEvent event = new SubjectUpdateEvent(subject, originator, userId);
-		for (Iterator<Observer> it = observers.iterator(); it.hasNext(); ){
-			Observer anObserver = it.next();
+		for (Observer anObserver : observers){
 			try{
 				anObserver.notifySubjectUpdatedForUser(event);
 			}catch(Exception e){
@@ -52,8 +50,8 @@ public class ObservationAPIImpl extends AbstractAPIImpl implements ObservationAP
 		}
 	}
 
-	@Override public void unRegisterObserver(Observer observer, String... subjects) {
-		for (String subject: subjects)
+	@Override public void unRegisterObserver(Observer observer, String... someSubjects) {
+		for (String subject : someSubjects)
 			unRegisterObserver(observer, subject);
 	}
 	
@@ -65,8 +63,8 @@ public class ObservationAPIImpl extends AbstractAPIImpl implements ObservationAP
 		observers.remove(observer);
 	}
 
-	@Override public void registerObserver(Observer observer, String... subjects) {
-		for (String subject:subjects)
+	@Override public void registerObserver(Observer observer, String... someSubjects) {
+		for (String subject : someSubjects)
 			registerObserver(subject, observer);
 	}
 	
