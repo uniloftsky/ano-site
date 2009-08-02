@@ -80,9 +80,4 @@ public class APIConfig {
 		return configurable.isVerboseMethodCalls();
 	}
 
-	public static boolean isInTestMode() {
-		return configurable.isTestMode();
-	}
-
-
 }

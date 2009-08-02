@@ -117,11 +117,6 @@ public class APIFinder {
 		
 		log.debug("\tcreated new instance: "+newAPI);
 		
-		if (APIConfig.isInTestMode()){
-			if (newAPI instanceof TestModeAware)
-				((TestModeAware)newAPI).setTestMode(true);
-		}
-		
 		//masking
 		if (isMaskingEnabled()){
 			APIMaskImpl<T> maskedAPI = new APIMaskImpl<T>(newAPI, identifier);

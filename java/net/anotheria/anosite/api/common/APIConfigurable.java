@@ -6,7 +6,6 @@ import org.configureme.annotations.ConfigureMe;
 @ConfigureMe(name = "apiconfig")
 public class APIConfigurable {
 	@Configure	private boolean verboseMethodCalls;
-	@Configure	private boolean testMode;
 	
 	public APIConfigurable(){
 	}
@@ -15,15 +14,8 @@ public class APIConfigurable {
 		return verboseMethodCalls;
 	}
 
-	public boolean isTestMode() {
-		return testMode;
-	}
-
 	public void setVerboseMethodCalls(boolean value) {
 		verboseMethodCalls = value;
 	}
 
-	public void setTestMode(boolean value) {
-		testMode = value;
-	}
 }
