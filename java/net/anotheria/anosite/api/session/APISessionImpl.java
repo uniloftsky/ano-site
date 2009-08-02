@@ -7,7 +7,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.log4j.Logger;
 
-
+/**
+ * The default implementation of the APISession.
+ * @author lrosenberg
+ */
 public class APISessionImpl implements APISession {
 
 	/**

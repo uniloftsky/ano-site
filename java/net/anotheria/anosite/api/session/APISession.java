@@ -3,6 +3,11 @@ package net.anotheria.anosite.api.session;
 import net.anotheria.util.TimeUnit;
 
 
+/**
+ * The api's internal session. This session provides more functionallity than the HttpSession and therefore should be prefered to the http session.
+ * @author another
+ *
+ */
 public interface APISession {
 	
 	/**

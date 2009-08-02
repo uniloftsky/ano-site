@@ -8,7 +8,6 @@ public interface APISessionManagerListener {
 
 	/**
 	 * Notification that an api session will be invalidated.
-	 * 
 	 * @param session
 	 */
 	void apiSessionDestroyed(APISession session);
