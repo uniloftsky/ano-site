@@ -12,6 +12,11 @@ import net.anotheria.asg.data.DataObject;
 import net.anotheria.asg.util.decorators.IAttributeDecorator;
 import net.anotheria.webutils.filehandling.actions.FileStorage;
 
+/**
+ * This decorator looks up the linked image file on the disk and displays the size of the binary file.
+ * @author lrosenberg
+ *
+ */
 public class ImageSizeDecorator implements IAttributeDecorator {
 
 	@Override

@@ -21,16 +21,30 @@ import net.anotheria.asg.data.DataObject;
 import net.anotheria.asg.exception.ASGRuntimeException;
 import net.anotheria.asg.util.decorators.IAttributeDecorator;
 
+/**
+ * This attribute decorator decorates known anosite objects as links to the linked documents (instead of id).
+ * @author another
+ *
+ */
 public class LinkTargetNameDecorator implements IAttributeDecorator{
+	/**
+	 * Federated data service for guard, boxtypes and handlers.
+	 */
 	private static IASFederatedDataService federatedDataService = ASFederatedDataServiceFactory.createASFederatedDataService();
+	/**
+	 * Sitedata service for sites, templates etc.
+	 */
 	private static IASSiteDataService siteDataService = ASSiteDataServiceFactory.createASSiteDataService();
+	/**
+	 * Webdata service for pagexs and boxes.
+	 */
 	private static IASWebDataService webDataService = ASWebDataServiceFactory.createASWebDataService();
+	/**
+	 * Layout data service for layouts and styles.
+	 */
 	private static IASLayoutDataService layoutDataService = ASLayoutDataServiceFactory.createASLayoutDataService();
 
-	/* (non-Javadoc)
-	 * @see net.anotheria.asg.util.decorators.IAttributeDecorator#decorate(net.anotheria.anodoc.data.Document, java.lang.String, java.lang.String)
-	 */
-	public String decorate(DataObject doc, String attributeName, String rule) {
+	@Override public String decorate(DataObject doc, String attributeName, String rule) {
 		String name = "Unknown";
 		String linkValue = "?";
 		try{
@@ -73,6 +87,13 @@ public class LinkTargetNameDecorator implements IAttributeDecorator{
 		return name + " ["+linkValue+"]";
 	}
 	
+	/**
+	 * Returns the name of the linked document for navi item document.
+	 * @param item
+	 * @param attributeName
+	 * @return
+	 * @throws ASGRuntimeException
+	 */
 	private String getTargetNameForNaviItem(NaviItem item, String attributeName) throws ASGRuntimeException{
 		if (attributeName.equals("internalLink")){
 			return webDataService.getPagex(item.getInternalLink()).getName();
@@ -81,6 +102,13 @@ public class LinkTargetNameDecorator implements IAttributeDecorator{
 		
 	}
 	
+	/**
+	 * Returns the name of the linked document for template document.
+	 * @param template
+	 * @param attributeName
+	 * @return
+	 * @throws ASGRuntimeException
+	 */
 	private String getTargetNameForTemplate(PageTemplate template, String attributeName) throws ASGRuntimeException{
 		if (attributeName.equals("site")){
 			return siteDataService.getSite(template.getSite()).getName();
@@ -98,6 +126,13 @@ public class LinkTargetNameDecorator implements IAttributeDecorator{
 		return "Unknown attribute: "+attributeName;
 	}
 
+	/**
+	 * Returns the name of the linked document for EntryPoint.
+	 * @param entry
+	 * @param attributeName
+	 * @return
+	 * @throws ASGRuntimeException
+	 */
 	private String getTargetNameForEntryPoint(EntryPoint entry, String attributeName)throws ASGRuntimeException{
 		if (attributeName.equals("startPage")){
 			return webDataService.getPagex(entry.getStartPage()).getName();
@@ -110,6 +145,13 @@ public class LinkTargetNameDecorator implements IAttributeDecorator{
 		return "Unknown attribute: "+attributeName;
 	}
 
+	/**
+	 * Returns the name of the linked document for page alias.
+	 * @param entry
+	 * @param attributeName
+	 * @return
+	 * @throws ASGRuntimeException
+	 */
 	private String getTargetNameForPageAlias(PageAlias entry, String attributeName)throws ASGRuntimeException{
 		if (attributeName.equals("targetPage")){
 			return webDataService.getPagex(entry.getTargetPage()).getName();
@@ -118,6 +160,13 @@ public class LinkTargetNameDecorator implements IAttributeDecorator{
 		return "Unknown attribute: "+attributeName;
 	}
 
+	/**
+	 * Returns the name of the linked document for boxes.
+	 * @param box
+	 * @param attributeName
+	 * @return
+	 * @throws ASGRuntimeException
+	 */
 	private String getTargetNameForBox(Box box, String attributeName)throws ASGRuntimeException{
 		if (attributeName.equals("handler")){
 			return federatedDataService.getBoxHandlerDef(box.getHandler()).getName();
@@ -128,6 +177,13 @@ public class LinkTargetNameDecorator implements IAttributeDecorator{
 		return "UnknownAttr: "+attributeName;
 	}
 
+	/**
+	 * Returns the name of the linked document for pagexs.
+	 * @param page
+	 * @param attributeName
+	 * @return
+	 * @throws ASGRuntimeException
+	 */
 	private String getTargetNameForPage(Pagex page, String attributeName)throws ASGRuntimeException{
 		if (attributeName.equals("template")){
 			return siteDataService.getPageTemplate(page.getTemplate()).getName();

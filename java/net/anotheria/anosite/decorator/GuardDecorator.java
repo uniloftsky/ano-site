@@ -12,11 +12,16 @@ import net.anotheria.anosite.gen.asfederateddata.service.IASFederatedDataService
 import net.anotheria.asg.data.DataObject;
 import net.anotheria.asg.util.decorators.IAttributeDecorator;
 
+/**
+ * Decorator for guards.
+ * @author another
+ *
+ */
 public class GuardDecorator implements IAttributeDecorator{
 	
 	private static IASFederatedDataService service = ASFederatedDataServiceFactory.createASFederatedDataService();
 	
-	public String decorate(DataObject doc, String attributeName, String rule) {
+	@Override public String decorate(DataObject doc, String attributeName, String rule) {
 		try{
 			
 			//tmp hack
