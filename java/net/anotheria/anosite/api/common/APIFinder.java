@@ -133,15 +133,15 @@ public class APIFinder {
 			List<Class<? extends API>> aliases = APIConfig.getAliases(identifier);
 			if (aliases!=null && aliases.size()>0){
 				@SuppressWarnings("unchecked") 
-				Class<? extends API>[] _interfaces = (Class<? extends API>[]) new Class[aliases.size()+2];
-				interfaces = _interfaces;
+				Class<? extends API>[] interfacesWithAliases = (Class<? extends API>[]) new Class[aliases.size()+2];
+				interfaces = interfacesWithAliases;
 				int i = 2;
 				for (Class<? extends API> a : aliases)
 					interfaces[i++] = a;
 			}else{
 				@SuppressWarnings("unchecked") 
-				Class<? extends API>[] _interfaces = (Class<? extends API>[]) new Class[2];
-				interfaces = _interfaces;
+				Class<? extends API>[] interfacesWithoutAliases = (Class<? extends API>[]) new Class[2];
+				interfaces = interfacesWithoutAliases;
 			}
 			
 			interfaces[0] = identifier;
