@@ -11,16 +11,24 @@ import net.anotheria.anosite.tags.shared.BaseTagSupport;
 
 /**
  * Writes the value for the attribute "name" of the current box. If no value is specified, writes out the defaultValue.
- * @author another
+ * @author lrosenberg
  *
  */
 public class BoxAttributeTag extends BaseTagSupport{
+	/**
+	 * Attribute name.
+	 */
 	private String name;
+	/**
+	 * Default value (same as in VariableProcessors).
+	 */
 	private String defaultValue = "UNSET";
-	
+	/**
+	 * Log-
+	 */
 	private static Logger log = Logger.getLogger(BoxAttributeTag.class);
 
-	public int doEndTag() throws JspException {
+	@Override public int doEndTag() throws JspException {
 		
 		try{
 			BoxBean box = (BoxBean) pageContext.getAttribute("box");

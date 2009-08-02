@@ -12,14 +12,30 @@ import net.anotheria.anosite.gen.asresourcedata.service.IASResourceDataService;
 import net.anotheria.anosite.tags.shared.BaseTagSupport;
 import net.anotheria.asg.exception.ASGRuntimeException;
 
+/**
+ * Base tag for handling resources in the jsp.
+ * @author lrosenberg
+ *
+ */
 public abstract class BaseResourceTag extends BaseTagSupport{
+	/**
+	 * Resource data service.
+	 */
 	private static IASResourceDataService service = ASResourceDataServiceFactory.createASResourceDataService();
+	/**
+	 * log.
+	 */
 	private static Logger log = Logger.getLogger(BaseResourceTag.class);
 	
 	protected static IASResourceDataService getResourceDataService(){
 		return service;
 	}
-	
+	/**
+	 * Returns a text resource by its name.
+	 * @param key
+	 * @return
+	 * @throws JspException
+	 */
 	protected TextResource getTextResourceByName(String key) throws JspException{
 		try{
 			List<TextResource> resources = getResourceDataService().getTextResourcesByProperty(TextResource.PROP_NAME, key);

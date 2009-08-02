@@ -6,12 +6,19 @@ import javax.servlet.jsp.JspException;
 import net.anotheria.anosite.gen.asresourcedata.data.TextResource;
 import net.anotheria.anosite.util.AnositeConstants;
 
+/**
+ * Writes out the content of the resource. Writes out a link to the resource in edit mode.
+ * @author another
+ *
+ */
 public class TextResourceTag extends BaseResourceTag{
 	
-	
+	/**
+	 * Direct reference to resource key (name).
+	 */
 	private String key;
 	
-	public int doEndTag() throws JspException {
+	@Override public int doEndTag() throws JspException {
 		
 		String myKey = null;
 		if (key!=null){
