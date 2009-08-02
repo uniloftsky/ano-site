@@ -1,11 +1,11 @@
 package net.anotheria.anosite.content.variables;
 
 /**
- * This interface defines prefixes useable for variables in the variable processor.
+ * This helper class defines prefixes useable for variables in the variable processor.
  * @author lrosenberg
  *
  */
-public interface DefinitionPrefixes {
+public final class DefinitionPrefixes {
 	/**
 	 * Http parameter.
 	 */
@@ -62,4 +62,8 @@ public interface DefinitionPrefixes {
 	public static final String PREFIX_EQUALS = "equals";
 	public static final String PREFIX_NOT_EQUALS = "notEquals";
 	public static final String PREFIX_IN_RANGE = "inRange";
+	
+	private DefinitionPrefixes(){
+		//prevent instantiation.
+	}
 }
