@@ -18,10 +18,12 @@ import net.java.dev.moskito.web.MoskitoHttpServlet;
  * @author lrosenberg
  */
 public class StyleSheetServlet extends MoskitoHttpServlet{
-	
+	/**
+	 * Layout data service for retrieval of stylesheets.
+	 */
 	private IASLayoutDataService layoutDataService;
 	
-	public void init(ServletConfig config) throws ServletException{
+	@Override public void init(ServletConfig config) throws ServletException{
 		super.init(config);
 		layoutDataService = ASLayoutDataServiceFactory.createASLayoutDataService();
 	}

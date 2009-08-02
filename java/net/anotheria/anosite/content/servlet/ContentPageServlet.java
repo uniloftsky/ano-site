@@ -78,11 +78,16 @@ import net.java.dev.moskito.core.blueprint.BlueprintProducersFactory;
 
 import org.apache.log4j.Logger;
 
-
+/**
+ * This servlet builds and delivers pages (out of pagexs objects) and is therefore one of the main classes in the ano-site framework.
+ * @author lrosenberg
+ *
+ */
 public class ContentPageServlet extends BaseAnoSiteServlet {
 
-	private static final long serialVersionUID = -2697998321193246382L;
-
+	/**
+	 * Logger
+	 */
 	private static Logger log = Logger.getLogger(ContentPageServlet.class);
 
 	/**
@@ -97,7 +102,13 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	 * Federated data.
 	 */
 	private IASFederatedDataService federatedDataService;
+	/**
+	 * Layout data.
+	 */
 	private IASLayoutDataService layoutDataService;
+	/**
+	 * Resources.
+	 */
 	private IASResourceDataService resourceDataService;
 
 	/**
@@ -120,7 +131,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	public static final Charset MY_FS_CHARSET = Charset.forName("ISO-8859-15");
 
 	
-	public void init(ServletConfig config) throws ServletException {
+	@Override public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 
 		webDataService = ASWebDataServiceFactory.createASWebDataService();
@@ -369,6 +380,16 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		throw new RuntimeException("Error, step "+step+" is unknown!");
 	}
 
+	/**
+	 * If the request was a POST or the submit flag was set, the request is sent through this function where each handler for each box is instantiated and processSubmit is called.
+	 * @param req
+	 * @param res
+	 * @param page
+	 * @param template
+	 * @param handlerCache
+	 * @return
+	 * @throws ASGRuntimeException
+	 */
 	private InternalResponse processSubmit(HttpServletRequest req, HttpServletResponse res, Pagex page, PageTemplate template, HashMap<String, BoxHandler> handlerCache) throws ASGRuntimeException{
 		
 		InternalResponse progress = new InternalResponseContinue();
@@ -383,6 +404,16 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	
 	}
 
+	/**
+	 * Called by above process submit action for each list of boxes in the page.
+	 * @param req
+	 * @param res
+	 * @param boxIds
+	 * @param handlerCache
+	 * @param previous
+	 * @return
+	 * @throws ASGRuntimeException
+	 */
 	private InternalResponse processSubmit(HttpServletRequest req, HttpServletResponse res, List<String> boxIds, HashMap<String, BoxHandler> handlerCache, InternalResponse previous) throws ASGRuntimeException{
 		if (boxIds == null || boxIds.size() == 0)
 			return previous;
@@ -706,6 +737,14 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		return bean;
 	}
 
+	/**
+	 * Creates list of NaviItemBeans for all navi item objects in the list.
+	 * @param idList
+	 * @param req
+	 * @return
+	 * @throws ASSiteDataServiceException
+	 * @throws ASWebDataServiceException
+	 */
 	private List<NaviItemBean> createNaviItemList(List<String> idList, HttpServletRequest req) throws ASSiteDataServiceException, ASWebDataServiceException{
 		List<NaviItemBean> ret = new ArrayList<NaviItemBean>(idList.size());
 		for (String id : idList) {
@@ -781,6 +820,15 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		return current;
 	}
 
+	/**
+	 * Creates the page bean which represents part of current page for rendering.
+	 * @param req
+	 * @param res
+	 * @param page
+	 * @param template
+	 * @return
+	 * @throws ASGRuntimeException
+	 */
 	private InternalResponse createPageBean(HttpServletRequest req, HttpServletResponse res, Pagex page, PageTemplate template) throws ASGRuntimeException{
 		PageBean ret = new PageBean();
 
@@ -940,6 +988,12 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		return extractArtifactName(req);
 	}
 
+	/**
+	 * Returns pagex object for the given name. Returns null if nothing found.
+	 * @param pageName
+	 * @return
+	 * @throws ServletException
+	 */
 	private Pagex getPageByName(String pageName) throws ServletException {
 		try {
 			return webDataService.getPagexsByProperty(PagexDocument.PROP_NAME, pageName).get(0);
@@ -950,6 +1004,11 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	}
 
 
+	/**
+	 * Puts all text resources into request.
+	 * @param req
+	 * @throws ASResourceDataServiceException
+	 */
 	private void prepareTextResources(HttpServletRequest req) throws ASResourceDataServiceException {
 		List<TextResource> resources = resourceDataService.getTextResources();
 		for (TextResource r : resources)
@@ -990,6 +1049,14 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		return ret;
 	}
 
+	/**
+	 * Creates a list of attributes which are linked to the current object (whenever the list with ids came from, for example a box) and which are allowed by the attached guards.
+	 * @param req http servler request.
+	 * @param res http servlet response.
+	 * @param ids list of ids with attributes.
+	 * @return
+	 * @throws ASGRuntimeException
+	 */
 	private List<Attribute> createAttributes(HttpServletRequest req, HttpServletResponse res, List<String> ids) throws ASGRuntimeException{
 		ArrayList<Attribute> ret = new ArrayList<Attribute>();
 		
