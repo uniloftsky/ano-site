@@ -18,7 +18,7 @@
 	<classpathentry kind="lib" path="lib/jsp-api.jar"/>
 	<classpathentry kind="lib" path="lib/log4j.jar"/>
 	<classpathentry kind="lib" path="lib/moskito-core.jar"/>
-	<classpathentry kind="lib" path="lib/moskito-util.jar"/>
+	<classpathentry kind="lib" path="lib/moskito-util.jar" sourcepath="/moskito-util"/>
 	<classpathentry kind="lib" path="lib/moskito-web.jar"/>
 	<classpathentry kind="lib" path="lib/servlet-api.jar"/>
 	<classpathentry kind="lib" path="lib/struts.jar"/>
