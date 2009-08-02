@@ -19,12 +19,11 @@ public class EditModeSwitcherFilter implements Filter{
 	public static final String PARAM_VALUE_EDIT_MODE = "editMode";
 	public static final String PARAM_VALUE_VIEW_MODE = "viewMode";
 
-	public void destroy() {
-		// TODO Auto-generated method stub
+	@Override public void destroy() {
 		
 	}
 
-	public void doFilter(ServletRequest sreq, ServletResponse sres, FilterChain chain) throws IOException, ServletException {
+	@Override public void doFilter(ServletRequest sreq, ServletResponse sres, FilterChain chain) throws IOException, ServletException {
 		if (!(sreq instanceof HttpServletRequest))
 			return;
 		HttpServletRequest req = (HttpServletRequest)sreq;
@@ -41,7 +40,7 @@ public class EditModeSwitcherFilter implements Filter{
 		chain.doFilter(sreq, sres);
 	}
 
-	public void init(FilterConfig arg0) throws ServletException {
+	@Override public void init(FilterConfig arg0) throws ServletException {
 		
 	}
 

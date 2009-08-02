@@ -30,10 +30,10 @@ public class PageAliasFilter implements Filter{
 	private IASWebDataService webDataService;
 	private IASSiteDataService siteDataService;
 
-	public void destroy() {
+	@Override public void destroy() {
 	}
 
-	public void doFilter(ServletRequest sreq, ServletResponse sres, FilterChain chain) throws IOException, ServletException {
+	@Override public void doFilter(ServletRequest sreq, ServletResponse sres, FilterChain chain) throws IOException, ServletException {
 		if (!(sreq instanceof HttpServletRequest))
 			return;
 		HttpServletRequest req = (HttpServletRequest)sreq;
@@ -68,7 +68,7 @@ public class PageAliasFilter implements Filter{
 
 	}
 
-	public void init(FilterConfig config) throws ServletException {
+	@Override public void init(FilterConfig config) throws ServletException {
 		webDataService = ASWebDataServiceFactory.createASWebDataService();
 		siteDataService = ASSiteDataServiceFactory.createASSiteDataService();
 	}

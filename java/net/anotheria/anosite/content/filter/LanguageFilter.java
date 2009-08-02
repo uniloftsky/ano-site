@@ -22,10 +22,10 @@ import static net.anotheria.anosite.util.AnositeConstants.SA_LANGUAGE;
 
 public class LanguageFilter implements Filter{
 	
-	public void destroy() {
+	@Override public void destroy() {
 	}
 
-	public void doFilter(ServletRequest rq, ServletResponse rs, FilterChain chain) throws IOException, ServletException {
+	@Override public void doFilter(ServletRequest rq, ServletResponse rs, FilterChain chain) throws IOException, ServletException {
 		if (!(rq instanceof HttpServletRequest)){
 			chain.doFilter(rq, rs);
 			return;
@@ -56,7 +56,7 @@ public class LanguageFilter implements Filter{
 		chain.doFilter(rq, rs);
 	}
 	
-	public void init(FilterConfig arg0) throws ServletException {
+	@Override public void init(FilterConfig arg0) throws ServletException {
 		AnoDocConfigurator.configure();
 	}
 }
