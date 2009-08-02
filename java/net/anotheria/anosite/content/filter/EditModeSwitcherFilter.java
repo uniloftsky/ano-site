@@ -13,10 +13,23 @@ import javax.servlet.http.HttpServletRequest;
 import net.anotheria.anosite.gen.shared.service.AnoDocConfigurator;
 import net.anotheria.anosite.util.AnositeConstants;
 
+/**
+ * This filter is used to switch the onsite edit mode on and off. To perform this task it checks whether the switch mode parameter is present.
+ * @author another
+ *
+ */
 public class EditModeSwitcherFilter implements Filter{
-	
+	/**
+	 * Parameter for mode switching.
+	 */
 	public static final String PARAM_SWITCH_MODE = "pSwitchMode";
+	/**
+	 * Value for switching into edit mode.
+	 */
 	public static final String PARAM_VALUE_EDIT_MODE = "editMode";
+	/**
+	 * Value for switching into view mode.
+	 */
 	public static final String PARAM_VALUE_VIEW_MODE = "viewMode";
 
 	@Override public void destroy() {

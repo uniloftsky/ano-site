@@ -23,11 +23,24 @@ import net.anotheria.asg.exception.ASGRuntimeException;
 
 import org.apache.log4j.Logger;
 
+/**
+ * This filter checks the incoming urls whether they are matching predefined page aliases. In case it matches the redirect to the target of the alias is issued. 
+ * @author lrosenberg
+ */
 public class PageAliasFilter implements Filter{
 
+	/**
+	 * Logger.
+	 */
 	private static Logger log = Logger.getLogger(PageAliasFilter.class);
 
+	/**
+	 * WebDataService for pages retrieval.
+	 */
 	private IASWebDataService webDataService;
+	/**
+	 * SiteDataService for page aliases.
+	 */
 	private IASSiteDataService siteDataService;
 
 	@Override public void destroy() {

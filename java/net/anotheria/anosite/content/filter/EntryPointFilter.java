@@ -23,16 +23,22 @@ import net.anotheria.anosite.gen.shared.service.AnoDocConfigurator;
 import net.anotheria.asg.exception.ASGRuntimeException;
 
 import org.apache.log4j.Logger;
-
+/**
+ * With the entry point filter the site is able to define different pages for different subsite or domains. 
+ * @author lrosenberg
+ *
+ */
 public class EntryPointFilter implements Filter{
 
 	private static Logger log = Logger.getLogger(EntryPointFilter.class);
 
 	private IASWebDataService webDataService;
+	/**
+	 * SiteDataService for entrypoints.
+	 */
 	private IASSiteDataService siteDataService;
 
 	@Override public void destroy() {
-		// TODO Auto-generated method stub
 		
 	}
 
