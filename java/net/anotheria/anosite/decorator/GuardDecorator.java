@@ -18,7 +18,9 @@ import net.anotheria.asg.util.decorators.IAttributeDecorator;
  *
  */
 public class GuardDecorator implements IAttributeDecorator{
-	
+	/**
+	 * Federated data service for guard def retrieval.
+	 */
 	private static IASFederatedDataService service = ASFederatedDataServiceFactory.createASFederatedDataService();
 	
 	@Override public String decorate(DataObject doc, String attributeName, String rule) {

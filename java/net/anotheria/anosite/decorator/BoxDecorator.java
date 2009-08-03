@@ -15,11 +15,18 @@ import net.anotheria.asg.exception.ASGRuntimeException;
 import net.anotheria.asg.util.decorators.IAttributeDecorator;
 import net.anotheria.util.StringUtils;
 
+/**
+ * Decorator for linked boxes.
+ * @author lrosenberg
+ */
 public class BoxDecorator implements IAttributeDecorator{
 	
+	/**
+	 * As web data service for box retrieval.
+	 */
 	private static IASWebDataService service = ASWebDataServiceFactory.createASWebDataService();
 	
-	public String decorate(DataObject doc, String attributeName, String rule) {
+	@Override public String decorate(DataObject doc, String attributeName, String rule) {
 		try{
 			
 			//tmp hack

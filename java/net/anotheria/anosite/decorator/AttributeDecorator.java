@@ -12,11 +12,19 @@ import net.anotheria.anosite.gen.aswebdata.service.IASWebDataService;
 import net.anotheria.asg.data.DataObject;
 import net.anotheria.asg.util.decorators.IAttributeDecorator;
 
+/**
+ * Decorator for linked attributes.
+ * @author lrosenberg
+ *
+ */
 public class AttributeDecorator implements IAttributeDecorator{
 	
+	/**
+	 * Instance of webdataservice for retrieval of box definitions. 
+	 */
 	private static IASWebDataService service = ASWebDataServiceFactory.createASWebDataService();
 	
-	public String decorate(DataObject doc, String attributeName, String rule) {
+	@Override public String decorate(DataObject doc, String attributeName, String rule) {
 		try{
 			
 			//tmp hack

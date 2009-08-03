@@ -14,11 +14,18 @@ import net.anotheria.asg.data.DataObject;
 import net.anotheria.asg.exception.ASGRuntimeException;
 import net.anotheria.asg.util.decorators.IAttributeDecorator;
 
+/**
+ * Decorator for links to pages.
+ * @author another
+ *
+ */
 public class PageDecorator implements IAttributeDecorator{
-	
+	/**
+	 * AsWebDataService instance for pagex looup
+	 */
 	private static IASWebDataService service = ASWebDataServiceFactory.createASWebDataService();
 	
-	public String decorate(DataObject doc, String attributeName, String rule) {
+	@Override public String decorate(DataObject doc, String attributeName, String rule) {
 		try{
 			
 			//tmp hack

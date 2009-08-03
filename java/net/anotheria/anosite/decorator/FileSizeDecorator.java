@@ -19,7 +19,7 @@ import net.anotheria.webutils.filehandling.actions.FileStorage;
  */
 public class FileSizeDecorator implements IAttributeDecorator{
 	
-	public String decorate(DataObject doc, String attributeName, String rule) {
+	@Override public String decorate(DataObject doc, String attributeName, String rule) {
 		if (doc instanceof Image)
 			return processImage((Image)doc, attributeName, rule);
 		if (doc instanceof FileLink)
