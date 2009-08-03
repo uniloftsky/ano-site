@@ -4,6 +4,10 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import net.anotheria.anosite.gen.asgenericdata.data.GenericBoxHandlerDef;
+import net.anotheria.anosite.gen.asgenericdata.data.GenericBoxHandlerDefFactory;
+import net.anotheria.anosite.gen.asgenericdata.data.GenericBoxType;
+import net.anotheria.anosite.gen.asgenericdata.data.GenericBoxTypeFactory;
 import net.anotheria.anosite.gen.asgenericdata.data.GenericGuardDef;
 import net.anotheria.anosite.gen.asgenericdata.data.GenericGuardDefFactory;
 import net.anotheria.anosite.gen.asgenericdata.service.ASGenericDataServiceFactory;
@@ -23,9 +27,24 @@ public final class CMSSelfTest {
 	public static final void performSelfTest(){
 		log.info("%%% CMS SELF TEST STARTED %%%");
 		selfTestGuards();
+		selfTestBoxTypes();
+		selfTestBoxHandlers();
 		log.info("%%% CMS SELF TEST FINISHED %%%");
 	}
 	
+	private static void selfTestBoxTypes(){
+		ensureBoxTypeExists("GoogleAnalytics", "GoogleAnalytics");
+		ensureBoxTypeExists("GoogleAnalyticsGA", "GoogleAnalyticsGA");
+		ensureBoxTypeExists("IfSet", "IfSet");
+		ensureBoxTypeExists("Plain", "Plain");
+		ensureBoxTypeExists("Styled", "Styled");
+		ensureBoxTypeExists("TextBox", "TextBox");
+	}
+
+	private static void selfTestBoxHandlers(){
+		ensureBoxHandlerExists("RedirectImmediatelyHandler", "net.anotheria.anosite.handler.def.RedirectImmediatelyHandler");
+	}
+
 	private static void selfTestGuards(){
 		ensureGuardExists("CMSLogedInGuard", "net.anotheria.anosite.guard.CMSLogedInGuard");
 		ensureGuardExists("CMSLoggedOut", "net.anotheria.anosite.guard.CMSLoggedOutGuard");
@@ -55,7 +74,43 @@ public final class CMSSelfTest {
 			log.info("%%% --> done, created "+newDef);
 			
 		}catch(ASGRuntimeException e){
+			log.error("ensureGuardExists("+name+", "+clazz+")", e);
 			
 		}
 	}
+
+	private static void ensureBoxHandlerExists(String name, String clazz){
+		try{
+			List<GenericBoxHandlerDef> defs = genericDataService.getGenericBoxHandlerDefsByProperty(GenericBoxHandlerDef.PROP_NAME, name);
+			if (defs.size()>0)
+				return;
+			log.info("%%% Creating GenericBoxHandlerDef "+name+", clazz: "+clazz);
+			GenericBoxHandlerDef newDef = GenericBoxHandlerDefFactory.createGenericBoxHandlerDef();
+			newDef.setName(name);
+			newDef.setClazz(clazz);
+			genericDataService.createGenericBoxHandlerDef(newDef);
+			log.info("%%% --> done, created "+newDef);
+			
+		}catch(ASGRuntimeException e){
+			log.error("ensureBoxHandlerExists("+name+", "+clazz+")", e);
+		}
+	}
+
+	private static void ensureBoxTypeExists(String name, String rendererpage){
+		try{
+			List<GenericBoxType> types = genericDataService.getGenericBoxTypesByProperty(GenericBoxType.PROP_NAME, name);
+			if (types.size()>0)
+				return;
+			log.info("%%% Creating GenericBoxType "+name+", rendererpage: "+rendererpage);
+			GenericBoxType newType = GenericBoxTypeFactory.createGenericBoxType();
+			newType.setName(name);
+			newType.setRendererpage(rendererpage);
+			genericDataService.createGenericBoxType(newType);
+			log.info("%%% --> done, created "+newType);
+			
+		}catch(ASGRuntimeException e){
+			log.error("ensureBoxTypeExists("+name+", "+rendererpage+")", e);
+		}
+	}
+
 }
