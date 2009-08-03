@@ -4,12 +4,32 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 
 
+/**
+ * Base class for tags without body.
+ * @author another
+ *
+ */
 public class BaseTagSupport extends TagSupport{
 	
+	/**
+	 * Target scope.
+	 */
 	private String scope;
+	/**
+	 * Id of the object to create.
+	 */
 	private String id;
+	/**
+	 * Name of the attribute in the scope.
+	 */
 	private String name;
+	/**
+	 * Property of the attribute under 'name'.
+	 */
 	private String property;
+	/**
+	 * Property of the object under property of under 'name'.
+	 */
 	private String subProperty;
 	
 	protected Object lookup() throws JspException{
