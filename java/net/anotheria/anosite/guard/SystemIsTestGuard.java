@@ -6,6 +6,11 @@ import net.anotheria.anosite.config.Config;
 import net.anotheria.asg.data.DataObject;
 import net.anotheria.asg.exception.ASGRuntimeException;
 
+/**
+ * Only fulfilled if the system is in test mode (conigured as in test).
+ * @author lrosenberg
+ *
+ */
 public class SystemIsTestGuard implements ConditionalGuard{
 
 	@Override

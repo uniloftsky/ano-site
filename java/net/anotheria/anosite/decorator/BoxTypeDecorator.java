@@ -9,14 +9,22 @@ import net.anotheria.asg.data.DataObject;
 import net.anotheria.asg.exception.ASGRuntimeException;
 import net.anotheria.asg.util.decorators.IAttributeDecorator;
 
+/**
+ * This decorator decorates the attribute type of a box.
+ * @author another
+ *
+ */
 public class BoxTypeDecorator implements IAttributeDecorator{
 	
+	/**
+	 * Federated data service to retrieve box type.
+	 */
 	private IASFederatedDataService federatedDataService = ASFederatedDataServiceFactory.createASFederatedDataService();
 
 	/* (non-Javadoc)
 	 * @see net.anotheria.asg.util.decorators.IAttributeDecorator#decorate(net.anotheria.anodoc.data.Document, java.lang.String, java.lang.String)
 	 */
-	public String decorate(DataObject doc, String attributeName, String rule) {
+	@Override public String decorate(DataObject doc, String attributeName, String rule) {
 		String linkValue = ((Box)doc).getType();
 		String name = null;
 		try{
