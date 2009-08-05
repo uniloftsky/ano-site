@@ -2,8 +2,14 @@ package net.anotheria.anosite.shared.presentation.listener;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
-
+import net.anotheria.anosite.gen.ascustomdata.data.CustomBoxHandlerDef;
+import net.anotheria.anosite.gen.ascustomdata.data.CustomBoxHandlerDefFactory;
+import net.anotheria.anosite.gen.ascustomdata.data.CustomBoxType;
+import net.anotheria.anosite.gen.ascustomdata.data.CustomBoxTypeFactory;
+import net.anotheria.anosite.gen.ascustomdata.data.CustomGuardDef;
+import net.anotheria.anosite.gen.ascustomdata.data.CustomGuardDefFactory;
+import net.anotheria.anosite.gen.ascustomdata.service.ASCustomDataServiceFactory;
+import net.anotheria.anosite.gen.ascustomdata.service.IASCustomDataService;
 import net.anotheria.anosite.gen.asgenericdata.data.GenericBoxHandlerDef;
 import net.anotheria.anosite.gen.asgenericdata.data.GenericBoxHandlerDefFactory;
 import net.anotheria.anosite.gen.asgenericdata.data.GenericBoxType;
@@ -14,6 +20,8 @@ import net.anotheria.anosite.gen.asgenericdata.service.ASGenericDataServiceFacto
 import net.anotheria.anosite.gen.asgenericdata.service.IASGenericDataService;
 import net.anotheria.asg.exception.ASGRuntimeException;
 
+import org.apache.log4j.Logger;
+
 /**
  * This utility class scans the data on start and ensures that all generic data is created.
  * @author lrosenberg
@@ -22,6 +30,7 @@ import net.anotheria.asg.exception.ASGRuntimeException;
 public final class CMSSelfTest {
 	
 	private static final IASGenericDataService genericDataService = ASGenericDataServiceFactory.createASGenericDataService();
+	private static final IASCustomDataService  customDataService  = ASCustomDataServiceFactory.createASCustomDataService();
 	private static Logger log = Logger.getLogger(CMSSelfTest.class);
 	
 	public static final void performSelfTest(){
@@ -113,4 +122,55 @@ public final class CMSSelfTest {
 		}
 	}
 
+	public static void ensureCustomGuardExists(String name, String clazz){
+		try{
+			List<CustomGuardDef> defs = customDataService.getCustomGuardDefsByProperty(CustomGuardDef.PROP_NAME, name);
+			if (defs.size()>0)
+				return;
+			log.info("%%% Creating CustomDataDef "+name+", clazz: "+clazz);
+			CustomGuardDef newDef = CustomGuardDefFactory.createCustomGuardDef();
+			newDef.setName(name);
+			newDef.setClazz(clazz);
+			customDataService.createCustomGuardDef(newDef);
+			log.info("%%% --> done, created "+newDef);
+			
+		}catch(ASGRuntimeException e){
+			log.error("ensureGuardExists("+name+", "+clazz+")", e);
+			
+		}
+	}
+
+	public static void ensureCustomBoxHandlerExists(String name, String clazz){
+		try{
+			List<CustomBoxHandlerDef> defs = customDataService.getCustomBoxHandlerDefsByProperty(CustomBoxHandlerDef.PROP_NAME, name);
+			if (defs.size()>0)
+				return;
+			log.info("%%% Creating CustomBoxHandlerDef "+name+", clazz: "+clazz);
+			CustomBoxHandlerDef newDef = CustomBoxHandlerDefFactory.createCustomBoxHandlerDef();
+			newDef.setName(name);
+			newDef.setClazz(clazz);
+			customDataService.createCustomBoxHandlerDef(newDef);
+			log.info("%%% --> done, created "+newDef);
+			
+		}catch(ASGRuntimeException e){
+			log.error("ensureBoxHandlerExists("+name+", "+clazz+")", e);
+		}
+	}
+
+	public static void ensureCustomBoxTypeExists(String name, String rendererpage){
+		try{
+			List<CustomBoxType> types = customDataService.getCustomBoxTypesByProperty(CustomBoxType.PROP_NAME, name);
+			if (types.size()>0)
+				return;
+			log.info("%%% Creating CustomBoxType "+name+", rendererpage: "+rendererpage);
+			CustomBoxType newType = CustomBoxTypeFactory.createCustomBoxType();
+			newType.setName(name);
+			newType.setRendererpage(rendererpage);
+			customDataService.createCustomBoxType(newType);
+			log.info("%%% --> done, created "+newType);
+			
+		}catch(ASGRuntimeException e){
+			log.error("ensureBoxTypeExists("+name+", "+rendererpage+")", e);
+		}
+	}
 }
