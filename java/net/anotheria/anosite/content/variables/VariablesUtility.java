@@ -77,6 +77,11 @@ public class VariablesUtility {
 		defaultProcessors.put(DefinitionPrefixes.PREFIX_EQUALS, p);
 		defaultProcessors.put(DefinitionPrefixes.PREFIX_NOT_EQUALS, p);
 		defaultProcessors.put(DefinitionPrefixes.PREFIX_IN_RANGE, p);
+        //ANO_SITE3
+        defaultProcessors.put(DefinitionPrefixes.PREFIX_GREATERTHEN,p);
+        defaultProcessors.put(DefinitionPrefixes.PREFIX_GREATEREQUAL,p);
+        defaultProcessors.put(DefinitionPrefixes.PREFIX_LESSTHAN,p);
+        defaultProcessors.put(DefinitionPrefixes.PREFIX_LESSEQUAL,p);
 
         //adding TextResourceProcessor
         defaultProcessors.put(TextResourceProcessor.PREFIX, new TextResourceProcessor());
