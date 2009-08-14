@@ -62,7 +62,11 @@ public final class DefinitionPrefixes {
 	public static final String PREFIX_EQUALS = "equals";
 	public static final String PREFIX_NOT_EQUALS = "notEquals";
 	public static final String PREFIX_IN_RANGE = "inRange";
-	
+    public static final String PREFIX_GREATERTHEN = "greaterThan";
+    public static final String PREFIX_GREATEREQUAL = "greaterEqual";
+    public static final String PREFIX_LESSTHAN = "lessThan";
+    public static final String PREFIX_LESSEQUAL = "lessEqual";
+
 	private DefinitionPrefixes(){
 		//prevent instantiation.
 	}
