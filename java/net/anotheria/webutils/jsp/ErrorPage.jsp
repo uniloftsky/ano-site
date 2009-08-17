@@ -1,5 +1,5 @@
 <%@ page
-	contentType="text/html;charset=windows-1251" session="true"
+	contentType="text/html;charset=UTF-8" session="true"
 %><%@ taglib uri="/WEB-INF/tld/struts-bean.tld" prefix="bean"
 %><%@ taglib uri="/WEB-INF/tld/struts-html.tld" prefix="html"
 %><%@ taglib uri="/WEB-INF/tld/struts-logic.tld" prefix="logic"
@@ -16,7 +16,7 @@
 <logic:present name="application.customTitle">
 	<title><bean:message key="application.customTitle"/></title>
 </logic:present>
-<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<META http-equiv=Content-Type content="text/html; charset=UTF-8">
 <bean:message key="styles.common.link"/>
 <bean:message key="styles.links.link"/>
 <bean:message key="javascript.common.link"/>

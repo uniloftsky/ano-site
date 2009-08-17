@@ -1,5 +1,5 @@
 <%@ page
-	contentType="text/html;charset=iso-8859-15" session="true"
+	contentType="text/html;charset=UTF-8" session="true"
 %><%@ taglib uri="/tags/struts-bean" prefix="bean"
 %><%@ taglib uri="/tags/struts-html" prefix="html"
 %><%@ taglib uri="/tags/struts-logic" prefix="logic"
@@ -7,7 +7,7 @@
   
 <title><bean:write name="page" scope="request" property="title" filter="false"/></title>
 
-<meta http-equiv="content-type" content="text/html; charset=iso-8859-15">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <meta name="description" content="<bean:write name="page" scope="request" property="description" filter="false"/>">
 <meta name="keywords" content="<bean:write name="page" scope="request" property="keywords" filter="false"/>">
 <meta name="verify-v1" content="ByKKpjaJVvtDJjxH5AxNjRpbhCKJAq1EuOuIbWB0SjY=">

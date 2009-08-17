@@ -1,5 +1,5 @@
 <%@ page
-	contentType="text/html;charset=iso-8859-15" session="true"
+	contentType="text/html;charset=UTF-8" session="true"
 %><%@ taglib uri="/tags/struts-bean" prefix="bean"
 %><%@ taglib uri="/tags/struts-html" prefix="html"
 %><%@ taglib uri="/tags/struts-logic" prefix="logic"

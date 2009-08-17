@@ -5,7 +5,7 @@
     <applicationName>@applicationName@</applicationName>
     <applicationURLPath>@applicationURLPath@</applicationURLPath>
     <servletMapping>cms</servletMapping>
-	<encoding>iso-8859-15</encoding>
+	<encoding>UTF-8</encoding>
 	<languages>
 		<supported>
 			<language>EN</language>

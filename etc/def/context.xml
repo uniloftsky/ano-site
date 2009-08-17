@@ -4,7 +4,7 @@
     <owner>anothereria</owner>
     <applicationName>anosite</applicationName>
     <servletMapping>cms</servletMapping>
-	<encoding>iso-8859-15</encoding>
+	<encoding>UTF-8</encoding>
 	<languages>
 		<supported>
 			<language>EN</language>
