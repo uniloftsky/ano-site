@@ -128,7 +128,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	
 	public static final String BEAN_ANOSITE_VERBOSITY = "anosite.verbose";
 	
-	public static final Charset MY_FS_CHARSET = Charset.forName("ISO-8859-15");
+	public static final Charset MY_FS_CHARSET = Charset.forName("UTF-8"/*"ISO-8859-15"*/);
 
 	
 	@Override public void init(ServletConfig config) throws ServletException {
