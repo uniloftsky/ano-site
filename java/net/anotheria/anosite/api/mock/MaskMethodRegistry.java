@@ -27,4 +27,8 @@ public class MaskMethodRegistry {
 	public static APIMaskMethod<?> getMaskMethod(Method m){
 		return methods.get(m);
 	}
+	
+	public static void reset(){
+		methods = new ConcurrentHashMap<Method, APIMaskMethod<?>>();
+	}
 }

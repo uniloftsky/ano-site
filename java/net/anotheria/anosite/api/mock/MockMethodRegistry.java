@@ -17,12 +17,7 @@ public class MockMethodRegistry {
 	private static Map<Method, APIMockMethod> methods = new ConcurrentHashMap<Method, APIMockMethod>();
 	
 	static{
-		try{
-			Method init = API.class.getMethod("init");
-			addMockMethod(init, new NoopMockMethod());
-		}catch(NoSuchMethodException e){
-			log.fatal("Someone changed the api signature!",e );
-		}
+		reset();
 	}
 	
 	public static void addMockMethod(Method m, APIMockMethod mock){
@@ -31,5 +26,15 @@ public class MockMethodRegistry {
 	
 	public static APIMockMethod getMockMethod(Method m){
 		return methods.get(m);
+	}
+	
+	public static void reset(){
+		try{
+			Method init = API.class.getMethod("init");
+			addMockMethod(init, new NoopMockMethod());
+		}catch(NoSuchMethodException e){
+			log.fatal("Someone changed the api signature!",e );
+		}
+
 	}
 }
