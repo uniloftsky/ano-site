@@ -229,6 +229,10 @@ public class APICallContext {
 		return validationErrors.size()>0;
 	}
 	
+	public void resetValidationErrors(){
+		validationErrors = new ArrayList<ValidationError>();
+	}
+	
 	/**
 	 * Used by the api if you want to span a new thread but share the values with that thread. As soon as the parameters are shared 
 	 * each thread works on its own copy which is not shared.
