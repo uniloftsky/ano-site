@@ -1,8 +1,22 @@
 package net.anotheria.anosite.api.validation;
 
+/**
+ * An error in the input validation.
+ * @author another
+ *
+ */
 public class ValidationError {
+	/**
+	 * Field in which the error occured.
+	 */
 	private String field;
+	/**
+	 * A debug message for the developer.
+	 */
 	private String message;
+	/**
+	 * The cms key with error description.
+	 */
 	private String cmsKey;
 	
 	public ValidationError(){
@@ -36,5 +50,9 @@ public class ValidationError {
 
 	public void setField(String field) {
 		this.field = field;
+	}
+	
+	@Override public String toString(){
+		return "Field : "+getField()+", Key: "+getCmsKey()+", Message: "+getMessage();
 	}
 }
