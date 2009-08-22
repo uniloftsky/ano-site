@@ -1,4 +1,8 @@
   <module name="ASResourceData">
+    <options>
+		<option name="fixture">true</option>
+	</options>
+  
     <listener class="net.anotheria.anosite.cms.listener.CRUDLogListener"/>  
 	<document name="TextResource">
 		<property type="string" name="name"/>
