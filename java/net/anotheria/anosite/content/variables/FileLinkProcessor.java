@@ -1,8 +1,11 @@
 package net.anotheria.anosite.content.variables;
 
 import net.anotheria.anosite.gen.asresourcedata.data.FileLink;
-import net.anotheria.anosite.gen.asresourcedata.service.ASResourceDataServiceFactory;
 import net.anotheria.anosite.gen.asresourcedata.service.IASResourceDataService;
+import net.anotheria.asg.metafactory.MetaFactory;
+import net.anotheria.asg.metafactory.MetaFactoryException;
+
+import org.apache.log4j.Logger;
 
 /**
  * Processor for links to files (for example PDF) which are uploaded via IASResourceDataService.
@@ -13,7 +16,16 @@ public class FileLinkProcessor extends XLinkProcessor{
 	/**
 	 * Service to lookup files.
 	 */
-	private static final IASResourceDataService service = ASResourceDataServiceFactory.createASResourceDataService();
+	private static IASResourceDataService service;
+	static{
+		try{
+			service = MetaFactory.get(IASResourceDataService.class);
+		}catch(MetaFactoryException e){
+			Logger.getLogger(ImageLinkProcessor.class).fatal("Not properly initialized, can't find resource data service.");
+		}
+		
+	}
+
 
 	@Override
 	protected String getFileName(String variable) {

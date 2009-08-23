@@ -83,8 +83,10 @@ public class VariablesUtility {
         defaultProcessors.put(DefinitionPrefixes.PREFIX_LESSTHAN,p);
         defaultProcessors.put(DefinitionPrefixes.PREFIX_LESSEQUAL,p);
 
+
         //adding TextResourceProcessor
         defaultProcessors.put(TextResourceProcessor.PREFIX, new TextResourceProcessor());
+
 	}
 	
 

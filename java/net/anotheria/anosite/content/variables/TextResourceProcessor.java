@@ -32,7 +32,7 @@ public class TextResourceProcessor implements VariablesProcessor {
         try {
             resourceDataService = MetaFactory.get(IASResourceDataService.class);
         } catch (MetaFactoryException e) {
-            log.error("TextResourceProcessor - init()",e);
+            log.fatal("TextResourceProcessor - init()",e);
         }
     }
 

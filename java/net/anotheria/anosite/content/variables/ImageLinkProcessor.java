@@ -3,8 +3,11 @@ package net.anotheria.anosite.content.variables;
 import java.util.List;
 
 import net.anotheria.anosite.gen.asresourcedata.data.Image;
-import net.anotheria.anosite.gen.asresourcedata.service.ASResourceDataServiceFactory;
 import net.anotheria.anosite.gen.asresourcedata.service.IASResourceDataService;
+import net.anotheria.asg.metafactory.MetaFactory;
+import net.anotheria.asg.metafactory.MetaFactoryException;
+
+import org.apache.log4j.Logger;
 
 /**
  * Processor for images uploaded via IASResourceDataService.
@@ -12,7 +15,15 @@ import net.anotheria.anosite.gen.asresourcedata.service.IASResourceDataService;
  *
  */
 public class ImageLinkProcessor extends XLinkProcessor{
-	private static final IASResourceDataService service = ASResourceDataServiceFactory.createASResourceDataService();
+	private static IASResourceDataService service;
+	static{
+		try{
+			service = MetaFactory.get(IASResourceDataService.class);
+		}catch(MetaFactoryException e){
+			Logger.getLogger(ImageLinkProcessor.class).fatal("Not properly initialized, can't find resource data service.");
+		}
+		
+	}
 
 	@Override
 	protected String getFileName(String variable) {
