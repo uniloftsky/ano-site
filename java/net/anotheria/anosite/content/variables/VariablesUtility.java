@@ -55,6 +55,7 @@ public class VariablesUtility {
 	private static final Map<String, VariablesProcessor> defaultProcessors = new HashMap<String, VariablesProcessor>();
 	
 	static{
+		defaultProcessors.put(DefinitionPrefixes.PREFIX_CALENDAR, new CalendarProcessor());
 		defaultProcessors.put(DefinitionPrefixes.PREFIX_CONSTANT, new ConstantsProcessor());
 		defaultProcessors.put(DefinitionPrefixes.PREFIX_PARAMETER, new ParameterProcessor());
 		VariablesProcessor p = new AttributeProcessor();

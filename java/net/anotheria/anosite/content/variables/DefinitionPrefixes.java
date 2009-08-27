@@ -43,6 +43,10 @@ public final class DefinitionPrefixes {
 	 */
 	public static final String PREFIX_CONSTANT = "c";
 	/**
+	 * Constant, performed by calendar processor.
+	 */
+	public static final String PREFIX_CALENDAR = "cal";
+	/**
 	 * Link to an image.
 	 */
 	public static final String PREFIX_IMAGE_LINK ="imagelink";
