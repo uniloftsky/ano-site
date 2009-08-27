@@ -31,7 +31,7 @@
 					</element>
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
-	        		<element type="function" name="delete"/>
+	        		<element type="function" name="deleteWithConfirmation"/>
 	      		</elements>
 	      		<dialog name="Edit" title="Edit Site">
         			<elements>
@@ -83,7 +83,7 @@
 					<element type="field" name="popup" comparable="true"/> 
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
-	        		<element type="function" name="delete"/>
+	        		<element type="function" name="deleteWithConfirmation"/>
 	      		</elements>
 	      		<dialog name="Edit" title="Edit NaviItem">
         			<elements>
@@ -154,7 +154,7 @@
 					</element>
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
-	        		<element type="function" name="delete"/>
+	        		<element type="function" name="deleteWithConfirmation"/>
 	      		</elements>
 	      		<dialog name="Edit" title="Edit Template">
         			<elements>
@@ -210,7 +210,7 @@
 					<element type="field" name="domains" comparable="true"/> 
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
-	        		<element type="function" name="delete"/>
+	        		<element type="function" name="deleteWithConfirmation"/>
 	      		</elements>
 	      		<dialog name="Edit" title="Edit EntryPoint">
         			<elements>
@@ -251,7 +251,7 @@
 					<element type="field" name="pathes" comparable="true"/> 
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
-	        		<element type="function" name="delete"/>
+	        		<element type="function" name="deleteWithConfirmation"/>
 	      		</elements>
 	      		<dialog name="Edit" title="Edit PageAlias">
         			<elements>
@@ -288,7 +288,7 @@
 					</element>
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
-	        		<element type="function" name="delete"/>
+	        		<element type="function" name="deleteWithConfirmation"/>
 	      		</elements>
 	      		<dialog name="Edit" title="Edit RedirectUrl">
         			<elements>

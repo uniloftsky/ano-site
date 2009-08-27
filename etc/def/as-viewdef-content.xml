@@ -158,7 +158,7 @@
 					</element>
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
-	        		<element type="function" name="delete"/>
+	        		<element type="function" name="deleteWithConfirmation"/>
 	      		</elements>
 	      		<dialog name="Edit" title="Edit Attribute">
         			<elements>

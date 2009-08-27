@@ -18,7 +18,7 @@
 					<element type="field" name="priority" comparable="true"/>
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
-	        		<element type="function" name="delete"/>
+	        		<element type="function" name="deleteWithConfirmation"/>
 	      		</elements>
 	      		<dialog name="Edit" title="Edit CountryResource">
         			<elements>
@@ -61,7 +61,7 @@
 					
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
-	        		<element type="function" name="delete"/>
+	        		<element type="function" name="deleteWithConfirmation"/>
 	      		</elements>
 	      		<dialog name="Edit" title="Edit Account">
         			<elements>
@@ -102,7 +102,7 @@
 					<element type="field" name="priority" comparable="true"/>
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
-	        		<element type="function" name="delete"/>
+	        		<element type="function" name="deleteWithConfirmation"/>
 	      		</elements>
 	      		<dialog name="Edit" title="Edit City">
         			<elements>
@@ -140,7 +140,7 @@
 					<element type="field" name="priority" comparable="true"/>
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
-	        		<element type="function" name="delete"/>
+	        		<element type="function" name="deleteWithConfirmation"/>
 	      		</elements>
 	      		<dialog name="Edit" title="Edit CountryResource">
         			<elements>

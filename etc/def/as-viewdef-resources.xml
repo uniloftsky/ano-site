@@ -18,7 +18,7 @@
 					</element>
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
-	        		<element type="function" name="delete"/>
+	        		<element type="function" name="deleteWithConfirmation"/>
 	      		</elements>
 	      		<dialog name="Edit" title="Edit TextResource">
         			<elements>
@@ -53,7 +53,7 @@
 					<element type="field" name="subject" comparable="true"/>
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
-	        		<element type="function" name="delete"/>
+	        		<element type="function" name="deleteWithConfirmation"/>
 	      		</elements>
 	      		<dialog name="Edit" title="Edit Mail Template">
         			<elements>
@@ -98,7 +98,7 @@
         		    </element>
         		    <element type="function" name="edit"/>
                     <element type="function" name="duplicate"/>
-                    <element type="function" name="delete"/>
+                    <element type="function" name="deleteWithConfirmation"/>
 	        		<element type="function" name="version"/>
 	            </elements>
     	        <dialog name="Edit" title="Upload a picture">
@@ -138,7 +138,7 @@
         		    </element>
                     <element type="function" name="edit"/>
                     <element type="function" name="duplicate"/>
-                    <element type="function" name="delete"/>
+                    <element type="function" name="deleteWithConfirmation"/>
 	        		<element type="function" name="version"/>
 	            </elements>
     	        <dialog name="Edit" title="Upload a picture">
