@@ -123,11 +123,19 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	 * Parameter which allows to override the title stored in the page object.
 	 */
 	public static final String OVERRIDE_PAGE_TITLE = "CP.OverridePageTitle";
-	
+
+	/**
+	 * Configuration instance.
+	 */
 	private AnositeConfig config = AnositeConfig.getInstance();
-	
+	/**
+	 * If set more output will be produced by jsps. Useful in development, but should be removed in production environment. Configured via configureme.
+	 */
 	public static final String BEAN_ANOSITE_VERBOSITY = "anosite.verbose";
 	
+	/**
+	 * Charset for files on filesystem.
+	 */
 	public static final Charset MY_FS_CHARSET = Charset.forName("UTF-8"/*"ISO-8859-15"*/);
 
 	
@@ -460,6 +468,8 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 					if (e instanceof RuntimeException)
 						throw (RuntimeException)e;
 					throw new RuntimeException("Execution aborted: "+e.getMessage()+" ("+e.getClass());
+				default: 
+					throw new AssertionError("Unexpected case in response: "+response.getResponseCode());
 						
 				}
 				handlerCache.put(box.getId(), handler);
@@ -1063,7 +1073,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		
 		
 		for (String id : ids){
-			boolean do_break = false;
+			boolean doBreak = false;
 			Attribute a = webDataService.getAttribute(id);
 
 			List<String> gIds = a.getGuards();
@@ -1073,7 +1083,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 				try{
 					g = GuardFactory.getConditionalGuard(gid);
 					if (!g.isConditionFullfilled(a, req)){
-						do_break = true;
+						doBreak = true;
 						break;
 					}
 				}catch(Exception e){
@@ -1081,7 +1091,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 				}
 			}
 			
-			if (do_break){
+			if (doBreak){
 				continue;
 			}
 			
