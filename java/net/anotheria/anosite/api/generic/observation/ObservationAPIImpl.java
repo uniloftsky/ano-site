@@ -5,7 +5,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import net.anotheria.anosite.api.common.AbstractAPIImpl;
 import net.java.dev.moskito.util.storage.Storage;
-import net.java.dev.moskito.util.storage.StorageFactory;
 
 
 public class ObservationAPIImpl extends AbstractAPIImpl implements ObservationAPI{
@@ -15,7 +14,7 @@ public class ObservationAPIImpl extends AbstractAPIImpl implements ObservationAP
 	public void init(){
 		super.init();
 		
-		subjects = new StorageFactory<String, List<Observer>>().createConcurrentHashMapStorage("subjects");
+		subjects = Storage.createConcurrentHashMapStorage("subjects");
 		//createDebugObserver();
 	}
 

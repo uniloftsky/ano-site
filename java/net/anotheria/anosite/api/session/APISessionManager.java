@@ -8,7 +8,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import net.anotheria.util.IdCodeGenerator;
 import net.java.dev.moskito.util.storage.Storage;
-import net.java.dev.moskito.util.storage.StorageFactory;
 
 import org.apache.log4j.Logger;
 
@@ -40,8 +39,8 @@ public class APISessionManager {
 	protected Logger log = Logger.getLogger(this.getClass());
 
 	private APISessionManager(){
-		sessions = new StorageFactory<String, APISession>().createConcurrentHashMapStorage("sessions");
-		referenceIds = new StorageFactory<String, String>().createConcurrentHashMapStorage("session-refIds");
+		sessions = Storage.createConcurrentHashMapStorage("sessions");
+		referenceIds = Storage.createConcurrentHashMapStorage("session-refIds");
 		listeners = new CopyOnWriteArrayList<APISessionManagerListener>();
 	}
 	
