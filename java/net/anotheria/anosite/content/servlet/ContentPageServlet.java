@@ -196,6 +196,9 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		
 		String pageName = extractPageName(req);
 		boolean errorPage = pageName!=null && (pageName.equals("404") || pageName.equals("500"));
+        if(errorPage){
+           setErrorCode(pageName,res);
+        }
 		
 		Pagex page = getPageByName(pageName);
 		if (page==null){
@@ -342,8 +345,20 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		
 		
 	}
-	
-	/**
+
+    /**
+     * Setting eror CODE.
+     * @param pageName pageName
+     * @param res HttpServletResponse
+     */
+    private void setErrorCode(String pageName, HttpServletResponse res) {
+        int errorCode = pageName==null? HttpServletResponse.SC_NOT_FOUND:0;
+        errorCode = pageName!=null&&pageName.equals("404")?HttpServletResponse.SC_NOT_FOUND:
+                pageName!=null&&pageName.equals("500")?HttpServletResponse.SC_INTERNAL_SERVER_ERROR:errorCode;
+        res.setStatus(errorCode);
+    }
+
+    /**
 	 * Returns the ids of the boxes for the given rendering step and rendered page.
 	 * As for now there are 13 rendering steps:
 	 * template meta, template header, page header, template c1first, template c2 first, template c3 first,
