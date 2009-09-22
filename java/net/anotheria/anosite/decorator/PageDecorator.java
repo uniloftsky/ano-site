@@ -13,6 +13,7 @@ import net.anotheria.anosite.gen.aswebdata.service.IASWebDataService;
 import net.anotheria.asg.data.DataObject;
 import net.anotheria.asg.exception.ASGRuntimeException;
 import net.anotheria.asg.util.decorators.IAttributeDecorator;
+import net.anotheria.util.StringUtils;
 
 /**
  * Decorator for links to pages.
@@ -47,11 +48,15 @@ public class PageDecorator implements IAttributeDecorator{
 			value = value + linksValue+"]";
 			
 			String href = "#";
-			if (doc instanceof Pagex){
-				href = "pagex"+attributeName+"Show?pId="+doc.getId()+"&ts="+System.currentTimeMillis();
+			if (doc instanceof Pagex) {
+				href = doc.getDefinedParentName().toLowerCase() + StringUtils.capitalize(doc.getDefinedName()) + attributeName
+						+ "Show?pId=" + doc.getId() + "&ts=" + System.currentTimeMillis();
+				// href = "pagex"+attributeName+"Show?pId="+doc.getId()+"&ts="+System.currentTimeMillis();
 			}
-			if (doc instanceof Box){
-				href = "boxSubboxesShow?pId="+doc.getId()+"&ts="+System.currentTimeMillis();
+			if (doc instanceof Box) {
+				href = doc.getDefinedParentName().toLowerCase() + "BoxSubboxesShow?pId=" + doc.getId() + "&ts="
+						+ System.currentTimeMillis();
+				// href = "boxSubboxesShow?pId="+doc.getId()+"&ts="+System.currentTimeMillis();
 			}
 			
 			String title = "";

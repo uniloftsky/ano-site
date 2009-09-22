@@ -41,12 +41,16 @@ public class NaviItemDecorator implements IAttributeDecorator{
 			value = value + linksValue+"]";
 			
 			String href = "#";
-			if (doc instanceof Site){
-				href = "site"+StringUtils.capitalize(attributeName)+"Show?pId="+doc.getId()+"&ts="+System.currentTimeMillis();
+			if (doc instanceof Site) {
+				href = doc.getDefinedParentName().toLowerCase() + "Site" + StringUtils.capitalize(attributeName) + "Show?pId="
+						+ doc.getId() + "&ts=" + System.currentTimeMillis();
+				// href = "site"+StringUtils.capitalize(attributeName)+"Show?pId="+doc.getId()+"&ts="+System.currentTimeMillis();
 			}
 			
-			if (doc instanceof NaviItem){
-				href = "naviitem"+StringUtils.capitalize(attributeName)+"Show?pId="+doc.getId()+"&ts="+System.currentTimeMillis();
+			if (doc instanceof NaviItem) {
+				href = doc.getDefinedParentName().toLowerCase() + "NaviItem" + StringUtils.capitalize(attributeName) + "Show?pId="
+						+ doc.getId() + "&ts=" + System.currentTimeMillis();
+				// href = "naviitem"+StringUtils.capitalize(attributeName)+"Show?pId="+doc.getId()+"&ts="+System.currentTimeMillis();
 			}
 			
 			String title = "";
