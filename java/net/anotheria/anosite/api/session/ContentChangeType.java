@@ -16,5 +16,10 @@ public enum ContentChangeType {
 	/**
 	 * A document has been updated.
 	 */
-	UPDATE
+	UPDATE,
+
+    /**
+     * A document has been imported.
+     */
+    IMPORT
 }

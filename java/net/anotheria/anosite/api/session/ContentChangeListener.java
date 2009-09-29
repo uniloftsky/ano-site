@@ -13,7 +13,12 @@ public class ContentChangeListener implements IServiceListener{
 		sendEvent(ContentChangeType.CREATE, doc);
 	}
 
-	@Override public void documentDeleted(DataObject doc) {
+    @Override
+    public void documentImported(DataObject dataObject) {
+     	sendEvent(ContentChangeType.IMPORT, dataObject);
+    }
+
+    @Override public void documentDeleted(DataObject doc) {
 		sendEvent(ContentChangeType.DELETE, doc);
 		
 	}

@@ -35,6 +35,11 @@ public class CRUDLogListener implements IServiceListener {
         logData("CREATE", createObjString(dataObject));
     }
 
+    @Override
+    public void documentImported(DataObject dataObject) {
+        logData("IMPORT", createObjString(dataObject));
+    }
+
     /**
      * Just creates string with doc.id && clazz name
      *
