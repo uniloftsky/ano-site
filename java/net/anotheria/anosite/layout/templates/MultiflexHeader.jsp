@@ -12,7 +12,9 @@
    
         <!-- Sitelogo and sitename -->
 
-        <a class="sitelogo" href="<bean:write name="site" property="linkToStartPage"/>" title="Go to Start page"></a>
+        <a class="sitelogo" href="<bean:write name="site" property="linkToStartPage"/>" title="Go to Start page">
+            <img src="<bean:write name="site" property="logo"/>"/>
+        </a>
         <div class="sitename">
 
           <h1><a href="<bean:write name="site" property="linkToStartPage"/>" title="Go to Start page"><bean:write name="site" property="title"/></a></h1>

@@ -40,6 +40,7 @@ import net.anotheria.anosite.gen.asfederateddata.service.IASFederatedDataService
 import net.anotheria.anosite.gen.aslayoutdata.service.ASLayoutDataServiceFactory;
 import net.anotheria.anosite.gen.aslayoutdata.service.IASLayoutDataService;
 import net.anotheria.anosite.gen.asresourcedata.data.TextResource;
+import net.anotheria.anosite.gen.asresourcedata.data.Image;
 import net.anotheria.anosite.gen.asresourcedata.service.ASResourceDataServiceException;
 import net.anotheria.anosite.gen.asresourcedata.service.ASResourceDataServiceFactory;
 import net.anotheria.anosite.gen.asresourcedata.service.IASResourceDataService;
@@ -137,9 +138,10 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	 * Charset for files on filesystem.
 	 */
 	public static final Charset MY_FS_CHARSET = Charset.forName("UTF-8"/*"ISO-8859-15"*/);
+    private static final String FILE_PATH_PART = "/file/";
 
-	
-	@Override public void init(ServletConfig config) throws ServletException {
+
+    @Override public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 
 		webDataService = ASWebDataServiceFactory.createASWebDataService();
@@ -270,7 +272,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		//set the proper stylesheet
 		req.setAttribute("stylesheet", new StylesheetBean(layoutDataService.getPageLayout(template.getLayout()).getStyle()));
 		
-		SiteBean siteBean = createSiteBean(template);
+		SiteBean siteBean = createSiteBean(template,req.getContextPath()+FILE_PATH_PART);
 		req.setAttribute("site", siteBean);
 		
 		
@@ -980,10 +982,11 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 
 	/**
 	 * Creates the site bean based on the template used by the page.
-	 * @param template
-	 * @return
+	 * @param template actually PageTemplate
+	 * @param pathPart actually - contextPath+ "/file/"
+     * @return created SiteBean
 	 */
-	private SiteBean createSiteBean(PageTemplate template) {
+	private SiteBean createSiteBean(PageTemplate template,String pathPart) {
 		SiteBean ret = new SiteBean();
 
 		try {
@@ -997,14 +1000,47 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 				ret.setLinkToStartPage(webDataService.getPagex(site.getStartpage()).getName() + ".html");
 			if (site.getSearchpage() != null && site.getSearchpage().length() > 0)
 				ret.setSearchTarget(webDataService.getPagex(site.getSearchpage()).getName() + ".html");
-		} catch (Exception e) {
-			log.warn("createSiteBean(" + template + ")", e);
+            //populating logo!
+            populateLogo(pathPart, ret, site.getSiteLogo());
+        } catch (Exception e) {
+			log.warn("createSiteBean(" + template + ",request)", e);
 		}
 
 		return ret;
 	}
 
-	/**
+    /**
+     * Simply putting path to the siteLogo image to SiteBean logo.
+     * @param pathPart context+"/file/"
+     * @param created SiteBean instance
+     * @param logoId imageId - itself
+     */
+    private void populateLogo(String pathPart, SiteBean created, String logoId) {
+        if (isValid(logoId)){
+            try {
+               Image img = resourceDataService.getImage(logoId);
+               String logo = isValid(img)&&isValid(img.getImage())?img.getImage():null;
+               if(isValid(logo))
+                  created.setLogo(pathPart+logo);
+            } catch (ASResourceDataServiceException e) {
+              log.warn("Error - SiteLogo Image with id:{"+logoId+"} does not exist!");
+            }
+         }
+    }
+
+    /**
+     * Simplest notNull & NotEmpty (in string case)check.
+     * @param obj object to check
+     * @return boolean value
+     */
+    private boolean isValid(Object obj){
+        if(obj instanceof String)
+           return obj!=null&&!((String)obj).isEmpty();
+        else
+            return obj!=null;
+    }
+
+    /**
 	 * Returns the page name referenced in the request.
 	 * @param req
 	 * @return

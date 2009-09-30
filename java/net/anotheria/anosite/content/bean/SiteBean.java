@@ -32,6 +32,11 @@ public class SiteBean {
 	 * Url to call for the search action if applicable.
 	 */
 	private String searchTarget;
+
+    /**
+     * Sitebean - Site logo. Path to logo - itself.
+     */
+    private String logo;
 	
 	public String getSubtitle() {
 		return subtitle;
@@ -78,4 +83,12 @@ public class SiteBean {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
 }
