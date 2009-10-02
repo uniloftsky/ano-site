@@ -28,8 +28,9 @@ public class RedirectFilter implements Filter{
 	private IASSiteDataService siteDataService;
 	
 	private static Logger log = Logger.getLogger(RedirectFilter.class);
+    private static final String CHAR = "/";
 
-	@Override
+    @Override
 	public void destroy() {
 		
 	}
@@ -64,12 +65,18 @@ public class RedirectFilter implements Filter{
 	public void init(FilterConfig arg0) throws ServletException {
 		siteDataService = ASSiteDataServiceFactory.createASSiteDataService();
 	}
-	
+
+    /**
+     * Search url in CMS. If  founded -  then url for redirect will be returned.
+     * Curently supports urls  like <a>http://localhost:[port]/  && http://localhost:[port] </a>.
+     * @param lookupUrl  actually url for search.
+     * @return Founded url for redirect or null
+     */
 	private String resolveRedirectUrl(String lookupUrl){
 		try{
 			List<RedirectUrl> urls = siteDataService.getRedirectUrls();
 			for (RedirectUrl u : urls){
-				if (u.getIn()!=null && u.getIn().equals(lookupUrl))
+				if (u.getIn()!=null && (u.getIn().equals(lookupUrl) || lookupUrl.equals(u.getIn()+ CHAR)))
 					return u.getOut();
 			}
 		}catch(ASSiteDataServiceException e){
