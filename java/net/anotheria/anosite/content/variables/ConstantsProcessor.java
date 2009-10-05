@@ -26,10 +26,10 @@ public class ConstantsProcessor implements VariablesProcessor{
 		constants.put("textarea", "textarea");
 		constants.put("lbrace", "{");
 		constants.put("rbrace", "}");
-		constants.put("greatThan", ">");
-		constants.put("lessThan", "<");
-		constants.put("gt", ">");
-		constants.put("lt", "<");
+		constants.put("greatThan", "&gt;");
+		constants.put("lessThan", "&lt;");
+		constants.put("gt", "&gt;");
+		constants.put("lt", "&lt;");
 		constants.put("rbrace", "}");
 		constants.put("colon", ":");
 		constants.put("semicolon", ";");
