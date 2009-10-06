@@ -1016,28 +1016,25 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
      * @param logoId imageId - itself
      */
     private void populateLogo(String pathPart, SiteBean created, String logoId) {
-        if (isValid(logoId)){
+        if (isNotNullOrEmpty(logoId)) {
             try {
-               Image img = resourceDataService.getImage(logoId);
-               String logo = isValid(img)&&isValid(img.getImage())?img.getImage():null;
-               if(isValid(logo))
-                  created.setLogo(pathPart+logo);
+                Image img = resourceDataService.getImage(logoId);
+                if (img != null && isNotNullOrEmpty(img.getImage()))
+                    created.setLogo(pathPart + img.getImage());
             } catch (ASResourceDataServiceException e) {
-              log.warn("Error - SiteLogo Image with id:{"+logoId+"} does not exist!");
+                log.warn("SiteLogo Image with id:{" + logoId + "} does not exist!");
             }
-         }
+        }
     }
 
     /**
-     * Simplest notNull & NotEmpty (in string case)check.
-     * @param obj object to check
+     * Allow string check. Return true when param is not  null and not empty.
+     * False in other case.
+     * @param str object to check
      * @return boolean value
      */
-    private boolean isValid(Object obj){
-        if(obj instanceof String)
-           return obj!=null&&!((String)obj).isEmpty();
-        else
-            return obj!=null;
+    private boolean isNotNullOrEmpty(String str) {
+        return str != null && !str.isEmpty();
     }
 
     /**
@@ -1075,8 +1072,8 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		for (TextResource r : resources)
 			req.setAttribute("res." + r.getName(), VariablesUtility.replaceVariables(req, r.getValue()));
 	}
-	
-	class PageBeanCreator implements BlueprintCallExecutor{
+
+    class PageBeanCreator implements BlueprintCallExecutor{
 		public Object execute(Object... parameters)  throws ASGRuntimeException{
 			return createPageBean( 
 					(HttpServletRequest)parameters[0], 
