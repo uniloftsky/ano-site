@@ -1,14 +1,16 @@
 package net.anotheria.anosite.content.variables;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import net.anotheria.anoprise.metafactory.MetaFactory;
+import net.anotheria.anoprise.metafactory.MetaFactoryException;
 import net.anotheria.anosite.gen.asresourcedata.data.TextResource;
 import net.anotheria.anosite.gen.asresourcedata.service.IASResourceDataService;
 import net.anotheria.asg.exception.ASGRuntimeException;
-import net.anotheria.asg.metafactory.MetaFactory;
-import net.anotheria.asg.metafactory.MetaFactoryException;
-import org.apache.log4j.Logger;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
+import org.apache.log4j.Logger;
 
 /**
  * @author: h3llka

@@ -27,5 +27,6 @@
 	<classpathentry kind="lib" path="lib/hamcrest-library.jar"/>
 	<classpathentry kind="lib" path="lib/jmock.jar"/>
 	<classpathentry kind="lib" path="lib/junit.jar"/>
+	<classpathentry kind="lib" path="lib/ano-prise.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>

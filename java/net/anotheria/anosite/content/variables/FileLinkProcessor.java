@@ -1,9 +1,9 @@
 package net.anotheria.anosite.content.variables;
 
+import net.anotheria.anoprise.metafactory.MetaFactory;
+import net.anotheria.anoprise.metafactory.MetaFactoryException;
 import net.anotheria.anosite.gen.asresourcedata.data.FileLink;
 import net.anotheria.anosite.gen.asresourcedata.service.IASResourceDataService;
-import net.anotheria.asg.metafactory.MetaFactory;
-import net.anotheria.asg.metafactory.MetaFactoryException;
 
 import org.apache.log4j.Logger;
 
