@@ -2,12 +2,12 @@ package net.anotheria.anosite.decorator;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 
-import net.anotheria.anosite.gen.asresourcedata.data.Image;
 import net.anotheria.anosite.gen.asresourcedata.data.FileLink;
+import net.anotheria.anosite.gen.asresourcedata.data.Image;
 import net.anotheria.asg.data.DataObject;
 import net.anotheria.asg.util.decorators.IAttributeDecorator;
+import net.anotheria.util.IOUtils;
 import net.anotheria.util.NumberUtils;
 import net.anotheria.webutils.filehandling.actions.FileStorage;
 
@@ -50,15 +50,11 @@ public class FileSizeDecorator implements IAttributeDecorator{
 			}else{
 				fIn = new FileInputStream(f);
 				message = ""+NumberUtils.makeSizeString(fIn.available())+" "+fileName;
-				fIn.close();
 			}
 		}catch(Exception e){
 			message = "Error: "+e.getMessage();
-			if (fIn!=null){
-				try {
-					fIn.close();
-				}catch(IOException ignored){}
-			}
+		}finally{
+			IOUtils.closeIgnoringException(fIn);
 		}
 		return message;
 	}

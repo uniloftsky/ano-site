@@ -1,6 +1,7 @@
 package net.anotheria.anosite.decorator;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Iterator;
 
 import javax.imageio.ImageIO;
@@ -32,6 +33,7 @@ public class ImageSizeDecorator implements IAttributeDecorator {
 			return "No file";
 		String message = null;
 	
+		ImageInputStream iis = null;
 		try{
 			File f = new File(FileStorage.fileStorageDir+File.separatorChar+fileName);
 			if (!f.exists()){
@@ -39,7 +41,7 @@ public class ImageSizeDecorator implements IAttributeDecorator {
 			}
 			Iterator<ImageReader> readers = ImageIO.getImageReadersByFormatName(fileName.substring(fileName.length()-3, fileName.length()));
 			ImageReader reader = readers.next();
-			ImageInputStream iis = ImageIO.createImageInputStream(f);
+			iis = ImageIO.createImageInputStream(f);
 			reader.setInput(iis, false);
 			int nImageCount = reader.getNumImages(true);
 			if(nImageCount<1){
@@ -51,6 +53,11 @@ public class ImageSizeDecorator implements IAttributeDecorator {
 			message = w+" x "+h+" pixel";
 		}catch(Exception e){
 			message = "Error: "+e.getMessage();
+		}finally{
+			if(iis != null)
+				try {
+					iis.close();
+				} catch (IOException ignored) {}
 		}
 		return message;
 	}
