@@ -64,7 +64,7 @@ public class PageAliasFilter implements Filter{
 			List<PageAlias> aliases = siteDataService.getPageAliass();
 			for (PageAlias alias : aliases){
 				if (alias.getPathes()!=null && alias.getPathes().indexOf(path)!=-1){
-					log.info("found page alias hit "+path+" to page: "+alias.getTargetPage());
+					log.debug("found page alias hit "+path+" to page: "+alias.getTargetPage());
 					Pagex target = webDataService.getPagex(alias.getTargetPage());
 					String urlQuery = req.getQueryString();
 					urlQuery = urlQuery != null && urlQuery.length() > 0? "?" + urlQuery:"";

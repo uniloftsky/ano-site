@@ -9,11 +9,11 @@ public class ObservationSubjects {
 	/**
 	 * User logs in into the system.
 	 */
-	public static String LOGIN = "login";
+	public static final String LOGIN = "login";
 	
 	/**
 	 * User logs out.
 	 */
-	public static String LOGOUT = "logout";
+	public static final String LOGOUT = "logout";
 	
 }
