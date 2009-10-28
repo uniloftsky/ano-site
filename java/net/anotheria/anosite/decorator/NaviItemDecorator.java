@@ -53,7 +53,7 @@ public class NaviItemDecorator implements IAttributeDecorator{
 				// href = "naviitem"+StringUtils.capitalize(attributeName)+"Show?pId="+doc.getId()+"&ts="+System.currentTimeMillis();
 			}
 			
-			String title = "";
+			StringBuilder title = new StringBuilder();
 			for (String id : ids){
 				String name ;
 				try{
@@ -64,16 +64,18 @@ public class NaviItemDecorator implements IAttributeDecorator{
 					name = "*ERR-"+e.getMessage()+"*";
 				}
 				if (title.length()>0)
-					title += ", ";
-				title += name;
+					title.append(", ");
+				title.append(name);
 					
 			}
+			
+			String titleString = "";
 			if (title.length()>0)
-				title = " title=\""+title+"\"";
+				titleString = " title=\""+title.toString()+"\"";
 			
 			String hrefTarget = href.length()>1 ? " target=\"_blank\"" : "";
 			
-			return "<a href=\""+href+"\""+hrefTarget+title+">"+value+"</a>";
+			return "<a href=\""+href+"\""+hrefTarget+titleString+">"+value+"</a>";
 				
 		}catch(NoSuchPropertyException e){
 			return "none";
