@@ -196,6 +196,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			requestURI+="?"+queryString;
 		req.setAttribute(AnositeConstants.RA_CURRENT_URI, requestURI);
 		
+		//setting proper error code, because we shouldn't deliver error pages with http code 200.
 		String pageName = extractPageName(req);
 		boolean errorPage = pageName!=null && (pageName.equals("404") || pageName.equals("500"));
         if(errorPage){
@@ -354,9 +355,9 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
      * @param res HttpServletResponse
      */
     private void setErrorCode(String pageName, HttpServletResponse res) {
-        int errorCode = pageName==null? HttpServletResponse.SC_NOT_FOUND:0;
-        errorCode = pageName!=null&&pageName.equals("404")?HttpServletResponse.SC_NOT_FOUND:
-                pageName!=null&&pageName.equals("500")?HttpServletResponse.SC_INTERNAL_SERVER_ERROR:errorCode;
+        int errorCode = pageName==null? HttpServletResponse.SC_NOT_FOUND : 0;
+        errorCode = pageName!=null && pageName.equals("404") ? HttpServletResponse.SC_NOT_FOUND:
+                pageName!=null && pageName.equals("500") ? HttpServletResponse.SC_INTERNAL_SERVER_ERROR : errorCode;
         res.setStatus(errorCode);
     }
 
