@@ -48,6 +48,8 @@ public final class CMSSelfTest {
 		ensureBoxTypeExists("Plain", "Plain");
 		ensureBoxTypeExists("Styled", "Styled");
 		ensureBoxTypeExists("TextBox", "TextBox");
+		ensureBoxTypeExists("CSSLink", "CSSLink");
+		ensureBoxTypeExists("JSLink", "JSLink");
 	}
 
 	private static void selfTestBoxHandlers(){

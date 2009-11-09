@@ -38,11 +38,17 @@
 		<property name="content" type="text" multilingual="true"/>
 		<link name="type" type="single" target="ASFederatedData.BoxType"/>
 		<link name="handler" type="single" target="ASFederatedData.BoxHandlerDef"/>
+		<property name="metas" type="list">
+	        <content>
+				<link name="type" type="single" target="Box"/>
+        	</content>
+        </property>
 		<property name="subboxes" type="list">
 	        <content>
 				<link name="type" type="single" target="Box"/>
         	</content>
         </property>
+		<property name="cssClass" type="string"/>
 		<property name="parameter1" type="string"/>
 		<property name="parameter2" type="string"/>
 		<property name="parameter3" type="string"/>

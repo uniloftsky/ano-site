@@ -2,7 +2,6 @@ package net.anotheria.anosite.content.variables;
 
 import javax.servlet.http.HttpServletRequest;
 
-import net.anotheria.util.StringUtils;
 import org.apache.log4j.Logger;
 
 public class ConditionProcessor implements VariablesProcessor {

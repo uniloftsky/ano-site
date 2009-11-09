@@ -17,6 +17,10 @@ public class BoxBean {
 	 */
 	private List<BoxBean> subboxes;
 	/**
+	 * Value of the cssClass attribute.
+	 */
+	private String cssClass;
+	/**
 	 * Value of the content attribute.
 	 */
 	private String content;
@@ -188,5 +192,13 @@ public class BoxBean {
 
 	public void setAttributes(AttributeMap attributes) {
 		this.attributes = attributes;
+	}
+
+	public String getCssClass() {
+		return cssClass;
+	}
+
+	public void setCssClass(String cssClass) {
+		this.cssClass = cssClass;
 	}
 }

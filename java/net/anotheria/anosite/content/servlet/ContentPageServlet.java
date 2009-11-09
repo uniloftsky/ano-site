@@ -591,6 +591,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 
 		ret.setName(box.getName());
 		ret.setId(box.getId());
+		ret.setCssClass(box.getCssClass());
 		
 		AttributeMap attributeMap = createAttributeMap(req, res, box);
 		APICallContext.getCallContext().setAttribute(AttributeMap.CALL_CONTEXT_SCOPE_NAME, attributeMap);

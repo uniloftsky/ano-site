@@ -86,6 +86,10 @@
 					<element type="field" name="handler" comparable="true"> 
 	        		   	<decorator name="linkTargetName"/>
 					</element>
+					<element type="field" name="cssClass" comparable="true"/>
+					<element type="field" name="metas" comparable="true"> 
+						<decorator name="subboxes"/>
+					</element>
 					<element type="field" name="subboxes" comparable="true"> 
 						<decorator name="subboxes"/>
 					</element>
@@ -107,7 +111,9 @@
 		      			<element type="field" name="name" /> 
 		      			<element type="field" name="type" /> 
 		      			<element type="field" name="handler" /> 
-		      			<element type="field" name="subboxes" /> 
+		      			<element type="field" name="metas" />
+		      			<element type="field" name="subboxes" />
+		      			<element type="field" name="cssClass"/> 
 		      			<element type="field" name="content" /> 
 		      			<element type="field" name="parameter1" /> 
 		      			<element type="field" name="parameter2" /> 
