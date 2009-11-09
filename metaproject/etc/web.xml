@@ -52,11 +52,13 @@
 			<servlet-class>net.anotheria.anosite.action.servlet.ActionServlet</servlet-class>
 		</servlet>
 		
-
-
 		<servlet-mapping>
 			<servlet-name>fileservlet</servlet-name>
 			<url-pattern>/file/*</url-pattern>
+		</servlet-mapping>
+		
+		<servlet-mapping>
+			<servlet-name>fileservlet</servlet-name>
 			<url-pattern>/cms/file/*</url-pattern>
 		</servlet-mapping>
 
