@@ -46,6 +46,10 @@ public class PageBean {
 	 */
 	private Set<MediaLinkBean> mediaLinks;
 	/**
+	 * List with scripts.
+	 */
+	private Set<ScriptBean> scripts;
+	/**
 	 * List of header boxes (before the start or the main content columns).
 	 */
 	private List<BoxBean> headerBoxes;
@@ -63,6 +67,7 @@ public class PageBean {
 		headerBoxes = new ArrayList<BoxBean>();
 		footerBoxes = new ArrayList<BoxBean>();
 		mediaLinks = new LinkedHashSet<MediaLinkBean>();
+		scripts = new LinkedHashSet<ScriptBean>();
 	}
 	
 	public String getTitle() {
@@ -191,5 +196,13 @@ public class PageBean {
 
 	public void addMediaLinks(List<MediaLinkBean> mediaLinks) {
 		this.mediaLinks.addAll(mediaLinks);
+	}
+
+	public List<ScriptBean> getScripts() {
+		return new ArrayList<ScriptBean>(scripts);
+	}
+	
+	public void addScripts(List<ScriptBean> mediaLinks) {
+		this.scripts.addAll(mediaLinks);
 	}
 }

@@ -17,9 +17,13 @@ public class BoxBean {
 	 */
 	private List<BoxBean> subboxes;
 	/**
-	 * List with metas.
+	 * List with mediaLinks.
 	 */
 	private List<MediaLinkBean> mediaLinks;
+	/**
+	 * List with scripts.
+	 */
+	private List<ScriptBean> scripts;
 	/**
 	 * Value of the cssClass attribute.
 	 */
@@ -88,6 +92,7 @@ public class BoxBean {
 	public BoxBean(){
 		subboxes = new ArrayList<BoxBean>();
 		mediaLinks = new ArrayList<MediaLinkBean>();
+		scripts = new ArrayList<ScriptBean>();
 	}
 	
 	public String getContent() {
@@ -215,6 +220,14 @@ public class BoxBean {
 		this.mediaLinks = mediaLinks;
 	}
 	
+	public List<ScriptBean> getScripts() {
+		return scripts;
+	}
+
+	public void setScripts(List<ScriptBean> scripts) {
+		this.scripts = scripts;
+	}
+	
 	@Override public boolean equals(Object anotherObj){
 		if(!(anotherObj instanceof BoxBean))
 			return false;
@@ -230,4 +243,5 @@ public class BoxBean {
 		ret += "BoxBean " + id;
 		return ret;
 	}
+
 }

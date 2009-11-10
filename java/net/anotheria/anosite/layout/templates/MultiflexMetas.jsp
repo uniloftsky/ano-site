@@ -12,6 +12,7 @@
 <meta name="keywords" content="<bean:write name="page" scope="request" property="keywords" filter="false"/>">
 <meta name="verify-v1" content="ByKKpjaJVvtDJjxH5AxNjRpbhCKJAq1EuOuIbWB0SjY=">
 <jsp:include page="MediaLinks.jsp" flush="false"/>
+<jsp:include page="Scripts.jsp" flush="false"/>
 
 <bean:define id="__boxlist" toScope="request" name="page" property="metaBoxes"/>
 <jsp:include page="ListIterator.jsp" flush="false"/>
