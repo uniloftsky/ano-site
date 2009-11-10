@@ -11,7 +11,7 @@
 <meta name="description" content="<bean:write name="page" scope="request" property="description" filter="false"/>">
 <meta name="keywords" content="<bean:write name="page" scope="request" property="keywords" filter="false"/>">
 <meta name="verify-v1" content="ByKKpjaJVvtDJjxH5AxNjRpbhCKJAq1EuOuIbWB0SjY=">
-
+<jsp:include page="MediaLinks.jsp" flush="false"/>
 
 <bean:define id="__boxlist" toScope="request" name="page" property="metaBoxes"/>
 <jsp:include page="ListIterator.jsp" flush="false"/>

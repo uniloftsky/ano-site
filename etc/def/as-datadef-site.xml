@@ -4,6 +4,11 @@
 		<property type="string" name="name"/>
 		<link name="layout" type="single" target="ASLayoutData.PageLayout"/>
 		<link name="site"  type="single" target="ASSiteData.Site"/>
+		<property name="mediaLinks" type="list">
+	        <content>
+				<link name="type" type="single" target="ASSiteData.MediaLink"/>
+        	</content>
+        </property>
 
 		<!-- cXfirst properties defines boxes which have to be inserted at the start of each column, BEFORE any other boxes are rendered -->
 		<property name="c1first" type="list">
@@ -64,6 +69,16 @@
 		<property type="text" name="description"/>
 		
 	</document> 
+	<document name="MediaLink">
+		<property name="name" type="string"/>
+		<property name="href" type="string"/>
+		<property name="type" type="string"/>
+		<property name="media" type="enumeration" enumeration="MediaDesc"/>
+		<property name="rel" type="enumeration" enumeration="LinkTypes"/>
+		<property name="rev" type="enumeration" enumeration="LinkTypes"/>
+		<property name="charset" type="string"/>
+		<property name="hreflang" type="string"/>
+	</document>
   	<document name="Site">
 		<property name="name" type="string"/>
 		<property name="title" type="string" multilingual="true"/>

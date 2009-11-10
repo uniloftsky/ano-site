@@ -28,6 +28,7 @@ import net.anotheria.anosite.content.bean.AttributeMap;
 import net.anotheria.anosite.content.bean.BoxBean;
 import net.anotheria.anosite.content.bean.BoxTypeBean;
 import net.anotheria.anosite.content.bean.BreadCrumbItemBean;
+import net.anotheria.anosite.content.bean.MediaLinkBean;
 import net.anotheria.anosite.content.bean.NaviItemBean;
 import net.anotheria.anosite.content.bean.PageBean;
 import net.anotheria.anosite.content.bean.SiteBean;
@@ -39,11 +40,12 @@ import net.anotheria.anosite.gen.asfederateddata.service.ASFederatedDataServiceF
 import net.anotheria.anosite.gen.asfederateddata.service.IASFederatedDataService;
 import net.anotheria.anosite.gen.aslayoutdata.service.ASLayoutDataServiceFactory;
 import net.anotheria.anosite.gen.aslayoutdata.service.IASLayoutDataService;
-import net.anotheria.anosite.gen.asresourcedata.data.TextResource;
 import net.anotheria.anosite.gen.asresourcedata.data.Image;
+import net.anotheria.anosite.gen.asresourcedata.data.TextResource;
 import net.anotheria.anosite.gen.asresourcedata.service.ASResourceDataServiceException;
 import net.anotheria.anosite.gen.asresourcedata.service.ASResourceDataServiceFactory;
 import net.anotheria.anosite.gen.asresourcedata.service.IASResourceDataService;
+import net.anotheria.anosite.gen.assitedata.data.MediaLink;
 import net.anotheria.anosite.gen.assitedata.data.NaviItem;
 import net.anotheria.anosite.gen.assitedata.data.PageTemplate;
 import net.anotheria.anosite.gen.assitedata.data.Site;
@@ -57,6 +59,8 @@ import net.anotheria.anosite.gen.aswebdata.data.PagexDocument;
 import net.anotheria.anosite.gen.aswebdata.service.ASWebDataServiceException;
 import net.anotheria.anosite.gen.aswebdata.service.ASWebDataServiceFactory;
 import net.anotheria.anosite.gen.aswebdata.service.IASWebDataService;
+import net.anotheria.anosite.gen.shared.data.LinkTypesUtils;
+import net.anotheria.anosite.gen.shared.data.MediaDescUtils;
 import net.anotheria.anosite.guard.ConditionalGuard;
 import net.anotheria.anosite.guard.GuardFactory;
 import net.anotheria.anosite.handler.AbstractRedirectResponse;
@@ -85,6 +89,11 @@ import org.apache.log4j.Logger;
  *
  */
 public class ContentPageServlet extends BaseAnoSiteServlet {
+
+	/**
+	 * Generated serialVersionUID
+	 */
+	private static final long serialVersionUID = -2697998321193246382L;
 
 	/**
 	 * Logger
@@ -593,6 +602,8 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		ret.setId(box.getId());
 		ret.setCssClass(box.getCssClass());
 		
+		ret.setMediaLinks(createMediaLinkBeanList(box.getMediaLinks(), req));
+		
 		AttributeMap attributeMap = createAttributeMap(req, res, box);
 		APICallContext.getCallContext().setAttribute(AttributeMap.CALL_CONTEXT_SCOPE_NAME, attributeMap);
 		ret.setAttributes(attributeMap);
@@ -682,7 +693,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		
 		return response;
 	}
-
+	
 	/**
 	 * Returns true if the box is disabled by conditional guards and should be ignored.
 	 * @param req
@@ -865,11 +876,16 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		ret.setKeywords(page.getKeywords());
 		ret.setDescription(page.getDescription());
 		ret.setName(page.getName());
-
+		
+		//MediaLinks
+		ret.addMediaLinks(createMediaLinkBeanList(template.getMediaLinks(), req));
+		ret.addMediaLinks(createMediaLinkBeanList(page.getMediaLinks(), req));
+		
 		InternalResponse response = new InternalResponseContinue();
 		
 		InternalResponse call = null;
 		String redirectTarget = null;
+		List<BoxBean> boxes = null;
 		
 		//meta
 		call = createBoxBeanList(req, res, template.getMeta());
@@ -877,7 +893,9 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			return new InternalResponse(call.getCode());
 		redirectTarget = getNewPageRedirectTargetIfApplies(call, redirectTarget);
 		response = getNewPageResponse(call, response);
-		ret.addMetaBoxes(((InternalBoxBeanListResponse)call).getBeans());
+		boxes = ((InternalBoxBeanListResponse)call).getBeans();
+		ret.addMetaBoxes(boxes);
+		ret.addMediaLinks(searchMediaLinks(boxes));
 		
 		//header
 		call = createBoxBeanList(req, res, template.getHeader());
@@ -885,14 +903,18 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			return new InternalResponse(call.getCode());
 		redirectTarget = getNewPageRedirectTargetIfApplies(call, redirectTarget);
 		response = getNewPageResponse(call, response);
-		ret.addHeaderBoxes(((InternalBoxBeanListResponse)call).getBeans());
+		boxes = ((InternalBoxBeanListResponse)call).getBeans();
+		ret.addHeaderBoxes(boxes);
+		ret.addMediaLinks(searchMediaLinks(boxes));
 		
 		call = createBoxBeanList(req, res, page.getHeader());
 		if (!call.canContinue())
 			return new InternalResponse(call.getCode());
 		redirectTarget = getNewPageRedirectTargetIfApplies(call, redirectTarget);
 		response = getNewPageResponse(call, response);
-		ret.addHeaderBoxes(((InternalBoxBeanListResponse)call).getBeans());
+		boxes = ((InternalBoxBeanListResponse)call).getBeans();
+		ret.addHeaderBoxes(boxes);
+		ret.addMediaLinks(searchMediaLinks(boxes));
 		
 		//c1
 		call = createBoxBeanList(req, res, template.getC1first());
@@ -900,43 +922,56 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			return new InternalResponse(call.getCode());
 		redirectTarget = getNewPageRedirectTargetIfApplies(call, redirectTarget);
 		response = getNewPageResponse(call, response);
-		ret.addColumn1(((InternalBoxBeanListResponse)call).getBeans());
+		boxes = ((InternalBoxBeanListResponse)call).getBeans();
+		ret.addColumn1(boxes);
+		ret.addMediaLinks(searchMediaLinks(boxes));
 		
 		call = createBoxBeanList(req, res, page.getC1());
 		if (!call.canContinue())
 			return new InternalResponse(call.getCode());
 		redirectTarget = getNewPageRedirectTargetIfApplies(call, redirectTarget);
 		response = getNewPageResponse(call, response);
-		ret.addColumn1(((InternalBoxBeanListResponse)call).getBeans());
+		boxes = ((InternalBoxBeanListResponse)call).getBeans();
+		ret.addColumn1(boxes);
+		ret.addMediaLinks(searchMediaLinks(boxes));
 		
 		call = createBoxBeanList(req, res, template.getC1last());
 		if (!call.canContinue())
 			return new InternalResponse(call.getCode());
 		redirectTarget = getNewPageRedirectTargetIfApplies(call, redirectTarget);
 		response = getNewPageResponse(call, response);
-		ret.addColumn1(((InternalBoxBeanListResponse)call).getBeans());
-
+		boxes = ((InternalBoxBeanListResponse)call).getBeans();
+		ret.addColumn1(boxes);
+		ret.addMediaLinks(searchMediaLinks(boxes));
+		
 		//c2
 		call = createBoxBeanList(req, res, template.getC2first());
 		if (!call.canContinue())
 			return new InternalResponse(call.getCode());
 		redirectTarget = getNewPageRedirectTargetIfApplies(call, redirectTarget);
 		response = getNewPageResponse(call, response);
-		ret.addColumn2(((InternalBoxBeanListResponse)call).getBeans());
+		boxes = ((InternalBoxBeanListResponse)call).getBeans();
+		ret.addColumn2(boxes);
+		ret.addMediaLinks(searchMediaLinks(boxes));
 		
 		call = createBoxBeanList(req, res, page.getC2());
 		if (!call.canContinue())
 			return new InternalResponse(call.getCode());
 		redirectTarget = getNewPageRedirectTargetIfApplies(call, redirectTarget);
 		response = getNewPageResponse(call, response);
-		ret.addColumn2(((InternalBoxBeanListResponse)call).getBeans());
+		boxes = ((InternalBoxBeanListResponse)call).getBeans();
+		ret.addColumn2(boxes);
+		ret.addMediaLinks(searchMediaLinks(boxes));
 		
 		call = createBoxBeanList(req, res, template.getC2last());
 		if (!call.canContinue())
 			return new InternalResponse(call.getCode());
 		redirectTarget = getNewPageRedirectTargetIfApplies(call, redirectTarget);
 		response = getNewPageResponse(call, response);
-		ret.addColumn2(((InternalBoxBeanListResponse)call).getBeans());
+		boxes = ((InternalBoxBeanListResponse)call).getBeans();
+		ret.addColumn2(boxes);
+		ret.addMediaLinks(searchMediaLinks(boxes));
+
 		
 		//c3
 		call = createBoxBeanList(req, res, template.getC3first());
@@ -944,21 +979,27 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			return new InternalResponse(call.getCode());
 		redirectTarget = getNewPageRedirectTargetIfApplies(call, redirectTarget);
 		response = getNewPageResponse(call, response);
-		ret.addColumn3(((InternalBoxBeanListResponse)call).getBeans());
-		
+		boxes = ((InternalBoxBeanListResponse)call).getBeans();
+		ret.addColumn3(boxes);
+		ret.addMediaLinks(searchMediaLinks(boxes));
+
 		call = createBoxBeanList(req, res, page.getC3());
 		if (!call.canContinue())
 			return new InternalResponse(call.getCode());
 		redirectTarget = getNewPageRedirectTargetIfApplies(call, redirectTarget);
 		response = getNewPageResponse(call, response);
-		ret.addColumn3(((InternalBoxBeanListResponse)call).getBeans());
+		boxes = ((InternalBoxBeanListResponse)call).getBeans();
+		ret.addColumn3(boxes);
+		ret.addMediaLinks(searchMediaLinks(boxes));
 		
 		call = createBoxBeanList(req, res, template.getC3last());
 		if (!call.canContinue())
 			return new InternalResponse(call.getCode());
 		redirectTarget = getNewPageRedirectTargetIfApplies(call, redirectTarget);
 		response = getNewPageResponse(call, response);
-		ret.addColumn3(((InternalBoxBeanListResponse)call).getBeans());
+		boxes = ((InternalBoxBeanListResponse)call).getBeans();
+		ret.addColumn3(boxes);
+		ret.addMediaLinks(searchMediaLinks(boxes));
 		
 		//footer
 		call = createBoxBeanList(req, res, template.getFooter());
@@ -966,20 +1007,52 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			return new InternalResponse(call.getCode());
 		redirectTarget = getNewPageRedirectTargetIfApplies(call, redirectTarget);
 		response = getNewPageResponse(call, response);
-		ret.addFooterBoxes(((InternalBoxBeanListResponse)call).getBeans());
+		boxes = ((InternalBoxBeanListResponse)call).getBeans();
+		ret.addFooterBoxes(boxes);
+		ret.addMediaLinks(searchMediaLinks(boxes));
 		
 		call = createBoxBeanList(req, res, page.getFooter());
 		if (!call.canContinue())
 			return new InternalResponse(call.getCode());
 		redirectTarget = getNewPageRedirectTargetIfApplies(call, redirectTarget);
 		response = getNewPageResponse(call, response);
-		ret.addFooterBoxes(((InternalBoxBeanListResponse)call).getBeans());
+		boxes = ((InternalBoxBeanListResponse)call).getBeans();
+		ret.addFooterBoxes(boxes);
+		ret.addMediaLinks(searchMediaLinks(boxes));
 
-		
 		return redirectTarget == null ? 
 				new InternalPageBeanResponse(ret) :
 				new InternalPageBeanWithRedirectResponse(ret, redirectTarget);
 
+	}
+	
+	private List<MediaLinkBean> createMediaLinkBeanList(List<String> mediaLinkIds, HttpServletRequest req) throws ASSiteDataServiceException, ASWebDataServiceException{
+		List<MediaLinkBean> ret = new ArrayList<MediaLinkBean>(mediaLinkIds.size());
+		for (String id : mediaLinkIds) {
+			MediaLinkBean bean = new MediaLinkBean();
+			MediaLink item = siteDataService.getMediaLink(id);
+			bean.setId(item.getId());
+			bean.setName(item.getName());
+			bean.setHref(item.getHref());
+			bean.setType(item.getType());
+			bean.setMedia(item.getMedia() > 0?MediaDescUtils.getName(item.getMedia()):MediaDescUtils.all_NAME);
+			bean.setRel(item.getRel() > LinkTypesUtils.none?LinkTypesUtils.getName(item.getRel()):"");
+			bean.setRev(item.getRev() > LinkTypesUtils.none?LinkTypesUtils.getName(item.getRev()):"");
+			bean.setCharset(item.getCharset());
+			bean.setHreflang(item.getHreflang());
+			ret.add(bean);
+		}
+		return ret;
+	}
+	
+	private List<MediaLinkBean> searchMediaLinks(List<BoxBean> boxBeans){
+		List<MediaLinkBean> ret = new ArrayList<MediaLinkBean>();
+		for(BoxBean box: boxBeans){
+			ret.addAll(box.getMediaLinks());
+			ret.addAll(searchMediaLinks(box.getSubboxes()));
+			System.out.println("Search MediaLinks after " + box + ": " + ret);
+		}
+		return ret;
 	}
 
 	/**

@@ -1,7 +1,9 @@
 package net.anotheria.anosite.content.bean;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 /**
  * Represents a CMS page for rendering.
  * @author lrosenberg
@@ -40,6 +42,10 @@ public class PageBean {
 	 */
 	private List<BoxBean> metaBoxes;
 	/**
+	 * List of Media Links in the meta part (html head part).
+	 */
+	private Set<MediaLinkBean> mediaLinks;
+	/**
 	 * List of header boxes (before the start or the main content columns).
 	 */
 	private List<BoxBean> headerBoxes;
@@ -56,6 +62,7 @@ public class PageBean {
 		metaBoxes = new ArrayList<BoxBean>();
 		headerBoxes = new ArrayList<BoxBean>();
 		footerBoxes = new ArrayList<BoxBean>();
+		mediaLinks = new LinkedHashSet<MediaLinkBean>();
 	}
 	
 	public String getTitle() {
@@ -176,5 +183,13 @@ public class PageBean {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public List<MediaLinkBean> getMediaLinks() {
+		return new ArrayList<MediaLinkBean>(mediaLinks);
+	}
+
+	public void addMediaLinks(List<MediaLinkBean> mediaLinks) {
+		this.mediaLinks.addAll(mediaLinks);
 	}
 }

@@ -17,6 +17,10 @@ public class BoxBean {
 	 */
 	private List<BoxBean> subboxes;
 	/**
+	 * List with metas.
+	 */
+	private List<MediaLinkBean> mediaLinks;
+	/**
 	 * Value of the cssClass attribute.
 	 */
 	private String cssClass;
@@ -83,6 +87,7 @@ public class BoxBean {
 	 */
 	public BoxBean(){
 		subboxes = new ArrayList<BoxBean>();
+		mediaLinks = new ArrayList<MediaLinkBean>();
 	}
 	
 	public String getContent() {
@@ -200,5 +205,29 @@ public class BoxBean {
 
 	public void setCssClass(String cssClass) {
 		this.cssClass = cssClass;
+	}
+
+	public List<MediaLinkBean> getMediaLinks() {
+		return mediaLinks;
+	}
+
+	public void setMediaLinks(List<MediaLinkBean> mediaLinks) {
+		this.mediaLinks = mediaLinks;
+	}
+	
+	@Override public boolean equals(Object anotherObj){
+		if(!(anotherObj instanceof BoxBean))
+			return false;
+		return id.equals(((BoxBean)anotherObj).getId());
+	}
+	
+	@Override public int hashCode(){
+		return id.hashCode();
+	}
+	
+	@Override public String toString(){
+		String ret = "";
+		ret += "BoxBean " + id;
+		return ret;
 	}
 }

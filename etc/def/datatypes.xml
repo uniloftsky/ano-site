@@ -109,4 +109,37 @@
 		<element>P100</element>
 	</enumeration>
 	
+	<!-- HTTP DTD types -->
+	
+	<enumeration name="MediaDesc">
+		<element>all</element>
+		<element>screen</element>
+		<element>tty</element>
+		<element>tv</element>
+		<element>projection</element>
+		<element>handheld</element>
+		<element>print</element>
+		<element>braille</element>
+		<element>aural</element>
+	</enumeration>
+	
+	<enumeration name="LinkTypes">
+		<element>none</element>
+		<element>alternate</element>
+		<element>stylesheet</element>
+		<element>start</element>
+		<element>next</element>
+		<element>prev</element>
+		<element>contents</element>
+		<element>index</element>
+		<element>glossary</element>
+		<element>copyright</element>
+		<element>chapter</element>
+		<element>section</element>
+		<element>subsection</element>
+		<element>appendix</element>
+		<element>help</element>
+		<element>bookmark</element>
+	</enumeration>
+	
 </datatypes>

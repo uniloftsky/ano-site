@@ -125,6 +125,9 @@
 					<element type="field" name="site" comparable="true">
 	        		   	<decorator name="linkTargetName"/>
 					</element>
+					<element type="field" name="mediaLinks" comparable="true">
+						<decorator name="linkTargetName"/>
+					</element>
 					<element type="field" name="c1first" comparable="true"> 
 						<decorator name="subboxes"/>
 					</element>
@@ -163,6 +166,7 @@
 		      			<element type="field" name="name" /> 
 		      			<element type="field" name="layout" /> 
 		      			<element type="field" name="site" /> 
+		      			<element type="field" name="mediaLinks" />
 						<element type="field" name="c1first" />
 						<element type="field" name="c2first" />
 						<element type="field" name="c3first" />
@@ -176,6 +180,53 @@
 						<element type="field" name="footer" />
 						<element type="empty"/>
 		      			<element type="field" name="description" /> 
+						<element type="empty"/>
+						<element type="list">
+							<element type="function" name="updateAndClose"/>
+							<element type="function" name="updateAndStay"/>
+							<element type="function" name="cancel"/>
+						</element>
+        			</elements>
+      			</dialog>
+	    	</section>
+	    	
+	    	<!-- MediaLink -->
+			<section title="MediaLink" type="module">
+				<module>ASSiteData</module>
+				<document>MediaLink</document>
+				<filter name="AZ" field="name"/>
+				<elements>
+					<element type="field" name="id" comparable="true">
+	        		   	<decorator name="idToA">
+	        		 		<rule>3</rule>
+	        		   	</decorator>
+					</element>
+					<element type="field" name="name" comparable="default"> 
+	        		   	<decorator name="editLink"/>
+					</element>
+					<element type="field" name="href" comparable="true"/>
+					<element type="field" name="type" comparable="true"/>
+					<element type="field" name="media" comparable="true"/>
+					<element type="field" name="rel" comparable="true"/>
+					<element type="field" name="rev" comparable="true"/>
+					<element type="field" name="hreflang" comparable="true"/>
+					<element type="field" name="charset" comparable="true"/>
+	        		<element type="function" name="edit"/>
+	        		<element type="function" name="duplicate"/>
+	        		<element type="function" name="deleteWithConfirmation"/>
+	      		</elements>
+	      		<dialog name="Edit" title="Edit MediaLink">
+        			<elements>
+	       				<element type="empty"/>
+		       			<element type="field" name="id" readonly="true"/>
+		      			<element type="field" name="name" /> 
+						<element type="field" name="href"/>
+						<element type="field" name="type"/>
+						<element type="field" name="media"/>
+						<element type="field" name="rel"/>
+						<element type="field" name="rev"/>
+						<element type="field" name="hreflang"/>  
+						<element type="field" name="charset"/> 
 						<element type="empty"/>
 						<element type="list">
 							<element type="function" name="updateAndClose"/>

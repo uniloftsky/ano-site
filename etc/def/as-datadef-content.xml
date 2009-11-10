@@ -5,6 +5,11 @@
 		<property type="string" name="title" multilingual="true"/>
 		<property type="string" name="keywords" multilingual="true"/>
 		<property type="string" name="description" multilingual="true"/>
+		<property name="mediaLinks" type="list">
+	        <content>
+				<link name="type" type="single" target="ASSiteData.MediaLink"/>
+        	</content>
+        </property>
 		<link type="single" target="ASSiteData.PageTemplate" name="template"/>
 		<property name="c1" type="list">
 	        <content>
@@ -38,9 +43,9 @@
 		<property name="content" type="text" multilingual="true"/>
 		<link name="type" type="single" target="ASFederatedData.BoxType"/>
 		<link name="handler" type="single" target="ASFederatedData.BoxHandlerDef"/>
-		<property name="metas" type="list">
+		<property name="mediaLinks" type="list">
 	        <content>
-				<link name="type" type="single" target="Box"/>
+				<link name="type" type="single" target="ASSiteData.MediaLink"/>
         	</content>
         </property>
 		<property name="subboxes" type="list">
