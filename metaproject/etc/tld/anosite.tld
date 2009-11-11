@@ -41,6 +41,15 @@
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
+		
+		
 	</tag>
+	
+	<tag>
+		<name>random</name>
+		<tagclass>net.anotheria.anosite.tags.util.Random</tagclass>
+		<bodycontent>empty</bodycontent>	
+	</tag>
+	
 
 </taglib>
