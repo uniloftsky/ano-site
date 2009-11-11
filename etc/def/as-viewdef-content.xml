@@ -14,12 +14,6 @@
 					<element type="field" name="name" comparable="default">
 						<decorator name="editLink"/>
 					</element>
-					<element type="field" name="mediaLinks" comparable="true">
-						<decorator name="linkTargetName"/>
-					</element>
-					<element type="field" name="scripts" comparable="true">
-						<decorator name="linkTargetName"/>
-					</element>
 					<element type="field" name="template" comparable="true"> 
 						<decorator name="linkTargetName"/>
 					</element>
@@ -37,6 +31,12 @@
 					</element>
 					<element type="field" name="footer" comparable="true"> 
 						<decorator name="subboxes"/>
+					</element>
+					<element type="field" name="mediaLinks" comparable="true">
+						<decorator name="mediaLinks"/>
+					</element>
+					<element type="field" name="scripts" comparable="true">
+						<decorator name="scripts"/>
 					</element>
 					<element type="field" name="httpsonly"/>
 	        		<element type="function" name="edit"/>
@@ -96,10 +96,10 @@
 					</element>
 					<element type="field" name="cssClass" comparable="true"/>
 					<element type="field" name="mediaLinks" comparable="true">
-						<decorator name="linkTargetName"/>
+						<decorator name="mediaLinks"/>
 					</element>
 					<element type="field" name="scripts" comparable="true">
-						<decorator name="linkTargetName"/>
+						<decorator name="scripts"/>
 					</element> 
 					<element type="field" name="subboxes" comparable="true"> 
 						<decorator name="subboxes"/>

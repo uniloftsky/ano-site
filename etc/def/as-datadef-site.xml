@@ -75,6 +75,7 @@
 	</document> 
 	<document name="MediaLink">
 		<property name="name" type="string"/>
+		<link name="file" type="single" target="ASResourceData.FileLink"/>
 		<property name="href" type="string"/>
 		<property name="type" type="string"/>
 		<property name="media" type="enumeration" enumeration="MediaDesc"/>
@@ -85,6 +86,7 @@
 	</document>
 	<document name="Script">
 		<property name="name" type="string"/>
+		<link name="file" type="single" target="ASResourceData.FileLink"/>
 		<property name="link" type="string"/>
 		<property name="content" type="text"/>
 	</document>

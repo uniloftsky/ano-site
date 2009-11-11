@@ -11,6 +11,8 @@
 	<decorator name="guards" class="net.anotheria.anosite.decorator.GuardDecorator"/>
 	<decorator name="attributes" class="net.anotheria.anosite.decorator.AttributeDecorator"/>
 	<decorator name="naviitem" class="net.anotheria.anosite.decorator.NaviItemDecorator"/>
+	<decorator name="scripts" class="net.anotheria.anosite.decorator.ScriptsListDecorator"/>
+	<decorator name="mediaLinks" class="net.anotheria.anosite.decorator.MediaLinksListDecorator"/>
 
 	<decorator name="linkTargetName" class="net.anotheria.anosite.decorator.LinkTargetNameDecorator"/>
 	<decorator name="fileSizeDecorator" class="net.anotheria.anosite.decorator.FileSizeDecorator"/>

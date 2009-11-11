@@ -125,12 +125,6 @@
 					<element type="field" name="site" comparable="true">
 	        		   	<decorator name="linkTargetName"/>
 					</element>
-					<element type="field" name="mediaLinks" comparable="true">
-						<decorator name="linkTargetName"/>
-					</element>
-					<element type="field" name="scripts" comparable="true">
-						<decorator name="linkTargetName"/>
-					</element>
 					<element type="field" name="c1first" comparable="true"> 
 						<decorator name="subboxes"/>
 					</element>
@@ -157,6 +151,12 @@
 					</element>
 					<element type="field" name="footer" comparable="true"> 
 						<decorator name="subboxes"/>
+					</element>
+					<element type="field" name="mediaLinks" comparable="true">
+						<decorator name="mediaLinks"/>
+					</element>
+					<element type="field" name="scripts" comparable="true">
+						<decorator name="scripts"/>
 					</element>
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
@@ -208,6 +208,7 @@
 					<element type="field" name="name" comparable="default"> 
 	        		   	<decorator name="editLink"/>
 					</element>
+					<element type="field" name="file" comparable="true"/>
 					<element type="field" name="href" comparable="true"/>
 					<element type="field" name="type" comparable="true"/>
 					<element type="field" name="media" comparable="true"/>
@@ -223,7 +224,8 @@
         			<elements>
 	       				<element type="empty"/>
 		       			<element type="field" name="id" readonly="true"/>
-		      			<element type="field" name="name" /> 
+		      			<element type="field" name="name" />
+		      			<element type="field" name="file" /> 
 						<element type="field" name="href"/>
 						<element type="field" name="type"/>
 						<element type="field" name="media"/>
@@ -255,6 +257,7 @@
 					<element type="field" name="name" comparable="default"> 
 	        		   	<decorator name="editLink"/>
 					</element>
+					<element type="field" name="file" comparable="true"/>
 					<element type="field" name="link" comparable="true"/>
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
@@ -265,6 +268,7 @@
 	       				<element type="empty"/>
 		       			<element type="field" name="id" readonly="true"/>
 		      			<element type="field" name="name" /> 
+		      			<element type="field" name="file" />
 						<element type="field" name="link"/>
 						<element type="field" name="content"/> 
 						<element type="empty"/>

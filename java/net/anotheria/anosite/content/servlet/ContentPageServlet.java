@@ -41,6 +41,7 @@ import net.anotheria.anosite.gen.asfederateddata.service.ASFederatedDataServiceF
 import net.anotheria.anosite.gen.asfederateddata.service.IASFederatedDataService;
 import net.anotheria.anosite.gen.aslayoutdata.service.ASLayoutDataServiceFactory;
 import net.anotheria.anosite.gen.aslayoutdata.service.IASLayoutDataService;
+import net.anotheria.anosite.gen.asresourcedata.data.FileLink;
 import net.anotheria.anosite.gen.asresourcedata.data.Image;
 import net.anotheria.anosite.gen.asresourcedata.data.TextResource;
 import net.anotheria.anosite.gen.asresourcedata.service.ASResourceDataServiceException;
@@ -79,6 +80,7 @@ import net.anotheria.anosite.shared.InternalResponseCode;
 import net.anotheria.anosite.shared.presentation.servlet.BaseAnoSiteServlet;
 import net.anotheria.anosite.util.AnositeConstants;
 import net.anotheria.asg.exception.ASGRuntimeException;
+import net.anotheria.util.StringUtils;
 import net.java.dev.moskito.core.blueprint.BlueprintCallExecutor;
 import net.java.dev.moskito.core.blueprint.BlueprintProducer;
 import net.java.dev.moskito.core.blueprint.BlueprintProducersFactory;
@@ -284,7 +286,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		//set the proper stylesheet
 		req.setAttribute("stylesheet", new StylesheetBean(layoutDataService.getPageLayout(template.getLayout()).getStyle()));
 		
-		SiteBean siteBean = createSiteBean(template,req.getContextPath()+FILE_PATH_PART);
+		SiteBean siteBean = createSiteBean(template,req);
 		req.setAttribute("site", siteBean);
 		
 		
@@ -1047,14 +1049,18 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 
 	}
 	
-	private List<MediaLinkBean> createMediaLinkBeanList(List<String> mediaLinkIds, HttpServletRequest req) throws ASSiteDataServiceException, ASWebDataServiceException{
+	private List<MediaLinkBean> createMediaLinkBeanList(List<String> mediaLinkIds, HttpServletRequest req) throws ASGRuntimeException{
 		List<MediaLinkBean> ret = new ArrayList<MediaLinkBean>(mediaLinkIds.size());
 		for (String id : mediaLinkIds) {
 			MediaLinkBean bean = new MediaLinkBean();
 			MediaLink item = siteDataService.getMediaLink(id);
 			bean.setId(item.getId());
 			bean.setName(item.getName());
+			
 			bean.setHref(item.getHref());
+			if(!StringUtils.isEmpty(item.getFile()))
+				bean.setHref(getCMSFileUrl(item.getFile(), req));
+			
 			bean.setType(item.getType());
 			bean.setMedia(item.getMedia() > 0?MediaDescUtils.getName(item.getMedia()):MediaDescUtils.all_NAME);
 			bean.setRel(item.getRel() > LinkTypesUtils.none?LinkTypesUtils.getName(item.getRel()):"");
@@ -1076,13 +1082,17 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		return ret;
 	}
 
-	private List<ScriptBean> createScriptBeanList(List<String> scriptIds, HttpServletRequest req) throws ASSiteDataServiceException, ASWebDataServiceException{
+	private List<ScriptBean> createScriptBeanList(List<String> scriptIds, HttpServletRequest req) throws ASGRuntimeException{
 		List<ScriptBean> ret = new ArrayList<ScriptBean>(scriptIds.size());
 		for (String id : scriptIds) {
 			Script item = siteDataService.getScript(id);
 			ScriptBean bean = new ScriptBean(item.getId());
 			bean.setName(item.getName());
+
 			bean.setLink(item.getLink());
+			if(!StringUtils.isEmpty(item.getFile()))
+				bean.setLink(getCMSFileUrl(item.getFile(), req));
+			
 			bean.setContent(item.getContent());
 			ret.add(bean);
 		}
@@ -1097,13 +1107,19 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		}
 		return ret;
 	}
+	
+	private String getCMSFileUrl(String cmsFileId, HttpServletRequest req) throws ASGRuntimeException{
+		FileLink f = resourceDataService.getFileLink(cmsFileId);
+		return req.getContextPath()+FILE_PATH_PART + f.getFile();
+	}
+	
 	/**
 	 * Creates the site bean based on the template used by the page.
 	 * @param template actually PageTemplate
 	 * @param pathPart actually - contextPath+ "/file/"
      * @return created SiteBean
 	 */
-	private SiteBean createSiteBean(PageTemplate template,String pathPart) {
+	private SiteBean createSiteBean(PageTemplate template,HttpServletRequest req) {
 		SiteBean ret = new SiteBean();
 
 		try {
@@ -1118,13 +1134,14 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			if (site.getSearchpage() != null && site.getSearchpage().length() > 0)
 				ret.setSearchTarget(webDataService.getPagex(site.getSearchpage()).getName() + ".html");
             //populating logo!
-            populateLogo(pathPart, ret, site.getSiteLogo());
+            populateLogo(req.getContextPath()+FILE_PATH_PART, ret, site.getSiteLogo());
         } catch (Exception e) {
 			log.warn("createSiteBean(" + template + ",request)", e);
 		}
 
 		return ret;
 	}
+	
 
     /**
      * Simply putting path to the siteLogo image to SiteBean logo.
