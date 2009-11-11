@@ -22,7 +22,7 @@ public class RandomTag extends BaseTagSupport{
 		
 		Object asRandom = pageContext.getServletContext().getAttribute(AnositeConstants.AA_ANOSITE_RANDOM);
 		if(asRandom != null)
-			write(asRandom.toString());
+			write("random=" + asRandom.toString());
 		return SKIP_BODY;
 	}
 
