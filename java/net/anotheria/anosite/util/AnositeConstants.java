@@ -2,8 +2,16 @@ package net.anotheria.anosite.util;
 
 public class AnositeConstants {
 	public static final String BEAN_PREFIX = "anosite.";
+	//AA - application attribute
+	public static final String AA_PREFIX = "aa.";
+	
+	//SA - session attribute
 	public static final String SA_PREFIX = "sa.";
+	
+	//RA - request attribute
 	public static final String RA_PREFIX = "ra.";
+	
+	public static final String AA_ANOSITE_RANDOM = BEAN_PREFIX+AA_PREFIX+".random";
 	
 	public static final String SA_LANGUAGE = BEAN_PREFIX+SA_PREFIX+".lang";
 	public static final String SA_LOCALE = BEAN_PREFIX+SA_PREFIX+".locale";
