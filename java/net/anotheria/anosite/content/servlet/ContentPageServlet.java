@@ -80,6 +80,7 @@ import net.anotheria.anosite.shared.InternalResponseCode;
 import net.anotheria.anosite.shared.presentation.servlet.BaseAnoSiteServlet;
 import net.anotheria.anosite.util.AnositeConstants;
 import net.anotheria.asg.exception.ASGRuntimeException;
+import net.anotheria.util.IdCodeGenerator;
 import net.anotheria.util.StringUtils;
 import net.java.dev.moskito.core.blueprint.BlueprintCallExecutor;
 import net.java.dev.moskito.core.blueprint.BlueprintProducer;
@@ -165,6 +166,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		
 		pageExecutor = new PageBeanCreator();
 		boxExecutor  = new BoxBeanCreator();
+		config.getServletContext().setAttribute(AnositeConstants.AA_ANOSITE_RANDOM, IdCodeGenerator.generateCode(10));
 	}
 
 	@Override
