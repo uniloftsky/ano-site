@@ -1,4 +1,4 @@
-	<view name="GeoResources" title="GeoResources" requiredroles="developer,editor">
+	<view name="GeoResources" title="GeoResources" requiredroles="admin,developer,editor">
 		<sections>
 	    	<section title="Country" type="module">
 				<module>ASGeographicData</module>
@@ -19,6 +19,8 @@
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
 	        		<element type="function" name="deleteWithConfirmation"/>
+					<element type="function" name="lock"/>
+	        		<element type="function" name="unlock"/>
 	      		</elements>
 	      		<dialog name="Edit" title="Edit CountryResource">
         			<elements>
@@ -33,6 +35,8 @@
 							<element type="function" name="updateAndClose"/>
 							<element type="function" name="updateAndStay"/>
 							<element type="function" name="cancel"/>
+							<element type="function" name="lock"/>
+	        		        <element type="function" name="unlock"/>
 						</element>
         			</elements>
       			</dialog>
@@ -103,6 +107,8 @@
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
 	        		<element type="function" name="deleteWithConfirmation"/>
+					<element type="function" name="lock"/>
+	        		<element type="function" name="unlock"/>
 	      		</elements>
 	      		<dialog name="Edit" title="Edit City">
         			<elements>
@@ -117,6 +123,8 @@
 							<element type="function" name="updateAndClose"/>
 							<element type="function" name="updateAndStay"/>
 							<element type="function" name="cancel"/>
+							<element type="function" name="lock"/>
+	        		        <element type="function" name="unlock"/>
 						</element>
         			</elements>
       			</dialog>
@@ -141,6 +149,8 @@
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
 	        		<element type="function" name="deleteWithConfirmation"/>
+					<element type="function" name="lock"/>
+	        		<element type="function" name="unlock"/>
 	      		</elements>
 	      		<dialog name="Edit" title="Edit CountryResource">
         			<elements>
@@ -155,6 +165,8 @@
 							<element type="function" name="updateAndClose"/>
 							<element type="function" name="updateAndStay"/>
 							<element type="function" name="cancel"/>
+							<element type="function" name="lock"/>
+	        		        <element type="function" name="unlock"/>
 						</element>
         			</elements>
       			</dialog>

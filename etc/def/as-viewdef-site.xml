@@ -1,6 +1,6 @@
    <!-- Layout view, here everything is defined -->
 
-	<view name="Sitex" title="Site" requiredroles="developer,producer">
+	<view name="Sitex" title="Site" requiredroles="admin,developer,producer">
 		<sections>
 			<!-- Site -->
 			<section title="Site" type="module">
@@ -32,6 +32,8 @@
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
 	        		<element type="function" name="deleteWithConfirmation"/>
+					<element type="function" name="lock"/>
+	        		<element type="function" name="unlock"/>
 	      		</elements>
 	      		<dialog name="Edit" title="Edit Site">
         			<elements>
@@ -54,6 +56,8 @@
 							<element type="function" name="updateAndClose"/>
 							<element type="function" name="updateAndStay"/>
 							<element type="function" name="cancel"/>
+							<element type="function" name="lock"/>
+	        		        <element type="function" name="unlock"/>
 						</element>
         			</elements>
       			</dialog>
@@ -101,6 +105,8 @@
 							<element type="function" name="updateAndClose"/>
 							<element type="function" name="updateAndStay"/>
 							<element type="function" name="cancel"/>
+							<element type="function" name="lock"/>
+	        		        <element type="function" name="unlock"/>
 						</element>
         			</elements>
       			</dialog>
@@ -161,6 +167,8 @@
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
 	        		<element type="function" name="deleteWithConfirmation"/>
+					<element type="function" name="lock"/>
+	        		<element type="function" name="unlock"/>
 	      		</elements>
 	      		<dialog name="Edit" title="Edit Template">
         			<elements>
@@ -189,6 +197,8 @@
 							<element type="function" name="updateAndClose"/>
 							<element type="function" name="updateAndStay"/>
 							<element type="function" name="cancel"/>
+							<element type="function" name="lock"/>
+	        		        <element type="function" name="unlock"/>
 						</element>
         			</elements>
       			</dialog>
@@ -219,6 +229,8 @@
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
 	        		<element type="function" name="deleteWithConfirmation"/>
+					<element type="function" name="lock"/>
+	        		<element type="function" name="unlock"/>
 	      		</elements>
 	      		<dialog name="Edit" title="Edit MediaLink">
         			<elements>
@@ -238,6 +250,8 @@
 							<element type="function" name="updateAndClose"/>
 							<element type="function" name="updateAndStay"/>
 							<element type="function" name="cancel"/>
+							<element type="function" name="lock"/>
+	        		        <element type="function" name="unlock"/>
 						</element>
         			</elements>
       			</dialog>
@@ -262,6 +276,8 @@
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
 	        		<element type="function" name="deleteWithConfirmation"/>
+					<element type="function" name="lock"/>
+	        	    <element type="function" name="unlock"/>
 	      		</elements>
 	      		<dialog name="Edit" title="Edit Script">
         			<elements>
@@ -276,6 +292,8 @@
 							<element type="function" name="updateAndClose"/>
 							<element type="function" name="updateAndStay"/>
 							<element type="function" name="cancel"/>
+							<element type="function" name="lock"/>
+	        		        <element type="function" name="unlock"/>
 						</element>
         			</elements>
       			</dialog>
@@ -307,6 +325,8 @@
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
 	        		<element type="function" name="deleteWithConfirmation"/>
+					<element type="function" name="lock"/>
+	        		<element type="function" name="unlock"/>
 	      		</elements>
 	      		<dialog name="Edit" title="Edit EntryPoint">
         			<elements>
@@ -322,6 +342,8 @@
 							<element type="function" name="updateAndClose"/>
 							<element type="function" name="updateAndStay"/>
 							<element type="function" name="cancel"/>
+							<element type="function" name="lock"/>
+	        		        <element type="function" name="unlock"/>
 						</element>
         			</elements>
       			</dialog>
@@ -348,6 +370,8 @@
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
 	        		<element type="function" name="deleteWithConfirmation"/>
+					<element type="function" name="lock"/>
+	        	    <element type="function" name="unlock"/>
 	      		</elements>
 	      		<dialog name="Edit" title="Edit PageAlias">
         			<elements>
@@ -361,6 +385,8 @@
 							<element type="function" name="updateAndClose"/>
 							<element type="function" name="updateAndStay"/>
 							<element type="function" name="cancel"/>
+							<element type="function" name="lock"/>
+	        		        <element type="function" name="unlock"/>
 						</element>
         			</elements>
       			</dialog>
@@ -385,6 +411,8 @@
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
 	        		<element type="function" name="deleteWithConfirmation"/>
+					<element type="function" name="lock"/>
+	        		<element type="function" name="unlock"/>
 	      		</elements>
 	      		<dialog name="Edit" title="Edit RedirectUrl">
         			<elements>
@@ -397,6 +425,8 @@
 							<element type="function" name="updateAndClose"/>
 							<element type="function" name="updateAndStay"/>
 							<element type="function" name="cancel"/>
+							<element type="function" name="lock"/>
+	        		        <element type="function" name="unlock"/>
 						</element>
         			</elements>
       			</dialog>

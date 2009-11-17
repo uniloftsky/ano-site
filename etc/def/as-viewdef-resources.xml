@@ -1,4 +1,4 @@
-	<view name="Resources" title="Resources" requiredroles="developer,editor,producer">
+	<view name="Resources" title="Resources" requiredroles="admin,developer,editor,producer">
 		<sections>
 			<section title="Text" type="module">
 				<module>ASResourceData</module>
@@ -19,6 +19,8 @@
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
 	        		<element type="function" name="deleteWithConfirmation"/>
+					<element type="function" name="lock"/>
+	        		<element type="function" name="unlock"/>
 	      		</elements>
 	      		<dialog name="Edit" title="Edit TextResource">
         			<elements>
@@ -31,6 +33,8 @@
 							<element type="function" name="updateAndClose"/>
 							<element type="function" name="updateAndStay"/>
 							<element type="function" name="cancel"/>
+							<element type="function" name="lock"/>
+	        	        	<element type="function" name="unlock"/>
 						</element>
         			</elements>
       			</dialog>
@@ -54,6 +58,8 @@
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
 	        		<element type="function" name="deleteWithConfirmation"/>
+					<element type="function" name="lock"/>
+	        		<element type="function" name="unlock"/>
 	      		</elements>
 	      		<dialog name="Edit" title="Edit Mail Template">
         			<elements>
@@ -70,6 +76,8 @@
 							<element type="function" name="updateAndClose"/>
 							<element type="function" name="updateAndStay"/>
 							<element type="function" name="cancel"/>
+							<element type="function" name="lock"/>
+	        		        <element type="function" name="unlock"/>
 						</element>
         			</elements>
       			</dialog>
@@ -99,6 +107,8 @@
         		    <element type="function" name="edit"/>
                     <element type="function" name="duplicate"/>
                     <element type="function" name="deleteWithConfirmation"/>
+					<element type="function" name="lock"/>
+	        		<element type="function" name="unlock"/>
 	        		<element type="function" name="version"/>
 	            </elements>
     	        <dialog name="Edit" title="Upload a picture">
@@ -113,6 +123,8 @@
                     	    <element type="function" name="updateAndClose"/>
 							<element type="function" name="updateAndStay"/>
 							<element type="function" name="cancel"/>
+							<element type="function" name="lock"/>
+	        		        <element type="function" name="unlock"/>
 						</element>
     	                <element type="empty"/>
         	      	</elements>
@@ -139,6 +151,8 @@
                     <element type="function" name="edit"/>
                     <element type="function" name="duplicate"/>
                     <element type="function" name="deleteWithConfirmation"/>
+					<element type="function" name="lock"/>
+	        		<element type="function" name="unlock"/>
 	        		<element type="function" name="version"/>
 	            </elements>
     	        <dialog name="Edit" title="Upload a picture">
@@ -153,6 +167,8 @@
                     	    <element type="function" name="updateAndClose"/>
 							<element type="function" name="updateAndStay"/>
 							<element type="function" name="cancel"/>
+							<element type="function" name="lock"/>
+	        		        <element type="function" name="unlock"/>
 						</element>
     	                <element type="empty"/>
         	      	</elements>

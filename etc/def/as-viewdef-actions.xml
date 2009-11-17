@@ -1,4 +1,4 @@
-	<view name="Actions" title="Actions" requiredroles="developer">
+	<view name="Actions" title="Actions" requiredroles="admin,developer">
 		<sections>
 			<section title="Mappings" type="module">
 				<module>ASCustomAction</module>
@@ -21,6 +21,8 @@
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
 	        		<element type="function" name="deleteWithConfirmation"/>
+					<element type="function" name="lock"/>
+	        		<element type="function" name="unlock"/>
 	      		</elements>
 	      		<dialog name="Edit" title="Edit Mapping">
         			<elements>
@@ -39,6 +41,8 @@
 							<element type="function" name="updateAndClose"/>
 							<element type="function" name="updateAndStay"/>
 							<element type="function" name="cancel"/>
+							<element type="function" name="lock"/>
+	        		        <element type="function" name="unlock"/>
 						</element>
         			</elements>
       			</dialog>
@@ -74,6 +78,8 @@
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
 	        		<element type="function" name="deleteWithConfirmation"/>
+					<element type="function" name="lock"/>
+	        		<element type="function" name="unlock"/>
 	      		</elements>
 	      		<dialog name="Edit" title="Edit Action">
         			<elements>
@@ -85,6 +91,8 @@
 							<element type="function" name="updateAndClose"/>
 							<element type="function" name="updateAndStay"/>
 							<element type="function" name="cancel"/>
+							<element type="function" name="lock"/>
+	        		        <element type="function" name="unlock"/>
 						</element>
         			</elements>
       			</dialog>
@@ -107,6 +115,8 @@
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
 	        		<element type="function" name="deleteWithConfirmation"/>
+					<element type="function" name="lock"/>
+	        		<element type="function" name="unlock"/>
 	      		</elements>
 	      		<dialog name="Edit" title="Edit Action">
         			<elements>
@@ -118,6 +128,8 @@
 							<element type="function" name="updateAndClose"/>
 							<element type="function" name="updateAndStay"/>
 							<element type="function" name="cancel"/>
+							<element type="function" name="lock"/>
+	        		        <element type="function" name="unlock"/>
 						</element>
         			</elements>
       			</dialog>

@@ -1,4 +1,4 @@
-	<view name="Definitions" title="Definitions" requiredroles="developer">
+	<view name="Definitions" title="Definitions" requiredroles="admin,developer">
 		<sections>
 			<section title="Generic BoxType" type="module">
 				<module>ASGenericData</module>
@@ -17,6 +17,8 @@
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
 	        		<element type="function" name="deleteWithConfirmation"/>
+					<element type="function" name="lock"/>
+	        		<element type="function" name="unlock"/>
 	      		</elements>
 	      		<dialog name="Edit" title="Edit Generic BoxType">
         			<elements>
@@ -29,6 +31,8 @@
 							<element type="function" name="updateAndClose"/>
 							<element type="function" name="updateAndStay"/>
 							<element type="function" name="cancel"/>
+							<element type="function" name="lock"/>
+	        		        <element type="function" name="unlock"/>
 						</element>
         			</elements>
       			</dialog>
@@ -52,6 +56,8 @@
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
 	        		<element type="function" name="deleteWithConfirmation"/>
+					<element type="function" name="lock"/>
+	        		<element type="function" name="unlock"/>
 	      		</elements>
 	      		<dialog name="Edit" title="Edit Generic BoxHandler">
         			<elements>
@@ -64,6 +70,8 @@
 							<element type="function" name="updateAndClose"/>
 							<element type="function" name="updateAndStay"/>
 							<element type="function" name="cancel"/>
+							<element type="function" name="lock"/>
+	        		        <element type="function" name="unlock"/>
 						</element>
         			</elements>
       			</dialog>
@@ -87,6 +95,8 @@
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
 	        		<element type="function" name="deleteWithConfirmation"/>
+					<element type="function" name="lock"/>
+	        		<element type="function" name="unlock"/>
 	      		</elements>
 	      		<dialog name="Edit" title="Edit Generic Guard">
         			<elements>
@@ -99,6 +109,8 @@
 							<element type="function" name="updateAndClose"/>
 							<element type="function" name="updateAndStay"/>
 							<element type="function" name="cancel"/>
+							<element type="function" name="lock"/>
+	        		        <element type="function" name="unlock"/>
 						</element>
         			</elements>
       			</dialog>
@@ -123,6 +135,8 @@
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
 	        		<element type="function" name="deleteWithConfirmation"/>
+					<element type="function" name="lock"/>
+	        		<element type="function" name="unlock"/>
 	      		</elements>
 	      		<dialog name="Edit" title="Edit Custom BoxType">
         			<elements>
@@ -135,6 +149,8 @@
 							<element type="function" name="updateAndClose"/>
 							<element type="function" name="updateAndStay"/>
 							<element type="function" name="cancel"/>
+							<element type="function" name="lock"/>
+	        		        <element type="function" name="unlock"/>
 						</element>
         			</elements>
       			</dialog>
@@ -158,6 +174,8 @@
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
 	        		<element type="function" name="deleteWithConfirmation"/>
+					<element type="function" name="lock"/>
+	        		<element type="function" name="unlock"/>
 	      		</elements>
 	      		<dialog name="Edit" title="Edit CustomBoxHandler">
         			<elements>
@@ -170,6 +188,8 @@
 							<element type="function" name="updateAndClose"/>
 							<element type="function" name="updateAndStay"/>
 							<element type="function" name="cancel"/>
+							<element type="function" name="lock"/>
+	        		        <element type="function" name="unlock"/>
 						</element>
         			</elements>
       			</dialog>
@@ -193,6 +213,8 @@
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
 	        		<element type="function" name="deleteWithConfirmation"/>
+					<element type="function" name="lock"/>
+	        		<element type="function" name="unlock"/>
 	      		</elements>
 	      		<dialog name="Edit" title="Edit CustomGuard">
         			<elements>
@@ -205,6 +227,8 @@
 							<element type="function" name="updateAndClose"/>
 							<element type="function" name="updateAndStay"/>
 							<element type="function" name="cancel"/>
+							<element type="function" name="lock"/>
+	        		        <element type="function" name="unlock"/>
 						</element>
         			</elements>
       			</dialog>
