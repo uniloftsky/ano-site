@@ -21,6 +21,9 @@
 
 	
 	<import file="../build/anodoc-project.xml"/>	
+	
+	<property name="ivy.organisation" value="anotheria.net"/>
+	<property name="ivy.module" value="ano-site"/>
 
 	<!-- 
 		checkout svn://svn.anotheria.net/opensource/build/trunk as ../build 
