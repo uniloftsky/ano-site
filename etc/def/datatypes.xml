@@ -142,4 +142,9 @@
 		<element>bookmark</element>
 	</enumeration>
 	
+	<enumeration name="Allowance">
+		<element>Restricted</element>
+		<element>Allowed</element>
+	</enumeration>
+	
 </datatypes>

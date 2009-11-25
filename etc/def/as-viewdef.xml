@@ -1,6 +1,7 @@
 	<!-- Including all the bundled ano-site views -->
 	<!--@include:as-viewdef-content.xml -->
 	<!--@include:as-viewdef-site.xml -->
+	<!--@include:as-viewdef-siteconfig.xml -->
 	<!--@include:as-viewdef-layout.xml -->
 	<!--@include:as-viewdef-definitions.xml -->
 	<!--@include:as-viewdef-resources.xml -->

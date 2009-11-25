@@ -5,6 +5,14 @@
 		<element>Forward</element>
 		<element>none</element>
 	</enumeration>
+	
+	<enumeration name="Allowance">
+		<element>Restricted</element>
+		<element>Allowed</element>
+	</enumeration>
+	
+	
+	
 	<enumeration name="Priority">
 		<element>P1</element>
 		<element>P2</element>

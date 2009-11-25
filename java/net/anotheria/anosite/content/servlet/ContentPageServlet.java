@@ -184,7 +184,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		try{
 			processRequest(req, res, true);
 		}catch(ASGRuntimeException e){
-			log.error("moskitoDoPut", e);
+			log.error("moskitoDoPost", e);
 			throw new ServletException("ASG Runtime Exception: "+e.getMessage());
 		}
 	}
