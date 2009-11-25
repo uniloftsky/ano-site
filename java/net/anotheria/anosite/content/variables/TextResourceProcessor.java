@@ -18,7 +18,7 @@ import org.apache.log4j.Logger;
 public class TextResourceProcessor implements VariablesProcessor {
     private final Logger log = Logger.getLogger(TextResourceProcessor.class);
     private IASResourceDataService resourceDataService;
-    public static String PREFIX = "text";
+    public static final String PREFIX = "text";
     private static final String ERROR_MESSAGE = "Wrong or unsupported variable : ";
 
 
