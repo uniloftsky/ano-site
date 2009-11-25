@@ -134,8 +134,13 @@ public class IPFilter implements Filter{
 		int allowanceValue = allowance == Allowance.ALLOWED? AllowanceUtils.Allowed: AllowanceUtils.Restricted;
 		List<IPRange> ret = new ArrayList<IPRange>();
 		for(FilteredIP ip:filteredIPs)
-			if(allowanceValue == ip.getAllowance())
-				ret.add(toIPRagne(ip));
+			if(allowanceValue == ip.getAllowance()){
+				try{
+					ret.add(toIPRagne(ip));
+				}catch(Exception e){
+					log.error("Could not parse FilteredIP: ", e);
+				}
+			}
 		return ret;
 			
 	}
