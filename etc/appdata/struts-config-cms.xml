@@ -24,6 +24,10 @@
     
     <!-- ========== Action Mapping Definitions =============================== -->
     <action-mappings type="org.apache.struts.action.ActionMapping">
+	    <action path="/index" type="net.anotheria.anosite.gen.shared.action.BaseIndexPageAction" scope="request">
+			<forward name="success" path="/net/anotheria/anosite/gen/shared/jsp/IndexPage.jsp"/>
+		</action>
+    
     	<action path="/fileShow" type="net.anotheria.webutils.filehandling.actions.ShowFile" scope="request">
     		<forward name="success" path="/net/anotheria/webutils/jsp/UploadFile.jsp"/>
     	</action>
@@ -42,7 +46,9 @@
 			<forward name="success" path="/net/anotheria/webutils/jsp/Login.jsp" /> 
 		</action>
 		<!--- Logout -->
-	  	<action path="/logout"  type="net.anotheria.webutils.actions.LogoutAction" scope="request"/>
+	  	<action path="/logout"  type="net.anotheria.webutils.actions.LogoutAction" scope="request">
+  			<forward name="success" path="/net/anotheria/webutils/jsp/Login.jsp"/>
+		</action>
 	  	<action path="/showPage"  type="de.payback.pt.web.cms.action.ShowPageAction" scope="request">
 			<forward name="success" path="/de/payback/pt/web/cms/jsp/CmsTemplate.jsp" /> 
 			<forward name="nolayout" path="/de/payback/pt/web/cms/jsp/CmsNoLayout.jsp" /> 
