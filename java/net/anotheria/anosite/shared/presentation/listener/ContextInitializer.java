@@ -1,12 +1,3 @@
-/*
- *	$Id$
- *
- *      (C)2007 LOYALTY PARTNER GMBH, ALL RIGHTS RESERVED
- *
- * 	THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF LOYALTY PARTNER GMBH.
- *	THE COPYRIGHT NOTICE ABOVE DOES NOT EVIDENCE ANY ACTUAL OR INTENDED
- *	PUBLICATION OF SUCH SOURCE CODE.
- */
 package net.anotheria.anosite.shared.presentation.listener;
 
 import javax.servlet.ServletContextEvent;
