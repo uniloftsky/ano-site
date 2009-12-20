@@ -37,13 +37,3 @@ public class PagingCurrentPage extends PagingElement{
 		return "caption:"+caption;
 	}
 }
-
-/* ------------------------------------------------------------------------- *
- * $Log$
- * Revision 1.1  2006/09/20 08:09:20  lrosenberg
- * *** empty log message ***
- *
- * Revision 1.1  2006/08/04 15:47:49  lrosenberg
- * *** empty log message ***
- *
- */
