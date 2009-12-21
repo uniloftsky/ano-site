@@ -23,10 +23,10 @@
 					/WEB-INF/classes/struts-config-layout.xml,
 					/WEB-INF/classes/struts-config-definitions.xml,
 					/WEB-INF/classes/struts-config-sitex.xml,
+					/WEB-INF/classes/struts-config-siteconfig.xml,
 					/WEB-INF/classes/struts-config-resources.xml,
 					/WEB-INF/classes/struts-config-georesources.xml,
 					/WEB-INF/classes/struts-config-actions.xml,
-					/WEB-INF/classes/struts-config-cms-system.xml,
 				</param-value>
 			</init-param>
 			<load-on-startup>5</load-on-startup>
