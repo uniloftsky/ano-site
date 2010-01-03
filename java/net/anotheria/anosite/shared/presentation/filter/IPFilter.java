@@ -102,8 +102,13 @@ public class IPFilter implements Filter{
 				chain.doFilter(sreq, sres);
 				return;
 			}
-			
-			if(PlainIPFilter.mayPass(filterableIP,getIPRanges(filteredIPs, Allowance.RESTRICTED))){
+			boolean mayNotPass = false;
+			try{
+				mayNotPass = PlainIPFilter.mayPass(filterableIP,getIPRanges(filteredIPs, Allowance.RESTRICTED)); 
+			}catch(RuntimeException e){
+				log.warn("Exception parsing the ip, will not restrict.", e);
+			}
+			if(mayNotPass){
 				log.debug("IP is restricted: redirect to maintenance page");
 				HttpServletResponse res = (HttpServletResponse)sres;
 				String url = getMaintenancePageURL(req);
