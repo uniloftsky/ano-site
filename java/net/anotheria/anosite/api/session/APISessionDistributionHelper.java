@@ -51,6 +51,10 @@ public final class APISessionDistributionHelper {
 		}
 		
 		APISessionImpl sessionImpl = (APISessionImpl) session;
+		sessionImpl.setCurrentUserId(byteArrayToString(attributes.get(0).getData()));
+		sessionImpl.setCurrentEditorId(byteArrayToString(attributes.get(1).getData()));
+		attributes = attributes.subList(2, attributes.size());
+		
 		for (SessionAttribute attribute : attributes){
 			try{
 				AttributeWrapper wrapper = (AttributeWrapper)ByteArraySerializer.deserializeObject(attribute.getData());
@@ -62,9 +66,24 @@ public final class APISessionDistributionHelper {
 		
 	}
 	
+	private static byte[] stringToByteArray(String s){
+		return s == null ? null : s.getBytes();
+	}
+	
+	private static String byteArrayToString(byte[] data){
+		return data == null ? null : new String(data);
+	}
+
 	private static List<SessionAttribute> createAttributeList(APISession session){
 		Collection<AttributeWrapper> attributes = ((APISessionImpl)session).getAttributes();
 		ArrayList<SessionAttribute> ret = new ArrayList<SessionAttribute>();
+		
+		//add session internal attributes
+		SessionAttribute userId = new SessionAttribute("userId", stringToByteArray(session.getCurrentUserId()));
+		SessionAttribute editorId = new SessionAttribute("editorId", stringToByteArray(session.getCurrentEditorId()));
+		ret.add(userId);
+		ret.add(editorId);
+		
 		for (AttributeWrapper wrapper : attributes){
 			if (PolicyHelper.isDistributed(wrapper.getPolicy())){
 				if (wrapper.isSerializable()){

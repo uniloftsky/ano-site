@@ -30,6 +30,9 @@ public class SessionDistributionTest {
 		APISession source = APISessionManager.getInstance().createSession("foo1");
 		APISession target = APISessionManager.getInstance().createSession("foo2");
 		
+		
+		((APISessionImpl)source).setCurrentEditorId("editor");
+		((APISessionImpl)source).setCurrentUserId("user");
 		//those both should not survive distribution
 		source.setAttribute("local", "local");
 		source.setAttribute("expiring", APISession.POLICY_AUTOEXPIRE, "expiring");
@@ -51,6 +54,9 @@ public class SessionDistributionTest {
 		assertNotNull(target.getAttribute("distributed"));
 		assertNotNull(target.getAttribute("distributedandexpiring"));
 		assertNotNull(target.getAttribute("distributedandpersistent"));
+		
+		assertEquals("user", target.getCurrentUserId());
+		assertEquals("editor", target.getCurrentEditorId());
 		
 	}
 	
