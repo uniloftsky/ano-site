@@ -12,10 +12,14 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
+
 import net.anotheria.anosite.api.activity.ActivityAPI;
 import net.anotheria.anosite.api.common.APICallContext;
 import net.anotheria.anosite.api.common.APIFinder;
 import net.anotheria.anosite.api.session.APISession;
+import net.anotheria.anosite.api.session.APISessionDistributionException;
+import net.anotheria.anosite.api.session.APISessionDistributionHelper;
 import net.anotheria.anosite.api.session.APISessionManager;
 import net.anotheria.anosite.util.AnositeConstants;
 /**
@@ -25,12 +29,18 @@ import net.anotheria.anosite.util.AnositeConstants;
  */
 public class APIFilter implements Filter{
 
+	@Deprecated
 	public static final String PARAM_COPY_SESSION = "srcsession";
+	
+	public static final String PARAM_DISTRIBUTED_SESSION_NAME = "asDiSeName";
+	
 	/**
 	 * The activity api, which is notified about all actions by the user.
 	 */
 	private ActivityAPI activityAPI;
     private static final String CURRENT_USER_ID = "currentUserId";
+    
+    private static Logger log = Logger.getLogger(APIFilter.class);
 
     @Override public void destroy() {
 		
@@ -48,6 +58,10 @@ public class APIFilter implements Filter{
 		String copySessionParam = req.getParameter(PARAM_COPY_SESSION); 
 		if (copySessionParam!=null && copySessionParam.length()>0)
 			copySession(req, copySessionParam);
+		
+		String restoreSessionParameter = req.getParameter(PARAM_DISTRIBUTED_SESSION_NAME);
+		if (restoreSessionParameter!=null && restoreSessionParameter.length()>0)
+			restoreSession(req, restoreSessionParameter);
 		
 		@SuppressWarnings("unused")
 		APISession session = initSession(req);
@@ -67,6 +81,18 @@ public class APIFilter implements Filter{
 		HttpSession session = req.getSession(true);
 		APISession apiSession = APISessionManager.getInstance().createSessionCopy(copySessionParameter, session.getId());
 		session.setAttribute("API_SESSION_ID", apiSession.getId());
+		
+	}
+
+	private void restoreSession(HttpServletRequest req, String distributedSessionName) throws ServletException{
+		HttpSession session = req.getSession(true);
+		APISession apiSession = createAPISession(session);
+		try{
+			APISessionDistributionHelper.restoreSession(distributedSessionName, apiSession);
+		}catch(APISessionDistributionException e){
+			log.error("restoreSession("+req+", "+distributedSessionName+")", e);
+			throw new ServletException("Restoring remote session failed: "+e.getMessage(), e);
+		}
 		
 	}
 
