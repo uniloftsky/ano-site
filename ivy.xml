@@ -23,11 +23,12 @@
         <dependency org="java.net" name="configureme" rev="latest" transitive="true" changing="true"/>
         <dependency org="org.json" name="json" rev="stable" transitive="false" />
         
-        <dependency org="anotheria.net" name="ano-util" rev="latest" transitive="true" changing="true"/>
-        <dependency org="anotheria.net" name="ano-doc"  rev="latest" transitive="true" changing="true"/>
-        <dependency org="anotheria.net" name="ano-web"  rev="latest" transitive="true" changing="true"/>
-        <dependency org="anotheria.net" name="ano-prise"  rev="latest" transitive="true" changing="true"/>
-        <dependency org="anotheria.net" name="ano-maf"  rev="latest" transitive="true" changing="true"/>
+        <dependency org="anotheria.net" name="ano-util"  rev="latest" transitive="true" changing="true"/>
+        <dependency org="anotheria.net" name="ano-doc"   rev="latest" transitive="true" changing="true"/>
+        <dependency org="anotheria.net" name="ano-web"   rev="latest" transitive="true" changing="true"/>
+        <dependency org="anotheria.net" name="ano-prise" rev="latest" transitive="true" changing="true"/>
+        <dependency org="anotheria.net" name="ano-maf"   rev="latest" transitive="true" changing="true"/>
+        <dependency org="anotheria.net" name="ano-net"   rev="latest" transitive="true" changing="true"/>
         
         <!-- Needed by unit tests: -->
         <dependency org="org" name="jmock" rev="stable" transitive="false"/>
