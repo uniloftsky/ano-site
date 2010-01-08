@@ -10,6 +10,8 @@ import net.anotheria.anosite.gen.asresourcedata.service.ASResourceDataServiceFac
 import net.anotheria.anosite.gen.asresourcedata.service.IASResourceDataService;
 import net.anotheria.anosite.gen.aswebdata.data.Box;
 import net.anotheria.asg.exception.ASGRuntimeException;
+import net.anotheria.anosite.api.session.APISessionImpl;
+import net.anotheria.anosite.api.common.APICallContext;
 
 /**
  * Adapter style implementation of a boxhandler.
@@ -59,4 +61,7 @@ public abstract class AbstractBoxHandler implements BoxHandler{
 		return resourceService;
 	}
 
+	protected void sendAttributeToPage(String name, Object attribute){
+					((APISessionImpl)APICallContext.getCallContext().getCurrentSession()).addAttributeToActionScope(name, attribute);
+	}
 }
