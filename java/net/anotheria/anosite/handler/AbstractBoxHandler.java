@@ -61,6 +61,13 @@ public abstract class AbstractBoxHandler implements BoxHandler{
 		return resourceService;
 	}
 
+
+	/**
+	 * Used to put attribute to current request till next request
+	 * 
+	 * @param name attribute name
+	 * @param attribute attribute value
+	 */
 	protected void sendAttributeToPage(String name, Object attribute){
 					((APISessionImpl)APICallContext.getCallContext().getCurrentSession()).addAttributeToActionScope(name, attribute);
 	}
