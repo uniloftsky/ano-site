@@ -53,8 +53,7 @@ public class ActionServlet extends BaseAnoSiteServlet {
 		if (action==null){
 			log.warn("Couldn't create an action instance...");
 			return;
-		}
-		ModelObjectMapper.map(req, action);
+		}		
 
 		try{
 			ActionCommand ret = action.execute(req, res, mapping);
