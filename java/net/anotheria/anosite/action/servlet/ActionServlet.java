@@ -44,7 +44,7 @@ public class ActionServlet extends BaseAnoSiteServlet {
 			log.warn("ActionMapping not found: "+actionMappingName);
 			return;
 		}
-		
+		                                                                                                             
 		//create mapping:
 		ActionMapping mapping = new ActionMapping(def);
 		
@@ -55,6 +55,7 @@ public class ActionServlet extends BaseAnoSiteServlet {
 			return;
 		}		
 
+		ModelObjectMapper.map(req, action);
 		try{
 			ActionCommand ret = action.execute(req, res, mapping);
 			out("Action returned: "+ret);
