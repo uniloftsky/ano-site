@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.anotheria.maf.util.ModelObjectMapper;
 import org.apache.log4j.Logger;
 
 import net.anotheria.anosite.action.Action;
@@ -53,7 +54,8 @@ public class ActionServlet extends BaseAnoSiteServlet {
 			log.warn("Couldn't create an action instance...");
 			return;
 		}
-		
+		ModelObjectMapper.map(req, action);
+
 		try{
 			ActionCommand ret = action.execute(req, res, mapping);
 			out("Action returned: "+ret);
@@ -67,13 +69,12 @@ public class ActionServlet extends BaseAnoSiteServlet {
 				res.sendRedirect(ret.getTarget());
 				return;
 			case None:
-				return;
+
 			}
 			
-		}catch(Exception e){
+		} catch(Exception e) {
 			log.error("execute", e);
 			//send to error page
-			return;
 		}
 			
 		

@@ -14,14 +14,13 @@ public class ActionFactory {
 	
 	private static Logger log = Logger.getLogger(ActionFactory.class);
 	
-	public static final Action createAction(ActionMappingDef def){
+	public static Action createAction(ActionMappingDef def){
 		String actionId = def.getAction();
 		
 		try{
 			ActionDef ad = service.getActionDef(actionId);
 			String clazz = ad.getClazz();
-			Action ret = (Action)Class.forName(clazz).newInstance();
-			return ret;
+			return (Action)Class.forName(clazz).newInstance();
 		}catch(Exception e){
 			log.error("createAction("+def+")", e);
 		}
