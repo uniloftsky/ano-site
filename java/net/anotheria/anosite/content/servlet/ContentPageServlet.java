@@ -80,6 +80,7 @@ import net.anotheria.anosite.shared.InternalResponseCode;
 import net.anotheria.anosite.shared.presentation.servlet.BaseAnoSiteServlet;
 import net.anotheria.anosite.util.AnositeConstants;
 import net.anotheria.asg.exception.ASGRuntimeException;
+import net.anotheria.maf.util.ModelObjectMapper;
 import net.anotheria.util.IdCodeGenerator;
 import net.anotheria.util.StringUtils;
 import net.java.dev.moskito.core.blueprint.BlueprintCallExecutor;
@@ -471,6 +472,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			
 			if (handlerId != null && handlerId.length() > 0) {
 				BoxHandler handler = BoxHandlerFactory.createHandler(handlerId);
+				ModelObjectMapper.map(req, handler);
 				BoxHandlerResponse response = handler.submit(req, res, box);
 				switch(response.getResponseCode()){
 				case CONTINUE:
