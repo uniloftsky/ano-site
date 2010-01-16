@@ -471,8 +471,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			
 			
 			if (handlerId != null && handlerId.length() > 0) {
-				BoxHandler handler = BoxHandlerFactory.createHandler(handlerId);
-				ModelObjectMapper.map(req, handler);
+				BoxHandler handler = BoxHandlerFactory.createHandler(handlerId);				
 				BoxHandlerResponse response = handler.submit(req, res, box);
 				switch(response.getResponseCode()){
 				case CONTINUE:
