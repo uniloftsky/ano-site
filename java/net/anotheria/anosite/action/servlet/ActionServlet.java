@@ -6,7 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.anotheria.maf.util.ModelObjectMapper;
+import net.anotheria.anosite.util.ModelObjectMapper;
 import org.apache.log4j.Logger;
 
 import net.anotheria.anosite.action.Action;

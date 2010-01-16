@@ -5,8 +5,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.anotheria.anosite.content.bean.BoxBean;
 import net.anotheria.anosite.gen.aswebdata.data.Box;
+import net.anotheria.anosite.util.ModelObjectMapper;
 import net.anotheria.asg.exception.ASGRuntimeException;
-import net.anotheria.maf.util.ModelObjectMapper;
 
 public class BoxHandlerWrapper implements BoxHandler{
 

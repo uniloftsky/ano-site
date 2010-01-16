@@ -80,7 +80,6 @@ import net.anotheria.anosite.shared.InternalResponseCode;
 import net.anotheria.anosite.shared.presentation.servlet.BaseAnoSiteServlet;
 import net.anotheria.anosite.util.AnositeConstants;
 import net.anotheria.asg.exception.ASGRuntimeException;
-import net.anotheria.maf.util.ModelObjectMapper;
 import net.anotheria.util.IdCodeGenerator;
 import net.anotheria.util.StringUtils;
 import net.java.dev.moskito.core.blueprint.BlueprintCallExecutor;
@@ -1119,7 +1118,6 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	/**
 	 * Creates the site bean based on the template used by the page.
 	 * @param template actually PageTemplate
-	 * @param pathPart actually - contextPath+ "/file/"
      * @return created SiteBean
 	 */
 	private SiteBean createSiteBean(PageTemplate template,HttpServletRequest req) {
