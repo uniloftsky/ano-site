@@ -7,7 +7,7 @@ package net.anotheria.anosite.api.validation;
  */
 public class ValidationError {
 	/**
-	 * Field in which the error occured.
+	 * Field in which the error occurred.
 	 */
 	private String field;
 	/**
