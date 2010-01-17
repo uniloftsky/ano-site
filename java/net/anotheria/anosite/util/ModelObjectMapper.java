@@ -2,9 +2,10 @@ package net.anotheria.anosite.util;
 
 import net.anotheria.anosite.api.common.APICallContext;
 import net.anotheria.anosite.api.validation.ValidationError;
-import net.anotheria.anosite.util.annotations.ValidateCustom;
-import net.anotheria.anosite.util.annotations.ValidateNotEmpty;
 import net.anotheria.maf.util.FormObjectMapper;
+import net.anotheria.maf.validation.Validator;
+import net.anotheria.maf.validation.annotations.ValidateCustom;
+import net.anotheria.maf.validation.annotations.ValidateNotEmpty;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
