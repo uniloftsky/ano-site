@@ -6,12 +6,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Guitar Model Object.
+ * Mark fields and parameters then require presence validation.
  * <p/>
- * <P>Various attributes of guitars, and related behaviour.
- * <p/>
- * <P>Note that {@link BigDecimal} is used to model the price - not double or float.
- * See {@link #Guitar(String, BigDecimal, Integer)} for more information.
  *
  * @author vitaliy
  * @version 1.0
@@ -19,8 +15,20 @@ import java.lang.annotation.Target;
  *          Time: 4:17:58 PM
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.FIELD, ElementType.PARAMETER})
-public @interface ValidateNotEmpty { 
+@Target({ElementType.FIELD, ElementType.PARAMETER })
+public @interface ValidateNotEmpty {
+
+	/**
+	 * Message custom key.
+	 *
+	 * @return message key.
+	 */
 	String key();
-	String message() default "";	
+
+	/**
+	 * Optional custom error message used if message by key isn't available.
+	 *
+	 * @return message string
+	 */
+	String message() default "";
 }

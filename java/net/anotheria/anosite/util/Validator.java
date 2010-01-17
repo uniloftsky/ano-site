@@ -1,7 +1,5 @@
 package net.anotheria.anosite.util;
 
-import net.anotheria.maf.bean.FormBean;
-
 /**
  * Custom validator used to customize and define own checks.
  * <p/>
