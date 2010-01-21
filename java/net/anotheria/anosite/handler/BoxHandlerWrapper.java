@@ -21,14 +21,14 @@ public class BoxHandlerWrapper implements BoxHandler{
 	public BoxHandlerResponse process(HttpServletRequest req,
 			HttpServletResponse res, Box box, BoxBean bean)
 			throws ASGRuntimeException {
-		//ModelObjectMapper.map(req, handler);
+		ModelObjectMapper.map(req, handler);
 		return producer.process(req, res, box, bean, handler);
 	}
 
 	public BoxHandlerResponse submit(HttpServletRequest req,
 			HttpServletResponse res, Box box) throws ASGRuntimeException {
-		//ModelObjectMapper.map(req, handler);
-		//ModelObjectMapper.validate(req, handler);
+		ModelObjectMapper.map(req, handler);
+		ModelObjectMapper.validate(req, handler);
 		return producer.submit(req, res, box, handler);
 	}
 	
