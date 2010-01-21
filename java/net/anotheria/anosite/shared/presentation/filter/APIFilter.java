@@ -33,6 +33,7 @@ public class APIFilter implements Filter{
 	public static final String PARAM_COPY_SESSION = "srcsession";
 	
 	public static final String PARAM_DISTRIBUTED_SESSION_NAME = "asDiSeName";
+	public static final String HTTPSA_SESSION_ID = "API_SESSION_ID";
 	
 	/**
 	 * The activity api, which is notified about all actions by the user.
@@ -80,12 +81,27 @@ public class APIFilter implements Filter{
 	private void copySession(HttpServletRequest req, String copySessionParameter){
 		HttpSession session = req.getSession(true);
 		APISession apiSession = APISessionManager.getInstance().createSessionCopy(copySessionParameter, session.getId());
-		session.setAttribute("API_SESSION_ID", apiSession.getId());
+		session.setAttribute(HTTPSA_SESSION_ID, apiSession.getId());
 		
 	}
 
 	private void restoreSession(HttpServletRequest req, String distributedSessionName) throws ServletException{
 		HttpSession session = req.getSession(true);
+
+		//check first whether we already have restored this session in the past.
+		String oldApiSessionId = (String)session.getAttribute(HTTPSA_SESSION_ID);
+		if (oldApiSessionId!=null){
+			APISession oldSession = APISessionManager.getInstance().getSession(oldApiSessionId);
+			if (oldSession!=null){
+				String oldDistributedSessionName = (String)oldSession.getAttribute(PARAM_DISTRIBUTED_SESSION_NAME);
+				if (oldDistributedSessionName!=null && oldDistributedSessionName.equals(distributedSessionName)){
+					log.debug("Session was already restored, skipping.");
+					return;
+				}
+			}
+		}
+		
+		
 		APISession apiSession = createAPISession(session);
 		try{
 			APISessionDistributionHelper.restoreSession(distributedSessionName, apiSession);
@@ -93,6 +109,7 @@ public class APIFilter implements Filter{
 			log.error("restoreSession("+req+", "+distributedSessionName+")", e);
 			throw new ServletException("Restoring remote session failed: "+e.getMessage(), e);
 		}
+		apiSession.setAttribute(PARAM_DISTRIBUTED_SESSION_NAME, distributedSessionName);
 		
 	}
 
@@ -115,7 +132,7 @@ public class APIFilter implements Filter{
 		//ok, wir erstellen erstmal per request ne neue session, spaeter optimieren (ein problem z.b. fuer lb abfragen).
 		//durch das "unroot" sollte es eben nicht mehr so sein, dass pro request "unnnoeitg eine session" erzeugt wird.
 		HttpSession session = req.getSession(true);
-		String apiSessionId = session == null ? null : (String) session.getAttribute("API_SESSION_ID");
+		String apiSessionId = session == null ? null : (String) session.getAttribute(HTTPSA_SESSION_ID);
 		APISession apiSession;
 		if (apiSessionId==null){
 			apiSession = createAPISession(session);
@@ -160,7 +177,7 @@ public class APIFilter implements Filter{
 	 */
 	private APISession createAPISession(HttpSession session) {
 		APISession apiSession = APISessionManager.getInstance().createSession(session.getId());
-		session.setAttribute("API_SESSION_ID", apiSession.getId());
+		session.setAttribute(HTTPSA_SESSION_ID, apiSession.getId());
 		return apiSession;
 	}
 	
