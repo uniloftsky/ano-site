@@ -19,9 +19,10 @@ import net.anotheria.anosite.api.validation.ValidationError;
  */
 public class APICallContext {
 	/**
-	 * The default locale if no specific locale has been set. Currently its de_DE.
+	 * The default locale if no specific locale has been set. Currently its en_GB.
 	 */
-	public static final Locale DEFAULT_LOCALE = new Locale("de", "DE");
+	public static final Locale DEFAULT_LOCALE = new Locale("en", "GB");
+
 	/**
 	 * Currently assigned locale.
 	 */
