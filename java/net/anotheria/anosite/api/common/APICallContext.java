@@ -152,7 +152,7 @@ public class APICallContext {
 
 	/**
 	 * Sets the current session.
-	 * @param aCurrentSession
+	 * @param aCurrentSession APISession instance
 	 */
 	public void setCurrentSession(APISession aCurrentSession) {
 		currentSession = aCurrentSession;
@@ -191,7 +191,7 @@ public class APICallContext {
 	}
 	
 	/**
-	 * Adds a validationerror to the context.
+	 * Adds a validationError to the context.
 	 * @param error error to add.
 	 */
 	public void addValidationError(ValidationError error){
@@ -208,7 +208,7 @@ public class APICallContext {
 	
 	/**
 	 * Returns the validation errors.
-	 * @return
+	 * @return list of ValidationError
 	 */
 	public List<ValidationError> getValidationErrors() {
 		return validationErrors;
@@ -216,7 +216,7 @@ public class APICallContext {
 
 	/**
 	 * Sets the list of validation errors, reseting previously set or added errors.
-	 * @param validationErrors the validation errors to set.
+	 * @param someValidationErrors the validation errors to set.
 	 */
 	public void setValidationErrors(List<ValidationError> someValidationErrors) {
 		validationErrors = someValidationErrors;
@@ -224,12 +224,15 @@ public class APICallContext {
 
 	/**
 	 * Returns true if there are validation errors.
-	 * @return
+	 * @return boolean param
 	 */
 	public boolean hasValidationErrors(){
 		return validationErrors.size()>0;
 	}
-	
+
+	/**
+	 * Removes validationErrors.
+	 */
 	public void resetValidationErrors(){
 		validationErrors = new ArrayList<ValidationError>();
 	}
@@ -254,12 +257,14 @@ public class APICallContext {
 	/**
 	 * The thread local variable associated with the current thread.
 	 */
-	private static InheritableThreadLocal<APICallContext> apiCallContext = new InheritableThreadLocal<APICallContext>(){
-		@Override protected synchronized APICallContext initialValue(){
+	private static InheritableThreadLocal<APICallContext> apiCallContext = new InheritableThreadLocal<APICallContext>() {
+		@Override
+		protected synchronized APICallContext initialValue() {
 			return new APICallContext();
 		}
 
-		@Override protected APICallContext childValue(APICallContext parentValue) {
+		@Override
+		protected APICallContext childValue(APICallContext parentValue) {
 			APICallContext ret = new APICallContext();
 			ret.copyFromAnotherContext(parentValue);
 			return ret;

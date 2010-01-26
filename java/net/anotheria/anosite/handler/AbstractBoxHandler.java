@@ -1,17 +1,19 @@
 package net.anotheria.anosite.handler;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.log4j.Logger;
-
+import net.anotheria.anoprise.metafactory.MetaFactory;
+import net.anotheria.anoprise.metafactory.MetaFactoryException;
+import net.anotheria.anosite.api.common.APICallContext;
+import net.anotheria.anosite.api.session.APISessionImpl;
 import net.anotheria.anosite.content.bean.BoxBean;
 import net.anotheria.anosite.gen.asresourcedata.service.ASResourceDataServiceFactory;
 import net.anotheria.anosite.gen.asresourcedata.service.IASResourceDataService;
 import net.anotheria.anosite.gen.aswebdata.data.Box;
-import net.anotheria.asg.exception.ASGRuntimeException;
-import net.anotheria.anosite.api.session.APISessionImpl;
-import net.anotheria.anosite.api.common.APICallContext;
+import net.anotheria.anosite.handler.exception.BoxProcessException;
+import net.anotheria.anosite.handler.exception.BoxSubmitException;
+import org.apache.log4j.Logger;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Adapter style implementation of a boxhandler.
@@ -27,7 +29,17 @@ public abstract class AbstractBoxHandler implements BoxHandler{
 	/**
 	 * A resource service instance.
 	 */
-	private static IASResourceDataService resourceService = ASResourceDataServiceFactory.createASResourceDataService();
+	private static IASResourceDataService resourceService;
+	/**
+	 * Init.
+	 */
+	static {
+		try {
+			resourceService = MetaFactory.get(IASResourceDataService.class);
+		} catch (MetaFactoryException e) {
+			Logger.getLogger(AbstractBoxHandler.class).fatal("IASResourceDataService init failure",e);
+		}
+	}
 	
 	/**
 	 * Constructor for extending classes.
@@ -46,14 +58,14 @@ public abstract class AbstractBoxHandler implements BoxHandler{
 	/**
 	 * Returns ResponseContinue.INSTANCE.
 	 */
-	@Override public BoxHandlerResponse process(HttpServletRequest req, HttpServletResponse res, Box box, BoxBean bean)  throws ASGRuntimeException{
+	@Override public BoxHandlerResponse process(HttpServletRequest req, HttpServletResponse res, Box box, BoxBean bean)  throws BoxProcessException{
 		return ResponseContinue.INSTANCE;
 	}
 
 	/**
 	 * Returns ResponseContinue.INSTANCE.
 	 */
-	@Override public BoxHandlerResponse submit(HttpServletRequest req, HttpServletResponse res, Box box)  throws ASGRuntimeException{
+	@Override public BoxHandlerResponse submit(HttpServletRequest req, HttpServletResponse res, Box box)  throws BoxSubmitException{
 		return ResponseContinue.INSTANCE;
 	}
 	

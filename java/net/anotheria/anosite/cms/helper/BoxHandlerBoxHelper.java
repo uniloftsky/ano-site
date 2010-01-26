@@ -7,9 +7,19 @@ import net.anotheria.anosite.gen.aswebdata.data.Box;
 import net.anotheria.asg.data.DataObject;
 import net.anotheria.asg.util.helper.cmsview.CMSViewHelper;
 
+/**
+ * BoxHandlerBoxHelper.
+ */
 public class BoxHandlerBoxHelper extends BoxHelper implements CMSViewHelper{
-	
 
+
+	/**
+	 * Returns Field explanation via String.
+	 * @param documentPath path to doc
+	 * @param object DataObject
+	 * @param property property
+	 * @return string field explanation
+	 */
 	public String getFieldExplanation(String documentPath, DataObject object, String property) {
 		if (object==null)
 			return null;

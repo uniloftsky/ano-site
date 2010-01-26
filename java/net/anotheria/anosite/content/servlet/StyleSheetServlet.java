@@ -1,18 +1,19 @@
 package net.anotheria.anosite.content.servlet;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import net.anotheria.anoprise.metafactory.MetaFactory;
+import net.anotheria.anoprise.metafactory.MetaFactoryException;
+import net.anotheria.anosite.gen.aslayoutdata.data.PageStyle;
+import net.anotheria.anosite.gen.aslayoutdata.service.ASLayoutDataServiceException;
+import net.anotheria.anosite.gen.aslayoutdata.service.IASLayoutDataService;
+import net.java.dev.moskito.web.MoskitoHttpServlet;
+import org.apache.log4j.Logger;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import net.anotheria.anosite.gen.aslayoutdata.data.PageStyle;
-import net.anotheria.anosite.gen.aslayoutdata.service.ASLayoutDataServiceException;
-import net.anotheria.anosite.gen.aslayoutdata.service.ASLayoutDataServiceFactory;
-import net.anotheria.anosite.gen.aslayoutdata.service.IASLayoutDataService;
-import net.java.dev.moskito.web.MoskitoHttpServlet;
+import java.io.IOException;
+import java.io.OutputStream;
 /**
  * This servlet is responsible for delivering the styles to the users browser.
  * @author lrosenberg
@@ -22,10 +23,16 @@ public class StyleSheetServlet extends MoskitoHttpServlet{
 	 * Layout data service for retrieval of stylesheets.
 	 */
 	private IASLayoutDataService layoutDataService;
+	private static Logger fatalLogger = Logger.getLogger(StyleSheetServlet.class);
 	
 	@Override public void init(ServletConfig config) throws ServletException{
 		super.init(config);
-		layoutDataService = ASLayoutDataServiceFactory.createASLayoutDataService();
+		try {
+			layoutDataService = MetaFactory.get(IASLayoutDataService.class);
+		} catch (MetaFactoryException e) {
+			fatalLogger.fatal("ASG service init failure",e);
+			throw new ServletException("ASG services init failure",e);
+		}
 	}
 
 	@Override

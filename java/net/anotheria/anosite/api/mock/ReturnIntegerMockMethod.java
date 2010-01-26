@@ -6,7 +6,11 @@ package net.anotheria.anosite.api.mock;
  *
  */
 public class ReturnIntegerMockMethod extends ReturnObjectMockMethod{
-	
+	/**
+	 * Constructor.
+	 *
+	 * @param aValue int param
+	 */
 	public ReturnIntegerMockMethod(int aValue){
 		super(aValue);
 	}

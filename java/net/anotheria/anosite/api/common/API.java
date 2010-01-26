@@ -8,11 +8,13 @@ public interface API {
 	
 	/**
 	 * Called when an api instance is first created.
+	 * 
+	 * @throws APIInitException if init failed
 	 */
-	void init();
+	void init() throws APIInitException;
 	
 	/**
 	 * Called immediately before shutdown.
 	 */
-	void deInit();
+	void deInit() ;
 }

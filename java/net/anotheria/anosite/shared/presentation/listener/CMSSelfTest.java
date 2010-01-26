@@ -1,26 +1,16 @@
 package net.anotheria.anosite.shared.presentation.listener;
 
-import java.util.List;
-
-import net.anotheria.anosite.gen.ascustomdata.data.CustomBoxHandlerDef;
-import net.anotheria.anosite.gen.ascustomdata.data.CustomBoxHandlerDefFactory;
-import net.anotheria.anosite.gen.ascustomdata.data.CustomBoxType;
-import net.anotheria.anosite.gen.ascustomdata.data.CustomBoxTypeFactory;
-import net.anotheria.anosite.gen.ascustomdata.data.CustomGuardDef;
-import net.anotheria.anosite.gen.ascustomdata.data.CustomGuardDefFactory;
+import net.anotheria.anoprise.metafactory.MetaFactory;
+import net.anotheria.anoprise.metafactory.MetaFactoryException;
+import net.anotheria.anosite.gen.ascustomdata.data.*;
 import net.anotheria.anosite.gen.ascustomdata.service.ASCustomDataServiceFactory;
 import net.anotheria.anosite.gen.ascustomdata.service.IASCustomDataService;
-import net.anotheria.anosite.gen.asgenericdata.data.GenericBoxHandlerDef;
-import net.anotheria.anosite.gen.asgenericdata.data.GenericBoxHandlerDefFactory;
-import net.anotheria.anosite.gen.asgenericdata.data.GenericBoxType;
-import net.anotheria.anosite.gen.asgenericdata.data.GenericBoxTypeFactory;
-import net.anotheria.anosite.gen.asgenericdata.data.GenericGuardDef;
-import net.anotheria.anosite.gen.asgenericdata.data.GenericGuardDefFactory;
-import net.anotheria.anosite.gen.asgenericdata.service.ASGenericDataServiceFactory;
+import net.anotheria.anosite.gen.asgenericdata.data.*;
 import net.anotheria.anosite.gen.asgenericdata.service.IASGenericDataService;
 import net.anotheria.asg.exception.ASGRuntimeException;
-
 import org.apache.log4j.Logger;
+
+import java.util.List;
 
 /**
  * This utility class scans the data on start and ensures that all generic data is created.
@@ -29,9 +19,18 @@ import org.apache.log4j.Logger;
  */
 public final class CMSSelfTest {
 	
-	private static final IASGenericDataService genericDataService = ASGenericDataServiceFactory.createASGenericDataService();
-	private static final IASCustomDataService  customDataService  = ASCustomDataServiceFactory.createASCustomDataService();
+	private static  IASGenericDataService genericDataService ;
+	private static  IASCustomDataService  customDataService ;
 	private static Logger log = Logger.getLogger(CMSSelfTest.class);
+
+	static {
+		try {
+			genericDataService = MetaFactory.get(IASGenericDataService.class);
+			customDataService = MetaFactory.get(IASCustomDataService.class);
+		} catch (MetaFactoryException e) {
+			log.fatal("ASG services init failure",e);
+		}
+	}
 	
 	public static final void performSelfTest(){
 		log.info("%%% CMS SELF TEST STARTED %%%");

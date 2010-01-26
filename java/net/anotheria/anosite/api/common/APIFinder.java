@@ -1,10 +1,5 @@
 package net.anotheria.anosite.api.common;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import net.anotheria.anosite.api.mock.APIMaskImpl;
 import net.anotheria.anosite.api.mock.APIMockImpl;
 import net.anotheria.anosite.api.mock.MaskMethodRegistry;
@@ -13,8 +8,12 @@ import net.java.dev.moskito.core.dynamic.MoskitoInvokationProxy;
 import net.java.dev.moskito.core.predefined.ServiceStatsCallHandler;
 import net.java.dev.moskito.core.predefined.ServiceStatsCallHandlerWithCallSysout;
 import net.java.dev.moskito.core.predefined.ServiceStatsFactory;
-
 import org.apache.log4j.Logger;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The utility for API resolution.
@@ -53,14 +52,22 @@ public class APIFinder {
 	 * which allows to call single API methods by putting them in the MockMethodRegistry. Mocking must be enabled before usage (in @BeforeClass method of your unittest).
 	 */
 	private static boolean mockingEnabled = false;
-	
-	
+
+
+	/**
+	 * Return API by Identifier.
+	 * 
+	 * @param identifier string clazz name
+	 * @return api
+	 * @throws NoAPIFactoryException if factory for api creation not founded
+	 * @throws APIInitException on API init failure
+	 */
 	@SuppressWarnings("unchecked")
-	public static API findAPI(String identifier){
+	public static API findAPI(String identifier) throws APIException {
 		try{
 			return findAPI((Class<? extends API>)Class.forName(identifier));
 		}catch(ClassNotFoundException e){
-			throw new RuntimeException("Class not found: "+identifier+", exception: "+e.getMessage());
+			throw new NoAPIFactoryException("Class not found: "+identifier+", exception: "+e.getMessage());
 		}
 	}
 	
@@ -69,8 +76,10 @@ public class APIFinder {
 	 * @param <T> the API class.
 	 * @param identifier T.class.
 	 * @return an implementation of T.
+	 * @throws NoAPIFactoryException when factory not founded for some API
+	 * @throws APIInitException on API init failure
 	 */
-	public static<T  extends API> T findAPI(Class<T> identifier){
+	public static<T  extends API> T findAPI(Class<T> identifier) throws APIException {
 		log.debug("find api: "+identifier);
 		@SuppressWarnings("unchecked")
 		T loaded = (T) apis.get(identifier);
@@ -91,6 +100,7 @@ public class APIFinder {
 				created.init();
 			}catch(Exception e){
 				log.error("findAPI.init in API "+identifier, e);
+				throw new APIInitException("findAPI.init in API "+identifier, e);
 			}
 			log.debug("ready");
 			return created;
@@ -99,18 +109,20 @@ public class APIFinder {
 	
 	/**
 	 * Creates a new instance of T.
+	 * 
 	 * @param <T> the API class to create.
 	 * @param identifier a pattern.
-	 * @return
+	 * @return created API
+	 * @throws NoAPIFactoryException if factory for API creation not founded
 	 */
-	private synchronized static<T extends API> T createAPI(Class<T> identifier){
+	private synchronized static<T extends API> T createAPI(Class<T> identifier) throws NoAPIFactoryException {
 		@SuppressWarnings("unchecked")
 		APIFactory<T> factory = (APIFactory<T>)factories.get(identifier);
 		if (factory==null){
 			//if no factory is configured but mocking is enabled we create a mock-api on the fly.
 			if (isMockingEnabled())
 				return createMockAPI(identifier);
-			throw new NoSuchAPIException(identifier.getName());
+			throw new NoAPIFactoryException(identifier.getName());
 		}
 		
 		log.debug("------ START creation API "+identifier);
@@ -172,53 +184,78 @@ public class APIFinder {
 	
 	private static void init(){
 		apis = new HashMap<Class<? extends API>, API>();
-		
 		//das ist die stelle zum customizen
 		factories = APIConfig.getFactories();
 		
 	}
-	
+
+	/**
+	 * Adds factory for resolving some API instance.
+	 * @param apiClass class of API
+	 * @param factoryObject actually factory for creating api
+	 * @param <T> generic
+	 */
 	public static<T extends API> void addAPIFactory(Class<T> apiClass, APIFactory<T> factoryObject){
 		factories.put(apiClass, factoryObject);
 	}
-	
+
+	/**
+	 * Returns all registered API.
+	 * @return collection of API
+	 */
 	static Collection<API> getAPIs(){
 		return apis.values(); 
 	}
-	
+
 	private static<T extends API> T createMockAPI(Class<T> identifier){
 		APIMockImpl<T> mock = new APIMockImpl<T>(identifier);
 		return mock.createAPIProxy();
 	
 	}
-	
 
+
+	/**
+	 * Returns true if masking is enabled, false otherwise.
+	 * @return boolean value
+	 */
 	public static boolean isMaskingEnabled() {
 		return maskingEnabled;
 	}
-
+    /**
+	 * Allows enabling or disabling masking.
+	 * @param aMaskingEnabled - boolean param
+	 */
 	public static void setMaskingEnabled(boolean aMaskingEnabled) {
 		maskingEnabled = aMaskingEnabled;
 	}
 
+	/**
+	 * Returns true if mocking is enabled, false otherwise.
+	 * @return boolean value
+	 */
 	public static boolean isMockingEnabled() {
 		return mockingEnabled;
 	}
 
+	 /**
+	 * Allows enabling or disabling mocking.
+	 * @param aMockingEnabled - boolean param
+	 */
 	public static void setMockingEnabled(boolean aMockingEnabled) {
 		mockingEnabled = aMockingEnabled;
 	}
 	
 	/**
 	 * Returns true if either mocking or masking is enabled.
-	 * @return
+	 * @return boolean value
 	 */
 	public static boolean isInTestingMode(){
 		return isMockingEnabled() || isMaskingEnabled();
 	}
 
     /**
-     * Only for cleaaning  collections in jUnits!!! 
+     * Only for cleaning  collections in jUnits!!!
+	 * Actually resets all configured stuff.
      */
     public static void cleanUp(){
         if(apis!=null)

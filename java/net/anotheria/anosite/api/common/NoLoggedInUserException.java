@@ -10,12 +10,22 @@ package net.anotheria.anosite.api.common;
  */
 public class NoLoggedInUserException extends APIException {
 
+	/**
+	 * SerialUID.
+	 */
 	private static final long serialVersionUID = 2952929048749260860L;
 
+	/**
+	 * Constructor by default.
+	 */
 	public NoLoggedInUserException() {
 		this("No logged in User found!");
 	}
 
+	/**
+	 * Constructor with message param.
+	 * @param message message
+	 */
 	public NoLoggedInUserException(String message) {
 		super(message);
 	}

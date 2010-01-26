@@ -18,11 +18,21 @@ public class AttributeBean {
 	 * Value property.
 	 */
 	private String value;
-	
+
+	/**
+	 * Constructor.
+	 */
 	public AttributeBean(){
 		
 	}
-	
+
+	/**
+	 * Constructor.
+	 * 
+	 * @param aKey key
+	 * @param aName name
+	 * @param aValue value
+	 */
 	public AttributeBean(String aKey, String aName, String aValue){
 		key = aKey;
 		name = aName;

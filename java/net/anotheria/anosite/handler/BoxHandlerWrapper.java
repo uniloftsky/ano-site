@@ -1,12 +1,14 @@
 package net.anotheria.anosite.handler;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import net.anotheria.anosite.content.bean.BoxBean;
 import net.anotheria.anosite.gen.aswebdata.data.Box;
 import net.anotheria.anosite.util.ModelObjectMapper;
-import net.anotheria.asg.exception.ASGRuntimeException;
+import net.anotheria.anosite.handler.exception.BoxProcessException;
+import net.anotheria.anosite.handler.exception.BoxSubmitException;
+
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public class BoxHandlerWrapper implements BoxHandler{
 
@@ -20,13 +22,13 @@ public class BoxHandlerWrapper implements BoxHandler{
 	
 	public BoxHandlerResponse process(HttpServletRequest req,
 			HttpServletResponse res, Box box, BoxBean bean)
-			throws ASGRuntimeException {
+			throws BoxProcessException {
 		/*ModelObjectMapper.map(req, handler);*/
 		return producer.process(req, res, box, bean, handler);
 	}
 
 	public BoxHandlerResponse submit(HttpServletRequest req,
-			HttpServletResponse res, Box box) throws ASGRuntimeException {
+			HttpServletResponse res, Box box) throws BoxProcessException {
 		/*ModelObjectMapper.map(req, handler);
 		ModelObjectMapper.validate(req, handler);*/
 		return producer.submit(req, res, box, handler);

@@ -1,11 +1,11 @@
 package net.anotheria.anosite.handler;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import net.anotheria.anosite.content.bean.BoxBean;
 import net.anotheria.anosite.gen.aswebdata.data.Box;
-import net.anotheria.asg.exception.ASGRuntimeException;
+import net.anotheria.anosite.handler.exception.BoxHandleException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * A boxhandler can be attached to any box. Upon processing of a request for each box, its box handler (if set) will be instantiated and the methods 
@@ -20,22 +20,22 @@ public interface BoxHandler {
 	/**
 	 * Called in first processing cycle if a form submit has been detected (post requst or special indicator parameters). Note: 
 	 * Usage of submit in handlers is discouraged, use actions whenever possible.
-	 * @param req
-	 * @param res
-	 * @param box
-	 * @return
-	 * @throws ASGRuntimeException
+	 * @param req request
+	 * @param res response
+	 * @param box box itself
+	 * @return response
+	 * @throws BoxHandleException on handle errors
 	 */
-	BoxHandlerResponse submit(HttpServletRequest req, HttpServletResponse res, Box box) throws ASGRuntimeException;
+	BoxHandlerResponse submit(HttpServletRequest req, HttpServletResponse res, Box box) throws BoxHandleException;
 	
 	/**
 	 * Called in second processing cycle.
 	 * @param req the http servlet request
-	 * @param res the http servler response
+	 * @param res the http servlet response
 	 * @param box the box this handler has been associated with (and which was currently processed).
 	 * @param bean the already created bean.
-	 * @return
-	 * @throws ASGRuntimeException
+	 * @return response
+	 * @throws BoxHandleException on handle errors
 	 */
-	BoxHandlerResponse process(HttpServletRequest req, HttpServletResponse res, Box box, BoxBean bean) throws ASGRuntimeException;
+	BoxHandlerResponse process(HttpServletRequest req, HttpServletResponse res, Box box, BoxBean bean) throws BoxHandleException;
 }

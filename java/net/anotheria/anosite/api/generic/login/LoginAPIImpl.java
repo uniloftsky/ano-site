@@ -1,17 +1,14 @@
 package net.anotheria.anosite.api.generic.login;
 
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-
-import net.anotheria.anosite.api.common.APIException;
-import net.anotheria.anosite.api.common.APIFinder;
-import net.anotheria.anosite.api.common.AbstractAPIImpl;
-import net.anotheria.anosite.api.common.NoLoggedInUserException;
+import net.anotheria.anosite.api.common.*;
 import net.anotheria.anosite.api.generic.login.processors.SessionCleanupOnLogoutProcessor;
 import net.anotheria.anosite.api.generic.observation.ObservationAPI;
 import net.anotheria.anosite.api.generic.observation.ObservationSubjects;
 import net.anotheria.anosite.api.session.APISessionImpl;
 import net.anotheria.util.StringUtils;
+
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * An implementation for the login api.
@@ -41,7 +38,7 @@ public class LoginAPIImpl extends AbstractAPIImpl implements LoginAPI{
 	 */
 	private ObservationAPI observationAPI;
 	
-	@Override public void init(){
+	@Override public void init() throws APIInitException {
 		super.init();
 		
 		loginPreProcessors = new CopyOnWriteArrayList<LoginPreProcessor>();
@@ -51,9 +48,13 @@ public class LoginAPIImpl extends AbstractAPIImpl implements LoginAPI{
 		logoutPostProcessors = new CopyOnWriteArrayList<LogoutPostProcessor>();
 		
 		addLogoutPostprocessor(new SessionCleanupOnLogoutProcessor());
-		
-		observationAPI = APIFinder.findAPI(ObservationAPI.class);
-		
+		try {
+			observationAPI = APIFinder.findAPI(ObservationAPI.class);
+		} catch (APIException e) {
+			log.error("ObservationAPI.class not founded",e);
+			throw new APIInitException("ObservationAPI.class not founded",e);
+		}
+
 	}
 
 	/**
@@ -94,21 +95,23 @@ public class LoginAPIImpl extends AbstractAPIImpl implements LoginAPI{
 			callLogoutPostprocessors(userId);
 			
 			observationAPI.fireSubjectUpdateForCurrentUser(ObservationSubjects.LOGOUT, this.getClass().getName());
-		}catch(NoLoggedInUserException ignored){};
+		}catch(NoLoggedInUserException ignored){
+			log.trace("user not logged in",ignored);
+		}
 	}
 	
 	@Override public String getLogedUserId() throws NoLoggedInUserException {
 		if(!isLogedIn())
-			throw new APIException("No loged in users!");
+			throw new NoLoggedInUserException("No loged in users!");
 		return getCallContext().getCurrentUserId();
 	}
 	
-	@Override public boolean isLogedIn() throws APIException {
-		try{
+	@Override public boolean isLogedIn() {
+		//try{
 			return !StringUtils.isEmpty(getCallContext().getCurrentUserId());
-		}catch(NoLoggedInUserException e){
+		/*}catch(APIException e){
 			return false;
-		}
+		}*/
 	}
 
 	@Override public void addLogoutPostprocessor(LogoutPostProcessor postProcessor) {
@@ -123,6 +126,8 @@ public class LoginAPIImpl extends AbstractAPIImpl implements LoginAPI{
 	//////////
 	/**
 	 * Calls all login preprocessors.
+	 * @param userId user id
+	 * @throws net.anotheria.anosite.api.common.APIException on errors
 	 */
 	private void callLoginPreprocessors(String userId) throws APIException{
 		for (LoginPreProcessor p : loginPreProcessors){
@@ -152,8 +157,8 @@ public class LoginAPIImpl extends AbstractAPIImpl implements LoginAPI{
 
 	/**
 	 * Calls all logout preprocessors.
-	 * @param userId
-	 * @throws APIException
+	 * @param userId user id
+	 * @throws APIException on errors
 	 */
 	private void callLogoutPreprocessors(String userId) throws APIException{
 		for (LogoutPreProcessor p : logoutPreProcessors){
@@ -169,7 +174,7 @@ public class LoginAPIImpl extends AbstractAPIImpl implements LoginAPI{
 
 	/**
 	 * Calls all logout postprocessors.
-	 * @param userId
+	 * @param userId user id
 	 */
 	private void callLogoutPostprocessors(String userId) {
 		for (LogoutPostProcessor p : logoutPostProcessors){

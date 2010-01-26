@@ -2,24 +2,20 @@ package net.anotheria.anosite.decorator;
 
 import net.anotheria.anodoc.data.NoSuchDocumentException;
 import net.anotheria.anodoc.data.NoSuchPropertyException;
-import net.anotheria.anosite.gen.asfederateddata.service.ASFederatedDataServiceFactory;
+import net.anotheria.anoprise.metafactory.MetaFactory;
+import net.anotheria.anoprise.metafactory.MetaFactoryException;
 import net.anotheria.anosite.gen.asfederateddata.service.IASFederatedDataService;
 import net.anotheria.anosite.gen.aslayoutdata.service.ASLayoutDataServiceFactory;
 import net.anotheria.anosite.gen.aslayoutdata.service.IASLayoutDataService;
-import net.anotheria.anosite.gen.assitedata.data.EntryPoint;
-import net.anotheria.anosite.gen.assitedata.data.NaviItem;
-import net.anotheria.anosite.gen.assitedata.data.PageAlias;
-import net.anotheria.anosite.gen.assitedata.data.PageTemplate;
-import net.anotheria.anosite.gen.assitedata.data.Site;
-import net.anotheria.anosite.gen.assitedata.service.ASSiteDataServiceFactory;
+import net.anotheria.anosite.gen.assitedata.data.*;
 import net.anotheria.anosite.gen.assitedata.service.IASSiteDataService;
 import net.anotheria.anosite.gen.aswebdata.data.Box;
 import net.anotheria.anosite.gen.aswebdata.data.Pagex;
-import net.anotheria.anosite.gen.aswebdata.service.ASWebDataServiceFactory;
 import net.anotheria.anosite.gen.aswebdata.service.IASWebDataService;
 import net.anotheria.asg.data.DataObject;
 import net.anotheria.asg.exception.ASGRuntimeException;
 import net.anotheria.asg.util.decorators.IAttributeDecorator;
+import org.apache.log4j.Logger;
 
 /**
  * This attribute decorator decorates known anosite objects as links to the linked documents (instead of id).
@@ -30,19 +26,30 @@ public class LinkTargetNameDecorator implements IAttributeDecorator{
 	/**
 	 * Federated data service for guard, boxtypes and handlers.
 	 */
-	private static IASFederatedDataService federatedDataService = ASFederatedDataServiceFactory.createASFederatedDataService();
+	private static IASFederatedDataService federatedDataService;
 	/**
 	 * Sitedata service for sites, templates etc.
 	 */
-	private static IASSiteDataService siteDataService = ASSiteDataServiceFactory.createASSiteDataService();
+	private static IASSiteDataService siteDataService;
 	/**
-	 * Webdata service for pagexs and boxes.
+	 * WebData service for pagexs and boxes.
 	 */
-	private static IASWebDataService webDataService = ASWebDataServiceFactory.createASWebDataService();
+	private static IASWebDataService webDataService;
 	/**
 	 * Layout data service for layouts and styles.
 	 */
-	private static IASLayoutDataService layoutDataService = ASLayoutDataServiceFactory.createASLayoutDataService();
+	private static IASLayoutDataService layoutDataService;
+
+	static {
+		try {
+			federatedDataService = MetaFactory.get(IASFederatedDataService.class);
+			siteDataService = MetaFactory.get(IASSiteDataService.class);
+			webDataService = MetaFactory.get(IASWebDataService.class);
+			layoutDataService = MetaFactory.get(IASLayoutDataService.class);
+		} catch (MetaFactoryException e) {
+          Logger.getLogger(LinkTargetNameDecorator.class).fatal("ASG service init failure",e);
+		}
+	}
 
 	@Override public String decorate(DataObject doc, String attributeName, String rule) {
 		String name = "Unknown";

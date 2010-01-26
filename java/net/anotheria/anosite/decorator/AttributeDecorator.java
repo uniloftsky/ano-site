@@ -1,16 +1,19 @@
 package net.anotheria.anosite.decorator;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.anotheria.anodoc.data.Document;
 import net.anotheria.anodoc.data.NoSuchDocumentException;
 import net.anotheria.anodoc.data.NoSuchPropertyException;
+import net.anotheria.anoprise.metafactory.MetaFactory;
+import net.anotheria.anoprise.metafactory.MetaFactoryException;
 import net.anotheria.anosite.gen.aswebdata.service.ASWebDataServiceException;
 import net.anotheria.anosite.gen.aswebdata.service.ASWebDataServiceFactory;
 import net.anotheria.anosite.gen.aswebdata.service.IASWebDataService;
 import net.anotheria.asg.data.DataObject;
 import net.anotheria.asg.util.decorators.IAttributeDecorator;
+import org.apache.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Decorator for linked attributes.
@@ -22,7 +25,15 @@ public class AttributeDecorator implements IAttributeDecorator{
 	/**
 	 * Instance of webdataservice for retrieval of box definitions. 
 	 */
-	private static IASWebDataService service = ASWebDataServiceFactory.createASWebDataService();
+	private static IASWebDataService service;
+
+	static {
+		try {
+			service = MetaFactory.get(IASWebDataService.class);
+		} catch (MetaFactoryException e) {
+			Logger.getLogger(AttributeDecorator.class).fatal("IASWebDataService asg service init failure",e);
+		}
+	}
 	
 	@Override public String decorate(DataObject doc, String attributeName, String rule) {
 		try{

@@ -5,5 +5,11 @@ package net.anotheria.anosite.api.generic.login;
  * @author lrosenberg
  */
 public interface LogoutPreProcessor {
+	/**
+	 * Pre LogOut.
+	 *
+	 * @param userId user id
+	 * @throws ProcessorException
+	 */
 	void preProcessLogout(String userId) throws ProcessorException;
 }

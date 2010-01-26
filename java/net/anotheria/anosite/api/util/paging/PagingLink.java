@@ -1,10 +1,23 @@
 package net.anotheria.anosite.api.util.paging;
 
+/**
+ * PagingLink as subclass of PagingElement.
+ */
 public class PagingLink extends PagingElement{
-	
+	/**
+	 * PagingLink "pagingParameter".
+	 */
 	private String pagingParameter;
+	/**
+	 * PagingLink "caption".
+	 */
 	private String caption;
-	
+
+	/**
+	 * Constructor.
+	 * @param aCaption caption
+	 * @param pageNumber number
+	 */
 	public PagingLink(String aCaption, int pageNumber){
 		caption = aCaption;
 		pagingParameter = ""+pageNumber;

@@ -9,15 +9,19 @@ import java.util.Date;
 import java.text.SimpleDateFormat;
 
 /**
- * @author: h3llka
+ * Simplest Listener - for Logging CRUD operations.
+ *
+ * @author h3llka
  */
 
-/**
- * Simplest Listener - for Logging CRUD operations
- */
 public class CRUDLogListener implements IServiceListener {
-
+	/**
+	 * Logger.
+	 */
     private final Logger log = Logger.getLogger("cms-crud-log");
+	/**
+	 * Separator.
+	 */
     private static final String SEPARATOR = " , ";
 
     @Override

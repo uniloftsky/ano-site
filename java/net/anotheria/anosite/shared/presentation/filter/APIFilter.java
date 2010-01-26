@@ -1,27 +1,23 @@
 package net.anotheria.anosite.shared.presentation.filter;
 
-import java.io.IOException;
-import java.util.Locale;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import org.apache.log4j.Logger;
-
 import net.anotheria.anosite.api.activity.ActivityAPI;
 import net.anotheria.anosite.api.common.APICallContext;
+import net.anotheria.anosite.api.common.APIException;
 import net.anotheria.anosite.api.common.APIFinder;
 import net.anotheria.anosite.api.session.APISession;
 import net.anotheria.anosite.api.session.APISessionDistributionException;
 import net.anotheria.anosite.api.session.APISessionDistributionHelper;
 import net.anotheria.anosite.api.session.APISessionManager;
 import net.anotheria.anosite.util.AnositeConstants;
+import org.apache.log4j.Logger;
+
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.Locale;
+
+
 /**
  * The filter which performs bounding of a user request and session to the previously created or new APISession and APICallContext.
  * @author lrosenberg
@@ -114,7 +110,12 @@ public class APIFilter implements Filter{
 	}
 
 	@Override public void init(FilterConfig config) throws ServletException {
-		activityAPI = APIFinder.findAPI(ActivityAPI.class);
+		try {
+			activityAPI = APIFinder.findAPI(ActivityAPI.class);
+		} catch (APIException e) {
+			log.error("ActivityAPI - init failure init(" + config + ")", e);
+			throw new RuntimeException(e);
+		}
 	}
 
 	/**

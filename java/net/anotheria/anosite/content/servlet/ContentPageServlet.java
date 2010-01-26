@@ -1,80 +1,36 @@
 package net.anotheria.anosite.content.servlet;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import net.anotheria.anodoc.data.NoSuchDocumentException;
+import net.anotheria.anoprise.metafactory.MetaFactory;
+import net.anotheria.anoprise.metafactory.MetaFactoryException;
 import net.anotheria.anosite.api.common.APICallContext;
 import net.anotheria.anosite.api.session.APISessionImpl;
-import net.anotheria.anosite.content.bean.AttributeBean;
-import net.anotheria.anosite.content.bean.AttributeMap;
-import net.anotheria.anosite.content.bean.BoxBean;
-import net.anotheria.anosite.content.bean.BoxTypeBean;
-import net.anotheria.anosite.content.bean.BreadCrumbItemBean;
-import net.anotheria.anosite.content.bean.MediaLinkBean;
-import net.anotheria.anosite.content.bean.NaviItemBean;
-import net.anotheria.anosite.content.bean.PageBean;
-import net.anotheria.anosite.content.bean.ScriptBean;
-import net.anotheria.anosite.content.bean.SiteBean;
-import net.anotheria.anosite.content.bean.StylesheetBean;
+import net.anotheria.anosite.content.bean.*;
 import net.anotheria.anosite.content.variables.VariablesUtility;
 import net.anotheria.anosite.gen.asfederateddata.data.BoxType;
 import net.anotheria.anosite.gen.asfederateddata.service.ASFederatedDataServiceException;
-import net.anotheria.anosite.gen.asfederateddata.service.ASFederatedDataServiceFactory;
 import net.anotheria.anosite.gen.asfederateddata.service.IASFederatedDataService;
-import net.anotheria.anosite.gen.aslayoutdata.service.ASLayoutDataServiceFactory;
 import net.anotheria.anosite.gen.aslayoutdata.service.IASLayoutDataService;
 import net.anotheria.anosite.gen.asresourcedata.data.FileLink;
 import net.anotheria.anosite.gen.asresourcedata.data.Image;
 import net.anotheria.anosite.gen.asresourcedata.data.TextResource;
 import net.anotheria.anosite.gen.asresourcedata.service.ASResourceDataServiceException;
-import net.anotheria.anosite.gen.asresourcedata.service.ASResourceDataServiceFactory;
 import net.anotheria.anosite.gen.asresourcedata.service.IASResourceDataService;
-import net.anotheria.anosite.gen.assitedata.data.MediaLink;
-import net.anotheria.anosite.gen.assitedata.data.NaviItem;
-import net.anotheria.anosite.gen.assitedata.data.PageTemplate;
-import net.anotheria.anosite.gen.assitedata.data.Script;
-import net.anotheria.anosite.gen.assitedata.data.Site;
+import net.anotheria.anosite.gen.assitedata.data.*;
 import net.anotheria.anosite.gen.assitedata.service.ASSiteDataServiceException;
-import net.anotheria.anosite.gen.assitedata.service.ASSiteDataServiceFactory;
 import net.anotheria.anosite.gen.assitedata.service.IASSiteDataService;
 import net.anotheria.anosite.gen.aswebdata.data.Attribute;
 import net.anotheria.anosite.gen.aswebdata.data.Box;
 import net.anotheria.anosite.gen.aswebdata.data.Pagex;
 import net.anotheria.anosite.gen.aswebdata.data.PagexDocument;
 import net.anotheria.anosite.gen.aswebdata.service.ASWebDataServiceException;
-import net.anotheria.anosite.gen.aswebdata.service.ASWebDataServiceFactory;
 import net.anotheria.anosite.gen.aswebdata.service.IASWebDataService;
 import net.anotheria.anosite.gen.shared.data.LinkTypesUtils;
 import net.anotheria.anosite.gen.shared.data.MediaDescUtils;
 import net.anotheria.anosite.guard.ConditionalGuard;
 import net.anotheria.anosite.guard.GuardFactory;
-import net.anotheria.anosite.handler.AbstractRedirectResponse;
-import net.anotheria.anosite.handler.BoxHandler;
-import net.anotheria.anosite.handler.BoxHandlerFactory;
-import net.anotheria.anosite.handler.BoxHandlerResponse;
-import net.anotheria.anosite.handler.ResponseAbort;
-import net.anotheria.anosite.handler.ResponseContinue;
-import net.anotheria.anosite.handler.ResponseRedirectAfterProcessing;
-import net.anotheria.anosite.handler.ResponseRedirectImmediately;
-import net.anotheria.anosite.handler.ResponseStop;
+import net.anotheria.anosite.handler.*;
+import net.anotheria.anosite.handler.exception.BoxHandleException;
 import net.anotheria.anosite.shared.AnositeConfig;
 import net.anotheria.anosite.shared.InternalResponseCode;
 import net.anotheria.anosite.shared.presentation.servlet.BaseAnoSiteServlet;
@@ -85,8 +41,16 @@ import net.anotheria.util.StringUtils;
 import net.java.dev.moskito.core.blueprint.BlueprintCallExecutor;
 import net.java.dev.moskito.core.blueprint.BlueprintProducer;
 import net.java.dev.moskito.core.blueprint.BlueprintProducersFactory;
-
 import org.apache.log4j.Logger;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.nio.charset.Charset;
+import java.util.*;
 
 /**
  * This servlet builds and delivers pages (out of pagexs objects) and is therefore one of the main classes in the ano-site framework.
@@ -157,13 +121,16 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 
     @Override public void init(ServletConfig config) throws ServletException {
 		super.init(config);
-
-		webDataService = ASWebDataServiceFactory.createASWebDataService();
-		siteDataService = ASSiteDataServiceFactory.createASSiteDataService();
-		federatedDataService = ASFederatedDataServiceFactory.createASFederatedDataService();
-		layoutDataService = ASLayoutDataServiceFactory.createASLayoutDataService();
-		resourceDataService = ASResourceDataServiceFactory.createASResourceDataService();
-		
+		try {
+			webDataService = MetaFactory.get(IASWebDataService.class);
+			siteDataService = MetaFactory.get(IASSiteDataService.class);
+			federatedDataService = MetaFactory.get(IASFederatedDataService.class);
+			layoutDataService = MetaFactory.get(IASLayoutDataService.class);
+			resourceDataService = MetaFactory.get(IASResourceDataService.class);
+		} catch (MetaFactoryException e) {
+			log.fatal("Init ASG services failure", e);
+			throw new ServletException("Init ASG services failure", e);
+		}
 		pageExecutor = new PageBeanCreator();
 		boxExecutor  = new BoxBeanCreator();
 		config.getServletContext().setAttribute(AnositeConstants.AA_ANOSITE_RANDOM, IdCodeGenerator.generateCode(10));
@@ -176,6 +143,9 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		}catch(ASGRuntimeException e){
 			log.error("moskitoDoGet", e);
 			throw new ServletException("ASG Runtime Exception: "+e.getMessage());
+		} catch (BoxHandleException e) {
+			log.error("moskitoDoGet", e);
+			throw new ServletException("Box Handle Exception: "+e.getMessage());
 		}
 	}
 
@@ -186,19 +156,23 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		}catch(ASGRuntimeException e){
 			log.error("moskitoDoPost", e);
 			throw new ServletException("ASG Runtime Exception: "+e.getMessage());
+		} catch (BoxHandleException e) {
+			log.error("moskitoDoPost", e);
+			throw new ServletException("Box Handle Exception: "+e.getMessage());
 		}
 	}
 
 	/**
 	 * Processes the incoming request.
-	 * @param req the httpservletrequest.
-	 * @param res the httpservletresponse.
+	 * @param req the httpServletRequest.
+	 * @param res the httpServletResponse.
 	 * @param submit true if the request was submitted via post (for calling submit in handlers).
 	 * @throws ServletException 
-	 * @throws IOException
-	 * @throws ASGRuntimeException
+	 * @throws IOException on input output errors
+	 * @throws ASGRuntimeException on backend failures
+	 * @throws net.anotheria.anosite.handler.exception.BoxHandleException on box handle errors
 	 */
-	protected void processRequest(HttpServletRequest req, HttpServletResponse res, boolean submit) throws ServletException, IOException, ASGRuntimeException {
+	protected void processRequest(HttpServletRequest req, HttpServletResponse res, boolean submit) throws ServletException, IOException, ASGRuntimeException, BoxHandleException {
 
 		prepareTextResources(req);
 		req.setAttribute(BEAN_ANOSITE_VERBOSITY, config.verbose() ? Boolean.TRUE : Boolean.FALSE);
@@ -365,7 +339,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	}
 
     /**
-     * Setting eror CODE.
+     * Setting error CODE.
      * @param pageName pageName
      * @param res HttpServletResponse
      */
@@ -429,9 +403,10 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	 * @param template
 	 * @param handlerCache
 	 * @return
-	 * @throws ASGRuntimeException
+	 * @throws ASGRuntimeException on backend failures
+	 * @throws net.anotheria.anosite.handler.exception.BoxHandleException on box handle errors
 	 */
-	private InternalResponse processSubmit(HttpServletRequest req, HttpServletResponse res, Pagex page, PageTemplate template, HashMap<String, BoxHandler> handlerCache) throws ASGRuntimeException{
+	private InternalResponse processSubmit(HttpServletRequest req, HttpServletResponse res, Pagex page, PageTemplate template, HashMap<String, BoxHandler> handlerCache) throws ASGRuntimeException, BoxHandleException {
 		
 		InternalResponse progress = new InternalResponseContinue();
 		int step = 0;
@@ -454,8 +429,9 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	 * @param previous
 	 * @return
 	 * @throws ASGRuntimeException
+	 * @throws net.anotheria.anosite.handler.exception.BoxHandleException on box handle errors
 	 */
-	private InternalResponse processSubmit(HttpServletRequest req, HttpServletResponse res, List<String> boxIds, HashMap<String, BoxHandler> handlerCache, InternalResponse previous) throws ASGRuntimeException{
+	private InternalResponse processSubmit(HttpServletRequest req, HttpServletResponse res, List<String> boxIds, HashMap<String, BoxHandler> handlerCache, InternalResponse previous) throws ASGRuntimeException, BoxHandleException {
 		if (boxIds == null || boxIds.size() == 0)
 			return previous;
 		boolean doRedirect = false;
@@ -601,7 +577,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	 * @return
 	 * @throws ASGRuntimeException
 	 */
-	private InternalResponse createBoxBean(HttpServletRequest req, HttpServletResponse res, Box box) throws ASGRuntimeException{
+	private InternalResponse createBoxBean(HttpServletRequest req, HttpServletResponse res, Box box) throws ASGRuntimeException, BoxHandleException {
 		BoxBean ret = new BoxBean();
 
 		ret.setName(box.getName());
@@ -1219,7 +1195,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		}
 	}
 	class BoxBeanCreator implements BlueprintCallExecutor{
-		public Object execute(Object... parameters)  throws ASGRuntimeException{
+		public Object execute(Object... parameters) throws ASGRuntimeException, BoxHandleException {
 			return createBoxBean( 
 					(HttpServletRequest)parameters[0], 
 					(HttpServletResponse)parameters[1], 

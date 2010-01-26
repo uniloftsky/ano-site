@@ -18,11 +18,21 @@ public class ContentChangeEvent {
 	 * Ids of the changed document.
 	 */
 	private String documentId;
-	
+
+	/**
+	 * Default Constructor.
+	 */
 	public ContentChangeEvent(){
 		
 	}
-	
+
+	/**
+	 * Constructor.
+	 * 
+	 * @param aType actually operation
+	 * @param aDocumentName name of document
+	 * @param aDocumentId doc id
+	 */
 	public ContentChangeEvent(ContentChangeType aType, String aDocumentName, String aDocumentId){
 		changeType = aType;
 		documentName = aDocumentName;

@@ -6,6 +6,12 @@ package net.anotheria.anosite.api.generic.login;
  *
  */
 public interface LoginPostProcessor {
-	void postProcessLogin(String userId);
+	/**
+	 * Post login process.
+	 * 
+	 * @param userId used id
+	 * @throws ProcessorException on failures
+	 */
+	void postProcessLogin(String userId) throws ProcessorException;
 
 }

@@ -1,19 +1,28 @@
 package net.anotheria.anosite.handler;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.log4j.Logger;
-
+import net.anotheria.anoprise.metafactory.MetaFactory;
+import net.anotheria.anoprise.metafactory.MetaFactoryException;
 import net.anotheria.anosite.gen.asfederateddata.data.BoxHandlerDef;
 import net.anotheria.anosite.gen.asfederateddata.service.ASFederatedDataServiceFactory;
 import net.anotheria.anosite.gen.asfederateddata.service.IASFederatedDataService;
+import org.apache.log4j.Logger;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class BoxHandlerFactory {
 	
 	private static Logger log = Logger.getLogger(BoxHandlerFactory.class);
 	
-	private static IASFederatedDataService service = ASFederatedDataServiceFactory.createASFederatedDataService();
+	private static IASFederatedDataService service;
+
+	static {
+		try {
+			service = MetaFactory.get(IASFederatedDataService.class);
+		} catch (MetaFactoryException e) {
+			log.fatal("IASFederatedDataService init failure",e);
+		}
+	}
 	
 	private static Map<String, BoxHandlerProducer> producers = new HashMap<String, BoxHandlerProducer>();
 	

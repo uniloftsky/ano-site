@@ -1,19 +1,19 @@
 package net.anotheria.anosite.api.generic.observation;
 
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-
+import net.anotheria.anosite.api.common.APIInitException;
 import net.anotheria.anosite.api.common.AbstractAPIImpl;
 import net.java.dev.moskito.util.storage.Storage;
+
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 public class ObservationAPIImpl extends AbstractAPIImpl implements ObservationAPI{
 	
 	private Storage<String, List<Observer>> subjects;
 	
-	public void init(){
+	public void init() throws APIInitException {
 		super.init();
-		
 		subjects = Storage.createConcurrentHashMapStorage("subjects");
 		//createDebugObserver();
 	}

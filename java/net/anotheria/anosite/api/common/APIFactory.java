@@ -15,5 +15,5 @@ public interface APIFactory<T extends API> {
 	 * only methods exposed in the T-interface are accessable.
 	 * @return an api instance.
 	 */
-	T createAPI();
+	 T createAPI();
 }

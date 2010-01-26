@@ -6,7 +6,10 @@ package net.anotheria.anosite.api.mock;
  *
  */
 public class ReturnBooleanMockMethod extends ReturnObjectMockMethod{
-	
+	/**
+	 * Constructor.
+	 * @param aValue boolean param
+	 */
 	public ReturnBooleanMockMethod(boolean aValue){
 		super(aValue);
 	}

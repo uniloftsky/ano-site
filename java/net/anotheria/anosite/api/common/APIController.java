@@ -4,13 +4,25 @@ import java.util.Collection;
 
 import org.apache.log4j.Logger;
 
+/**
+ * APIController. Just help  to manage init && deInit on  app startUp or shutdown.
+ */
 public class APIController {
 
+	/**
+	 * Logger.
+	 */
 	private static Logger	log;
+	/**
+	 * Logger init.
+	 */
 	static {
 		log = Logger.getLogger(APIController.class);
 	}
 
+	/**
+	 * Public constructor.
+	 */
 	APIController() {
 	}
 	/**
@@ -36,6 +48,10 @@ public class APIController {
 	public void notifyStart() {
 	}
 
+	/**
+	 * Simply adds message to log.
+	 * @param message message itself
+	 */
 	private void info(String message) {
 		if (log != null) {
 			log.info(message);

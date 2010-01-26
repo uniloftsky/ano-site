@@ -7,31 +7,31 @@ package net.anotheria.anosite.api.util.paging;
 public abstract class PagingElement {
 	/**
 	 * Returns true if the element is active (selected)
-	 * @return
+	 * @return boolean value
 	 */
 	public abstract boolean isActive();
 	
 	/**
 	 * Returns true if the element is a separator and not a link.
-	 * @return
+	 * @return boolean value
 	 */
 	public abstract boolean isSeparator();
 	
 	/**
 	 * Returns true if the element is a link
-	 * @return
+	 * @return boolean value
 	 */
 	public abstract boolean isLinked();
 		
 	/**
 	 * Returns the paging parameter to apply to the link
-	 * @return
+	 * @return String value
 	 */
 	public abstract String getPagingParameter();
 	
 	/**
 	 * Return the caption of the element.
-	 * @return
+	 * @return String value
 	 */
 	public abstract String getCaption();
 	

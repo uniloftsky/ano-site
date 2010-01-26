@@ -1,28 +1,21 @@
 package net.anotheria.anosite.content.filter;
 
-import java.io.IOException;
-import java.util.List;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import net.anotheria.anoprise.metafactory.MetaFactory;
+import net.anotheria.anoprise.metafactory.MetaFactoryException;
 import net.anotheria.anosite.gen.assitedata.data.EntryPoint;
 import net.anotheria.anosite.gen.assitedata.data.Site;
-import net.anotheria.anosite.gen.assitedata.service.ASSiteDataServiceFactory;
 import net.anotheria.anosite.gen.assitedata.service.IASSiteDataService;
 import net.anotheria.anosite.gen.aswebdata.data.Pagex;
-import net.anotheria.anosite.gen.aswebdata.service.ASWebDataServiceFactory;
 import net.anotheria.anosite.gen.aswebdata.service.IASWebDataService;
 import net.anotheria.anosite.gen.shared.service.AnoDocConfigurator;
 import net.anotheria.asg.exception.ASGRuntimeException;
-
 import org.apache.log4j.Logger;
+
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
 /**
  * With the entry point filter the site is able to define different pages for different subsite or domains. 
  * @author lrosenberg
@@ -119,8 +112,13 @@ public class EntryPointFilter implements Filter{
 	}
 
 	@Override public void init(FilterConfig config) throws ServletException {
-		webDataService = ASWebDataServiceFactory.createASWebDataService();
-		siteDataService = ASSiteDataServiceFactory.createASSiteDataService();
+		try {
+			webDataService = MetaFactory.get(IASWebDataService.class);
+			siteDataService = MetaFactory.get(IASSiteDataService.class);
+		} catch (MetaFactoryException e) {
+			log.fatal("ASG services init failure",e);
+			throw new ServletException("ASG services init failure",e);
+		}
 	}
 
 }

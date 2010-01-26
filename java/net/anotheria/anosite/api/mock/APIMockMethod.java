@@ -8,5 +8,12 @@ import java.lang.reflect.Method;
  *
  */
 public interface APIMockMethod {
+	/**
+	 *  Actually invoke mocked method.
+	 * 
+	 * @param method method itself
+	 * @param args arguments
+	 * @return invocation result
+	 */
 	Object invoke(Method method, Object[] args);
 }

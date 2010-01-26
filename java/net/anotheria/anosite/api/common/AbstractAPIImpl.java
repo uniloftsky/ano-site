@@ -1,16 +1,15 @@
 package net.anotheria.anosite.api.common;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
 import net.anotheria.anosite.api.session.APISession;
 import net.anotheria.anosite.api.session.ContentAwareAttribute;
 import net.anotheria.anosite.api.session.PolicyHelper;
 import net.anotheria.anosite.api.validation.ValidationError;
 import net.anotheria.anosite.api.validation.ValidationException;
-
 import org.apache.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * A base class for API implementation which provides basic functionality. One of the things this class is providing are the so-called 'private' attributes.
@@ -48,15 +47,20 @@ public abstract class AbstractAPIImpl implements API{
 	 */
 	public static final long DAY = HOUR*24;
 
+	/**
+	 * Protected constructor.
+	 */
 	protected AbstractAPIImpl(){
 		log = Logger.getLogger(this.getClass());
 		apiConfig = new APIConfig();
 	}
-	
+
+
 	@Override public void deInit() {
 	}
 
-	@Override public void init() {
+	
+	@Override public void init() throws APIInitException {
 	}
 
 	/**
@@ -81,21 +85,41 @@ public abstract class AbstractAPIImpl implements API{
 			getSession().setAttribute(getPrivateAttributeName(name), policy, attribute);
 	}
 
+	/**
+	 * Set attribute in session, with the  policy and expiration time.
+	 * 
+	 * @param name attribute name
+	 * @param policy actually policy itself
+	 * @param attribute value
+	 * @param expiresWhen expire
+	 */
 	protected void setAttributeInSession(String name, int policy, Object attribute, long expiresWhen){
 		getSession().setAttribute(getPrivateAttributeName(name), policy, attribute, expiresWhen);
 	}
 
+	/**
+	 * Set attribute in session, with expiration time.
+	 *
+	 * @param name attribute name
+	 * @param attribute value
+	 * @param expiresWhen expire
+	 */
 	protected void setAttributeInSession(String name, Object attribute, long expiresWhen){
 		setAttributeInSession(name, APISession.POLICY_AUTOEXPIRE, attribute, expiresWhen);
 	}
 
+	/**
+	 * Returns attribute value form session.
+	 * @param name attribute name
+	 * @return object
+	 */
 	protected Object getAttributeFromSession(String name){
 		return getSession().getAttribute(getPrivateAttributeName(name));
 	}
 	
 	/**
 	 * Removes a private attribute from session.
-	 * @param key
+	 * @param key attribute name
 	 */
 	public void removeAttributeFromSession(String key) {
 		getSession().removeAttribute(getPrivateAttributeName(key));
@@ -103,7 +127,7 @@ public abstract class AbstractAPIImpl implements API{
 	
 	/**
 	 * Returns the prefix for all internally stored attributes.
-	 * @return
+	 * @return String prefix
 	 */
 	private String getSessionAttributePrefix(){
 		return ATTRIBUTE_PREFIX;
@@ -111,8 +135,8 @@ public abstract class AbstractAPIImpl implements API{
 	
 	/**
 	 * Returns a 'private' attribute name which allows to reduce the visibility of the attribute.
-	 * @param name
-	 * @return
+	 * @param name name parameter
+	 * @return attribute name
 	 */
 	protected String getPrivateAttributeName(String name){
 		return new StringBuilder(getSessionAttributePrefix()).append(name).toString();
@@ -120,7 +144,7 @@ public abstract class AbstractAPIImpl implements API{
 	
 	/**
 	 * Returns the current CallContext. Convenience method.
-	 * @return
+	 * @return API Call Context
 	 */
 	protected APICallContext getCallContext(){
 		return APICallContext.getCallContext();
@@ -128,7 +152,7 @@ public abstract class AbstractAPIImpl implements API{
 	
 	/**
 	 * Returns the current session from the CallContext. Convenience method.
-	 * @return
+	 * @return API session
 	 */
 	protected APISession getSession(){
 		return getCallContext().getCurrentSession();
@@ -136,7 +160,7 @@ public abstract class AbstractAPIImpl implements API{
 	
 	/**
 	 * Returns the current locale from the CallContext. Convenience method.
-	 * @return
+	 * @return current Locale
 	 */
 	protected Locale getCurrentLocale(){
 		return getCallContext().getCurrentLocale();
@@ -144,15 +168,16 @@ public abstract class AbstractAPIImpl implements API{
 	
 	/**
 	 * Returns the current userId from the CallContext. Convenience method.
-	 * @return
+	 * @return current user id
 	 */
 	protected String getCurrentUserId() {
 		return getCallContext().getCurrentUserId();
 	}
 	/**
-	 * Returns the current userid from the CallContext. The difference between this method and the getCurrentUserId method, is that this method will throw an Exception if 
-	 * no user is logged in. This allows api methods to rely on this check and not to check theirself anymore.
-	 * @return
+	 * Returns the current userId from the CallContext. The difference between this method and the getCurrentUserId method, is that this method will throw an Exception if 
+	 * no user is logged in. This allows api methods to rely on this check and not to check their-self anymore.
+	 * @return userId as string
+	 * @throws NoLoggedInUserException when user is not logged in
 	 */
 	protected String getLoggedInUserId() throws NoLoggedInUserException{
 		String userId = getCurrentUserId();
@@ -172,14 +197,17 @@ public abstract class AbstractAPIImpl implements API{
 	}
 	/**
 	 * Returns the default expiration period. Returned by not overwritten version of getExpirePeriodForAttribute(name).
-	 * @return
+	 * @return long value
 	 */
 	protected long getDefaultExpirePeriodForAttribute(){
 		return APISession.DEFAULT_EXPIRE_PERIOD;
 	}
-	
 
-	
+
+	/**
+	 * Returns APIConfig.
+	 * @return APIConfig
+	 */
 	protected static APIConfig getApiConfig() {
 		return apiConfig;
 	}
@@ -187,6 +215,9 @@ public abstract class AbstractAPIImpl implements API{
 	//////// VALIDATION /////
 	/**
 	 * Adds a validation error to the current context.
+	 * @param field - field name
+	 * @param cmsKey - cmsKey
+	 * @param description - description
 	 */
 	protected void addValidationError(String field, String cmsKey, String description){
 		addValidationError(new ValidationError(field, cmsKey, description));
@@ -194,33 +225,45 @@ public abstract class AbstractAPIImpl implements API{
 	
 	/**
 	 * Adds a validation error to the current context.
-	 * @param error 
+	 * @param error ValidationError instance
 	 */
 	protected void addValidationError(ValidationError error){
 		APICallContext.getCallContext().addValidationError(error);
 	}
 	/**
 	 * Used to abort execution if validation is unsuccessful.
+	 * @throws net.anotheria.anosite.api.validation.ValidationException when validation error occurs
 	 */
-	protected void checkValidationAndThrowException(){
+	protected void checkValidationAndThrowException() throws ValidationException {
 		if (APICallContext.getCallContext().hasValidationErrors())
 			throw new ValidationException(APICallContext.getCallContext().getValidationErrors());
 	}
-	
-	/////////////
+
+	/**
+	 * Returns newly created ContentCachingList<T>.
+	 * @param <T> actually generic param
+	 * @return created list
+	 */
 	public static<T> List<T> createContentCachingList(){
 		return new ContentCachingList<T>();
 	}
 
 }
 
+/**
+ * Defines ContentCachingList.
+ *
+ * @param <T> generic param
+ */
 @SuppressWarnings("serial")
 class ContentCachingList<T> extends ArrayList<T> implements ContentAwareAttribute{
 
+	@Override
 	public boolean deleteOnChange() {
 		return true;
 	}
 
+	@Override
 	public void notifyContentChange(String documentName, String documentId) {
 		throw new RuntimeException("Not supported");
 	}

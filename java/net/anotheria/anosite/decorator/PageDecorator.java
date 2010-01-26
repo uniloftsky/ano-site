@@ -1,19 +1,21 @@
 package net.anotheria.anosite.decorator;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.anotheria.anodoc.data.Document;
 import net.anotheria.anodoc.data.NoSuchDocumentException;
 import net.anotheria.anodoc.data.NoSuchPropertyException;
+import net.anotheria.anoprise.metafactory.MetaFactory;
+import net.anotheria.anoprise.metafactory.MetaFactoryException;
 import net.anotheria.anosite.gen.aswebdata.data.Box;
 import net.anotheria.anosite.gen.aswebdata.data.Pagex;
-import net.anotheria.anosite.gen.aswebdata.service.ASWebDataServiceFactory;
 import net.anotheria.anosite.gen.aswebdata.service.IASWebDataService;
 import net.anotheria.asg.data.DataObject;
 import net.anotheria.asg.exception.ASGRuntimeException;
 import net.anotheria.asg.util.decorators.IAttributeDecorator;
 import net.anotheria.util.StringUtils;
+import org.apache.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Decorator for links to pages.
@@ -24,13 +26,24 @@ public class PageDecorator implements IAttributeDecorator{
 	/**
 	 * AsWebDataService instance for pagex looup
 	 */
-	private static IASWebDataService service = ASWebDataServiceFactory.createASWebDataService();
+	private static IASWebDataService service;
+
+	/**
+	 * Init.
+	 */
+	static {
+		try {
+			service = MetaFactory.get(IASWebDataService.class);
+		} catch (MetaFactoryException e) {
+          Logger.getLogger(PageDecorator.class).fatal("IASSiteDataService  init failure",e);
+		}
+	}
 	
 	@Override public String decorate(DataObject doc, String attributeName, String rule) {
 		try{
 			
 			//tmp hack
-			List<Object> links = null;
+			List<Object> links;
 			try{
 				links = ((Document)doc).getListProperty(attributeName).getListData();
 			}catch(NoSuchPropertyException e){

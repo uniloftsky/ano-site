@@ -1,13 +1,13 @@
 package net.anotheria.anosite.api.mock;
 
+import net.anotheria.anosite.api.common.API;
+import net.anotheria.anosite.api.common.APIFinder;
+import net.anotheria.anosite.api.common.APIInitException;
+import org.apache.log4j.Logger;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-
-import net.anotheria.anosite.api.common.API;
-import net.anotheria.anosite.api.common.APIFinder;
-
-import org.apache.log4j.Logger;
 
 /**
  * This is a masking api implementation which is used as wrapper to an underlying api implementation and allows masking of methods.
@@ -44,7 +44,7 @@ public class APIMaskImpl <T extends API> implements API, InvocationHandler{
 	}
 
 	@Override
-	public void init() {
+	public void init() throws APIInitException {
 		maskedInstance.init();
 	}
 	

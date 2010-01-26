@@ -2,7 +2,6 @@ package net.anotheria.anosite.api.generic.login;
 
 import net.anotheria.anosite.api.common.API;
 import net.anotheria.anosite.api.common.APIException;
-import net.anotheria.anosite.api.common.NoLoggedInUserException;
 
 /**
  * Basic API for login/out purposes.
@@ -18,23 +17,22 @@ public interface LoginAPI extends API{
 	void logInUser(String userId) throws APIException;
 	/**
 	 * Logouts the current user.
-	 * @throws APIException
+	 * @throws APIException if error occurs
 	 */
 	void logoutMe() throws APIException;
 	
 	/**
 	 * Returns the id of the currently logged in user.
-	 * @return
-	 * @throws NoLoggedInUserException if no logged in user in current session
+	 * @return string id
+	 * @throws APIException if no logged in user in current session, or error occurs
 	 */
-	String getLogedUserId() throws NoLoggedInUserException, APIException;
+	String getLogedUserId() throws  APIException;
 
 	/**
 	 * Returns true if there is a current userid.
-	 * @return
-	 * @throws APIException
+	 * @return boolean value
 	 */
-	boolean isLogedIn() throws APIException;
+	boolean isLogedIn();
 
 	/**
 	 * Adds a login preprocessor. Each login preprocessor is called before a user can actually login. LoginPreprocessor can prevent login by throwing an exception.

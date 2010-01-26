@@ -1,13 +1,15 @@
 package net.anotheria.anosite.decorator;
 
 import net.anotheria.anodoc.data.NoSuchDocumentException;
+import net.anotheria.anoprise.metafactory.MetaFactory;
+import net.anotheria.anoprise.metafactory.MetaFactoryException;
 import net.anotheria.anosite.gen.asfederateddata.data.BoxType;
-import net.anotheria.anosite.gen.asfederateddata.service.ASFederatedDataServiceFactory;
 import net.anotheria.anosite.gen.asfederateddata.service.IASFederatedDataService;
 import net.anotheria.anosite.gen.aswebdata.data.Box;
 import net.anotheria.asg.data.DataObject;
 import net.anotheria.asg.exception.ASGRuntimeException;
 import net.anotheria.asg.util.decorators.IAttributeDecorator;
+import org.apache.log4j.Logger;
 
 /**
  * This decorator decorates the attribute type of a box.
@@ -19,7 +21,16 @@ public class BoxTypeDecorator implements IAttributeDecorator{
 	/**
 	 * Federated data service to retrieve box type.
 	 */
-	private IASFederatedDataService federatedDataService = ASFederatedDataServiceFactory.createASFederatedDataService();
+	private static IASFederatedDataService federatedDataService;
+
+
+	static {
+		try {
+			federatedDataService = MetaFactory.get(IASFederatedDataService.class);
+		} catch (MetaFactoryException e) {
+			Logger.getLogger(BoxTypeDecorator.class).fatal("IASFederatedDataService asg service init failure",e);
+		}
+	}
 
 	/* (non-Javadoc)
 	 * @see net.anotheria.asg.util.decorators.IAttributeDecorator#decorate(net.anotheria.anodoc.data.Document, java.lang.String, java.lang.String)

@@ -6,11 +6,14 @@ import java.util.List;
 import net.anotheria.anodoc.data.Document;
 import net.anotheria.anodoc.data.NoSuchDocumentException;
 import net.anotheria.anodoc.data.NoSuchPropertyException;
+import net.anotheria.anoprise.metafactory.MetaFactory;
+import net.anotheria.anoprise.metafactory.MetaFactoryException;
 import net.anotheria.anosite.gen.asfederateddata.service.ASFederatedDataServiceException;
 import net.anotheria.anosite.gen.asfederateddata.service.ASFederatedDataServiceFactory;
 import net.anotheria.anosite.gen.asfederateddata.service.IASFederatedDataService;
 import net.anotheria.asg.data.DataObject;
 import net.anotheria.asg.util.decorators.IAttributeDecorator;
+import org.apache.log4j.Logger;
 
 /**
  * Decorator for guards.
@@ -21,7 +24,19 @@ public class GuardDecorator implements IAttributeDecorator{
 	/**
 	 * Federated data service for guard def retrieval.
 	 */
-	private static IASFederatedDataService service = ASFederatedDataServiceFactory.createASFederatedDataService();
+	/**
+	 * Federated data service to retrieve box type.
+	 */
+	private static IASFederatedDataService service;
+
+
+	static {
+		try {
+			service = MetaFactory.get(IASFederatedDataService.class);
+		} catch (MetaFactoryException e) {
+			Logger.getLogger(GuardDecorator.class).fatal("IASFederatedDataService asg service init failure",e);
+		}
+	}
 	
 	@Override public String decorate(DataObject doc, String attributeName, String rule) {
 		try{

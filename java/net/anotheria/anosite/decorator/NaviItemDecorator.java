@@ -1,11 +1,10 @@
 package net.anotheria.anosite.decorator;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.anotheria.anodoc.data.Document;
 import net.anotheria.anodoc.data.NoSuchDocumentException;
 import net.anotheria.anodoc.data.NoSuchPropertyException;
+import net.anotheria.anoprise.metafactory.MetaFactory;
+import net.anotheria.anoprise.metafactory.MetaFactoryException;
 import net.anotheria.anosite.gen.assitedata.data.NaviItem;
 import net.anotheria.anosite.gen.assitedata.data.Site;
 import net.anotheria.anosite.gen.aswebdata.service.ASWebDataServiceFactory;
@@ -14,10 +13,25 @@ import net.anotheria.asg.data.DataObject;
 import net.anotheria.asg.exception.ASGRuntimeException;
 import net.anotheria.asg.util.decorators.IAttributeDecorator;
 import net.anotheria.util.StringUtils;
+import org.apache.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class NaviItemDecorator implements IAttributeDecorator{
 	
-	private static IASWebDataService service = ASWebDataServiceFactory.createASWebDataService();
+	private static IASWebDataService service;
+
+	/**
+	 * Init.
+	 */
+	static {
+		try {
+			service = MetaFactory.get(IASWebDataService.class);
+		} catch (MetaFactoryException e) {
+          Logger.getLogger(NaviItemDecorator.class).fatal("IASSiteDataService  init failure",e);
+		}
+	}
 	
 	public String decorate(DataObject doc, String attributeName, String rule) {
 		try{

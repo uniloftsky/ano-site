@@ -1,8 +1,18 @@
 package net.anotheria.anosite.api.util.paging;
 
+/**
+ * PagingCurrentPage as subclass of PagingElement.
+ */
 public class PagingCurrentPage extends PagingElement{
+	/**
+	 * PagingCurrentPage 'caption'.
+	 */
 	private String caption;
-	
+
+	/**
+	 * Constructor.
+	 * @param aCaption caption
+	 */
 	public PagingCurrentPage(String aCaption){
 		caption = aCaption;
 	}

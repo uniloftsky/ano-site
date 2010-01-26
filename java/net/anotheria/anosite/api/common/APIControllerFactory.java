@@ -12,7 +12,7 @@ public class APIControllerFactory {
 	private static APIController controller = new APIController();
 	/**
 	 * Returns the singleton instance of the controller.
-	 * @return
+	 * @return APIController
 	 */
 	public static APIController getAPIController(){
 		return controller;

@@ -11,7 +11,12 @@ public class ReturnObjectMockMethod implements APIMockMethod{
 	 * The value to return.
 	 */
 	private Object value;
-	
+
+	/**
+	 * Constructor.
+	 *
+	 * @param aValue object 
+	 */
 	public ReturnObjectMockMethod(Object aValue){
 		value = aValue;
 	}

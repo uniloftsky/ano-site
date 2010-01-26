@@ -30,8 +30,8 @@ public class ContentChangeListener implements IServiceListener{
 	
 	/**
 	 * Sends the content change event.
-	 * @param type
-	 * @param object
+	 * @param type operation
+	 * @param object some document
 	 */
 	private void sendEvent(ContentChangeType type, DataObject object){
 		ContentChangeEvent event = new ContentChangeEvent(type, object.getDefinedName(), object.getId());

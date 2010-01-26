@@ -16,18 +16,40 @@ import net.anotheria.anosite.api.generic.observation.ObservationAPIFactory;
 
 import org.configureme.ConfigurationManager;
 
+/**
+ * APIConfig.
+ */
 public class APIConfig {
 
+	/**
+	 * SERVICE POLICY SINGLE INSTANCE Constant.
+	 */
 	public static final int SERVICE_POLICY_SINGLE_INSTANCE = 1;
+	/**
+	 * SERVICE POLICY MULTI INSTANCE Constant.
+	 */
 	public static final int SERVICE_POLICY_MULTI_INSTANCE = 2;
-
+	/**
+	 * SERVICE POLICY DEFAULT - Constant.
+	 */
 	public static final int SERVICE_POLICY_DEFAULT = SERVICE_POLICY_MULTI_INSTANCE;
-
+	/**
+	 * APIConfig "servicePolicy".
+	 */
 	private static int servicePolicy;
+	/**
+	 * APIConfig "aliasMap". Actually alias holder.
+	 */
 	private static Map<Class<? extends API>, List<Class<? extends API>>> aliasMap;
 
+	/**
+	 * APIConfigurable instance.
+	 */
 	private static APIConfigurable configurable;
 
+	/**
+	 * Initialisation.
+	 */
 	static {
 		servicePolicy = SERVICE_POLICY_DEFAULT;
 
@@ -36,7 +58,6 @@ public class APIConfig {
 
 		configurable = new APIConfigurable();
 		ConfigurationManager.INSTANCE.configure(configurable);
-
 	}
 
 	@SuppressWarnings("unused")
@@ -50,12 +71,21 @@ public class APIConfig {
 		aliases.add(aliasClass);
 	}
 
+	/**
+	 * Return configured Aliases for selected API.
+	 * @param source API.
+	 * @return Collection
+	 */
 	public static List<Class<? extends API>> getAliases(
 			Class<? extends API> source) {
 		return aliasMap.get(source);
 	}
 
-	public static final Map<Class<? extends API>, APIFactory<? extends API>> getFactories() {
+	/**
+	 * Creates factories map.
+	 * @return Collection
+	 */
+	public static Map<Class<? extends API>, APIFactory<? extends API>> getFactories() {
 
 		Map<Class<? extends API>, APIFactory<? extends API>> ret = new HashMap<Class<? extends API>, APIFactory<? extends API>>();
 
@@ -68,14 +98,26 @@ public class APIConfig {
 		return ret;
 	}
 
-	public static final Map<Class<? extends API>, List<Class<? extends API>>> getInterfaceAliases() {
+	/**
+	 * Returns configured interface aliases.
+	 * @return collection.
+	 */
+	public static Map<Class<? extends API>, List<Class<? extends API>>> getInterfaceAliases() {
 		return aliasMap;
 	}
 
+	/**
+	 * Returns current service policy.
+	 * @return int value
+	 */
 	public static int getServicePolicy() {
 		return servicePolicy;
 	}
 
+	/**
+	 * Returns true if verboseMethodCall is enabled, false otherwise.
+	 * @return boolean value
+	 */
 	public static boolean verboseMethodCalls() {
 		return configurable.isVerboseMethodCalls();
 	}

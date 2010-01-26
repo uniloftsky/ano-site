@@ -18,11 +18,20 @@ public class ValidationError {
 	 * The cms key with error description.
 	 */
 	private String cmsKey;
-	
+
+	/**
+	 * Default constructor.
+	 */
 	public ValidationError(){
 		
 	}
-	
+
+	/**
+	 * Constructor.
+	 * @param aField name of field
+	 * @param aCmsKey  key
+	 * @param aMessage message
+	 */
 	public ValidationError(String aField, String aCmsKey, String aMessage){
 		field = aField;
 		cmsKey = aCmsKey;
