@@ -6,7 +6,7 @@
 %>
 
 <bean:define id="box" toScope="page" name="__box" scope="request" type="net.anotheria.anosite.content.bean.BoxBean"/>
-<div <logic:notEmpty name="box" property="parameter1">id="<bean:write name="box" property="parameter1">"</logic:notEmpty> <logic:notEmpty name="box" property="parameter2">class="<bean:write name="box" property="parameter2">"</logic:notEmpty>>
+<div <logic:notEmpty name="box" property="parameter1">id="<bean:write name="box" property="parameter1"/>"</logic:notEmpty> <logic:notEmpty name="box" property="parameter2">class="<bean:write name="box" property="parameter2"/>"</logic:notEmpty>>
 <logic:notEqual name="box" property="content" value="">
 	<bean:write name="box" property="content" filter="false"/>
 </logic:notEqual>
