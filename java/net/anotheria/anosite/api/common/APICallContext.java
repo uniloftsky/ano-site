@@ -24,9 +24,20 @@ public class APICallContext {
 	public static final Locale DEFAULT_LOCALE = new Locale("en", "GB");
 
 	/**
+	 * Default server name used, if server name wasn't specified.
+	 */
+	private static final String DEFAULT_SERVER_NAME = "c-date.com";
+
+	/**
 	 * Currently assigned locale.
 	 */
 	private Locale currentLocale;
+
+	/**
+	 * Currently assigned domain name.
+	 */
+	private String currentServerName;
+
 	/**
 	 * Currently assigned session.
 	 */
@@ -48,7 +59,8 @@ public class APICallContext {
 	 * Errors due to validation of the request.
 	 */
 	private List<ValidationError> validationErrors;
-	
+
+
 	/**
 	 * Creates a new APICallContext. After creation the context is reset by calling reset().
 	 */
@@ -93,6 +105,7 @@ public class APICallContext {
 	 */
 	public void reset(){
 		currentLocale = DEFAULT_LOCALE;
+		currentServerName = DEFAULT_SERVER_NAME;
 		currentSession = null;
 		scope = new HashMap<String, Object>();
 		currentUserId = null;
@@ -150,6 +163,8 @@ public class APICallContext {
 		return currentSession;
 	}
 
+
+
 	/**
 	 * Sets the current session.
 	 * @param aCurrentSession APISession instance
@@ -162,7 +177,7 @@ public class APICallContext {
 	@Override public String toString(){
 		return "User: " +
 			(isMember() ? getCurrentUserId() : "guest")+
-			" session: "+currentSession+", locale: "+currentLocale+
+			" session: "+currentSession+", locale: "+currentLocale+ ", serverName: "+currentServerName+
 			", scope contains "+scope.size()+" elements.";
 	}
 	
@@ -236,7 +251,25 @@ public class APICallContext {
 	public void resetValidationErrors(){
 		validationErrors = new ArrayList<ValidationError>();
 	}
-	
+
+	/**
+	 * Get server hostname.
+	 *
+	 * @return get server hostname
+	 */
+	public String getCurrentServerName() {
+		return currentServerName == null ? DEFAULT_SERVER_NAME : currentServerName;
+	}
+
+	/**
+	 * Set server name.
+	 *
+	 * @param currentServerName server hostname
+	 */
+	public void setCurrentServerName(String currentServerName) {
+		this.currentServerName = currentServerName;
+	}
+
 	/**
 	 * Used by the api if you want to span a new thread but share the values with that thread. As soon as the parameters are shared 
 	 * each thread works on its own copy which is not shared.
@@ -245,6 +278,7 @@ public class APICallContext {
 	void copyFromAnotherContext(APICallContext anotherContext){
 		currentLocale = anotherContext.currentLocale;
 		currentSession = anotherContext.currentSession;
+		currentServerName = anotherContext.currentServerName;
 		scope = new HashMap<String, Object>(); scope.putAll(anotherContext.scope);
 		currentUserId = anotherContext.currentUserId;
 		currentEditorId = anotherContext.currentEditorId;
