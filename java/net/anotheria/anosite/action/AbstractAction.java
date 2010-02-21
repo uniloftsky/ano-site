@@ -1,7 +1,7 @@
 package net.anotheria.anosite.action;
 
-import net.anotheria.anosite.api.common.APICallContext;
-import net.anotheria.anosite.api.session.APISessionImpl;
+import net.anotheria.anoplass.api.APICallContext;
+import net.anotheria.anoplass.api.session.APISessionImpl;
 
 public abstract class AbstractAction implements Action{
 	protected void sendAttributeToPage(String name, Object attribute){
