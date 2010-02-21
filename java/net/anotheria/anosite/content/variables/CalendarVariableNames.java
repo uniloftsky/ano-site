@@ -1,15 +1,20 @@
 package net.anotheria.anosite.content.variables;
 
 
-import org.apache.log4j.Logger;
+import static net.anotheria.anosite.content.variables.CalendarVariableNamesConstants.DATE_DEFAULT_FORMAT;
+import static net.anotheria.anosite.content.variables.CalendarVariableNamesConstants.DAY_DEFAULT_FORMAT;
+import static net.anotheria.anosite.content.variables.CalendarVariableNamesConstants.MONTH_DEFAULT_FORMAT;
+import static net.anotheria.anosite.content.variables.CalendarVariableNamesConstants.TIME_DEFAULT_FORMAT;
+import static net.anotheria.anosite.content.variables.CalendarVariableNamesConstants.YEAR_DEFAULT_FORMAT;
 
 import java.text.SimpleDateFormat;
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
-import net.anotheria.anosite.api.common.APICallContext;
-import static net.anotheria.anosite.content.variables.CalendarVariableNamesConstants.*;
+import net.anotheria.anoplass.api.APICallContext;
+
+import org.apache.log4j.Logger;
 
 /**
  * Represent Variable names for CallendarProcessor.

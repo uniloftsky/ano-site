@@ -2,7 +2,7 @@ package net.anotheria.anosite.content.variables;
 
 import javax.servlet.http.HttpServletRequest;
 
-import net.anotheria.anosite.api.common.APICallContext;
+import net.anotheria.anoplass.api.APICallContext;
 import net.anotheria.anosite.content.bean.AttributeBean;
 import net.anotheria.anosite.content.bean.AttributeMap;
 /**

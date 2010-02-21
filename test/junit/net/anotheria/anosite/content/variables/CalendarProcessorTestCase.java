@@ -1,11 +1,11 @@
 package net.anotheria.anosite.content.variables;
 
-import junit.framework.TestCase;
-import org.apache.log4j.Logger;
-
 import java.text.SimpleDateFormat;
 
-import net.anotheria.anosite.api.common.APICallContext;
+import junit.framework.TestCase;
+import net.anotheria.anoplass.api.APICallContext;
+
+import org.apache.log4j.Logger;
 
 /**
  * @author: h3llka

@@ -1,5 +1,6 @@
 package net.anotheria.anosite.api.session;
 
+import net.anotheria.anoplass.api.session.APISessionManager;
 import net.anotheria.asg.data.DataObject;
 import net.anotheria.asg.util.listener.IServiceListener;
 /**
@@ -35,7 +36,8 @@ public class ContentChangeListener implements IServiceListener{
 	 */
 	private void sendEvent(ContentChangeType type, DataObject object){
 		ContentChangeEvent event = new ContentChangeEvent(type, object.getDefinedName(), object.getId());
-		APISessionManager.getInstance().propagateContentChangeEvent(event);
+		throw new AssertionError("Not supported anymore!");
+		//APISessionManager.getInstance().propagateContentChangeEvent(event);
 	}
 
 }

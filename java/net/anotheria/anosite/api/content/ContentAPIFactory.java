@@ -1,6 +1,6 @@
 package net.anotheria.anosite.api.content;
 
-import net.anotheria.anosite.api.common.APIFactory;
+import net.anotheria.anoplass.api.APIFactory;
 
 public class ContentAPIFactory implements APIFactory<ContentAPI>{
 

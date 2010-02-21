@@ -3,7 +3,7 @@ package net.anotheria.anosite.shared.presentation.listener;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
-import net.anotheria.anosite.api.session.APISessionManager;
+import net.anotheria.anoplass.api.session.APISessionManager;
 
 import org.apache.log4j.Logger;
 
