@@ -1,21 +1,34 @@
 <?xml version="1.0"?>
 
 <project name="ano-site" default="dist" basedir=".">
-	
-	<target name="jar" depends="compile">
+	<target name="jar" depends="compile, svn.version">
+		<exec command="date" outputproperty="jar.date" failifexecutionfails="false" failonerror="false"/>		
+		 <exec executable="cmd"  osfamily="windows" outputproperty="jar.date">
+		    <arg value="/c"/>
+		    <arg value="date"/>
+		 		<arg value="\/t"/>
+		  </exec>
+		<property environment="env" />
 		<echo>Using specially overriden jar target from local build file to prevent generated classes from being jared</echo>
-		<jar jarfile="${dist.dir}/${target.jar.name}" index="false">
-         	<fileset dir="${classes.dir}" excludes="net/anotheria/anosite/gen/**">
-	       	</fileset>
-			<manifest>
-			      <!-- Who is building this jar? -->
-			      <attribute name="Built-By" value="${user.name}"/>
-			      <!-- Information about the program itself -->
-			      <attribute name="Implementation-Vendor" value="anotheria.net"/>
-			      <attribute name="Implementation-Title" value="${project.name}"/>
-			      <attribute name="Implementation-Version" value="TBD"/>
-			    </manifest>
-
+		<jar jarfile="${dist.dir}/${target.jar.name}" index="true">
+         	<fileset dir="${classes.dir}" excludes="net/anotheria/anosite/gen/**"/>
+     		<manifest>
+     		   <attribute name="Built-By" value="${user.name}"/>
+     		   <attribute name="Built-At" value="${jar.date}"/>
+     		    <attribute name="Main-Class" value="${jar.main.class}"/>
+     			<section name="hudson">
+     		   		<attribute name="BUILD_NUMBER" value="${env.BUILD_NUMBER}"/>
+ 		   			<attribute name="BUILD_ID" value="${env.BUILD_ID}"/>
+ 		   			<attribute name="JOB_NAME" value="${env.JOB_NAME}"/>
+ 		   			<attribute name="BUILD_TAG" value="${env.BUILD_TAG}"/>
+ 		   			<attribute name="JAVA_HOME" value="${env.JAVA_HOME}"/>
+ 		   			<attribute name="WORKSPACE" value="${env.WORKSPACE}"/>
+ 		   			<attribute name="HUDSON_URL" value="${env.HUDSON_URL}"/>
+ 		   			<attribute name="BUILD_URL" value="${env.BUILD_URL}"/>
+ 		   			<attribute name="JOB_URL" value="${env.JOB_URL}"/>
+ 		   			<attribute name="SVN_REVISION" value="${version}"/>
+     		    </section> 
+            </manifest>
 		</jar>
 	</target>
 
