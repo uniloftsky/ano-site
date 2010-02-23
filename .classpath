@@ -35,6 +35,5 @@
 	<classpathentry kind="lib" path="lib/commons-logging.jar"/>
 	<classpathentry kind="lib" path="lib/dozer-annotations.jar"/>
 	<classpathentry kind="lib" path="lib/dozer.jar"/>
-	<classpathentry kind="lib" path="lib/ano-plass.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>
