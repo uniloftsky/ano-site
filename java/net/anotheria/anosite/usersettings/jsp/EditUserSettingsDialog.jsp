@@ -56,7 +56,7 @@
 <html:form action="userSettingsUpdate">		
 	<input id="referrer" type="hidden" name="referrer" value="<bean:write name="EditUserSettingsForm" property="referrer"/>"/>
 	<input id="userId" type="hidden" name="userId" value="<bean:write name="EditUserSettingsForm" property="userId"/>"/>
-	<div class="yui-gd lineDark" id="lang_filtering_settings">
+	<div class="yui-gd lineDark" id="languageFilteringSettings">
 		<div class="yui-u first">Enable language filtering</div>		
 		<div class="yui-u">
 		<input id="languageFilteringEnabled"
@@ -65,7 +65,7 @@
 		</div>
 	</div>
 	
-	<div class="yui-gd lineLight">
+	<div class="yui-gd lineLight" id="displayedLanguages">
 		<div class="yui-u first">Displayed languages</div>
 		<div class="yui-u" id="displayedLanguagesInputs">
 			<logic:iterate id='lang'
@@ -92,8 +92,22 @@
 
 
 <script type="text/javascript">
+
+	enableDisableDisplayedLanguages = function() {
+		$("div#displayedLanguagesInputs").find("input").each(function() {
+		       $(this).attr( "disabled", !$("#languageFilteringEnabled").attr("checked") );		       
+		 });
+		 var fadeTo = $("#languageFilteringEnabled").attr("checked") ? 1 : 0.5;		 
+		 $("div#displayedLanguages").fadeTo('slow', fadeTo);	
+	}
+
 	$(document).ready(function(){
+
+		enableDisableDisplayedLanguages();
 		
+		$("#languageFilteringEnabled").click( function(event) {				 
+			enableDisableDisplayedLanguages();						 							   				  
+		});
 	});
 </script>
 
