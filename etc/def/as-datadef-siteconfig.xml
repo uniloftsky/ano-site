@@ -6,17 +6,3 @@
 		<property name="allowance" type="enumeration" enumeration="Allowance"/>
 	</document>
   </module>
-  
-  <!-- User Settings -->
-  <module name="UserSettings">
-    <listener class="net.anotheria.anosite.cms.listener.CRUDLogListener"/>
-	<document name="LanguageFilteringSettings">
-		<property name="userId" type="string"/>
-		<property name="languageFilteringEnabled" type="boolean"/>
-		<property name="displayedLanguages" type="list">
-			<content>
-				<link name="displayedLanguages" type="string"/>
-	        	</content>
-		</property>		
-	</document>
-  </module>

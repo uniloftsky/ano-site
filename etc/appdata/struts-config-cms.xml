@@ -7,8 +7,7 @@
     
     <!-- ========== Form Bean Definitions ================================== -->
     <form-beans type="org.apache.struts.action.ActionFormBean">
-    	<form-bean name="EditUserSettingsForm"
-		type="net.anotheria.anosite.usersettings.bean.EditUserSettingsForm"/>	
+    
     </form-beans>
     
     <!-- ========== Global Exception Definitions ============================== -->
@@ -25,25 +24,7 @@
     </global-forwards>
     
     <!-- ========== Action Mapping Definitions ============================== -->
-    <action-mappings type="org.apache.struts.action.ActionMapping">
-    
-    	<!-- User Settings -->
-	<action path="/userSettingsEdit"			
-		type="net.anotheria.anosite.usersettings.action.EditUserSettingsAction"
-		scope="request">
-		<forward name="success" path="/net/anotheria/anosite/usersettings/jsp/EditUserSettingsDialog.jsp"/>		
-		<forward name="failure" path="/login"/>
-		<!-- Default referrer path will be used if referrer can not be received manually -->
-		<forward name="defaultReferrer" path="assitedataSiteShow"/>
-	</action>
-	<action
-		path="/userSettingsUpdate"
-		name="EditUserSettingsForm"
-		type="net.anotheria.anosite.usersettings.action.EditUserSettingsDialogAction"
-		input="EditUserSettingsDialog.jsp"
-		scope="request">
-								
-	</action>
+    <action-mappings type="org.apache.struts.action.ActionMapping">        	
     
 	<action path="/index" type="net.anotheria.anosite.gen.shared.action.BaseIndexPageAction" scope="request">
 		<forward name="success" path="/net/anotheria/anosite/gen/shared/jsp/IndexPage.jsp"/>
