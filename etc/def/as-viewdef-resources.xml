@@ -4,6 +4,7 @@
 				<module>ASResourceData</module>
 				<document>TextResource</document>
 				<filter name="AZ" field="name"/>
+				<filter name="MissingTranslation" field="Any" />
 				<elements>
 					<element type="field" name="id" comparable="true">
 	        		   	<decorator name="idToA">
@@ -44,6 +45,7 @@
 				<module>ASResourceData</module>
 				<document>MailTemplate</document>
 				<filter name="AZ" field="name"/>
+				<filter name="MissingTranslation" field="Any" />				
 				<elements>
 					<element type="field" name="id" comparable="true">
 	        		   	<decorator name="idToA">
@@ -87,6 +89,7 @@
 				<module>ASResourceData</module>
                 <document>Image</document>
 				<filter name="AZ" field="name"/>
+				<filter name="MissingTranslation" field="Any" />
                 <elements>
                 	<element type="field" name="id" comparable="true">
 	                    <decorator name="idToA">
@@ -135,6 +138,7 @@
 				<module>ASResourceData</module>
                 <document>FileLink</document>
 				<filter name="AZ" field="name"/>
+				<filter name="MissingTranslation" field="Any" />
                 <elements>
                 	<element type="field" name="id" comparable="true">
 	                    <decorator name="idToA">

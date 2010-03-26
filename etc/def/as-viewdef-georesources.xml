@@ -92,6 +92,7 @@
 				<module>ASGeographicData</module>
 				<document>City</document>
 				<filter name="AZ" field="name"/>
+				<filter name="MissingTranslation" field="Any" />
 				<elements>
 					<element type="field" name="id" comparable="true">
 	        		   	<decorator name="idToA">
@@ -134,6 +135,7 @@
 				<module>ASGeographicData</module>
 				<document>Language</document>
 				<filter name="AZ" field="name"/>
+				<filter name="MissingTranslation" field="Any" />				
 				<elements>
 					<element type="field" name="id" comparable="true">
 	        		   	<decorator name="idToA">

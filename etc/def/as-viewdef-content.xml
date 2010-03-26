@@ -5,6 +5,7 @@
 				<module>ASWebData</module>
 				<document>Pagex</document>
 				<filter name="AZ" field="name"/>
+				<filter name="MissingTranslation" field="Any" />				
 				<elements>
 					<element type="field" name="id" comparable="true">
 	        		   	<decorator name="idToA">
@@ -83,6 +84,7 @@
 				<module>ASWebData</module>
 				<document>Box</document>
 				<filter name="AZ" field="name"/>
+				<filter name="MissingTranslation" field="Any" />
 				<elements>
 					<element type="field" name="id" comparable="true">
 	        		   	<decorator name="idToA">

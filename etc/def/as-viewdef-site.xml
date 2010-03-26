@@ -7,6 +7,7 @@
 				<module>ASSiteData</module>
 				<document>Site</document>
 				<filter name="AZ" field="name"/>
+				<filter name="MissingTranslation" field="Any" />				
 				<elements>
 					<element type="field" name="id" comparable="true">
 	        		   	<decorator name="idToA">
@@ -68,6 +69,7 @@
 				<module>ASSiteData</module>
 				<document>NaviItem</document>
 				<filter name="AZ" field="name"/>
+				<filter name="MissingTranslation" field="Any" />				
 				<elements>
 					<element type="field" name="id" comparable="true">
 	        		   	<decorator name="idToA">
