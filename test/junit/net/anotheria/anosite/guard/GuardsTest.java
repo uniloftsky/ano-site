@@ -1,6 +1,10 @@
 package net.anotheria.anosite.guard;
 
 import static org.junit.Assert.fail;
+
+import java.util.List;
+import java.util.ArrayList;
+
 import net.anotheria.anodoc.util.context.CallContext;
 import net.anotheria.anodoc.util.context.CallContextFactory;
 import net.anotheria.anodoc.util.context.ContextManager;
@@ -46,6 +50,13 @@ public class GuardsTest {
 				@Override
 				public String getDefaultLanguage() {
 					return "EN";
+				}
+				@Override
+				public List<String> getSupportedLanguages() {
+					List<String> ret = new ArrayList<String>();
+					ret.add("EN");
+					ret.add("DE");
+					return ret;
 				}
 			};
 		}
