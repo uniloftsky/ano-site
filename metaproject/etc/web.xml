@@ -130,7 +130,7 @@
     	</filter>
 		<filter>
 			<filter-name>APIFilter</filter-name>
-			<filter-class>net.anotheria.anosite.shared.presentation.filter.APIFilter</filter-class>
+			<filter-class>net.anotheria.anoplass.api.filter.APIFilter</filter-class>
 		</filter>
         <filter-mapping>
             <filter-name>FirstFilter</filter-name>
@@ -207,6 +207,11 @@
 	    <taglib-location>/WEB-INF/tld/yui.tld</taglib-location>
 	</taglib>
 	<!--/jsp-config-->
+	<listener>
+		<listener-class>
+			net.anotheria.@applicationName@.shared.presentation.listener.ContextInitializer
+		</listener-class>
+	</listener>
   	<listener>
 		<listener-class>
 			net.anotheria.anosite.shared.presentation.listener.ContextInitializer
@@ -215,11 +220,6 @@
   	<listener>
 		<listener-class>
 			net.anotheria.anosite.shared.presentation.listener.APISessionListener
-		</listener-class>
-	</listener>
-	<listener>
-		<listener-class>
-			net.anotheria.@applicationName@.shared.presentation.listener.ContextInitializer
 		</listener-class>
 	</listener>
 

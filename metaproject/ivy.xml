@@ -1,80 +1,60 @@
 <ivy-module version="2.0">
-    <info organisation="anotheria.net" module="affairo"/>
+    <info organisation="anotheria.net" module="scoreshop"/>
 	<configurations >
 		<conf name="jar" />
-		<conf name="war" />
 	</configurations>
-
+	<publications>
+    </publications>
     <dependencies>
         <dependency org="org.apache" name="log4j" rev="stable" transitive="false"/>
         <dependency org="org.apache" name="struts" rev="stable" transitive="false"/>
-        <dependency org="org.apache.taglibs.string" name="taglibs-string" rev="stable" transitive="false"/>
-        <dependency org="org.jdom" name="jdom" rev="stable" transitive="false"/>
+
         <dependency org="org.apache.commons" name="commons-beanutils" rev="stable" transitive="false"/>
-        <dependency org="atg.taglib.json" name="json-taglib" rev="stable" transitive="false"/>
-        <dependency  org="commons-validator" name="commons-validator" rev="stable" transitive="false">
-            <artifact name="commons-validator" ext="jar"/>
-        </dependency>
-
-        <!-- FlyingSources -->
-         <dependency org="org.xhtmlrenderer" name="core-renderer" rev="stable" transitive="false"/>
-         <dependency org="org.xhtmlrenderer" name="core-renderer-minimal" rev="stable" transitive="false"/>
-         <dependency org="com.lowagie" name="iText" rev="stable" transitive="false"/>
-         <dependency org="org" name="xml-apis-xerces" rev="stable" transitive="false"/>
-        <!-- End FlyingSources -->
-
-        <!-- postgresql JDBC driver -->
-        <dependency org="postgresql" name="postgresql" rev="stable"/>
-
 
         <dependency org="javax" name="servlet-api" rev="stable" transitive="false"/>
         <dependency org="javax" name="jsp-api" rev="stable" transitive="false"/>
 
-        <dependency org="javax.mail" name="mail" rev="stable" transitive="false" >
-            <artifact name="mail" ext="jar"/>
-        </dependency>
 
         <dependency org="java.net" name="moskito-core" rev="latest" transitive="true" changing="true"/>
         <dependency org="java.net" name="moskito-web" rev="latest" transitive="true" changing="true"/>
         <dependency org="java.net" name="moskito-util" rev="latest" transitive="true" changing="true"/>
         <dependency org="java.net" name="moskito-webui" rev="latest" transitive="true" changing="true"/>
-        <dependency org="java.net" name="moskito-webui-jsps" rev="latest" transitive="true" changing="true"/>
-        <dependency org="java.net" name="moskito-webui-config" rev="latest" transitive="true" changing="true"/>
 
         <dependency org="java.net" name="configureme" rev="latest" transitive="true" changing="true"/>
         <dependency org="org.json" name="json" rev="stable" transitive="false" />
 
         <dependency org="anotheria.net" name="ano-util" rev="latest" transitive="true" changing="true"/>
+        <dependency org="anotheria.net" name="ano-prise"  rev="latest" transitive="true" changing="true"/>
         <dependency org="anotheria.net" name="ano-doc"  rev="latest" transitive="true" changing="true"/>
-        <dependency org="anotheria.net" name="ano-db"  rev="latest" transitive="true" changing="true"/>
-        <dependency org="anotheria.net" name="ano-search"  rev="latest" transitive="true" changing="true"/>
         <dependency org="anotheria.net" name="ano-web"  rev="latest" transitive="true" changing="true"/>
-        <dependency org="anotheria.net" name="ano-site" rev="latest" transitive="true" changing="true"/>
-        <dependency org="anotheria.net" name="ano-comm" rev="latest" transitive="true" changing="true"/>
-
+        <dependency org="anotheria.net" name="ano-db"  rev="latest" transitive="true" changing="true"/>
+        <dependency org="anotheria.net" name="ano-site"  rev="latest" transitive="true" changing="true"/>
+        <dependency org="anotheria.net" name="ano-comm"  rev="latest" transitive="true" changing="true"/>
+        <dependency org="anotheria.net" name="ano-plass"  rev="latest" transitive="true" changing="true"/>
+        
+        
         <dependency org="org.apache.commons" name="commons-collections" rev="stable" transitive="false"/>
+        <dependency org="org.apache.commons" name="commons-cli" rev="stable" transitive="false"/>
+        <dependency org="org.apache.commons" name="commons-codec" rev="stable" transitive="false"/>
+        <dependency org="org.apache.commons" name="commons-digester" rev="stable" transitive="false"/>
+        <dependency org="org.apache.commons" name="commons-fileupload" rev="stable" transitive="false"/>
+        <dependency org="org.apache.commons" name="commons-httpclient" rev="stable" transitive="false"/>
+        <dependency org="org.apache.commons" name="commons-jci-core" rev="stable" transitive="false"/>
 
-        <!-- Dependencies are not prooved! -->
-          <dependency org="org.apache.commons" name="commons-cli" rev="stable" transitive="false"/>
+        <dependency org="org.apache.commons" name="commons-lang" rev="stable" transitive="false"/>
+        
+        <dependency org="org.apache.commons" name="commons-logging" rev="stable" transitive="false"/>
 
+        <dependency org="org.apache.commons" name="commons-logging-adapters" rev="stable" transitive="false"/>
 
-          <dependency org="org.apache.commons" name="commons-codec" rev="stable" transitive="false"/>
-          <dependency org="org.apache.commons" name="commons-digester" rev="stable" transitive="false"/>
-          <dependency org="org.apache.commons" name="commons-fileupload" rev="stable" transitive="false"/>
-          <dependency org="org.apache.commons" name="commons-httpclient" rev="stable" transitive="false"/>
-          <dependency org="org.apache.commons" name="commons-jci-core" rev="stable" transitive="false"/>
+        <dependency org="org.apache.commons" name="commons-logging-api" rev="stable" transitive="false"/>
 
-          <dependency org="org.apache.commons" name="commons-lang" rev="stable" transitive="false"/>
-          
-          <dependency org="org.apache.commons" name="commons-logging" rev="stable" transitive="false"/>
-
-          <dependency org="org.apache.commons" name="commons-logging-adapters" rev="stable" transitive="false"/>
-
-          <dependency org="org.apache.commons" name="commons-logging-api" rev="stable" transitive="false"/>
-
-          <dependency org="org.apache.commons" name="commons-resources" rev="stable" transitive="false"/>
-          <dependency org="org.apache.commons" name="commons-services" rev="stable" transitive="false"/>
-          <dependency org="org.apache.oro" name="jakarta-oro" rev="stable" transitive="false"/>
-      
+        <dependency org="org.apache.commons" name="commons-resources" rev="stable" transitive="false"/>
+        <dependency org="org.apache.commons" name="commons-services" rev="stable" transitive="false"/>
+        <dependency org="org.apache.oro" name="jakarta-oro" rev="stable" transitive="false"/>
+        
+        <dependency org="org" name="junit" rev="stable" transitive="false"/>
+        
+        
     </dependencies>
 </ivy-module>

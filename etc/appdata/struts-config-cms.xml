@@ -51,10 +51,6 @@
 	  	<action path="/logout"  type="net.anotheria.webutils.actions.LogoutAction" scope="request">
   			<forward name="success" path="/net/anotheria/webutils/jsp/Login.jsp"/>
 		</action>
-	  	<action path="/showPage"  type="de.payback.pt.web.cms.action.ShowPageAction" scope="request">
-			<forward name="success" path="/de/payback/pt/web/cms/jsp/CmsTemplate.jsp" /> 
-			<forward name="nolayout" path="/de/payback/pt/web/cms/jsp/CmsNoLayout.jsp" /> 
-		</action>
 		
     </action-mappings>
     
