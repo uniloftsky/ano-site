@@ -48,7 +48,7 @@
 			</fileset>
 		</copy>
 		<echo>CREATING APPLICATION: creat base sources files</echo>
-		<copy toDir="${newproject.dir}/src/net/anotheria/${app.name}" filtering="true">
+		<copy toDir="${newproject.dir}/java/net/anotheria/${app.name}" filtering="true">
 			<fileset dir="${metaproject.dir}/metajava"/>
 		</copy>
 		<echo>CREATING APPLICATION: create base web data</echo>

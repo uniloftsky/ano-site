@@ -4,7 +4,7 @@
 	<property name="target.jar.name" value="@applicationName@.jar"/>
     <property name="webapp.name" value="@applicationURLPath@"/>
 
-	<property name="src" value="${basedir}/src"/>
+	<property name="java" value="${basedir}/src"/>
 	
 	<import file="../build/anosite-project.xml"/>
 	
