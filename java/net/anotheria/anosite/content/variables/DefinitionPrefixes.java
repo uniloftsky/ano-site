@@ -1,9 +1,11 @@
 package net.anotheria.anosite.content.variables;
 
+import net.anotheria.util.content.template.processors.variables.ConditionPrefixes;
+
 /**
  * This helper class defines prefixes useable for variables in the variable processor.
- * @author lrosenberg
  *
+ * @author lrosenberg
  */
 public final class DefinitionPrefixes {
 	/**
@@ -49,29 +51,61 @@ public final class DefinitionPrefixes {
 	/**
 	 * Link to an image.
 	 */
-	public static final String PREFIX_IMAGE_LINK ="imagelink";
+	public static final String PREFIX_IMAGE_LINK = "imagelink";
 	/**
 	 * Link to a file.
 	 */
-	public static final String PREFIX_FILE_LINK ="filelink";
+	public static final String PREFIX_FILE_LINK = "filelink";
 	/**
 	 * Image (including tags).
 	 */
 	public static final String PREFIX_IMAGE = "image";
-	
-	public static final String PREFIX_IF = "if";
-	public static final String PREFIX_IF_NOT = "ifNot";
-	public static final String PREFIX_PRESENT = "present";
-	public static final String PREFIX_NOT_PRESENT = "notPresent";
-	public static final String PREFIX_EQUALS = "equals";
-	public static final String PREFIX_NOT_EQUALS = "notEquals";
-	public static final String PREFIX_IN_RANGE = "inRange";
-    public static final String PREFIX_GREATERTHEN = "greaterThan";
-    public static final String PREFIX_GREATEREQUAL = "greaterEqual";
-    public static final String PREFIX_LESSTHAN = "lessThan";
-    public static final String PREFIX_LESSEQUAL = "lessEqual";
+	/**
+	 * Prefix If.
+	 */
+	public static final String PREFIX_IF = ConditionPrefixes.PREFIX_IF;
+	/**
+	 * Prefix if Not.
+	 */
+	public static final String PREFIX_IF_NOT = ConditionPrefixes.PREFIX_IF_NOT;
+	/**
+	 * Prefix Present.
+	 */
+	public static final String PREFIX_PRESENT = ConditionPrefixes.PREFIX_PRESENT;
+	/**
+	 * Prefix not Present.
+	 */
+	public static final String PREFIX_NOT_PRESENT = ConditionPrefixes.PREFIX_NOT_PRESENT;
+	/**
+	 * Prefix equals.
+	 */
+	public static final String PREFIX_EQUALS = ConditionPrefixes.PREFIX_EQUALS;
+	/**
+	 * Prefix not equals.
+	 */
+	public static final String PREFIX_NOT_EQUALS = ConditionPrefixes.PREFIX_NOT_EQUALS;
+	/**
+	 * Prefix in range.
+	 */
+	public static final String PREFIX_IN_RANGE = ConditionPrefixes.PREFIX_IN_RANGE;
+	/**
+	 * Prefix Greater then.
+	 */
+	public static final String PREFIX_GREATERTHEN = ConditionPrefixes.PREFIX_GREATERTHEN;
+	/**
+	 * Prefix greater equal.
+	 */
+	public static final String PREFIX_GREATEREQUAL = ConditionPrefixes.PREFIX_GREATEREQUAL;
+	/**
+	 * Prefix Less Then.
+	 */
+	public static final String PREFIX_LESSTHAN = ConditionPrefixes.PREFIX_LESSTHAN;
+	/**
+	 * Prefix Less Equal.
+	 */
+	public static final String PREFIX_LESSEQUAL = ConditionPrefixes.PREFIX_LESSEQUAL;
 
-	private DefinitionPrefixes(){
+	private DefinitionPrefixes() {
 		//prevent instantiation.
 	}
 }

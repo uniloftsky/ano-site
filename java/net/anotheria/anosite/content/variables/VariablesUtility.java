@@ -1,54 +1,24 @@
  package net.anotheria.anosite.content.variables;
 
+ import net.anotheria.util.StringUtils;
+import net.anotheria.util.content.element.ContentElement;
+import net.anotheria.util.content.element.DynamicElement;
+import net.anotheria.util.content.element.StaticElement;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import static net.anotheria.util.content.TextReplaceConstants.*;
 
-import net.anotheria.anosite.content.variables.element.ContentElement;
-import net.anotheria.anosite.content.variables.element.DynamicElement;
-import net.anotheria.anosite.content.variables.element.StaticElement;
-import net.anotheria.util.StringUtils;
-
-/**
+ /**
  * Utility for replacement of expressions with variables in texts. An expression consists of three parts:
  * {prefix:name:defaultValue}. The prefix tells the variable utility which processor to use, the name and default value are submitted to the processor in question.
  * @author lrosenberg
  */
 public class VariablesUtility {
-	/**
-	 * The default value if no 'fallback' default value is specified.
-	 */
-	public static final String DEFAULT_VALUE  = "*UNSET*";
-	/**
-	 * Line delimiter for line parsing. The Variables utility only supports expression in a single line.
-	 */
-	public static final char LINE_DELIMITER = '\n';
-	/**
-	 * Word delimiter.
-	 */
-	public static final char WORD_DELIMITER = ' ';
-	/**
-	 * A tag (expression) starts with this character.
-	 */
-	public static final char TAG_START = '{';
-	/**
-	 * A tag (expression) ends with this character.
-	 */
-	public static final char TAG_END = '}';
-	
-	/**
-	 * Contant for quoting.
-	 */
-	public static final String QUOTE = "\"";
-	/**
-	 * Escape char for special characters in the expressions.
-	 */
-	public static final char ESCAPE_CHAR = '\\';
-	
-	
 	/**
 	 * Map with preconfigured processors.
 	 */
@@ -139,10 +109,10 @@ public class VariablesUtility {
 
 	public static List<ContentElement> indexSource(String src){
 		String myS = StringUtils.removeChar(src, '\r');
-		List<String> stringIndex = StringUtils.indexSuperTags(myS, '{', '}');
+		List<String> stringIndex = StringUtils.indexSuperTags(myS, TAG_START, TAG_END);
 		List<ContentElement> ret = new ArrayList<ContentElement>(stringIndex.size());
 		for(String s: stringIndex)
-			ret.add(createContentElementInDynamic(s, '{', '}'));
+			ret.add(createContentElementInDynamic(s, TAG_START, TAG_END));
 		return ret;
 	}
 
@@ -192,8 +162,6 @@ public class VariablesUtility {
 		VariablesProcessor processor = processors.get(prefix);
 		if (processor==null)
 			return dynIndex.getElementText();
-		String ret = processor.replace(prefix, var, defaultValue, req);
-//		System.out.println("RET: " + ret);
-		return ret;
+		return processor.replace(prefix, var, defaultValue, req);
 	}
 }
