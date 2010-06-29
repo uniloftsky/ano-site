@@ -1,78 +1,40 @@
 package net.anotheria.anosite.content.variables;
 
-import java.util.List;
+import net.anotheria.anosite.content.variables.helper.TextResourceProcessorHelper;
+import net.anotheria.anosite.gen.asresourcedata.data.TextResource;
+import net.anotheria.asg.exception.ASGRuntimeException;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
-
-import net.anotheria.anoprise.metafactory.MetaFactory;
-import net.anotheria.anoprise.metafactory.MetaFactoryException;
-import net.anotheria.anosite.gen.asresourcedata.data.TextResource;
-import net.anotheria.anosite.gen.asresourcedata.service.IASResourceDataService;
-import net.anotheria.asg.exception.ASGRuntimeException;
-
-import org.apache.log4j.Logger;
 
 /**
  * @author: h3llka
  */
 public class TextResourceProcessor implements VariablesProcessor {
-    private final Logger log = Logger.getLogger(TextResourceProcessor.class);
-    private IASResourceDataService resourceDataService;
-    public static final String PREFIX = "text";
-    private static final String ERROR_MESSAGE = "Wrong or unsupported variable : ";
+	private final Logger log = Logger.getLogger(TextResourceProcessor.class);
+	public static final String PREFIX = "text";
+	private static final String ERROR_MESSAGE = "Wrong or unsupported variable : ";
+
+	/**
+	 * Constructor.
+	 */
+	public TextResourceProcessor() {
+	}
+
+	@Override
+	public String replace(String prefix, String variable, String defValue, HttpServletRequest req) {
+		try {
+			TextResource resource = TextResourceProcessorHelper.getTextResourceByName(variable);
+			if (resource == null) {
+				log.error("TextResourceProcessor - replace method: Error! Missing key: " + variable);
+				return ERROR_MESSAGE + variable;
+			}
+			return resource.getValue();
+		} catch (ASGRuntimeException e) {
+			log.error("TextResourceProcessor - replace method: Error! Missing key: " + variable, e);
+			return ERROR_MESSAGE + variable;
+		}
+	}
 
 
-    public TextResourceProcessor(){
-        init();
-    }
-
-    //FIXME why does the processor need an init() method?
-    /**
-     * Init for service!
-     */
-    private void init() {
-        try {
-            resourceDataService = MetaFactory.get(IASResourceDataService.class);
-        } catch (MetaFactoryException e) {
-            log.fatal("TextResourceProcessor - init()",e);
-        }
-    }
-
-    /**
-     * Should be used in test Only! For mocking Using JMock
-     * @param service - mocked service itself
-     */
-    @Deprecated
-    protected void setResourceDataService(IASResourceDataService service) {
-        this.resourceDataService = service;
-    }
-
-    @Override
-    public String replace(String prefix, String variable, String defValue, HttpServletRequest req) {
-        TextResource resource = getTextResourceByName(variable);
-        if (resource == null) {
-            log.error("TextResourceProcessor - replace method: Error! Missing key: " + variable);
-            return ERROR_MESSAGE + variable;
-        }
-        return resource.getValue();
-    }
-
-    /**
-     * Returns TextResource instance, where name equals to incoming var.
-     *
-     * @param var variable - name
-     * @return TextResource instance.
-     */
-    private TextResource getTextResourceByName(String var) {
-        TextResource result = null;
-        try {
-            List<TextResource> resources = resourceDataService.getTextResourcesByProperty(TextResource.PROP_NAME, var);
-            if (resources != null && resources.size() > 0) {
-                result = resources.get(0);
-            }
-        } catch (ASGRuntimeException e) {
-            log.error("TextResourceProcessor - getTextResourceByName(" + var + ")", e);
-        }
-        return result;
-    }
 }
