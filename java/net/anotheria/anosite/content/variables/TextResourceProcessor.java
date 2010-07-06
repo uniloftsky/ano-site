@@ -8,11 +8,22 @@ import org.apache.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 
 /**
+ * TextResourceProcessor.
+ *
  * @author: h3llka
  */
 public class TextResourceProcessor implements VariablesProcessor {
+	/**
+	 * Logger instance.
+	 */
 	private final Logger log = Logger.getLogger(TextResourceProcessor.class);
+	/**
+	 * Processor prefix.
+	 */
 	public static final String PREFIX = "text";
+	/**
+	 * Error message.
+	 */
 	private static final String ERROR_MESSAGE = "Wrong or unsupported variable : ";
 
 	/**
