@@ -51,7 +51,6 @@ public class GuardsTest {
 				public String getDefaultLanguage() {
 					return "EN";
 				}
-				@Override
 				public List<String> getSupportedLanguages() {
 					List<String> ret = new ArrayList<String>();
 					ret.add("EN");
