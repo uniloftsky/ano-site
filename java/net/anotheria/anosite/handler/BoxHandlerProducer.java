@@ -56,7 +56,7 @@ public class BoxHandlerProducer implements IStatsProducer{
 	}
 	
 	protected Interval[] getMonitoringIntervals(){
-		return Constants.DEFAULT_INTERVALS;
+		return Constants.getDefaultIntervals();
 	}
 	
 	@Override public String getCategory() {
