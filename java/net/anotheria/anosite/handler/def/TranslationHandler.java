@@ -8,7 +8,7 @@ import net.anotheria.anosite.gen.aswebdata.data.Box;
 import net.anotheria.anosite.handler.AbstractBoxHandler;
 import net.anotheria.anosite.handler.BoxHandlerResponse;
 import net.anotheria.anosite.handler.exception.BoxProcessException;
-import net.anotheria.anosite.shared.AttributeConstants;
+import net.anotheria.anosite.util.AnositeConstants;
 import net.anotheria.util.StringUtils;
 
 public class TranslationHandler extends AbstractBoxHandler{
@@ -24,7 +24,7 @@ public class TranslationHandler extends AbstractBoxHandler{
 			if(bundle.length !=2)
 				throw new BoxProcessException("Invalid message bundle format <" + l + "> Expected <key=message>");
 				
-			APICallContext.getCallContext().setAttribute(AttributeConstants.ATTR_TRANSLATION_PREFIX + bundle[0], bundle[1]);
+			APICallContext.getCallContext().setAttribute(AnositeConstants.ACA_BOX_TRANSLATION_PREFIX + bundle[0], bundle[1]);
 		}
 		return super.process(req, res, box, bean);
 	}

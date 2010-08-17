@@ -11,6 +11,12 @@ public class AnositeConstants {
 	//RA - request attribute
 	public static final String RA_PREFIX = "ra.";
 	
+	//ACA - API CallContext Attribute
+	public static final String ACA_PREFIX = "aca.";
+	
+	//ASA - API Session Sttribute
+	public static final String ASA_PREFIX = "asa.";
+	
 	public static final String AA_ANOSITE_RANDOM = BEAN_PREFIX+AA_PREFIX+".random";
 	
 	public static final String SA_LANGUAGE = BEAN_PREFIX+SA_PREFIX+".lang";
@@ -29,4 +35,7 @@ public class AnositeConstants {
 
 
 	public static final String AS_MOSKITO_SUBSYSTEM = "ano-site";
+	
+	
+	public static final String ACA_BOX_TRANSLATION_PREFIX = ACA_PREFIX + "BoxTranslation.";
 }

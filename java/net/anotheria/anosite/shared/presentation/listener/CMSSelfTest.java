@@ -1,16 +1,30 @@
 package net.anotheria.anosite.shared.presentation.listener;
 
+import java.util.List;
+
 import net.anotheria.anoprise.metafactory.MetaFactory;
 import net.anotheria.anoprise.metafactory.MetaFactoryException;
-import net.anotheria.anosite.gen.ascustomdata.data.*;
-import net.anotheria.anosite.gen.ascustomdata.service.ASCustomDataServiceFactory;
+import net.anotheria.anosite.gen.ascustomdata.data.CustomBoxHandlerDef;
+import net.anotheria.anosite.gen.ascustomdata.data.CustomBoxHandlerDefFactory;
+import net.anotheria.anosite.gen.ascustomdata.data.CustomBoxType;
+import net.anotheria.anosite.gen.ascustomdata.data.CustomBoxTypeFactory;
+import net.anotheria.anosite.gen.ascustomdata.data.CustomGuardDef;
+import net.anotheria.anosite.gen.ascustomdata.data.CustomGuardDefFactory;
 import net.anotheria.anosite.gen.ascustomdata.service.IASCustomDataService;
-import net.anotheria.anosite.gen.asgenericdata.data.*;
+import net.anotheria.anosite.gen.asgenericdata.data.GenericBoxHandlerDef;
+import net.anotheria.anosite.gen.asgenericdata.data.GenericBoxHandlerDefFactory;
+import net.anotheria.anosite.gen.asgenericdata.data.GenericBoxType;
+import net.anotheria.anosite.gen.asgenericdata.data.GenericBoxTypeFactory;
+import net.anotheria.anosite.gen.asgenericdata.data.GenericGuardDef;
+import net.anotheria.anosite.gen.asgenericdata.data.GenericGuardDefFactory;
 import net.anotheria.anosite.gen.asgenericdata.service.IASGenericDataService;
+import net.anotheria.anosite.handler.BoxHandler;
+import net.anotheria.anosite.handler.def.ImageBrowserHandler;
+import net.anotheria.anosite.handler.def.RedirectImmediatelyHandler;
+import net.anotheria.anosite.handler.def.TranslationHandler;
 import net.anotheria.asg.exception.ASGRuntimeException;
-import org.apache.log4j.Logger;
 
-import java.util.List;
+import org.apache.log4j.Logger;
 
 /**
  * This utility class scans the data on start and ensures that all generic data is created.
@@ -49,10 +63,13 @@ public final class CMSSelfTest {
 		ensureBoxTypeExists("TextBox", "TextBox");
 		ensureBoxTypeExists("CSSLink", "CSSLink");
 		ensureBoxTypeExists("JSLink", "JSLink");
+		ensureBoxTypeExists("Translation", "Translation");
 	}
 
 	private static void selfTestBoxHandlers(){
-		ensureBoxHandlerExists("RedirectImmediatelyHandler", "net.anotheria.anosite.handler.def.RedirectImmediatelyHandler");
+		ensureBoxHandlerExists("RedirectImmediatelyHandler", RedirectImmediatelyHandler.class);
+		ensureBoxHandlerExists("Translation", TranslationHandler.class);
+		ensureBoxHandlerExists("ImageBrowser", ImageBrowserHandler.class);
 	}
 
 	private static void selfTestGuards(){
@@ -89,6 +106,10 @@ public final class CMSSelfTest {
 		}
 	}
 
+	private static void ensureBoxHandlerExists(String name, Class<? extends BoxHandler> clazz){
+		ensureBoxHandlerExists(name, clazz.getName());
+	}
+	
 	private static void ensureBoxHandlerExists(String name, String clazz){
 		try{
 			List<GenericBoxHandlerDef> defs = genericDataService.getGenericBoxHandlerDefsByProperty(GenericBoxHandlerDef.PROP_NAME, name);

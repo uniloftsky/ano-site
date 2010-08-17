@@ -5,9 +5,7 @@ import javax.servlet.jsp.JspException;
 
 import net.anotheria.anoplass.api.APICallContext;
 import net.anotheria.anosite.gen.asresourcedata.data.TextResource;
-import net.anotheria.anosite.shared.AttributeConstants;
 import net.anotheria.anosite.util.AnositeConstants;
-import net.anotheria.util.StringUtils;
 
 /**
  * Writes out the content of the resource. Writes out a link to the resource in edit mode.
@@ -32,7 +30,7 @@ public class TextResourceTag extends BaseResourceTag{
 
 		boolean editable = false;
 		
-		String txt = (String) APICallContext.getCallContext().getAttribute(AttributeConstants.ATTR_TRANSLATION_PREFIX + myKey);
+		String txt = (String) APICallContext.getCallContext().getAttribute(AnositeConstants.ACA_BOX_TRANSLATION_PREFIX + myKey);
 		
 		if(txt != null){
 			write(txt);
