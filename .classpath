@@ -29,7 +29,7 @@
 	<classpathentry kind="lib" path="lib/ano-prise.jar" sourcepath="/ano-prise"/>
 	<classpathentry kind="lib" path="lib/struts.jar"/>
 	<classpathentry kind="lib" path="lib/ano-net.jar"/>
-	<classpathentry kind="lib" path="lib/ano-maf.jar"/>
+	<classpathentry kind="lib" path="lib/ano-maf.jar" sourcepath="/ano-maf"/>
 	<classpathentry kind="lib" path="lib/commons-collections.jar"/>
 	<classpathentry kind="lib" path="lib/commons-lang.jar"/>
 	<classpathentry kind="lib" path="lib/commons-logging.jar"/>

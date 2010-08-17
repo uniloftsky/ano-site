@@ -17,6 +17,10 @@ public final class DefinitionPrefixes {
 	 */
 	public static final String PREFIX_REQUEST_ATTRIBUTE = "ra";
 	/**
+	 * Box translations.
+	 */
+	public static final String PREFIX_BOX_TRANSLATIONS = "bt";
+	/**
 	 * Attribute in the internal scope of the api call context.
 	 */
 	public static final String PREFIX_API_CALL_CONTEXT_ATTRIBUTE = "api_cca";
