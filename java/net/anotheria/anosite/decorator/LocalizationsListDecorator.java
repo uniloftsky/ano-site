@@ -2,9 +2,9 @@ package net.anotheria.anosite.decorator;
 
 import net.anotheria.anoprise.metafactory.MetaFactory;
 import net.anotheria.anoprise.metafactory.MetaFactoryException;
-import net.anotheria.anosite.gen.assitedata.service.ASSiteDataServiceFactory;
-import net.anotheria.anosite.gen.assitedata.service.IASSiteDataService;
+import net.anotheria.anosite.gen.asresourcedata.service.IASResourceDataService;
 import net.anotheria.asg.exception.ASGRuntimeException;
+
 import org.apache.log4j.Logger;
 
 
@@ -17,14 +17,14 @@ public class LocalizationsListDecorator extends LinksListDecorator{
 	/**
 	 * As web data service for MediaLinks retrieval.
 	 */
-	private static IASSiteDataService service;
+	private static IASResourceDataService service;
 
 	/**
 	 * Init.
 	 */
 	static {
 		try {
-			service = MetaFactory.get(IASSiteDataService.class);
+			service = MetaFactory.get(IASResourceDataService.class);
 		} catch (MetaFactoryException e) {
           Logger.getLogger(LocalizationsListDecorator.class).fatal("IASSiteDataService  init failure",e);
 		}
@@ -32,7 +32,7 @@ public class LocalizationsListDecorator extends LinksListDecorator{
 
 	@Override
 	protected String getLinkTargetName(String targetId) throws ASGRuntimeException {
-		return service.getMediaLink(targetId).getName();
+		return service.getLocalizationBundle(targetId).getName();
 	}
 	
 

@@ -30,7 +30,7 @@ public class TextResourceTag extends BaseResourceTag{
 
 		boolean editable = false;
 		
-		String txt = (String) APICallContext.getCallContext().getAttribute(AnositeConstants.ACA_BOX_TRANSLATION_PREFIX + myKey);
+		String txt = (String) APICallContext.getCallContext().getAttribute(AnositeConstants.ACA_LOCALIZATION_BUNDLE_PREFIX + myKey);
 		
 		if(txt != null){
 			write(txt);

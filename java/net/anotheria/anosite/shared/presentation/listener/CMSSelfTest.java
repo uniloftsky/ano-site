@@ -21,7 +21,6 @@ import net.anotheria.anosite.gen.asgenericdata.service.IASGenericDataService;
 import net.anotheria.anosite.handler.BoxHandler;
 import net.anotheria.anosite.handler.def.ImageBrowserHandler;
 import net.anotheria.anosite.handler.def.RedirectImmediatelyHandler;
-import net.anotheria.anosite.handler.def.TranslationHandler;
 import net.anotheria.asg.exception.ASGRuntimeException;
 
 import org.apache.log4j.Logger;
@@ -63,12 +62,10 @@ public final class CMSSelfTest {
 		ensureBoxTypeExists("TextBox", "TextBox");
 		ensureBoxTypeExists("CSSLink", "CSSLink");
 		ensureBoxTypeExists("JSLink", "JSLink");
-		ensureBoxTypeExists("Translation", "Translation");
 	}
 
 	private static void selfTestBoxHandlers(){
 		ensureBoxHandlerExists("RedirectImmediatelyHandler", RedirectImmediatelyHandler.class);
-		ensureBoxHandlerExists("Translation", TranslationHandler.class);
 		ensureBoxHandlerExists("ImageBrowser", ImageBrowserHandler.class);
 	}
 

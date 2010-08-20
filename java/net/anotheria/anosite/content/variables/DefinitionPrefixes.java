@@ -19,7 +19,7 @@ public final class DefinitionPrefixes {
 	/**
 	 * Box translations.
 	 */
-	public static final String PREFIX_BOX_TRANSLATIONS = "bt";
+	public static final String PREFIX_LOCALIZATION_MESSAGE = "mes";
 	/**
 	 * Attribute in the internal scope of the api call context.
 	 */

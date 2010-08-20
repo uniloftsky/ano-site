@@ -29,25 +29,13 @@ abstract public class LinksListDecorator implements IAttributeDecorator{
 			}catch(NoSuchPropertyException e){
 				links = new ArrayList<Object>(0);
 			}
-			List<String> ids = new ArrayList<String>(links.size());
 			String value = ""+links.size()+" [";
 			String linksValue = "";
-			for (Object l : links){
-				if (linksValue.length()>0)
-					linksValue+=", ";
-				linksValue+=l;
-				ids.add(""+l);
-			}
-			value = value + linksValue+"]";
-			
-			String href = doc.getDefinedParentName().toLowerCase() + StringUtils.capitalize(doc.getDefinedName())
-			+ StringUtils.capitalize(attributeName) + "Show?pId=" + doc.getId() + "&ts=" + System.currentTimeMillis();
-			
 			String title = "";
-			for (String id : ids){
+			for (Object l : links){
 				String name ;
 				try{
-					name = getLinkTargetName(id);
+					name = getLinkTargetName("" + l);
 				}catch(NoSuchDocumentException e){
 					name = "*DELETED*";
 				}catch(ASGRuntimeException e){
@@ -55,9 +43,18 @@ abstract public class LinksListDecorator implements IAttributeDecorator{
 				}
 				if (title.length()>0)
 					title += ", ";
+				
+				if (linksValue.length()>0)
+					linksValue+=", ";
+				linksValue+= name + "(" + l + ")";				
 				title += name;
-					
 			}
+			value = value + linksValue+"]";
+			
+			String href = doc.getDefinedParentName().toLowerCase() + StringUtils.capitalize(doc.getDefinedName())
+			+ StringUtils.capitalize(attributeName) + "Show?pId=" + doc.getId() + "&ts=" + System.currentTimeMillis();
+			
+			
 			if (title.length()>0)
 				title = " title=\""+title+"\"";
 			

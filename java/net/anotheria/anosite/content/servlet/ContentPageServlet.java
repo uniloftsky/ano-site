@@ -43,6 +43,7 @@ import net.anotheria.anosite.gen.asfederateddata.service.IASFederatedDataService
 import net.anotheria.anosite.gen.aslayoutdata.service.IASLayoutDataService;
 import net.anotheria.anosite.gen.asresourcedata.data.FileLink;
 import net.anotheria.anosite.gen.asresourcedata.data.Image;
+import net.anotheria.anosite.gen.asresourcedata.data.LocalizationBundle;
 import net.anotheria.anosite.gen.asresourcedata.data.TextResource;
 import net.anotheria.anosite.gen.asresourcedata.service.ASResourceDataServiceException;
 import net.anotheria.anosite.gen.asresourcedata.service.IASResourceDataService;
@@ -271,6 +272,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		// end action scope 
 		
 		PageTemplate template = siteDataService.getPageTemplate(page.getTemplate());
+		prepareLocalizationBundles(template.getLocalizations());
 		
 		HashMap<String, BoxHandler> handlerCache = new HashMap<String, BoxHandler>();
 		if (!submit){
@@ -612,6 +614,8 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	 * @throws ASGRuntimeException
 	 */
 	private InternalResponse createBoxBean(HttpServletRequest req, HttpServletResponse res, Box box) throws ASGRuntimeException, BoxHandleException {
+		prepareLocalizationBundles(box.getLocalizations());
+		
 		BoxBean ret = new BoxBean();
 
 		ret.setName(box.getName());
@@ -743,6 +747,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	 * @return
 	 * @throws ASGRuntimeException
 	 */
+	
 	private InternalResponse createBoxBeanList(HttpServletRequest req, HttpServletResponse res, List<String> boxIds) throws ASGRuntimeException{
 		ArrayList<BoxBean> ret = new ArrayList<BoxBean>();
 		String redirectUrl = null;
@@ -887,6 +892,8 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	 * @throws ASGRuntimeException
 	 */
 	private InternalResponse createPageBean(HttpServletRequest req, HttpServletResponse res, Pagex page, PageTemplate template) throws ASGRuntimeException{
+		prepareLocalizationBundles(page.getLocalizations());
+		
 		PageBean ret = new PageBean();
 
 		ret.setTitle(page.getTitle());
@@ -1216,6 +1223,26 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		List<TextResource> resources = resourceDataService.getTextResources();
 		for (TextResource r : resources)
 			req.setAttribute("res." + r.getName(), VariablesUtility.replaceVariables(req, r.getValue()));
+	}
+	
+	/**
+	 * Parses and puts all localization bundles into APICallContext.
+	 * @param localizationBundlesIds
+	 * @throws ASResourceDataServiceException
+	 */
+	private void prepareLocalizationBundles(List<String> localizationBundlesIds) throws ASResourceDataServiceException, ASGRuntimeException {
+		for(String bundleId: localizationBundlesIds){
+			LocalizationBundle bundle = resourceDataService.getLocalizationBundle(bundleId);
+			String toParse  = bundle.getMessages();
+			String[] lines = StringUtils.tokenize(toParse, '\n');
+			for (String l : lines) {
+				String[] message = StringUtils.tokenize(l, '=');
+				if(message.length !=2)
+					throw new ASGRuntimeException("Invalid format of LocalizationBundel with id " + bundleId + " in line: <" + l + ">. Expected line format: <key=message>");
+					
+				APICallContext.getCallContext().setAttribute(AnositeConstants.ACA_LOCALIZATION_BUNDLE_PREFIX + message[0], message[1]);
+			}
+		}
 	}
 
     class PageBeanCreator implements BlueprintCallExecutor{
