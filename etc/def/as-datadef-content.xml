@@ -41,13 +41,18 @@
 				<link name="box" type="single" target="ASWebData.Box"/>
         	</content>
         </property>
+		<property name="localizations" type="list">
+	        <content>
+				<link name="type" type="single" target="ASResourceData.LocalizationBundle"/>
+        	</content>
+        </property>
 		<property type="boolean" name="httpsonly"/>
 	</document>
 	<document name="Box">
 		<property name="name" type="string"/>
-		<property name="content" type="text" multilingual="true"/>
 		<link name="type" type="single" target="ASFederatedData.BoxType"/>
 		<link name="handler" type="single" target="ASFederatedData.BoxHandlerDef"/>
+		<property name="content" type="text" multilingual="true"/>
 		<property name="mediaLinks" type="list">
 	        <content>
 				<link name="mediaLinks" type="single" target="ASSiteData.MediaLink"/>
@@ -56,6 +61,11 @@
         <property name="scripts" type="list">
 	        <content>
 				<link name="scripts" type="single" target="ASSiteData.Script"/>
+        	</content>
+        </property>
+        <property name="localizations" type="list">
+	        <content>
+				<link name="type" type="single" target="ASResourceData.LocalizationBundle"/>
         	</content>
         </property>
 		<property name="subboxes" type="list">

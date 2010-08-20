@@ -68,7 +68,11 @@
 				<link name="box" type="single" target="ASWebData.Box"/>
         	</content>
         </property>
-        
+        <property name="localizations" type="list">
+	        <content>
+				<link name="type" type="single" target="ASResourceData.LocalizationBundle"/>
+        	</content>
+        </property>
 		
 		<property type="text" name="description"/>
 		

@@ -13,6 +13,7 @@
 	<decorator name="naviitem" class="net.anotheria.anosite.decorator.NaviItemDecorator"/>
 	<decorator name="scripts" class="net.anotheria.anosite.decorator.ScriptsListDecorator"/>
 	<decorator name="mediaLinks" class="net.anotheria.anosite.decorator.MediaLinksListDecorator"/>
+	<decorator name="localizations" class="net.anotheria.anosite.decorator.LocalizationsListDecorator"/>
 
 	<decorator name="linkTargetName" class="net.anotheria.anosite.decorator.LinkTargetNameDecorator"/>
 	<decorator name="fileSizeDecorator" class="net.anotheria.anosite.decorator.FileSizeDecorator"/>

@@ -166,6 +166,9 @@
 					<element type="field" name="scripts" comparable="true">
 						<decorator name="scripts"/>
 					</element>
+					<element type="field" name="localizations" comparable="true">
+						<decorator name="localizations"/>
+					</element>
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
 	        		<element type="function" name="deleteWithConfirmation"/>
@@ -181,6 +184,7 @@
 		      			<element type="field" name="site" /> 
 		      			<element type="field" name="mediaLinks" />
 		      			<element type="field" name="scripts" />
+		      			<element type="field" name="localizations" />
 						<element type="field" name="c1first" />
 						<element type="field" name="c2first" />
 						<element type="field" name="c3first" />
