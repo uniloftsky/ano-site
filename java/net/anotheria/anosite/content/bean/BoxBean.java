@@ -8,6 +8,12 @@ import java.util.List;
  * @author lrosenberg
  */
 public class BoxBean {
+	
+	/**
+	 * The name under which the BoxBean is stored in the call context to allow access by the variable processors.
+	 */
+	public static final String CALL_CONTEXT_SCOPE_NAME = BoxBean.class.getName();
+	
 	/**
 	 * The type of the box.
 	 */

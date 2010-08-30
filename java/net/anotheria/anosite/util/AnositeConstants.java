@@ -36,6 +36,4 @@ public class AnositeConstants {
 
 	public static final String AS_MOSKITO_SUBSYSTEM = "ano-site";
 	
-	
-	public static final String ACA_LOCALIZATION_BUNDLE_PREFIX = ACA_PREFIX + "localizationBundle.";
 }

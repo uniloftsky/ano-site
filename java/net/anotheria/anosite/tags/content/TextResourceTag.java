@@ -4,6 +4,8 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspException;
 
 import net.anotheria.anoplass.api.APICallContext;
+import net.anotheria.anosite.content.bean.BoxBean;
+import net.anotheria.anosite.content.bean.LocalizationMap;
 import net.anotheria.anosite.gen.asresourcedata.data.TextResource;
 import net.anotheria.anosite.util.AnositeConstants;
 
@@ -30,7 +32,8 @@ public class TextResourceTag extends BaseResourceTag{
 
 		boolean editable = false;
 		
-		String txt = (String) APICallContext.getCallContext().getAttribute(AnositeConstants.ACA_LOCALIZATION_BUNDLE_PREFIX + myKey);
+		LocalizationMap localization = (LocalizationMap)APICallContext.getCallContext().getAttribute(LocalizationMap.CALL_CONTEXT_SCOPE_NAME);
+		String txt = localization.getMessage(getBox(), key);
 		
 		if(txt != null){
 			write(txt);
@@ -63,5 +66,9 @@ public class TextResourceTag extends BaseResourceTag{
 
 	public void setKey(String key) {
 		this.key = key;
+	}
+	
+	protected BoxBean getBox(){
+		return (BoxBean) pageContext.findAttribute("__box");
 	}
 }
