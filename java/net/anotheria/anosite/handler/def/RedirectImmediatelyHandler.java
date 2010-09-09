@@ -41,6 +41,7 @@ public class RedirectImmediatelyHandler extends AbstractBoxHandler {
 		String urlQuery = req.getQueryString();
 		String redirectTarget = box.getParameter1();
 		String separator = redirectTarget.contains("?") ? "&" : "?";
+		separator = !isEmpty(urlQuery) && urlQuery.startsWith(separator) ? "" : separator;
 		String redirectURL = isEmpty(urlQuery) ? redirectTarget : redirectTarget + separator + urlQuery;
 		return new ResponseRedirectImmediately(redirectURL);
 	}
