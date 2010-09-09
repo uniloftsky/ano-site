@@ -9,34 +9,39 @@ import net.anotheria.anosite.handler.exception.BoxSubmitException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import static net.anotheria.util.StringUtils.*;
+
 /**
  * This handler sends a redirect request back to the browser. The redirect target is stored in the parameter1 of the associated box. This is used as builtin redirect mechanism.
- * @author lrosenberg
  *
+ * @author lrosenberg
  */
-public class RedirectImmediatelyHandler extends AbstractBoxHandler{
+public class RedirectImmediatelyHandler extends AbstractBoxHandler {
 
 	@Override
 	public BoxHandlerResponse process(HttpServletRequest req, HttpServletResponse res, Box box, BoxBean bean) {
 		return getRedirect(req, res, box);
 	}
-	
+
 	@Override
-	public BoxHandlerResponse submit(HttpServletRequest req, HttpServletResponse res, Box box)  throws BoxSubmitException{
+	public BoxHandlerResponse submit(HttpServletRequest req, HttpServletResponse res, Box box) throws BoxSubmitException {
 		return getRedirect(req, res, box);
 	}
-	
+
 	/**
 	 * Reads the redirect target from the box.
-	 * @param req
-	 * @param res
-	 * @param box
-	 * @return
+	 *
+	 * @param req  request
+	 * @param res  response
+	 * @param box  Anotheria BOX :)
+	 * @return  response
 	 */
-	private BoxHandlerResponse getRedirect(HttpServletRequest req, HttpServletResponse res, Box box){
+	private BoxHandlerResponse getRedirect(HttpServletRequest req, HttpServletResponse res, Box box) {
 		String urlQuery = req.getQueryString();
-		urlQuery = urlQuery != null && urlQuery.length() > 0? "?" + urlQuery:"";
-		String redirectTarget = box.getParameter1() + urlQuery;
-		return new ResponseRedirectImmediately(redirectTarget);
+		String redirectTarget = box.getParameter1();
+		String separator = redirectTarget.contains("?") ? "&" : "?";
+		String redirectURL = isEmpty(urlQuery) ? redirectTarget : redirectTarget + separator + urlQuery;
+		return new ResponseRedirectImmediately(redirectURL);
 	}
 }
