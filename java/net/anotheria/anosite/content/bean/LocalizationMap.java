@@ -26,7 +26,7 @@ public class LocalizationMap {
 	}
 	
 	public String getMessage(BoxBean box, String key){
-		String message = localizationBundles.get(getBoxPrivateKey(box, key));
+		String message = box != null? localizationBundles.get(getBoxPrivateKey(box, key)): null; 
 		if(message != null)
 			return message;
 		message = localizationBundles.get(getPagePrivateKey(key));
