@@ -33,7 +33,7 @@ public class TextResourceTag extends BaseResourceTag{
 		boolean editable = false;
 		
 		LocalizationMap localization = (LocalizationMap)APICallContext.getCallContext().getAttribute(LocalizationMap.CALL_CONTEXT_SCOPE_NAME);
-		String txt = localization.getMessage(getBox(), key);
+		String txt = localization != null? localization.getMessage(getBox(), key): null;
 		
 		if(txt != null){
 			write(txt);
