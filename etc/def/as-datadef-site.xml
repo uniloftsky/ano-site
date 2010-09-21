@@ -70,7 +70,7 @@
         </property>
         <property name="localizations" type="list">
 	        <content>
-				<link name="type" type="single" target="ASResourceData.LocalizationBundle"/>
+				<link name="localization" type="single" target="ASResourceData.LocalizationBundle"/>
         	</content>
         </property>
 		
