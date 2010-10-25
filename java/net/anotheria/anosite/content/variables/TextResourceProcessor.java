@@ -1,11 +1,12 @@
 package net.anotheria.anosite.content.variables;
 
+import javax.servlet.http.HttpServletRequest;
+
 import net.anotheria.anosite.content.variables.helper.TextResourceProcessorHelper;
 import net.anotheria.anosite.gen.asresourcedata.data.TextResource;
 import net.anotheria.asg.exception.ASGRuntimeException;
-import org.apache.log4j.Logger;
 
-import javax.servlet.http.HttpServletRequest;
+import org.apache.log4j.Logger;
 
 /**
  * TextResourceProcessor.
@@ -37,12 +38,12 @@ public class TextResourceProcessor implements VariablesProcessor {
 		try {
 			TextResource resource = TextResourceProcessorHelper.getTextResourceByName(variable);
 			if (resource == null) {
-				log.error("TextResourceProcessor - replace method: Error! Missing key: " + variable);
+				log.error("TextResourceProcessor - replace method: Error! Missing key: " + variable+" in server "+req.getServerName()+" on page: "+req.getRequestURI());
 				return ERROR_MESSAGE + variable;
 			}
 			return resource.getValue();
 		} catch (ASGRuntimeException e) {
-			log.error("TextResourceProcessor - replace method: Error! Missing key: " + variable, e);
+			log.error("TextResourceProcessor - replace method: Error! Missing key: " + variable+" in server "+req.getServerName()+" on page: "+req.getRequestURI(), e);
 			return ERROR_MESSAGE + variable;
 		}
 	}
