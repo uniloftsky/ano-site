@@ -1,13 +1,16 @@
 package net.anotheria.anosite.tags.content;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspException;
 
 import net.anotheria.anoplass.api.APICallContext;
 import net.anotheria.anosite.content.bean.BoxBean;
 import net.anotheria.anosite.content.bean.LocalizationMap;
+import net.anotheria.anosite.content.variables.VariablesUtility;
 import net.anotheria.anosite.gen.asresourcedata.data.TextResource;
 import net.anotheria.anosite.util.AnositeConstants;
+import net.anotheria.util.content.TextReplaceConstants;
 
 /**
  * Writes out the content of the resource. Writes out a link to the resource in edit mode.
@@ -16,6 +19,11 @@ import net.anotheria.anosite.util.AnositeConstants;
  */
 public class TextResourceTag extends BaseResourceTag{
 
+	/**
+	 * SerialVersionUID.
+	 */
+	private static final long serialVersionUID = 6849361605149404293L;
+	
 	/**
 	 * Direct reference to resource key (name).
 	 */
@@ -54,6 +62,12 @@ public class TextResourceTag extends BaseResourceTag{
 			String link = "<a href="+quote("cms/textresourceEdit?ts="+System.currentTimeMillis()+"&pId="+resource.getId())+" target="+quote("_blank")+">E</a>&nbsp;";
 			write(link);
 		}
+		
+		// Process text resource variables if txt contains any of it
+		txt = (txt.contains(String.valueOf(TextReplaceConstants.TAG_START)) && txt.contains(String.valueOf(TextReplaceConstants.TAG_START))) 
+				? VariablesUtility.replaceVariables((HttpServletRequest) pageContext.getRequest(), txt)
+				: txt;
+		
 		write(txt);
 
 
