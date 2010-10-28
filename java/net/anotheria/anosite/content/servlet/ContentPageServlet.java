@@ -766,8 +766,8 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			try{
 				response = (InternalResponse)boxProducer.execute(boxExecutor, req, res, box);
 			}catch(Exception e){
-				log.error(e.getMessage(), e);
-				throw new ASGRuntimeException("box: "+box+", "+e.getMessage());
+				log.error("Could not create BoxBean for Box with ID: " + box.getId(), e);
+				throw new ASGRuntimeException("Could not create BoxBean for Box with ID: " + box.getId() + ": " + e.getMessage() + "! See logs for more details.");
 			}
 
 			
@@ -793,8 +793,19 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	 * @return
 	 * @throws ASFederatedDataServiceException
 	 */
-	private BoxTypeBean createBoxTypeBean(String boxTypeId) throws ASFederatedDataServiceException{
-		BoxType type = federatedDataService.getBoxType(boxTypeId);
+	private BoxTypeBean createBoxTypeBean(String boxTypeId) throws ASGRuntimeException{
+		BoxType type = null; 
+		if(!StringUtils.isEmpty(boxTypeId)){
+			type = federatedDataService.getBoxType(boxTypeId);
+		}else{
+			log.debug("BoxType is not defined. Using \"Plain\" as default.");
+			List<BoxType> types = federatedDataService.getBoxTypesByProperty(BoxType.PROP_NAME, "Plain");
+			if (types.size() != 1){
+				log.debug("Could not use default BoxType with name \"Plain\": either it doesn't exist or duplicated!");
+				throw new ASGRuntimeException("BoxType is not defined! Please set property \"type\" of Box in the CMS.");
+			}
+			type = types.get(0);
+		}
 		BoxTypeBean bean = new BoxTypeBean();
 		bean.setName(type.getName());
 		bean.setRenderer(type.getRendererpage());
