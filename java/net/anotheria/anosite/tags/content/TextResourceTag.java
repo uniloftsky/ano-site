@@ -10,7 +10,6 @@ import net.anotheria.anosite.content.bean.LocalizationMap;
 import net.anotheria.anosite.content.variables.VariablesUtility;
 import net.anotheria.anosite.gen.asresourcedata.data.TextResource;
 import net.anotheria.anosite.util.AnositeConstants;
-import net.anotheria.util.content.TextReplaceConstants;
 
 /**
  * Writes out the content of the resource. Writes out a link to the resource in edit mode.
@@ -40,6 +39,7 @@ public class TextResourceTag extends BaseResourceTag{
 
 		boolean editable = false;
 		
+		//Try to find resource with given key in LocalizationMap
 		LocalizationMap localization = (LocalizationMap)APICallContext.getCallContext().getAttribute(LocalizationMap.CALL_CONTEXT_SCOPE_NAME);
 		String txt = localization != null? localization.getMessage(getBox(), key): null;
 		
@@ -48,6 +48,7 @@ public class TextResourceTag extends BaseResourceTag{
 			return SKIP_BODY;
 		}
 						
+		//Ok, resource in LocalizationMap not found. Loading from TextResources
 		TextResource resource = getTextResourceByName(myKey);
 		if (resource==null)
 			txt = "Missing key: "+myKey;
@@ -59,14 +60,13 @@ public class TextResourceTag extends BaseResourceTag{
 			editable = true;
 
 		if (editable){
+			//For easy editing decorate resource with link in the CMS
 			String link = "<a href="+quote("cms/textresourceEdit?ts="+System.currentTimeMillis()+"&pId="+resource.getId())+" target="+quote("_blank")+">E</a>&nbsp;";
 			write(link);
 		}
 		
-		// Process text resource variables if txt contains any of it
-		txt = (txt.contains(String.valueOf(TextReplaceConstants.TAG_START)) && txt.contains(String.valueOf(TextReplaceConstants.TAG_START))) 
-				? VariablesUtility.replaceVariables((HttpServletRequest) pageContext.getRequest(), txt)
-				: txt;
+		//Hook to replace variables
+		txt = VariablesUtility.replaceVariables((HttpServletRequest) pageContext.getRequest(), txt);
 		
 		write(txt);
 
