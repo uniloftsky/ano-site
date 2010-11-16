@@ -45,7 +45,13 @@ public class CRUDLogListener implements IServiceListener {
         logData("IMPORT", createObjString(dataObject));
     }
 
-    /**
+	@Override
+	public void persistenceChanged() {
+		System.out.println("Persistence changed");
+		logData("PERSISTENCE CHANGED", null);
+	}
+
+	/**
      * Just creates string with doc.id && clazz name
      *
      * @param dataObjects objects array

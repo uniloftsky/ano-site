@@ -28,7 +28,11 @@ public class ContentChangeListener implements IServiceListener{
 		sendEvent(ContentChangeType.UPDATE, oldVersion);
 		
 	}
-	
+
+	@Override
+	public void persistenceChanged() {
+	}
+
 	/**
 	 * Sends the content change event.
 	 * @param type operation
