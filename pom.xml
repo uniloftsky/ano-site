@@ -3,7 +3,7 @@
   <parent>
 	<groupId>net.anotheria</groupId>
 	<artifactId>parent</artifactId>
-	<version>1.0</version>
+	<version>1.4</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
@@ -56,47 +56,47 @@
 	<dependency>
 		<groupId>net.anotheria</groupId>
 		<artifactId>ano-util</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
+		<version>1.0.0</version>
 	</dependency>
 	<dependency>
 		<groupId>net.anotheria</groupId>
 		<artifactId>ano-tags</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
+		<version>1.0.0</version>
 	</dependency>
 	<dependency>
 		<groupId>net.anotheria</groupId>
 		<artifactId>ano-prise</artifactId>
-		<version>1.0.1-SNAPSHOT</version>
+		<version>1.0.1</version>
 	</dependency>
 	<dependency>
 		<groupId>net.anotheria</groupId>
 		<artifactId>ano-web</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
+		<version>1.0.0</version>
 	</dependency>
 	<dependency>
 		<groupId>net.anotheria</groupId>
 		<artifactId>ano-plass</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
+		<version>1.0.0</version>
 	</dependency>
 	<dependency>
 		<groupId>net.anotheria</groupId>
 		<artifactId>ano-doc</artifactId>
-		<version>1.0.1-SNAPSHOT</version>
+		<version>1.0.1</version>
 	</dependency>
 	<dependency>
 	  <groupId>net.anotheria</groupId>
 	  <artifactId>configureme</artifactId>
-	  <version>1.0.0-SNAPSHOT</version>
+	  <version>1.0.0</version>
 	</dependency>
 	<dependency>
 	  <groupId>net.anotheria</groupId>
 	  <artifactId>moskito-core</artifactId>
-	  <version>1.0.0-SNAPSHOT</version>
+	  <version>1.0.0</version>
 	</dependency>
 	<dependency>
 	  <groupId>net.anotheria</groupId>
 	  <artifactId>moskito-util</artifactId>
-	  <version>1.0.0-SNAPSHOT</version>
+	  <version>1.0.0</version>
 	</dependency>
 	
 	<dependency>
