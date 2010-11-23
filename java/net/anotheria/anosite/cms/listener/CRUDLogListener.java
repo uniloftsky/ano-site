@@ -47,7 +47,7 @@ public class CRUDLogListener implements IServiceListener {
 
 	@Override
 	public void persistenceChanged() {
-		System.out.println("Persistence changed");
+		//System.out.println("Persistence changed");
 		logData("PERSISTENCE CHANGED", null);
 	}
 
