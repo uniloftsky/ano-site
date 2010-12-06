@@ -9,10 +9,13 @@ import net.anotheria.anodoc.data.NoSuchPropertyException;
 import net.anotheria.anoprise.metafactory.MetaFactory;
 import net.anotheria.anoprise.metafactory.MetaFactoryException;
 import net.anotheria.anosite.gen.asfederateddata.service.ASFederatedDataServiceException;
-import net.anotheria.anosite.gen.asfederateddata.service.ASFederatedDataServiceFactory;
 import net.anotheria.anosite.gen.asfederateddata.service.IASFederatedDataService;
+import net.anotheria.anosite.gen.aswebdata.data.Box;
+import net.anotheria.anosite.gen.aswebdata.data.Pagex;
 import net.anotheria.asg.data.DataObject;
 import net.anotheria.asg.util.decorators.IAttributeDecorator;
+import net.anotheria.util.StringUtils;
+
 import org.apache.log4j.Logger;
 
 /**
@@ -60,14 +63,14 @@ public class GuardDecorator implements IAttributeDecorator{
 			value = value + linksValue+"]";
 			
 			String href = "#";
-			/*
+			
 			if (doc instanceof Pagex){
-				href = "pagex"+StringUtils.capitalize(attributeName)+"Show?pId="+doc.getId()+"&ts="+System.currentTimeMillis();
+				href = "pagex"+StringUtils.capitalize(attributeName)+"Show?pId="+doc.getId()+"&ownerId="+doc.getId()+"&ts="+System.currentTimeMillis();
 			}
 			if (doc instanceof Box){
-				href = "boxSubboxesShow?pId="+doc.getId()+"&ts="+System.currentTimeMillis();
+				href = "aswebdataBoxGuardsShow?pId="+doc.getId()+"&ownerId="+doc.getId()+"&ts="+System.currentTimeMillis();
 			}
-			*/
+			
 			String title = "";
 			for (String id : ids){
 				String name ;

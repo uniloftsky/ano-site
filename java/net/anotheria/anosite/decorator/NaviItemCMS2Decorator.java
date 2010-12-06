@@ -1,5 +1,8 @@
 package net.anotheria.anosite.decorator;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.anotheria.anodoc.data.Document;
 import net.anotheria.anodoc.data.NoSuchDocumentException;
 import net.anotheria.anodoc.data.NoSuchPropertyException;
@@ -7,16 +10,13 @@ import net.anotheria.anoprise.metafactory.MetaFactory;
 import net.anotheria.anoprise.metafactory.MetaFactoryException;
 import net.anotheria.anosite.gen.assitedata.data.NaviItem;
 import net.anotheria.anosite.gen.assitedata.data.Site;
-import net.anotheria.anosite.gen.aswebdata.service.ASWebDataServiceFactory;
 import net.anotheria.anosite.gen.aswebdata.service.IASWebDataService;
 import net.anotheria.asg.data.DataObject;
 import net.anotheria.asg.exception.ASGRuntimeException;
 import net.anotheria.asg.util.decorators.IAttributeDecorator;
 import net.anotheria.util.StringUtils;
-import org.apache.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.apache.log4j.Logger;
 
 public class NaviItemCMS2Decorator implements IAttributeDecorator{
 	
@@ -57,13 +57,13 @@ public class NaviItemCMS2Decorator implements IAttributeDecorator{
 			String href = "#";
 			if (doc instanceof Site) {
 				href = doc.getDefinedParentName().toLowerCase() + "Site" + StringUtils.capitalize(attributeName) + "Show?ownerId="
-						+ doc.getId() + "&ts=" + System.currentTimeMillis();
+						+ doc.getId() +"&pId="+doc.getId()+"&ts=" + System.currentTimeMillis();
 				// href = "site"+StringUtils.capitalize(attributeName)+"Show?pId="+doc.getId()+"&ts="+System.currentTimeMillis();
 			}
 			
 			if (doc instanceof NaviItem) {
 				href = doc.getDefinedParentName().toLowerCase() + "NaviItem" + StringUtils.capitalize(attributeName) + "Show?ownerId="
-						+ doc.getId() + "&ts=" + System.currentTimeMillis();
+						+ doc.getId() +"&pId="+doc.getId()+ "&ts=" + System.currentTimeMillis();
 				// href = "naviitem"+StringUtils.capitalize(attributeName)+"Show?pId="+doc.getId()+"&ts="+System.currentTimeMillis();
 			}
 			

@@ -52,7 +52,7 @@ abstract public class LinksListDecorator implements IAttributeDecorator{
 			value = value + linksValue+"]";
 			
 			String href = doc.getDefinedParentName().toLowerCase() + StringUtils.capitalize(doc.getDefinedName())
-			+ StringUtils.capitalize(attributeName) + "Show?pId=" + doc.getId() + "&ts=" + System.currentTimeMillis();
+			+ StringUtils.capitalize(attributeName) + "Show?pId=" + doc.getId() +"&ownerId="+doc.getId()+ "&ts=" + System.currentTimeMillis();
 			
 			
 			if (title.length()>0)

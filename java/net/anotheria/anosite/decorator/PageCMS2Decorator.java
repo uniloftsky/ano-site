@@ -63,11 +63,11 @@ public class PageCMS2Decorator implements IAttributeDecorator{
 			String href = "#";
 			if (doc instanceof Pagex) {
 				href = doc.getDefinedParentName().toLowerCase() + StringUtils.capitalize(doc.getDefinedName()) + attributeName
-						+ "Show?ownerId=" + doc.getId() + "&ts=" + System.currentTimeMillis();
+						+ "Show?ownerId=" + doc.getId() +"&pId="+doc.getId()+ "&ts=" + System.currentTimeMillis();
 				// href = "pagex"+attributeName+"Show?pId="+doc.getId()+"&ts="+System.currentTimeMillis();
 			}
 			if (doc instanceof Box) {
-				href = doc.getDefinedParentName().toLowerCase() + "BoxSubboxesShow?ownerId=" + doc.getId() + "&ts="
+				href = doc.getDefinedParentName().toLowerCase() + "BoxSubboxesShow?ownerId=" + doc.getId() +"&pId="+doc.getId()+ "&ts="
 						+ System.currentTimeMillis();
 				// href = "boxSubboxesShow?pId="+doc.getId()+"&ts="+System.currentTimeMillis();
 			}

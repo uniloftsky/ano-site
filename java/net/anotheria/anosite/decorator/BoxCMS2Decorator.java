@@ -63,11 +63,11 @@ public class BoxCMS2Decorator implements IAttributeDecorator{
 			String href = "#";
 			if (doc instanceof Pagex) {
 				href = doc.getDefinedParentName().toLowerCase() + StringUtils.capitalize(doc.getDefinedName())
-						+ StringUtils.capitalize(attributeName) + "Show?ownerId=" + doc.getId() + "&ts=" + System.currentTimeMillis();
+						+ StringUtils.capitalize(attributeName) + "Show?ownerId=" + doc.getId() +"&pId="+doc.getId()+ "&ts=" + System.currentTimeMillis();
 				// href = "pagex"+ StringUtils.capitalize(attributeName)+"Show?pId="+doc.getId()+"&ts="+System.currentTimeMillis();
 			}
 			if (doc instanceof Box) {
-				href = doc.getDefinedParentName().toLowerCase() + "BoxSubboxesShow?ownerId=" + doc.getId() + "&ts="
+				href = doc.getDefinedParentName().toLowerCase() + "BoxSubboxesShow?ownerId=" + doc.getId() +"&pId="+doc.getId()+ "&ts="
 						+ System.currentTimeMillis();
 				// href = "boxSubboxesShow?pId="+doc.getId()+"&ts="+System.currentTimeMillis();
 			}

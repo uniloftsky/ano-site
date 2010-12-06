@@ -23,7 +23,7 @@ import org.apache.log4j.Logger;
  * @author lrosenberg
  *
  */
-public class AttributeDecorator implements IAttributeDecorator{
+public class AttributeCMS2Decorator implements IAttributeDecorator{
 	
 	/**
 	 * Instance of webdataservice for retrieval of box definitions. 
@@ -34,7 +34,7 @@ public class AttributeDecorator implements IAttributeDecorator{
 		try {
 			service = MetaFactory.get(IASWebDataService.class);
 		} catch (MetaFactoryException e) {
-			Logger.getLogger(AttributeDecorator.class).fatal("IASWebDataService asg service init failure",e);
+			Logger.getLogger(AttributeCMS2Decorator.class).fatal("IASWebDataService asg service init failure",e);
 		}
 	}
 	
@@ -86,9 +86,7 @@ public class AttributeDecorator implements IAttributeDecorator{
 			if (title.length()>0)
 				title = " title=\""+title+"\"";
 			
-			String hrefTarget = href.length()>1 ? " target=\"_blank\"" : "";
-			
-			return "<a href=\""+href+"\""+hrefTarget+title+">"+value+"</a>";
+			return "<a href=\""+href+"\""+title+">"+value+"</a>";
 				
 		}catch(NoSuchPropertyException e){
 			return "none";

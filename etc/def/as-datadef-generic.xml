@@ -1,5 +1,6 @@
   <module name="ASGenericData">
-    <listener class="net.anotheria.anosite.cms.listener.CRUDLogListener"/>  
+    <listener class="net.anotheria.anosite.cms.listener.CRUDLogListener"/>
+    <listener class="net.anotheria.asg.util.listener.ContentChangeTrackerListener"/> 
 	<document name="GenericBoxType">
 		<property name="name" type="string"/>
 		<property name="rendererpage" type="string"/>
@@ -15,6 +16,7 @@
   </module>
   <module name="ASCustomData">
     <listener class="net.anotheria.anosite.cms.listener.CRUDLogListener"/>
+    <listener class="net.anotheria.asg.util.listener.ContentChangeTrackerListener"/>
 	<document name="CustomBoxType">
 		<property name="name" type="string"/>
 		<property name="rendererpage" type="string"/>
@@ -30,6 +32,7 @@
   </module>
   <module name="ASFederatedData" storageType="federation">
     <listener class="net.anotheria.anosite.cms.listener.CRUDLogListener"/>
+    <listener class="net.anotheria.asg.util.listener.ContentChangeTrackerListener"/>
 	<federatedmodule name="ASGenericData" key="G"/>
 	<federatedmodule name="ASCustomData"  key="C"/>
 	<mapping sourceDocument="BoxType" targetDocument="G.GenericBoxType"/>

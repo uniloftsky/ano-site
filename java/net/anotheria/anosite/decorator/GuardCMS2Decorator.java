@@ -8,10 +8,10 @@ import net.anotheria.anodoc.data.NoSuchDocumentException;
 import net.anotheria.anodoc.data.NoSuchPropertyException;
 import net.anotheria.anoprise.metafactory.MetaFactory;
 import net.anotheria.anoprise.metafactory.MetaFactoryException;
+import net.anotheria.anosite.gen.asfederateddata.service.ASFederatedDataServiceException;
+import net.anotheria.anosite.gen.asfederateddata.service.IASFederatedDataService;
 import net.anotheria.anosite.gen.aswebdata.data.Box;
 import net.anotheria.anosite.gen.aswebdata.data.Pagex;
-import net.anotheria.anosite.gen.aswebdata.service.ASWebDataServiceException;
-import net.anotheria.anosite.gen.aswebdata.service.IASWebDataService;
 import net.anotheria.asg.data.DataObject;
 import net.anotheria.asg.util.decorators.IAttributeDecorator;
 import net.anotheria.util.StringUtils;
@@ -19,22 +19,25 @@ import net.anotheria.util.StringUtils;
 import org.apache.log4j.Logger;
 
 /**
- * Decorator for linked attributes.
- * @author lrosenberg
+ * Decorator for guards.
+ * @author another
  *
  */
-public class AttributeDecorator implements IAttributeDecorator{
-	
+public class GuardCMS2Decorator implements IAttributeDecorator{
 	/**
-	 * Instance of webdataservice for retrieval of box definitions. 
+	 * Federated data service for guard def retrieval.
 	 */
-	private static IASWebDataService service;
+	/**
+	 * Federated data service to retrieve box type.
+	 */
+	private static IASFederatedDataService service;
+
 
 	static {
 		try {
-			service = MetaFactory.get(IASWebDataService.class);
+			service = MetaFactory.get(IASFederatedDataService.class);
 		} catch (MetaFactoryException e) {
-			Logger.getLogger(AttributeDecorator.class).fatal("IASWebDataService asg service init failure",e);
+			Logger.getLogger(GuardCMS2Decorator.class).fatal("IASFederatedDataService asg service init failure",e);
 		}
 	}
 	
@@ -65,17 +68,17 @@ public class AttributeDecorator implements IAttributeDecorator{
 				href = "pagex"+StringUtils.capitalize(attributeName)+"Show?ownerId="+doc.getId()+"&pId="+doc.getId()+"&ts="+System.currentTimeMillis();
 			}
 			if (doc instanceof Box){
-				href = "aswebdataBoxAttributesShow?ownerId="+doc.getId()+"&pId="+doc.getId()+"&ts="+System.currentTimeMillis();
+				href = "aswebdataBoxGuardsShow?ownerId="+doc.getId()+"&pId="+doc.getId()+"&ts="+System.currentTimeMillis();
 			}
 			
 			String title = "";
 			for (String id : ids){
 				String name ;
 				try{
-					name = service.getAttribute(id).getName();
+					name = service.getGuardDef(id).getName();
 				}catch(NoSuchDocumentException e){
 					name = "*DELETED*";
-				}catch(ASWebDataServiceException e){
+				}catch(ASFederatedDataServiceException e){
 					name = "*ERR-"+e.getMessage()+"*";
 				}
 				if (title.length()>0)
@@ -86,9 +89,7 @@ public class AttributeDecorator implements IAttributeDecorator{
 			if (title.length()>0)
 				title = " title=\""+title+"\"";
 			
-			String hrefTarget = href.length()>1 ? " target=\"_blank\"" : "";
-			
-			return "<a href=\""+href+"\""+hrefTarget+title+">"+value+"</a>";
+			return "<a href=\""+href+"\""+title+">"+value+"</a>";
 				
 		}catch(NoSuchPropertyException e){
 			return "none";
