@@ -1,6 +1,5 @@
   <module name="ASLayoutData">
     <listener class="net.anotheria.anosite.cms.listener.CRUDLogListener"/>
-    <listener class="net.anotheria.asg.util.listener.ContentChangeTrackerListener"/> 
   	<document name="PageStyle">
 		<property name="name" type="string"/>
 		<property name="css" type="text"/>
