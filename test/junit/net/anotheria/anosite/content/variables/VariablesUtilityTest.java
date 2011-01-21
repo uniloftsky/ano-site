@@ -1,11 +1,17 @@
 package net.anotheria.anosite.content.variables;
 
-import junit.framework.Assert;
-import org.junit.Test;
+import static net.anotheria.anosite.content.variables.VariablesUtility.replaceVariables;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static net.anotheria.anosite.content.variables.VariablesUtility.replaceVariables;
+import junit.framework.Assert;
+import net.anotheria.anoprise.metafactory.Extension;
+import net.anotheria.anoprise.metafactory.MetaFactory;
+import net.anotheria.anosite.gen.asresourcedata.service.IASResourceDataService;
+import net.anotheria.anosite.gen.asresourcedata.service.fixture.ASResourceDataServiceFixtureFactory;
+
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 /**
  * Junit for varUtilities.
@@ -13,6 +19,11 @@ import static net.anotheria.anosite.content.variables.VariablesUtility.replaceVa
  * @author h3llka
  */
 public class VariablesUtilityTest {
+	
+	@BeforeClass public static void init(){
+		MetaFactory.addFactoryClass(IASResourceDataService.class, Extension.NONE, ASResourceDataServiceFixtureFactory.class);
+	}
+	
 
 	@Test
 	public void replaceTest() {

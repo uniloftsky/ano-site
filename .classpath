@@ -1,41 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="java"/>
-	<classpathentry kind="src" path="etc/appdata"/>
-	<classpathentry kind="src" path="generated/java"/>
-	<classpathentry kind="src" path="test/junit"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" output="target/classes" path="java"/>
+	<classpathentry kind="src" output="target/classes" path="generated/java"/>
+	<classpathentry excluding="**" kind="src" output="target/classes" path="etc/appdata"/>
+	<classpathentry including="**/*.java" kind="src" output="target/test-classes" path="test/junit"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="con" path="org.maven.ide.eclipse.MAVEN2_CLASSPATH_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="lib/ano-doc.jar" sourcepath="/ano-doc"/>
-	<classpathentry kind="lib" path="lib/ano-util.jar" sourcepath="/ano-util"/>
-	<classpathentry kind="lib" path="lib/ano-web.jar" sourcepath="/ano-web/java"/>
-	<classpathentry kind="lib" path="lib/ant.jar"/>
-	<classpathentry kind="lib" path="lib/BlowfishJ.jar"/>
-	<classpathentry kind="lib" path="lib/commons-beanutils.jar"/>
-	<classpathentry kind="lib" path="lib/configureme.jar"/>
-	<classpathentry kind="lib" path="lib/cos.jar"/>
-	<classpathentry kind="lib" path="lib/jdom.jar"/>
-	<classpathentry kind="lib" path="lib/json.jar"/>
-	<classpathentry kind="lib" path="lib/jsp-api.jar"/>
-	<classpathentry kind="lib" path="lib/log4j.jar"/>
-	<classpathentry kind="lib" path="lib/moskito-core.jar"/>
-	<classpathentry kind="lib" path="lib/moskito-util.jar" sourcepath="/moskito-util"/>
-	<classpathentry kind="lib" path="lib/moskito-web.jar"/>
-	<classpathentry kind="lib" path="lib/servlet-api.jar"/>
-	<classpathentry kind="lib" path="lib/xalan.jar"/>
-	<classpathentry kind="lib" path="lib/hamcrest-library.jar"/>
-	<classpathentry kind="lib" path="lib/jmock.jar"/>
-	<classpathentry kind="lib" path="lib/junit.jar"/>
-	<classpathentry kind="lib" path="lib/ano-prise.jar" sourcepath="/ano-prise"/>
-	<classpathentry kind="lib" path="lib/struts.jar"/>
-	<classpathentry kind="lib" path="lib/ano-net.jar"/>
-	<classpathentry kind="lib" path="lib/ano-maf.jar" sourcepath="/ano-maf"/>
-	<classpathentry kind="lib" path="lib/commons-collections.jar"/>
-	<classpathentry kind="lib" path="lib/commons-lang.jar"/>
-	<classpathentry kind="lib" path="lib/commons-logging.jar"/>
-	<classpathentry kind="lib" path="lib/dozer-annotations.jar"/>
-	<classpathentry kind="lib" path="lib/dozer.jar"/>
-	<classpathentry kind="lib" path="lib/ano-plass.jar" sourcepath="/ano-plass"/>
-	<classpathentry kind="lib" path="lib/ano-tags.jar"/>
-	<classpathentry kind="output" path="classes"/>
+	<classpathentry kind="output" path="target/classes"/>
 </classpath>
