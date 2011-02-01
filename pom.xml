@@ -55,7 +55,7 @@
 				</includes>
 			</resource>
 			<resource>
-				<directory>${project.basedir}/etc/def</directory>
+				<directory>${project.basedir}/etc/def/as</directory>
 				<includes>
 					<include>
 						**/*as-*.xml
