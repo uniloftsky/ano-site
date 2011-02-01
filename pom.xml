@@ -9,7 +9,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.anotheria</groupId>
 	<artifactId>ano-site</artifactId>
-	<version>2.0.4-SNAPSHOT</version>
+	<version>2.0.3</version>
 	<name>anotheria.net site engine</name>
 
 	<dependencies>
@@ -55,13 +55,13 @@
 				</includes>
 			</resource>
 			<resource>
-				<directory>${project.basedir}/etc/def/as</directory>
+				<directory>${project.basedir}/etc/def</directory>
 				<includes>
 					<include>
 						**/*as-*.xml
 					</include>
 				</includes>
-				<targetPath>etc/def</targetPath>
+				<targetPath>etc/def/as</targetPath>
 			</resource>
 			<resource>
 				<directory>${project.basedir}/java</directory>
@@ -85,8 +85,8 @@
 	</build>
 
 	<scm>
-		<url>svn:svn://svn.anotheria.net/opensource/ano-site/trunk</url>
-		<connection>scm:svn:svn://svn.anotheria.net/opensource/ano-site/trunk</connection>
-		<developerConnection>scm:svn:svn://svn.anotheria.net/opensource/ano-site/trunk</developerConnection>
+		<url>svn:svn://svn.anotheria.net/opensource/ano-site/tags/ano-site-2.0.3</url>
+		<connection>scm:svn:svn://svn.anotheria.net/opensource/ano-site/tags/ano-site-2.0.3</connection>
+		<developerConnection>scm:svn:svn://svn.anotheria.net/opensource/ano-site/tags/ano-site-2.0.3</developerConnection>
 	</scm>
 </project>
