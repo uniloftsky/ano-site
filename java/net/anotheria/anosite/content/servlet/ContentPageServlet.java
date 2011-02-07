@@ -264,7 +264,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			String redirectTarget = "http://";
 			redirectTarget+= req.getServerName();
 			redirectTarget+= requestURI;
-			log.debug("making secure switch to "+redirectTarget);
+			log.debug("making unsecure switch to "+redirectTarget);
 			res.sendRedirect(redirectTarget);
 			return;
 		}
