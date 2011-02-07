@@ -248,7 +248,8 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		
 		//new check for https.
 		boolean secure = req.isSecure();
-		boolean secureRequired = page.getHttpsonly() && config.enforceHttps();
+		//ANOSITE-14, added config.httpsOnly.
+		boolean secureRequired = (page.getHttpsonly() && config.enforceHttps()) || (config.httpsOnly());
 		
 		if (!(secure==secureRequired)){
 			String redirectTarget = secureRequired ? 

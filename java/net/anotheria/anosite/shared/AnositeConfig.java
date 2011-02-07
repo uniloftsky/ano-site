@@ -10,6 +10,7 @@ public class AnositeConfig{
 	
 	@Configure private boolean enforceHttps = true;
 	@Configure private boolean verbose = false;
+	@Configure private boolean httpsOnly = false;
 	
 	public static AnositeConfig getInstance(){ return instance; }
 		
@@ -28,4 +29,10 @@ public class AnositeConfig{
 	public void setVerbose(boolean aValue){
 		verbose = aValue;
 	}
+	
+	public void setHttpsOnly(boolean aValue){
+		httpsOnly = aValue;
+	}
+	
+	public boolean httpsOnly(){ return httpsOnly; }
 }
