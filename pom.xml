@@ -85,8 +85,8 @@
 	</build>
 
 	<scm>
-		<url>svn:svn://svn.anotheria.net/opensource/ano-site/tags/ano-site-2.0.5</url>
-		<connection>scm:svn:svn://svn.anotheria.net/opensource/ano-site/tags/ano-site-2.0.5</connection>
-		<developerConnection>scm:svn:svn://svn.anotheria.net/opensource/ano-site/tags/ano-site-2.0.5</developerConnection>
+		<url>svn:svn://svn.anotheria.net/opensource/ano-site/trunk</url>
+		<connection>scm:svn:svn://svn.anotheria.net/opensource/ano-site/trunk</connection>
+		<developerConnection>scm:svn:svn://svn.anotheria.net/opensource/ano-site/trunk</developerConnection>
 	</scm>
 </project>
