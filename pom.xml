@@ -21,7 +21,7 @@
 		<dependency>
 			<groupId>net.anotheria</groupId>
 			<artifactId>ano-prise</artifactId>
-			<version>1.0.1</version>
+			<version>1.0.8</version>
 		</dependency>
 		<dependency>
 			<groupId>net.anotheria</groupId>
