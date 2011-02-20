@@ -47,8 +47,6 @@
 
 	
 </script>
-<bean:message key="styles.common.link"/>
-<bean:message key="javascript.common.link"/>
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" class="hellerblau">
   <table border="0" width=100% cellspacing=0 cellpadding=0>
   	<form id="upload" name="upload" target="answer" method="post" enctype="multipart/form-data" action="<%=request.getContextPath()%>/cms/fileUpload">

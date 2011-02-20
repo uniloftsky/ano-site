@@ -18,10 +18,10 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#e2e2e2">
 	<tr><td colspan="3" height="16">&nbsp;</td></tr>
 	<tr>
-		<td colspan="3" bgcolor="#FF0000"><img src="<bean:message key="emptyimage"/>" width="1" height="1"></td>
+		<td colspan="3" bgcolor="#FF0000"></td>
 	</tr>
 	<tr>
-		<td bgcolor="#FF0000" width="1"><img src="<bean:message key="emptyimage"/>" width="1" height="1"></td>
+		<td bgcolor="#FF0000" width="1"></td>
 		<td>
 			<table width="100%" border="0" cellspacing="0" cellpadding="6">
 				<html:messages id="msg" bundle="ds">
@@ -31,10 +31,10 @@
 				 </html:messages>
 			</table>
 		</td>
-		<td bgcolor="#FF0000" width="1"><img src="<bean:message key="emptyimage"/>" width="1" height="1"></td>
+		<td bgcolor="#FF0000" width="1"></td>
 	</tr>
 	<tr>
-		<td colspan="3" bgcolor="#FF0000"><img src="<bean:message key="emptyimage"/>" width="1" height="1"></td>	
+		<td colspan="3" bgcolor="#FF0000"></td>	
 	</tr>
 </table>
 </logic:messagesPresent>

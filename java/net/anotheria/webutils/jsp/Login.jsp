@@ -1,16 +1,8 @@
-<%@ page
-	contentType="text/html;charset=UTF-8" session="true"
-%><%@ taglib uri="/WEB-INF/tld/struts-bean.tld" prefix="bean"
-%><%@ taglib uri="/WEB-INF/tld/struts-html.tld" prefix="html"
-%><%@ taglib uri="/WEB-INF/tld/struts-logic.tld" prefix="logic"
-%><%@ taglib uri="/WEB-INF/tld/anoweb.tld" prefix="ano"
-%><html>
+<%@ page contentType="text/html;charset=UTF-8" session="true"
+%>><html>
 <head>
 <title>please login</title>
 <META http-equiv=Content-Type content="text/html; charset=UTF-8">
-<bean:message key="styles.common.link"/>
-<bean:message key="styles.links.link"/>
-<!--bean:message key="javascript.common.link"/-->
 </head>
 <body bgcolor="#FFFFFF" leftMargin="0" topMargin="0" marginwidth="0" marginheight="0">
 <center>
@@ -26,7 +18,7 @@
 		    </td> 
 		  </tr>  
 		  <tr width=100% class="logintext">
-		   <td colspan=2><img src="<bean:message key="emptyimage"/>" height=10 width=1></td>
+		   <td colspan=2></td>
 		  </tr>
 		  <tr class="qsinfo">
 		  	<td colspan="2" align="center"><br>
@@ -62,7 +54,7 @@
 		  	</td>
 		  </tr>
 		  <tr width=100% class="logintextq">
-		    <td colspan=2><img src="<bean:message key="emptyimage"/>" height=10 width=1></td>
+		    <td colspan=2></td>
 		  </tr>
 		  </form>
 		</table>

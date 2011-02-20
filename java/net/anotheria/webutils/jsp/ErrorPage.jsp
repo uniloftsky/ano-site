@@ -10,16 +10,7 @@
 %>
 <html>
 <head>
-<logic:notPresent name="application.customTitle">
-	<title><bean:message key="application.title"/></title>
-</logic:notPresent>
-<logic:present name="application.customTitle">
-	<title><bean:message key="application.customTitle"/></title>
-</logic:present>
 <META http-equiv=Content-Type content="text/html; charset=UTF-8">
-<bean:message key="styles.common.link"/>
-<bean:message key="styles.links.link"/>
-<bean:message key="javascript.common.link"/>
 </head>
 
 <body >
@@ -33,7 +24,7 @@
 		    </td>
 		  </tr>  
 		  <tr width=100% class="logintext">
-		   <td colspan=2><img src="<bean:message key="emptyimage"/>" height=10 width=1></td>
+		   <td colspan=2></td>
 		  </tr>
 		  <tr class="logintextq">
 		  	<td colspan="2" align="center"><br>
@@ -56,14 +47,14 @@
 		  	</td>
 		  </tr>
 		  <tr width=100% class="logintextq">
-		    <td colspan=2><img src="<bean:message key="emptyimage"/>" height=10 width=1></td>
+		    <td colspan=2></td>
 		  </tr>
 		  </form>
 		</table>
 		<p><font color="#FFFFFF"><bean:write name="error" property="stackTrace"/></font></p>
 		  
     </td>
-    <td width="21" valign="top" background="<bean:message key="images" arg0="trenner_v.gif"/>"><img src="<bean:message key="emptyimage"/>" width="21" height="1"></td>
+    <td width="21" valign="top"></td>
   </tr>
   <tr>
     <td colspan="3">&nbsp;</td>
