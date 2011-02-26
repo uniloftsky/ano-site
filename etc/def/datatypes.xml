@@ -109,6 +109,11 @@
 		<element>P100</element>
 	</enumeration>
 	
+	<enumeration name="PageAliasType">
+		<element>Mask</element>
+		<element>Redirect</element>
+	</enumeration>
+	
 	<!-- HTTP DTD types -->
 	
 	<enumeration name="MediaDesc">

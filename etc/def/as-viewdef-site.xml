@@ -372,6 +372,8 @@
 					<element type="field" name="targetPage" comparable="true"> 
 	        		   	<decorator name="linkTargetName"/>
 					</element>
+					<element type="field" name="parameters" comparable="true"/>
+					<element type="field" name="type"/>
 					<element type="field" name="pathes" comparable="true"/> 
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
@@ -384,7 +386,9 @@
 	       				<element type="empty"/>
 		       			<element type="field" name="id" readonly="true"/>
 		      			<element type="field" name="name" /> 
-						<element type="field" name="targetPage" /> 
+						<element type="field" name="targetPage" />
+						<element type="field" name="parameters"/>
+						<element type="field" name="type"/>
 						<element type="field" name="pathes" /> 
 						<element type="empty"/>
 						<element type="list">
