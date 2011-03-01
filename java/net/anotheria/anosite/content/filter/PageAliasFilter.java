@@ -1,20 +1,29 @@
 package net.anotheria.anosite.content.filter;
 
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import net.anotheria.anoprise.metafactory.MetaFactory;
 import net.anotheria.anoprise.metafactory.MetaFactoryException;
 import net.anotheria.anosite.gen.assitedata.data.PageAlias;
 import net.anotheria.anosite.gen.assitedata.service.IASSiteDataService;
 import net.anotheria.anosite.gen.aswebdata.data.Pagex;
 import net.anotheria.anosite.gen.aswebdata.service.IASWebDataService;
+import net.anotheria.anosite.gen.shared.data.PageAliasTypeEnum;
 import net.anotheria.anosite.gen.shared.service.AnoDocConfigurator;
 import net.anotheria.asg.exception.ASGRuntimeException;
-import org.apache.log4j.Logger;
+import net.anotheria.util.StringUtils;
 
-import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.List;
+import org.apache.log4j.Logger;
 
 /**
  * This filter checks the incoming urls whether they are matching predefined page aliases. In case it matches the redirect to the target of the alias is issued. 
@@ -44,6 +53,7 @@ public class PageAliasFilter implements Filter{
 			return;
 		HttpServletRequest req = (HttpServletRequest)sreq;
 		req.setCharacterEncoding(AnoDocConfigurator.getEncoding());
+		
 
 		
 		String path = req.getServletPath();
@@ -53,21 +63,52 @@ public class PageAliasFilter implements Filter{
 		}
 		path = path.substring(1).toLowerCase();
 		
+		
 		try{
 			List<PageAlias> aliases = siteDataService.getPageAliass();
 			for (PageAlias alias : aliases){
 				if (alias.getPathes()!=null && alias.getPathes().indexOf(path)!=-1){
 					log.debug("found page alias hit "+path+" to page: "+alias.getTargetPage());
 					Pagex target = webDataService.getPagex(alias.getTargetPage());
-					String urlQuery = req.getQueryString();
-					urlQuery = urlQuery != null && urlQuery.length() > 0? "?" + urlQuery:"";
-					((HttpServletResponse)sres).sendRedirect("/"+target.getName()+".html" + urlQuery);
-					return;
+					
+					String urlQuery = alias.getParameters().trim();
+					
+					if(StringUtils.isEmpty(urlQuery))
+						urlQuery = req.getQueryString();
+					
+					if(StringUtils.isEmpty(urlQuery)){
+						urlQuery = "";
+					}else{
+						if(!urlQuery.startsWith("?"))
+							urlQuery = "?" + urlQuery;						
+					}
+					
+					
+					
+					String targetUrl = target.getName()+".html" + urlQuery;
+					log.debug("Target URL: " + targetUrl);
+					
+					PageAliasTypeEnum command = PageAliasTypeEnum.getConstantByValue(alias.getType());
+					switch (command) {
+					case MASK:
+						req.getRequestDispatcher("/" + targetUrl).forward(sreq, sres);
+						return;
+					case REDIRECT:
+						((HttpServletResponse)sres).sendRedirect(req.getContextPath() + "/" + targetUrl);
+						return;
+					default:
+						//Back compatibility with old versions
+						((HttpServletResponse)sres).sendRedirect(req.getContextPath() + "/" + targetUrl);
+						return;
+					}
 				}
 			}
 		}catch(ASGRuntimeException e){
 			log.error("doFilter", e);
 		}
+		
+		
+		
 		
 		chain.doFilter(sreq, sres);
 
