@@ -7,12 +7,12 @@
 		<property type="string" name="description" multilingual="true"/>
 		<property name="mediaLinks" type="list">
 	        <content>
-				<link name="mediaLinks" type="single" target="ASSiteData.MediaLink"/>
+				<link name="mediaLink" type="single" target="ASSiteData.MediaLink"/>
         	</content>
         </property>
         <property name="scripts" type="list">
 	        <content>
-				<link name="scripts" type="single" target="ASSiteData.Script"/>
+				<link name="script" type="single" target="ASSiteData.Script"/>
         	</content>
         </property>
 		<link type="single" target="ASSiteData.PageTemplate" name="template"/>
@@ -43,7 +43,7 @@
         </property>
 		<property name="localizations" type="list">
 	        <content>
-				<link name="type" type="single" target="ASResourceData.LocalizationBundle"/>
+				<link name="localization" type="single" target="ASResourceData.LocalizationBundle"/>
         	</content>
         </property>
 		<property type="boolean" name="httpsonly"/>
@@ -55,22 +55,22 @@
 		<property name="content" type="text" multilingual="true"/>
 		<property name="mediaLinks" type="list">
 	        <content>
-				<link name="mediaLinks" type="single" target="ASSiteData.MediaLink"/>
+				<link name="mediaLink" type="single" target="ASSiteData.MediaLink"/>
         	</content>
         </property>
         <property name="scripts" type="list">
 	        <content>
-				<link name="scripts" type="single" target="ASSiteData.Script"/>
+				<link name="script" type="single" target="ASSiteData.Script"/>
         	</content>
         </property>
         <property name="localizations" type="list">
 	        <content>
-				<link name="type" type="single" target="ASResourceData.LocalizationBundle"/>
+				<link name="localization" type="single" target="ASResourceData.LocalizationBundle"/>
         	</content>
         </property>
 		<property name="subboxes" type="list">
 	        <content>
-				<link name="type" type="single" target="Box"/>
+				<link name="subbox" type="single" target="Box"/> 
         	</content>
         </property>
 		<property name="cssClass" type="string"/>
