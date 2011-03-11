@@ -15,6 +15,11 @@
 	<dependencies>
 		<dependency>
 			<groupId>net.anotheria</groupId>
+			<artifactId>ano-util</artifactId>
+			<version>1.0.8-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>net.anotheria</groupId>
 			<artifactId>ano-tags</artifactId>
 			<version>1.0.3</version>
 		</dependency>

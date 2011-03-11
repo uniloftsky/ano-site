@@ -136,7 +136,8 @@ table textarea {padding:5px 3px; margin-bottom:5px; margin-top:5px;}
 .pages_table thead td a.down {background:url("../img/icons.gif") 100% -394px no-repeat;}
 .pages_table .lineDark {background:#f4f4f4;}
 .pages_table tbody tr:hover {background:#edf4fa;}
-.pages_table tbody tr td.no_wrap img {margin-right:4px; display:none;}.pages_table tbody tr:hover img {display:inline !important;}
+.pages_table tbody tr td.no_wrap img {margin-right:4px; display:none;}
+.pages_table tbody tr:hover img {display:inline !important;}
 .generated {margin-top:10px; overflow:hidden;}
 .generated span {float:left; font-size:10px; color:#aaaaaa;}
 .generated a {float:right; font-size:10px;}
@@ -203,3 +204,6 @@ h1 {font-size:24px; text-align:center; margin:10px 0; font-weight:normal;}
 
 .mceStatusbar div {display:none !important;}
 .mceLayout {width:90% !important;}
+
+.thumbnail {max-width:100px; max-height:100px; margin:0 0 2px 5px; display:block; float:left;}
+.cmsDialog .thumbnail {}
