@@ -8,10 +8,9 @@ import javax.servlet.jsp.JspException;
 import net.anotheria.anoplass.api.APICallContext;
 import net.anotheria.anoprise.metafactory.MetaFactory;
 import net.anotheria.anoprise.metafactory.MetaFactoryException;
-import net.anotheria.anosite.content.bean.BoxBean;
-import net.anotheria.anosite.content.bean.LocalizationMap;
 import net.anotheria.anosite.gen.asresourcedata.data.TextResource;
 import net.anotheria.anosite.gen.asresourcedata.service.IASResourceDataService;
+import net.anotheria.anosite.localization.LocalizationMap;
 import net.anotheria.anosite.tags.content.BaseResourceTag;
 import net.anotheria.asg.exception.ASGRuntimeException;
 import net.anotheria.util.StringUtils;
@@ -65,11 +64,7 @@ public class LocalizationProcessor implements VariablesProcessor {
 	
 	protected String getLocalizationFromMap(String key){
 		LocalizationMap localization = (LocalizationMap)APICallContext.getCallContext().getAttribute(LocalizationMap.CALL_CONTEXT_SCOPE_NAME);
-		return localization.getMessage(getLocalizedBox(), key);
-	}
-	
-	protected BoxBean getLocalizedBox(){
-		return (BoxBean) APICallContext.getCallContext().getAttribute(BoxBean.CALL_CONTEXT_SCOPE_NAME);
+		return localization.getMessage(key);
 	}
 	
 	/**

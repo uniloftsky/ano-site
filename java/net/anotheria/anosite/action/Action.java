@@ -14,10 +14,10 @@ public interface Action {
 	/**
 	 * Executes the action.
 	 * @param req the http request.
-	 * @param responce the http response.
+	 * @param resp the http response.
 	 * @param mapping default mapping as configured in the CMS.
 	 * @return
 	 * @throws Exception
 	 */
-	ActionCommand execute(HttpServletRequest req, HttpServletResponse responce, ActionMapping mapping) throws Exception;
+	ActionCommand execute(HttpServletRequest req, HttpServletResponse resp, ActionMapping mapping) throws Exception;
 }

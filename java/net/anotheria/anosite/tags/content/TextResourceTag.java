@@ -6,9 +6,9 @@ import javax.servlet.jsp.JspException;
 
 import net.anotheria.anoplass.api.APICallContext;
 import net.anotheria.anosite.content.bean.BoxBean;
-import net.anotheria.anosite.content.bean.LocalizationMap;
 import net.anotheria.anosite.content.variables.VariablesUtility;
 import net.anotheria.anosite.gen.asresourcedata.data.TextResource;
+import net.anotheria.anosite.localization.LocalizationMap;
 import net.anotheria.anosite.util.AnositeConstants;
 
 /**
@@ -41,7 +41,7 @@ public class TextResourceTag extends BaseResourceTag{
 		
 		//Try to find resource with given key in LocalizationMap
 		LocalizationMap localization = (LocalizationMap)APICallContext.getCallContext().getAttribute(LocalizationMap.CALL_CONTEXT_SCOPE_NAME);
-		String txt = localization != null? localization.getMessage(getBox(), myKey): null;
+		String txt = localization != null? localization.getMessage(myKey): null;
 		
 		if(txt != null){
 			write(txt);

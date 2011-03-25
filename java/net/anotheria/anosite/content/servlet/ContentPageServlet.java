@@ -30,7 +30,6 @@ import net.anotheria.anosite.content.bean.AttributeMap;
 import net.anotheria.anosite.content.bean.BoxBean;
 import net.anotheria.anosite.content.bean.BoxTypeBean;
 import net.anotheria.anosite.content.bean.BreadCrumbItemBean;
-import net.anotheria.anosite.content.bean.LocalizationMap;
 import net.anotheria.anosite.content.bean.MediaLinkBean;
 import net.anotheria.anosite.content.bean.NaviItemBean;
 import net.anotheria.anosite.content.bean.PageBean;
@@ -75,6 +74,8 @@ import net.anotheria.anosite.handler.ResponseRedirectAfterProcessing;
 import net.anotheria.anosite.handler.ResponseRedirectImmediately;
 import net.anotheria.anosite.handler.ResponseStop;
 import net.anotheria.anosite.handler.exception.BoxHandleException;
+import net.anotheria.anosite.localization.LocalizationMap;
+import net.anotheria.anosite.localization.LocalizationEnvironment;
 import net.anotheria.anosite.shared.AnositeConfig;
 import net.anotheria.anosite.shared.InternalResponseCode;
 import net.anotheria.anosite.shared.presentation.servlet.BaseAnoSiteServlet;
@@ -1248,40 +1249,21 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	}
 	
 	private void prepareTemplateLocalization(List<String> localizationBundlesIds) throws ASResourceDataServiceException, ASGRuntimeException {
-		getCurrentLocalizationMap().addTemplateLocalization(createLocalization(localizationBundlesIds));
+		LocalizationMap.getCurrentLocalizationMap().addLocalizationBundles(LocalizationEnvironment.TEMPLATE, getLocalizationBundles(localizationBundlesIds));
 	}
 	
 	private void preparePageLocalization(List<String> localizationBundlesIds) throws ASResourceDataServiceException, ASGRuntimeException {
-		getCurrentLocalizationMap().addPageLocalization(createLocalization(localizationBundlesIds));
+		LocalizationMap.getCurrentLocalizationMap().addLocalizationBundles(LocalizationEnvironment.PAGE, getLocalizationBundles(localizationBundlesIds));
 	}
 	
 	private void prepareBoxLocalization(BoxBean box, List<String> localizationBundlesIds) throws ASResourceDataServiceException, ASGRuntimeException {
-		getCurrentLocalizationMap().addBoxLocalization(box, createLocalization(localizationBundlesIds));
+		LocalizationMap.getCurrentLocalizationMap().addLocalizationBundles(LocalizationEnvironment.BOX, getLocalizationBundles(localizationBundlesIds));
 	}
 	
-	private LocalizationMap getCurrentLocalizationMap(){
-		LocalizationMap loc = (LocalizationMap) APICallContext.getCallContext().getAttribute(LocalizationMap.CALL_CONTEXT_SCOPE_NAME);
-		if(loc != null)
-			return loc;
-		loc = new LocalizationMap();
-		APICallContext.getCallContext().setAttribute(LocalizationMap.CALL_CONTEXT_SCOPE_NAME, loc);
-		return loc;
-	}
-	
-	private Map<String, String> createLocalization(List<String> localizationBundlesIds) throws ASResourceDataServiceException, ASGRuntimeException {
-		Map<String,String> ret = new HashMap<String, String>();
-		for(String bundleId: localizationBundlesIds){
-			LocalizationBundle bundle = resourceDataService.getLocalizationBundle(bundleId);
-			String toParse  = bundle.getMessages();
-			String[] lines = StringUtils.tokenize(toParse, '\n');
-			for (String l : lines) {
-				String[] message = StringUtils.tokenize(l, '=');
-				if(message.length !=2)
-					throw new ASGRuntimeException("Invalid format of LocalizationBundel with id " + bundleId + " in line: <" + l + ">. Expected line format: <key=message>");
-					
-				ret.put(message[0], message[1]);
-			}
-		}
+	private List<LocalizationBundle> getLocalizationBundles(List<String> localizationBundlesIds) throws ASResourceDataServiceException, ASGRuntimeException {
+		List<LocalizationBundle> ret = new ArrayList<LocalizationBundle>();
+		for(String bundleId: localizationBundlesIds)
+			ret.add(resourceDataService.getLocalizationBundle(bundleId));
 		return ret;
 	}
 
