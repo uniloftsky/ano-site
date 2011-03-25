@@ -207,3 +207,7 @@ h1 {font-size:24px; text-align:center; margin:10px 0; font-weight:normal;}
 
 .thumbnail {max-width:100px; max-height:100px; margin:0 0 2px 5px; display:block; float:left;}
 .cmsDialog .thumbnail {}
+/* ---css for explanation tooltips in Edit document screen --- */
+.showTooltip {display:inline-block; width:14px; height:14px; overflow:hidden; margin:0 5px; position:relative; top:1px; //top:0;}
+.tipText {position:absolute; background:#f3f8ff; border:1px solid #4982d0; padding:5px 10px; max-width:300px; text-align:left;}
+/* -- tooltips end --*/
