@@ -43,11 +43,9 @@ public enum LocalizationResolver {
 
 		// Ok, resource in LocalizationMap not found. Loading from TextResources
 		TextResource resource = getTextResourceByName(key);
-		if (resource == null)
-			message = "Missing key: " + key;
-		else
+		if (resource != null)
 			message = resource.getValue();
-		return message;
+		return message != null? message: "Missing key: " + key;
 	}
 
 	/**

@@ -9,8 +9,6 @@ import net.anotheria.anoplass.api.APICallContext;
 import net.anotheria.anosite.gen.asresourcedata.data.LocalizationBundle;
 import net.anotheria.util.StringUtils;
 
-import org.apache.log4j.Logger;
-
 /**
  * Storage for localization in different environment.<br/>
  * Will be rewritten with new Localization Framework.
@@ -67,6 +65,7 @@ public class LocalizationMap {
 		String toParse = bundle.getMessages();
 		if(toParse == null)
 			throw new NullPointerException("LocalizationBundle " + bundle.getId() + ": message is null!");
+		toParse = StringUtils.removeChar(toParse, '\r');
 		String[] lines = StringUtils.tokenize(toParse, '\n');
 		for (String l : lines) {
 			String[] message = StringUtils.tokenize(l, '=');
