@@ -7,6 +7,7 @@
 	<!--@include:as-viewdef-resources.xml -->
 	<!--@include:as-viewdef-georesources.xml -->
 	<!--@include:as-viewdef-actions.xml -->
+	<!--@include:as-viewdef-wizard.xml -->
 
 
 	<!--  AnoSite supports following embedded user roles

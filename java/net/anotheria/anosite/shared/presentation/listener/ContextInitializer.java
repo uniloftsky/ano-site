@@ -1,15 +1,17 @@
 package net.anotheria.anosite.shared.presentation.listener;
 
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-
+import net.anotheria.anoplass.api.APIFinder;
 import net.anotheria.anosite.cms.helper.BoxHelperUtility;
 import net.anotheria.anosite.config.Config;
+import net.anotheria.anosite.wizard.api.WizardAPI;
+import net.anotheria.anosite.wizard.api.WizardAPIFactory;
 import net.anotheria.util.Date;
-
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
+
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
 
 
 
@@ -46,6 +48,12 @@ public class ContextInitializer implements ServletContextListener{
 		
 		Config cfg = Config.getInstance();
 		System.out.println("System configured as "+cfg.getSystemName());
+
+		//configure API!
+		System.out.println("Configure api");
+		APIFinder.addAPIFactory(WizardAPI.class,new WizardAPIFactory());
+		System.out.println("API configured");
+
 	}
 	
 }

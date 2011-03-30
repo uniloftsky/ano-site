@@ -6,11 +6,11 @@ package net.anotheria.anosite.shared;
  */
 public enum InternalResponseCode {
 	/**
-	 * Continue execution
+	 * Continue execution.
 	 */
 	CONTINUE,
 	/**
-	 * Abort the exception, an exception should be thrown 
+	 * Abort the exception, an exception should be thrown.
 	 */
 	ABORT,
 	/**
@@ -23,7 +23,7 @@ public enum InternalResponseCode {
 	 */
 	CANCEL_AND_REDIRECT,
 	/**
-	 * A part of the exection encountered an error, but the application can still resume processing, only a part is broken.
+	 * A part of the exception encountered an error, but the application can still resume processing, only a part is broken.
 	 */
 	ERROR_AND_CONTINUE,
 	/**
