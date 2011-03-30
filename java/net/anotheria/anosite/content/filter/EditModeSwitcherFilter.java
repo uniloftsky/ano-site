@@ -1,6 +1,7 @@
 package net.anotheria.anosite.content.filter;
 
-import java.io.IOException;
+import net.anotheria.anosite.gen.shared.service.AnoDocConfigurator;
+
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -9,28 +10,16 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
-import net.anotheria.anosite.gen.shared.service.AnoDocConfigurator;
-import net.anotheria.anosite.util.AnositeConstants;
+import static net.anotheria.anosite.util.AnositeConstants.*;
 
 /**
- * This filter is used to switch the onsite edit mode on and off. To perform this task it checks whether the switch mode parameter is present.
+ * This filter is used to switch the on-site edit mode on and off. To perform this task it checks whether the switch mode parameter is present.
  * @author another
  *
  */
 public class EditModeSwitcherFilter implements Filter{
-	/**
-	 * Parameter for mode switching.
-	 */
-	public static final String PARAM_SWITCH_MODE = "pSwitchMode";
-	/**
-	 * Value for switching into edit mode.
-	 */
-	public static final String PARAM_VALUE_EDIT_MODE = "editMode";
-	/**
-	 * Value for switching into view mode.
-	 */
-	public static final String PARAM_VALUE_VIEW_MODE = "viewMode";
 
 	@Override public void destroy() {
 		
@@ -45,9 +34,9 @@ public class EditModeSwitcherFilter implements Filter{
 		String p = req.getParameter(PARAM_SWITCH_MODE);
 		if (p!=null && p.length()>0){
 			if (p.equals(PARAM_VALUE_EDIT_MODE))
-				req.getSession().setAttribute(AnositeConstants.SA_EDIT_MODE_FLAG, Boolean.TRUE);
+				req.getSession().setAttribute(SA_EDIT_MODE_FLAG, Boolean.TRUE);
 			if (p.equals(PARAM_VALUE_VIEW_MODE))
-				req.getSession().removeAttribute(AnositeConstants.SA_EDIT_MODE_FLAG);
+				req.getSession().removeAttribute(SA_EDIT_MODE_FLAG);
 		}
 		
 		chain.doFilter(sreq, sres);
