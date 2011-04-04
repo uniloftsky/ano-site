@@ -502,7 +502,7 @@ public class BaseWizardHandler implements WizardHandler {
 	 */
 	private boolean isFirstStep(WizardStepAO step, WizardDef wizard) {
 		final int firstStepIndex = 0;
-		return step.getStepIndex() == firstStepIndex && step.getWizardId().equals(wizard.getWizardStepsElement(firstStepIndex));
+		return step.getStepIndex() == firstStepIndex && step.getWizardId().equals(wizard.getId()) && step.getStepId().equals(wizard.getWizardStepsElement(firstStepIndex));
 	}
 
 	/**
