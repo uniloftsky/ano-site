@@ -80,6 +80,8 @@ public class BaseWizardHandler implements WizardHandler {
 
 	@Override
 	public WizardHandlerResponse preProcess(HttpServletRequest req, HttpServletResponse res, WizardDef wizard) throws WizardHandlerPreProcessException {
+		// adding cache control headers
+		addCacheControlHeadersToResponse(res);
 		return WizardResponseContinue.INSTANCE;
 	}
 
@@ -89,6 +91,8 @@ public class BaseWizardHandler implements WizardHandler {
 
 		if (wizard.getWizardStepsSize() == 0)
 			throw new WizardHandlerProcessException(wizard.getId(), " wizard Steps are not configured!");
+		// adding cache control headers
+		addCacheControlHeadersToResponse(res);
 		try {
 			WizardAO wizardAO = wizardAPI.getWizard(wizard.getId());
 			WizardStepAO currentStep = wizardAPI.getCurrentStep(wizard.getId());
@@ -439,6 +443,24 @@ public class BaseWizardHandler implements WizardHandler {
 		}
 
 		return WizardResponseChangeStep.INSTANCE;
+	}
+
+	/**
+	 * Current method add browser cache-control headers to response.
+	 * Current will disable browser cache for all  wizard pages.
+	 * <p/>
+	 * Headers "Cache-Control", "Pragma", "Expires" with values. etc.
+	 *
+	 * @param response {@link HttpServletResponse}
+	 */
+	private void addCacheControlHeadersToResponse(HttpServletResponse response) {
+		// "Cache-Control" header.
+		response.setHeader("Cache-Control", "no-cache, no-store, post-check=0, pre-check=0");
+		// "Pragma" header .
+		response.setHeader("Pragma", "no-cache");
+		// "Expires" header.
+		response.setHeader("Expires", "Thu, 01 Dec 1994 16:00:00 GMT");
+
 	}
 
 
