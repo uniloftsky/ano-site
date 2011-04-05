@@ -158,7 +158,7 @@ public class BaseWizardHandler implements WizardHandler {
 				boolean isPassed = passedSteps.contains(stepId);
 				String stepUrl = isPassed ? WizardCommand.NAVIGATE_TO.getCommandTitle() + "=" + stepPos : "";
 
-				wizardMenuBean.add(new WizardMenuItemBean(wizard.getName(), stepUrl, isCurrent, isPassed));
+				wizardMenuBean.add(new WizardMenuItemBean(String.valueOf(stepPos + 1), stepUrl, isCurrent, isPassed));
 			}
 
 			req.setAttribute(WIZARD_MENU_ATTRIBUTE, wizardMenuBean);
