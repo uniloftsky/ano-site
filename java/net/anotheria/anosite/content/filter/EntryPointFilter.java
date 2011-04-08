@@ -38,8 +38,14 @@ public class EntryPointFilter implements Filter{
 	@Override public void doFilter(ServletRequest sreq, ServletResponse sres, FilterChain chain) throws IOException, ServletException {
 		if (!(sreq instanceof HttpServletRequest))
 			return;
-		
 		HttpServletRequest req = (HttpServletRequest)sreq;
+		
+		//Workaround for Tomcat7 were url-mapping doesn't map "/" on empty path info
+		if(req.getPathInfo() == null){
+			chain.doFilter(sreq, sres);
+			return;
+		}
+			
 		req.setCharacterEncoding(AnoDocConfigurator.getEncoding());
 
 		String domain = req.getServerName();
