@@ -165,6 +165,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
+		log.info("Init ContentPageServlet");
 		try {
 			webDataService = MetaFactory.get(IASWebDataService.class);
 			siteDataService = MetaFactory.get(IASSiteDataService.class);
@@ -822,7 +823,12 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 					b.setClickable(items.size() > 0);
 					b.setTitle(linkingItem.getName());
 					try {
-						b.setLink(webDataService.getPagex(linkingItem.getInternalLink()).getName() + HTML_SUFFIX);
+						log.info(linkingItem.getName() + ":" + linkingItem.getInternalLink() + "," + linkingItem.getExternalLink());
+						String link = webDataService.getPagex(linkingItem.getInternalLink()).getName() + HTML_SUFFIX;
+						if(linkingItem.getExternalLink().length() > 0) {
+							link = linkingItem.getExternalLink();
+						}
+						b.setLink(link);
 					} catch (NoSuchDocumentException e) {
 						b.setLink("");
 						b.setClickable(false);
@@ -1102,23 +1108,23 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 				continue;
 			}
 
-
 			bean.setPopup(item.getPopup());
 			bean.setName(item.getName());
 			bean.setTitle(item.getTitle());
+			
+			if (item.getInternalLink().length() > 0) {
+				String pageId = item.getInternalLink();
+				String pageName = webDataService.getPagex(pageId).getName();
+				bean.setLink(pageName + HTML_SUFFIX);
+				if (extractPageName(req).equals(pageName))
+					bean.setSelected(true);
+			} else {
+				bean.setLink("#");
+			}
 			if (item.getExternalLink().length() > 0) {
 				bean.setLink(item.getExternalLink());
-			} else {
-				if (item.getInternalLink().length() > 0) {
-					String pageId = item.getInternalLink();
-					String pageName = webDataService.getPagex(pageId).getName();
-					bean.setLink(pageName + HTML_SUFFIX);
-					if (extractPageName(req).equals(pageName))
-						bean.setSelected(true);
-				} else {
-					bean.setLink("#");
-				}
 			}
+			
 			ret.add(bean);
 			List<String> subNaviIds = item.getSubNavi();
 			if (subNaviIds.size() > 0) {
