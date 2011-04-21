@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<validators>
+	
+	<validator name="notEmpty" class="net.anotheria.maf.validation.annotations.ValidateNotEmpty" defaultError="This field should not be empty.">
+		<!-- jsValidation block should contain validation logic (value should be referenced as 'value'). 
+			 Value is concerned valid if expression returns TRUE -->
+		<jsValidation>$.trim(value).length > 0</jsValidation>
+	</validator>
+	
+	<!--intValidator allows empty values, use in combination with 'notEmpty' if needed-->
+	<validator name="intValidator" class="net.anotheria.maf.validation.annotations.ValidateNumber" defaultError="This field should be numeric.">
+		<jsValidation><![CDATA[/^(-?[0-9]+)?$/.test(value)]]></jsValidation>
+	</validator>
+	
+	<!--floatValidator allows empty values, use in combination with 'notEmpty' if needed-->
+	<validator name="floatValidator" class="net.anotheria.maf.validation.annotations.ValidateNumber" defaultError="This field should be float.">
+		<jsValidation><![CDATA[/^(-?[0-9]+(\.[0-9]+)?)?$/.test(value)]]></jsValidation>
+	</validator>
+
+	<!--emailValidator allows empty values, use in combination with 'notEmpty' if needed-->	
+	<validator name="emailValidator" class="net.anotheria.maf.validation.EmailValidator" defaultError="This field should represent email address. Check entered value.">
+		<jsValidation><![CDATA[/^(?:(?:[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,6})|\s*)$/i.test(value)]]></jsValidation>
+	</validator>
+
+</validators>

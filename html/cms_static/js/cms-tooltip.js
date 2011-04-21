@@ -12,4 +12,6 @@ $(function() {
 	mouseout: function() {
 		$(this).next('.tipText').hide().remove();
 	}})
+	
+	$('.showTooltip').click(function() {return false;});
 });
