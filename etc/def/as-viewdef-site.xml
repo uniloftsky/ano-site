@@ -83,6 +83,9 @@
 					<element type="field" name="internalLink" comparable="true">
 	        		   	<decorator name="linkTargetName"/>
 					</element>
+					<element type="field" name="pageAlias" comarable="true">
+						<decorator name="linkTargetName"/>
+					</element>
 					<element type="field" name="subNavi" comparable="true">
 						<decorator name="naviitem"/>
 					</element> 
@@ -99,6 +102,7 @@
 		      			<element type="field" name="title" /> 
 						<element type="field" name="externalLink" /> 
 						<element type="field" name="internalLink" /> 
+						<element type="field" name="pageAlias" /> 
 						<element type="field" name="subNavi" /> 
 						<element type="field" name="popup" /> 
 						<element type="field" name="guards"/>

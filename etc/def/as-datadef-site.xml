@@ -121,6 +121,7 @@
 		<property name="title" type="string" multilingual="true"/>
 		<property name="externalLink" type="string"/>
 		<link name="internalLink" type="single" target="ASWebData.Pagex"/>
+		<link name="pageAlias" type="single" target="ASSiteData.PageAlias"/>
 		<property name="popup" type="boolean"/>
 		<property name="subNavi" type="list">
 	        <content>

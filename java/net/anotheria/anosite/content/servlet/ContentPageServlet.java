@@ -1086,7 +1086,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		for (String id : idList) {
 			NaviItemBean bean = new NaviItemBean();
 			NaviItem item = siteDataService.getNaviItem(id);
-
+			
 			boolean do_break = false;
 			//check the guards
 			List<String> gIds = item.getGuards();
@@ -1112,6 +1112,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			bean.setName(item.getName());
 			bean.setTitle(item.getTitle());
 			
+			// internal link to a page
 			if (item.getInternalLink().length() > 0) {
 				String pageId = item.getInternalLink();
 				String pageName = webDataService.getPagex(pageId).getName();
@@ -1121,9 +1122,23 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			} else {
 				bean.setLink("#");
 			}
+			
+			// aliased link to a page
+			if(item.getPageAlias().length() > 0) {
+				String pageAliasId = item.getPageAlias();
+				PageAlias alias = siteDataService.getPageAlias(pageAliasId);
+				String link = alias.getName();
+				if(link.startsWith("/")) {
+					link = link.substring(1,link.length());
+				}
+				bean.setLink(link);
+			}
+			
+			// external link
 			if (item.getExternalLink().length() > 0) {
 				bean.setLink(item.getExternalLink());
 			}
+			
 			
 			ret.add(bean);
 			List<String> subNaviIds = item.getSubNavi();
