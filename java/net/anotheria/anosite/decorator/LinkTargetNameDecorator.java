@@ -109,6 +109,9 @@ public class LinkTargetNameDecorator implements IAttributeDecorator{
 		if (attributeName.equals("internalLink")){
 			return webDataService.getPagex(item.getInternalLink()).getName();
 		}
+		if (attributeName.equals("pageAlias")) {
+			return siteDataService.getPageAlias(item.getPageAlias()).getName();
+		}
 		return "Unknown attribute: "+attributeName;
 		
 	}
@@ -167,7 +170,6 @@ public class LinkTargetNameDecorator implements IAttributeDecorator{
 		if (attributeName.equals("targetPage")){
 			return webDataService.getPagex(entry.getTargetPage()).getName();
 		}
-		
 		return "Unknown attribute: "+attributeName;
 	}
 
