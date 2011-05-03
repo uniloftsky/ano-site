@@ -806,7 +806,20 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 
 				BreadCrumbItemBean startpageBean = new BreadCrumbItemBean();
 				startpageBean.setTitle(linkToStartPage.getName());
-				startpageBean.setLink(webDataService.getPagex(linkToStartPage.getInternalLink()).getName() + HTML_SUFFIX);
+				
+				String sLink = webDataService.getPagex(linkToStartPage.getInternalLink()).getName() + HTML_SUFFIX;
+				
+				// aliased link to startpage
+				if(linkToStartPage.getPageAlias().length() > 0) {
+					String pageAliasId = linkToStartPage.getPageAlias();
+					PageAlias alias = siteDataService.getPageAlias(pageAliasId);
+					sLink = alias.getName();
+					if(sLink.startsWith("/")) {
+						sLink = sLink.substring(1,sLink.length());
+					}
+				}
+				startpageBean.setLink(sLink);
+				
 				ret.add(startpageBean);
 				if (linkToStartPage.equals(linkingItem)) {
 					startpageBean.setClickable(false);
@@ -814,6 +827,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 				} else {
 					startpageBean.setClickable(true);
 				}
+			}
 
 				//ok start page is found and we are not the startPage
 				//now find other... this is now hardcoded for two level navigation.
@@ -825,6 +839,18 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 					try {
 						log.info(linkingItem.getName() + ":" + linkingItem.getInternalLink() + "," + linkingItem.getExternalLink());
 						String link = webDataService.getPagex(linkingItem.getInternalLink()).getName() + HTML_SUFFIX;
+						
+						// aliased link to a page
+						if(linkingItem.getPageAlias().length() > 0) {
+							String pageAliasId = linkingItem.getPageAlias();
+							PageAlias alias = siteDataService.getPageAlias(pageAliasId);
+							link = alias.getName();
+							if(link.startsWith("/")) {
+								link = link.substring(1,link.length());
+							}
+						}
+						
+						// external Link
 						if(linkingItem.getExternalLink().length() > 0) {
 							link = linkingItem.getExternalLink();
 						}
@@ -849,7 +875,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 				ret.addAll(items);
 
 
-			}
+			
 		} catch (Exception e) {
 			BreadCrumbItemBean b = new BreadCrumbItemBean();
 			b.setTitle("Error: " + e.getMessage());
