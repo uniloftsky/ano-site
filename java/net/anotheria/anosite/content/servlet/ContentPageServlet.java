@@ -1,12 +1,48 @@
 package net.anotheria.anosite.content.servlet;
 
+import static net.anotheria.anosite.util.AnositeConstants.PARAM_SWITCH_MODE;
+import static net.anotheria.anosite.util.AnositeConstants.PARAM_VALUE_EDIT_MODE;
+import static net.anotheria.anosite.util.AnositeConstants.PARAM_VALUE_VIEW_MODE;
+import static net.anotheria.anosite.util.AnositeConstants.SA_EDIT_MODE_FLAG;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import net.anotheria.anodoc.data.NoSuchDocumentException;
 import net.anotheria.anoplass.api.APICallContext;
 import net.anotheria.anoplass.api.APIFinder;
 import net.anotheria.anoplass.api.session.APISessionImpl;
 import net.anotheria.anoprise.metafactory.MetaFactory;
 import net.anotheria.anoprise.metafactory.MetaFactoryException;
-import net.anotheria.anosite.content.bean.*;
+import net.anotheria.anosite.content.bean.AttributeBean;
+import net.anotheria.anosite.content.bean.AttributeMap;
+import net.anotheria.anosite.content.bean.BoxBean;
+import net.anotheria.anosite.content.bean.BoxTypeBean;
+import net.anotheria.anosite.content.bean.BreadCrumbItemBean;
+import net.anotheria.anosite.content.bean.MediaLinkBean;
+import net.anotheria.anosite.content.bean.NaviItemBean;
+import net.anotheria.anosite.content.bean.PageBean;
+import net.anotheria.anosite.content.bean.ScriptBean;
+import net.anotheria.anosite.content.bean.SiteBean;
+import net.anotheria.anosite.content.bean.StylesheetBean;
 import net.anotheria.anosite.content.variables.VariablesUtility;
 import net.anotheria.anosite.gen.asfederateddata.data.BoxType;
 import net.anotheria.anosite.gen.asfederateddata.service.ASFederatedDataServiceException;
@@ -18,7 +54,12 @@ import net.anotheria.anosite.gen.asresourcedata.data.LocalizationBundle;
 import net.anotheria.anosite.gen.asresourcedata.data.TextResource;
 import net.anotheria.anosite.gen.asresourcedata.service.ASResourceDataServiceException;
 import net.anotheria.anosite.gen.asresourcedata.service.IASResourceDataService;
-import net.anotheria.anosite.gen.assitedata.data.*;
+import net.anotheria.anosite.gen.assitedata.data.MediaLink;
+import net.anotheria.anosite.gen.assitedata.data.NaviItem;
+import net.anotheria.anosite.gen.assitedata.data.PageAlias;
+import net.anotheria.anosite.gen.assitedata.data.PageTemplate;
+import net.anotheria.anosite.gen.assitedata.data.Script;
+import net.anotheria.anosite.gen.assitedata.data.Site;
 import net.anotheria.anosite.gen.assitedata.service.ASSiteDataServiceException;
 import net.anotheria.anosite.gen.assitedata.service.IASSiteDataService;
 import net.anotheria.anosite.gen.aswebdata.data.Attribute;
@@ -34,7 +75,15 @@ import net.anotheria.anosite.gen.shared.data.LinkTypesUtils;
 import net.anotheria.anosite.gen.shared.data.MediaDescUtils;
 import net.anotheria.anosite.guard.ConditionalGuard;
 import net.anotheria.anosite.guard.GuardFactory;
-import net.anotheria.anosite.handler.*;
+import net.anotheria.anosite.handler.AbstractRedirectResponse;
+import net.anotheria.anosite.handler.BoxHandler;
+import net.anotheria.anosite.handler.BoxHandlerFactory;
+import net.anotheria.anosite.handler.BoxHandlerResponse;
+import net.anotheria.anosite.handler.ResponseAbort;
+import net.anotheria.anosite.handler.ResponseContinue;
+import net.anotheria.anosite.handler.ResponseRedirectAfterProcessing;
+import net.anotheria.anosite.handler.ResponseRedirectImmediately;
+import net.anotheria.anosite.handler.ResponseStop;
 import net.anotheria.anosite.handler.exception.BoxHandleException;
 import net.anotheria.anosite.localization.LocalizationEnvironment;
 import net.anotheria.anosite.localization.LocalizationMap;
@@ -42,33 +91,27 @@ import net.anotheria.anosite.shared.AnositeConfig;
 import net.anotheria.anosite.shared.InternalResponseCode;
 import net.anotheria.anosite.shared.presentation.servlet.BaseAnoSiteServlet;
 import net.anotheria.anosite.util.AnositeConstants;
-import net.anotheria.anosite.wizard.handler.WizardHandler;
-import net.anotheria.anosite.wizard.handler.WizardHandlerFactory;
 import net.anotheria.anosite.wizard.api.WizardAPI;
 import net.anotheria.anosite.wizard.api.exception.WizardAPIException;
+import net.anotheria.anosite.wizard.handler.WizardHandler;
+import net.anotheria.anosite.wizard.handler.WizardHandlerFactory;
 import net.anotheria.anosite.wizard.handler.exceptions.WizardHandlerException;
 import net.anotheria.anosite.wizard.handler.exceptions.WizardHandlerProcessException;
 import net.anotheria.anosite.wizard.handler.exceptions.WizardHandlerSubmitException;
-import net.anotheria.anosite.wizard.handler.response.*;
+import net.anotheria.anosite.wizard.handler.response.WizardHandlerResponse;
+import net.anotheria.anosite.wizard.handler.response.WizardResponseAbort;
+import net.anotheria.anosite.wizard.handler.response.WizardResponseCancel;
+import net.anotheria.anosite.wizard.handler.response.WizardResponseChangeStep;
+import net.anotheria.anosite.wizard.handler.response.WizardResponseContinue;
+import net.anotheria.anosite.wizard.handler.response.WizardResponseFinish;
 import net.anotheria.asg.exception.ASGRuntimeException;
 import net.anotheria.util.IdCodeGenerator;
 import net.anotheria.util.StringUtils;
 import net.java.dev.moskito.core.blueprint.BlueprintCallExecutor;
 import net.java.dev.moskito.core.blueprint.BlueprintProducer;
 import net.java.dev.moskito.core.blueprint.BlueprintProducersFactory;
+
 import org.apache.log4j.Logger;
-
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.*;
-import java.nio.charset.Charset;
-import java.util.*;
-
-import static net.anotheria.anosite.util.AnositeConstants.*;
-import static net.anotheria.anosite.util.AnositeConstants.SA_EDIT_MODE_FLAG;
 
 /**
  * This servlet builds and delivers pages (out of pagexs objects) and is therefore one of the main classes in the ano-site framework.
@@ -160,6 +203,8 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	 * Configuration instance.
 	 */
 	private AnositeConfig config = AnositeConfig.getInstance();
+	
+	private static SimpleDateFormat generatedFormat = new SimpleDateFormat("dd.MM.yyyy hh:mm:ss");
 
 
 	@Override
@@ -433,6 +478,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		String titleOverride = (String) req.getAttribute(OVERRIDE_PAGE_TITLE);
 
 		PageBean pageBean = ((InternalPageBeanResponse) pageResponse).getPageBean();
+		pageBean.setGenerated(generatedFormat.format(page.getLastUpdateTimestamp()));
 		if (pageBean.getTitle() == null || pageBean.getTitle().length() == 0)
 			pageBean.setTitle(siteBean.getTitle());
 		if (titleOverride != null && titleOverride.length() > 0)

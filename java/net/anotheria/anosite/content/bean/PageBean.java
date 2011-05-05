@@ -57,6 +57,10 @@ public class PageBean {
 	 * List of footer boxes (after the main content columns).
 	 */
 	private List<BoxBean> footerBoxes;
+	/**
+	 * Generated timestamp (last updated timestamp formated for meta generated)
+	 */
+	private String generated;
 
 	public PageBean() {
 		column1 = new ArrayList<BoxBean>();
@@ -205,4 +209,13 @@ public class PageBean {
 	public void addScripts(List<ScriptBean> mediaLinks) {
 		this.scripts.addAll(mediaLinks);
 	}
+
+	public String getGenerated() {
+		return generated;
+	}
+
+	public void setGenerated(String generated) {
+		this.generated = generated;
+	}
+	
 }
