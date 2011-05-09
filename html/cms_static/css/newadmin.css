@@ -162,7 +162,7 @@ h1 {font-size:24px; text-align:center; margin:10px 0; font-weight:normal;}
 .yui-ac-content {overflow-y:auto; overflow-x:hidden; max-height:21.9em;}
 .yui-ac-highlight {background:#2772bd; color:white;}
 
-.main_area td em {color:#014AAD; padding-right:10px; background:url("../img/icons.gif") no-repeat scroll 100% -17px transparent; cursor:pointer; font-style:normal; padding-left:4px;}
+.main_area td em {color:#014AAD; padding-right:10px; background:url("../img/icons.gif") no-repeat scroll 100% -17px transparent; cursor:pointer; font-style:normal; padding-left:4px; min-height:10px; display: inline-block;}
 .main_area td em:hover {text-decoration:underline;}
 .result {clear:both; overflow:hidden;}
 
