@@ -6,6 +6,7 @@ import java.util.Date;
 import net.anotheria.anoplass.api.APICallContext;
 import net.anotheria.asg.data.DataObject;
 import net.anotheria.asg.util.listener.IServiceListener;
+import net.anotheria.util.NumberUtils;
 
 import org.apache.log4j.Logger;
 
@@ -78,7 +79,7 @@ public class CRUDLogListener implements IServiceListener {
     private void logData(String operation, String objData) {
         String user = APICallContext.getCallContext().getCurrentUserId();
         String editor = APICallContext.getCallContext().getCurrentEditorId();
-        String time = new SimpleDateFormat().format(new Date());
+        String time = NumberUtils.makeISO8601TimestampString(System.currentTimeMillis());
         log.info(time + SEPARATOR + operation + SEPARATOR + " uid : " + user + SEPARATOR + "eid : " + editor + SEPARATOR + objData);
     }
 }
