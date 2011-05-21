@@ -1,14 +1,14 @@
 package net.anotheria.anosite.guard;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import net.anotheria.anoprise.metafactory.MetaFactory;
 import net.anotheria.anoprise.metafactory.MetaFactoryException;
 import net.anotheria.anosite.gen.asfederateddata.data.GuardDef;
-import net.anotheria.anosite.gen.asfederateddata.service.ASFederatedDataServiceFactory;
 import net.anotheria.anosite.gen.asfederateddata.service.IASFederatedDataService;
-import org.apache.log4j.Logger;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import org.apache.log4j.Logger;
 
 /**
  * A utility for guard instantiation.
