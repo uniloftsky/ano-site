@@ -1,5 +1,6 @@
 package net.anotheria.anosite.shared.presentation.listener;
 
+import net.anotheria.anodoc.service.LockHolder;
 import net.anotheria.anoplass.api.APIFinder;
 import net.anotheria.anosite.cms.helper.BoxHelperUtility;
 import net.anotheria.anosite.config.Config;
@@ -42,17 +43,22 @@ public class ContextInitializer implements ServletContextListener{
 	}
 
 	public void contextInitialized(ServletContextEvent event) {
-		log.info("CONTEXT INITIALIZED @ "+Date.currentDate());
+		
+		String myname = event.getServletContext().getContextPath()+" context ";
+		
+		log.info(myname+"CONTEXT INITIALIZED @ "+Date.currentDate());
 		CMSSelfTest.performSelfTest();
 		BoxHelperUtility.setup();
 		
 		Config cfg = Config.getInstance();
-		System.out.println("System configured as "+cfg.getSystemName());
+		log.info(myname+"configured as "+cfg.getSystemName());
 
 		//configure API!
-		System.out.println("Configure api");
+		log.info(myname+"Configure api");
 		APIFinder.addAPIFactory(WizardAPI.class,new WizardAPIFactory());
-		System.out.println("API configured");
+		log.info(myname+"API configured");
+		LockHolder.addShutdownHook();
+		log.info(myname+"added shutdown hook");
 
 	}
 	
