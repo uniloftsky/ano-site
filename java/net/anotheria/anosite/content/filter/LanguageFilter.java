@@ -50,6 +50,7 @@ public class LanguageFilter implements Filter{
 		}
 		
 		Locale toSet = new Locale(lang);
+		//TODO remove this?
 		session.setAttribute(Action.LOCALE_KEY, toSet);
 		session.setAttribute(SA_LANGUAGE, lang);
 		
