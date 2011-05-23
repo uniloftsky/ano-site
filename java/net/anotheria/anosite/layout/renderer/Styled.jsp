@@ -1,15 +1,12 @@
 <%@ page
 	contentType="text/html;charset=UTF-8" session="true"
-%><%@ taglib uri="/tags/struts-bean" prefix="bean"
-%><%@ taglib uri="/tags/struts-html" prefix="html"
-%><%@ taglib uri="/tags/struts-logic" prefix="logic"
+%><%@ taglib uri="http://www.anotheria.net/ano-tags" prefix="ano"
 %>
-
-<bean:define id="box" toScope="page" name="__box" scope="request" type="net.anotheria.anosite.content.bean.BoxBean"/>
-<div <logic:notEmpty name="box" property="parameter1">id="<bean:write name="box" property="parameter1"/>"</logic:notEmpty> <logic:notEmpty name="box" property="parameter2">class="<bean:write name="box" property="parameter2"/>"</logic:notEmpty>>
-<logic:notEqual name="box" property="content" value="">
-	<bean:write name="box" property="content" filter="false"/>
-</logic:notEqual>
-<bean:define id="__boxlist" toScope="request" name="box" property="subboxes"/>
+<ano:define id="box" toScope="page" name="__box" scope="request" type="net.anotheria.anosite.content.bean.BoxBean"/>
+<div <ano:notEmpty name="box" property="parameter1">id="<ano:write name="box" property="parameter1"/>"</ano:notEmpty> <ano:notEmpty name="box" property="parameter2">class="<ano:write name="box" property="parameter2"/>"</ano:notEmpty>>
+<ano:notEqual name="box" property="content" value="">
+	<ano:write name="box" property="content" filter="false"/>
+</ano:notEqual>
+<ano:define id="__boxlist" toScope="request" name="box" property="subboxes"/>
 <jsp:include page="../templates/ListIterator.jsp" flush="false"/>
 </div>
