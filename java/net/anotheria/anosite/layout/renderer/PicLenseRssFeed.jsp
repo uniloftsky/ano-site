@@ -1,16 +1,15 @@
 <%@ page
 	contentType="text/html;charset=UTF-8" session="true"
-%><%@ taglib uri="/tags/struts-bean" prefix="bean"
-%><%@ taglib uri="/tags/struts-html" prefix="html"
-%><%@ taglib uri="/tags/struts-logic" prefix="logic"
-%> <channel>
-<logic:iterate name="piclenserssitems" type="net.anotheria.anosite.content.bean.RssFeedItem" id="item">
+%><%@ taglib uri="http://www.anotheria.net/ano-tags" prefix="ano"
+%> 
+<channel>
+<ano:iterate name="piclenserssitems" type="net.anotheria.anosite.content.bean.RssFeedItem" id="item">
         <item>
-            <title><bean:write name="item" property="title"/></title>
-            <link><bean:write name="item" property="link"/></link>
-            <media:thumbnail url="<bean:write name="item" property="thumbnailUrl"/>"/>
-            <media:content url="<bean:write name="item" property="contentUrl"/>"/>
-            <%--guid isPermaLink="<bean:write name="item" property="permalink"/>"><bean:write name="item" property="guid"/></guid--%>
+            <title><ano:write name="item" property="title"/></title>
+            <link><ano:write name="item" property="link"/></link>
+            <media:thumbnail url="<ano:write name="item" property="thumbnailUrl"/>"/>
+            <media:content url="<ano:write name="item" property="contentUrl"/>"/>
+            <%--guid isPermaLink="<ano:write name="item" property="permalink"/>"><ano:write name="item" property="guid"/></guid--%>
         </item>
-</logic:iterate> 
+</ano:iterate> 
 </channel>

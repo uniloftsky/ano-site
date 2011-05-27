@@ -1,8 +1,6 @@
 <%@ page
 	contentType="text/html;charset=UTF-8" session="true"
-%><%@ taglib uri="/tags/struts-bean" prefix="bean"
-%><%@ taglib uri="/tags/struts-html" prefix="html"
-%><%@ taglib uri="/tags/struts-logic" prefix="logic"
+%><%@ taglib uri="http://www.anotheria.net/ano-tags" prefix="ano"
 %><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 
@@ -38,12 +36,12 @@
       <div class="main-content">
         
         <!-- Pagetitle -->
-        <h1 class="pagetitle"><bean:write name="page" scope="request" property="title"/></h1>
+        <h1 class="pagetitle"><ano:write name="page" scope="request" property="title"/></h1>
 
         <!-- Content unit - One column -->
 
 		<!-- Rendering column 2 -->
-		<bean:define id="__boxlist" toScope="request" name="page" property="column1"/>
+		<ano:define id="__boxlist" toScope="request" name="page" property="column1"/>
 		<jsp:include page="ListIterator.jsp" flush="false"/>
 
       </div>
@@ -58,11 +56,8 @@
     </div>      
   </div> 
 
-  <bean:define id="__boxlist" toScope="request" name="page" property="footerBoxes"/>
+  <ano:define id="__boxlist" toScope="request" name="page" property="footerBoxes"/>
   <jsp:include page="ListIterator.jsp" flush="false"/>
 </body>
 
 </html>
-
-
-

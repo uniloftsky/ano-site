@@ -1,8 +1,6 @@
 <%@ page
 	contentType="text/html;charset=UTF-8" session="true"
-%><%@ taglib uri="/WEB-INF/tld/struts-bean.tld" prefix="bean"
-%><%@ taglib uri="/WEB-INF/tld/struts-html.tld" prefix="html"
-%><%@ taglib uri="/WEB-INF/tld/struts-logic.tld" prefix="logic"
+%><%@ taglib uri="http://www.anotheria.net/ano-tags" prefix="ano"
 %>
 <HTML>
 <HEAD>
@@ -14,7 +12,7 @@
 <title>@Upload file</title>
 </head>
 <body topmargin="0" marginwidth="0" marginheight="0" onLoad="parent.stopState();">
-<%--<logic:messagesPresent>
+<%--<ano:messagesPresent>
 <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#e2e2e2">
 	<tr><td colspan="3" height="16">&nbsp;</td></tr>
 	<tr>
@@ -37,30 +35,30 @@
 		<td colspan="3" bgcolor="#FF0000"></td>	
 	</tr>
 </table>
-</logic:messagesPresent>
-<logic:messagesNotPresent>--%>
-<logic:equal name="ano-web.file.fileBean" property="valid" value="true">
+</ano:messagesPresent>
+<ano:messagesNotPresent>--%>
+<ano:equal name="ano-web.file.fileBean" property="valid" value="true">
 <table  cellspacing="0" cellpadding="0" width=100% >
 	<tr class="hellerblau">
 		<td>
 		Filename:&nbsp;
-		<logic:equal name="ano-web.file.fileBean" property="filePresent" value="false">
-		<bean:write name="ano-web.file.fileBean" property="name"/>
-		</logic:equal>
-		<logic:equal name="ano-web.file.fileBean" property="filePresent" value="true">
-		<a target="_blank" href="<%=request.getContextPath()%>/cms/showTmpFile"><bean:write name="ano-web.file.fileBean" property="name"/></a>
-		</logic:equal>
+		<ano:equal name="ano-web.file.fileBean" property="filePresent" value="false">
+		<ano:write name="ano-web.file.fileBean" property="name"/>
+		</ano:equal>
+		<ano:equal name="ano-web.file.fileBean" property="filePresent" value="true">
+		<a target="_blank" href="<%=request.getContextPath()%>/cms/showTmpFile"><ano:write name="ano-web.file.fileBean" property="name"/></a>
+		</ano:equal>
 		&nbsp;|&nbsp;
-		Filesize:&nbsp;<bean:write name="ano-web.file.fileBean" property="size"/>
+		Filesize:&nbsp;<ano:write name="ano-web.file.fileBean" property="size"/>
 		&nbsp;|&nbsp;
-		<bean:write name="ano-web.file.fileBean" property="message"/>
+		<ano:write name="ano-web.file.fileBean" property="message"/>
 		</td>
     </tr>
 	<tr class="hellerblau">
 		<td colspan=5>&nbsp;</td>
     </tr>
 </table>
-</logic:equal>
-<%--</logic:messagesNotPresent>--%>
+</ano:equal>
+<%--</ano:messagesNotPresent>--%>
 </body>
 </html>

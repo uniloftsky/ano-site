@@ -1,9 +1,6 @@
 <%@ page
 	contentType="text/html;charset=UTF-8" session="true"
-%><%@ taglib uri="/WEB-INF/tld/struts-bean.tld" prefix="bean"
-%><%@ taglib uri="/WEB-INF/tld/struts-html.tld" prefix="html"
-%><%@ taglib uri="/WEB-INF/tld/struts-logic.tld" prefix="logic"
-%><%@ taglib uri="/WEB-INF/tld/anoweb.tld" prefix="ano"
+%><%@ taglib uri="http://www.anotheria.net/ano-tags" prefix="ano"
 %>		
 <%
 	String pageName = (String)request.getAttribute("page");
@@ -29,10 +26,10 @@
 		  <tr class="logintextq">
 		  	<td colspan="2" align="center"><br>
 		      Die von Ihnen ausgef&uuml;hrte Aktion hat folgenden Fehler verursacht:<br> <br>
-		      <font color=red><bean:write name="error" property="message"/></font>
+		      <font color=red><ano:write name="error" property="message"/></font>
 		      <br><br>
 		      Falls Sie meinen, dass der Fehler nicht aus einer falschen Eingabe resultiert,
-		      benachrichtigen Sie uns bitte &uuml;ber diesen Fehler unter <a href="mailto:support@anotheria.net?subject=ERROR IK:<bean:write name="error" property="message"/>">support@anotheria.net</a>.
+		      benachrichtigen Sie uns bitte &uuml;ber diesen Fehler unter <a href="mailto:support@anotheria.net?subject=ERROR IK:<ano:write name="error" property="message"/>">support@anotheria.net</a>.
 		  	</td>
 		  </tr>
 		  <tr class="logintext">
@@ -51,7 +48,7 @@
 		  </tr>
 		  </form>
 		</table>
-		<p><font color="#FFFFFF"><bean:write name="error" property="stackTrace"/></font></p>
+		<p><font color="#FFFFFF"><ano:write name="error" property="stackTrace"/></font></p>
 		  
     </td>
     <td width="21" valign="top"></td>

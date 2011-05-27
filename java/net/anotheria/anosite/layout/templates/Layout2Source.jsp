@@ -1,8 +1,6 @@
 <%@ page
 	contentType="text/html;charset=UTF-8" session="true"
-%><%@ taglib uri="/tags/struts-bean" prefix="bean"
-%><%@ taglib uri="/tags/struts-html" prefix="html"
-%><%@ taglib uri="/tags/struts-logic" prefix="logic"
+%><%@ taglib uri="http://www.anotheria.net/ano-tags" prefix="ano"
 %><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 
@@ -26,9 +24,9 @@
   <meta name="distribution" content="global" />
   <meta name="description" content="Your page description here ..." />
   <meta name="keywords" content="Your keywords, keywords, keywords, here ..." />
-  <link rel="stylesheet" type="text/css" media="screen,projection,print" href="<bean:write name="stylesheet" property="link"/>" />
+  <link rel="stylesheet" type="text/css" media="screen,projection,print" href="<ano:write name="stylesheet" property="link"/>" />
   <link rel="icon" type="image/x-icon" href="simg/favicon.ico" />
-  <title><bean:write name="page" scope="request" property="title"/></title>
+  <title><ano:write name="page" scope="request" property="title"/></title>
 </head>
 
 <!-- Global IE fix to avoid layout crash when single word size wider than column width -->
@@ -52,8 +50,8 @@
         <a class="sitelogo" href="#" title="Go to Start page"></a>
         <div class="sitename">
 
-          <h1><a href="index.html" title="Go to Start page"><bean:write name="site" property="title"/></a></h1>
-          <h2><bean:write name="site" property="subtitle"/></h2>
+          <h1><a href="index.html" title="Go to Start page"><ano:write name="site" property="title"/></a></h1>
+          <h2><ano:write name="site" property="subtitle"/></h2>
         </div>
 
         <!-- Navigation Level 0 -->
@@ -314,12 +312,12 @@
       <div class="main-content">
         
         <!-- Pagetitle -->
-        <h1 class="pagetitle"><bean:write name="page" scope="request" property="title"/></h1>
+        <h1 class="pagetitle"><ano:write name="page" scope="request" property="title"/></h1>
 
         <!-- Content unit - One column -->
 
 		<!-- Rendering column 2 -->
-		<bean:define id="__boxlist" toScope="request" name="page" property="column2"/>
+		<ano:define id="__boxlist" toScope="request" name="page" property="column2"/>
 		<jsp:include page="ListIterator.jsp" flush="false"/>
 
         <h1 class="block">1 - Column types</h1>
@@ -601,6 +599,3 @@
 </body>
 
 </html>
-
-
-
