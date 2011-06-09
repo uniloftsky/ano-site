@@ -1,6 +1,5 @@
 package net.anotheria.anosite.api.session;
 
-import net.anotheria.anoplass.api.session.APISessionManager;
 import net.anotheria.asg.data.DataObject;
 import net.anotheria.asg.util.listener.IServiceListener;
 /**
