@@ -20,6 +20,10 @@ import java.io.OutputStream;
  */
 public class StyleSheetServlet extends MoskitoHttpServlet{
 	/**
+	 * default serial version uid.
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
 	 * Layout data service for retrieval of stylesheets.
 	 */
 	private IASLayoutDataService layoutDataService;
