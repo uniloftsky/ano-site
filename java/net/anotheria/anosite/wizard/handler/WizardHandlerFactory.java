@@ -16,7 +16,6 @@ import java.util.Map;
  *
  * @author h3ll
  */
-
 public final class WizardHandlerFactory {
 
 	/**

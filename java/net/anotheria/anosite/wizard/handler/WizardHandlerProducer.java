@@ -25,7 +25,6 @@ import java.util.List;
  *
  * @author h3ll
  */
-
 public final class WizardHandlerProducer implements IStatsProducer {
 	/**
 	 * WizardHandlerProducer 'producerId'.

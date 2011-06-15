@@ -2,7 +2,7 @@ package net.anotheria.anosite.wizard.handler;
 
 import net.anotheria.anoplass.api.APIFinder;
 import net.anotheria.anosite.gen.aswizarddata.data.WizardDef;
-import net.anotheria.anosite.gen.aswizarddata.data.WizardNavigation;
+import net.anotheria.anosite.wizard.WizardCommand;
 import net.anotheria.anosite.wizard.api.WizardAO;
 import net.anotheria.anosite.wizard.api.WizardAPI;
 import net.anotheria.anosite.wizard.api.WizardStepAO;
@@ -13,19 +13,12 @@ import net.anotheria.anosite.wizard.handler.exceptions.WizardHandlerException;
 import net.anotheria.anosite.wizard.handler.exceptions.WizardHandlerPreProcessException;
 import net.anotheria.anosite.wizard.handler.exceptions.WizardHandlerProcessException;
 import net.anotheria.anosite.wizard.handler.exceptions.WizardHandlerSubmitException;
-import net.anotheria.anosite.wizard.handler.response.WizardHandlerResponse;
-import net.anotheria.anosite.wizard.handler.response.WizardResponseCancel;
-import net.anotheria.anosite.wizard.handler.response.WizardResponseChangeStep;
-import net.anotheria.anosite.wizard.handler.response.WizardResponseContinue;
-import net.anotheria.anosite.wizard.handler.response.WizardResponseFinish;
+import net.anotheria.anosite.wizard.handler.response.*;
 import net.anotheria.util.StringUtils;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
 
 /**
  * BaseWizardHandler as main class for Wizard handlers.
@@ -34,37 +27,12 @@ import java.util.List;
  *
  * @author h3ll
  */
-
-//TODO : Review me Please!  - and decide  which methods should be declared private!
-//TODO : Decide and  document 1 way  of  error notifications! (to predict current  tricky way with ERROR_NAMES).
 public class BaseWizardHandler implements WizardHandler {
 
-	/**
-	 * Step menu request attribute name.
-	 */
-	public static final String STEP_MENU_REQUEST_DEFAULT_ATTRIBUTE_NAME = "stepMenu";
-	/**
-	 * Step navigation attribute name.
-	 */
-	public static final String STEP_NAVIGATION_REQUEST_DEFAULT_ATTRIBUTE_NAME = "stepNavigation";
-	/**
-	 * Error names array.
-	 */
-	private static final String[] ERROR_NAMES = new String[]{"error", "failure"};
-	/**
-	 * WizardNavigation attribute.
-	 */
-	protected static final String WIZARD_NAVIGATION_ATTRIBUTE = "wizard_navigation";
-
-	/**
-	 * Wizard menu attribute name.
-	 */
-	protected static final String WIZARD_MENU_ATTRIBUTE = "wizard_menu";
 	/**
 	 * Log4j logger.
 	 */
 	private Logger log;
-
 	/**
 	 * WizardAPI instance.
 	 */
@@ -97,14 +65,12 @@ public class BaseWizardHandler implements WizardHandler {
 			WizardAO wizardAO = wizardAPI.getWizard(wizard.getId());
 			WizardStepAO currentStep = wizardAPI.getCurrentStep(wizard.getId());
 
-			prepareMenu(req, wizard, currentStep);
-			//prepare allowed navy!
-			prepareNavigation(req, wizard, wizardAO.getNavigation(), currentStep);
-			return handleIncomingCommand(req, wizard, currentStep, wizardAO.getNavigation(), false);
-
+			return handleIncomingCommand(req, wizardAO, currentStep, false);
 		} catch (WizardAPIException e) {
+			log.error("WizardAPI failed", e);
 			throw new WizardHandlerProcessException(e.getMessage(), e);
 		} catch (WizardHandlerException e) {
+			log.error("process failed", e);
 			throw new WizardHandlerProcessException(e.getMessage(), e);
 		}
 	}
@@ -117,108 +83,29 @@ public class BaseWizardHandler implements WizardHandler {
 			WizardAO wizardAO = wizardAPI.getWizard(wizard.getId());
 			WizardStepAO currentStep = wizardAPI.getCurrentStep(wizard.getId());
 
-			return handleIncomingCommand(req, wizard, currentStep, wizardAO.getNavigation(), true);
+			return handleIncomingCommand(req, wizardAO, currentStep, true);
 		} catch (WizardHandlerException e) {
+			log.error("WizardAPI failed", e);
 			throw new WizardHandlerSubmitException(e.getMessage(), e);
 		} catch (WizardAPIException e) {
+			log.error("submit failed", e);
 			throw new WizardHandlerSubmitException(e.getMessage(), e);
 		}
 
 	}
-
-
-	/**
-	 * Prepare menu method. Creates and adds to request {@link List< WizardMenuItemBean >}, for further rendering on jsp.
-	 * {@code BaseWizardHandler.WIZARD_MENU} - is request attribute name for it.
-	 * <NOTE : in current implementation - only passed steps will contains step-links >
-	 *
-	 * @param req		 {@link HttpServletRequest}
-	 * @param wizard	  {@link WizardDef}
-	 * @param currentStep {@link WizardStepAO}
-	 * @throws net.anotheria.anosite.wizard.handler.exceptions.WizardHandlerProcessException
-	 *          on errors
-	 */
-	protected void prepareMenu(HttpServletRequest req, WizardDef wizard, WizardStepAO currentStep) throws WizardHandlerProcessException {
-		if (!wizard.getMenuRenderingEnabled()) {
-			log.debug("Menu rendering disabled");
-			return;
-		}
-		try {
-			List<WizardStepAO> completedSteps = wizardAPI.getCompletedSteps(wizard.getId());
-			List<String> passedSteps = new ArrayList<String>();
-			for (WizardStepAO ao : completedSteps)
-				passedSteps.add(ao.getStepId());
-
-
-			List<WizardMenuItemBean> wizardMenuBean = new ArrayList<WizardMenuItemBean>();
-			//building menu
-			for (String stepId : wizard.getWizardSteps()) {
-				int stepPos = wizard.getWizardSteps().indexOf(stepId);
-				boolean isCurrent = currentStep.getStepId().equals(stepId);
-				boolean isPassed = passedSteps.contains(stepId);
-				String stepUrl = isPassed ? WizardCommand.NAVIGATE_TO.getCommandTitle() + "=" + stepPos : "";
-
-				wizardMenuBean.add(new WizardMenuItemBean(String.valueOf(stepPos + 1), stepUrl, isCurrent, isPassed));
-			}
-
-			req.setAttribute(WIZARD_MENU_ATTRIBUTE, wizardMenuBean);
-
-
-		} catch (WizardAPIException e) {
-			log.error("prepareMenu failed", e);
-			throw new WizardHandlerProcessException("prepare menu failed", e);
-		}
-
-	}
-
-
-	/**
-	 * Prepare allowed for each step navigation.
-	 * Current method should check and add to request all required and allowed WizardCommands ....
-	 * Commands  by default can be found under  {@code BaseWizardHandler.WIZARD_NAVIGATION_ATTRIBUTE}  in request.
-	 *
-	 * @param req		{@link HttpServletRequest}
-	 * @param wizard	 {@link WizardDef}
-	 * @param navigation {@link WizardNavigation}
-	 * @param step	   {@link WizardStepAO}
-	 */
-	protected void prepareNavigation(HttpServletRequest req, WizardDef wizard, WizardNavigation navigation, WizardStepAO step) {
-		if (!wizard.getNavigationRenderingEnabled()) {
-			log.debug("Navigation rendering is disabled");
-			return;
-		}
-
-		List<String> commands = new ArrayList<String>();
-		// CANCEL
-		if (navigation.getAllowCancellation())
-			commands.add(WizardCommand.CANCEL.getCommandTitle());
-		//BACK
-		if (navigation.getAllowBackStep() && !isFirstStep(step, wizard))
-			commands.add(WizardCommand.PREVIOUS.getCommandTitle());
-		// NEXT
-		if (!isLastStep(step, wizard))
-			commands.add(WizardCommand.NEXT.getCommandTitle());
-		// FINISH
-		if (isLastStep(step, wizard))
-			commands.add(WizardCommand.FINISH.getCommandTitle());
-
-		req.setAttribute(WIZARD_NAVIGATION_ATTRIBUTE, commands);
-	}
-
 
 	/**
 	 * Returns true if we can be forwarded to next step. False otherwise.
 	 *
 	 * @param req	  {@link HttpServletRequest}
-	 * @param wizard   {@link WizardDef}
+	 * @param wizard   {@link WizardAO}
 	 * @param step	 {@link WizardStepAO}
 	 * @param isSubmit boolean value - true if called from submit
 	 * @return boolean value
 	 */
-	protected boolean isNextStepAllowed(HttpServletRequest req, WizardDef wizard, WizardStepAO step, boolean isSubmit) {
-		@SuppressWarnings({"unchecked"}) Enumeration<String> attributeNames = req.getAttributeNames();
+	protected boolean isNextStepAllowed(HttpServletRequest req, WizardAO wizard, WizardStepAO step, boolean isSubmit) {
 		//TODO :  "isAjaxValidation"  change  to  validationHandler  constant after it  replace!
-		return req.getParameter("isAjaxValidation") == null && !isErrorPresent(attributeNames) && isSubmit;
+		return req.getParameter("isAjaxValidation") == null && isSubmit;
 	}
 
 
@@ -226,13 +113,13 @@ public class BaseWizardHandler implements WizardHandler {
 	 * Returns true if we can be forwarded to previous step. False otherwise.
 	 *
 	 * @param req	  {@link HttpServletRequest}
-	 * @param wizard   {@link WizardDef}
+	 * @param wizard   {@link WizardAO}
 	 * @param step	 {@link WizardStepAO}
 	 * @param isSubmit boolean value - true if called from submit
 	 * @return boolean value
 	 */
-	protected boolean isPreviousStepAllowed(HttpServletRequest req, WizardDef wizard, WizardStepAO step, boolean isSubmit) {
-		return !isSubmit && !isFirstStep(step, wizard);
+	protected boolean isPreviousStepAllowed(HttpServletRequest req, WizardAO wizard, WizardStepAO step, boolean isSubmit) {
+		return !isSubmit;
 	}
 
 
@@ -240,58 +127,29 @@ public class BaseWizardHandler implements WizardHandler {
 	 * Returns true if we can finish wizard.
 	 *
 	 * @param req	  {@link HttpServletRequest}
-	 * @param wizard   {@link WizardDef}
+	 * @param wizard   {@link WizardAO}
 	 * @param step	 {@link WizardStepAO}
 	 * @param isSubmit boolean value - true if called from submit
 	 * @return boolean value
 	 */
-	protected boolean isFinishAllowed(HttpServletRequest req, WizardDef wizard, WizardStepAO step, boolean isSubmit) {
-		@SuppressWarnings({"unchecked"}) Enumeration<String> attributeNames = req.getAttributeNames();
+	protected boolean isFinishAllowed(HttpServletRequest req, WizardAO wizard, WizardStepAO step, boolean isSubmit) {
 		//TODO :  "isAjaxValidation"  change  to  validationHandler  constant after it  replace!
-		return req.getParameter("isAjaxValidation") == null && isSubmit && isLastStep(step, wizard) && !isErrorPresent(attributeNames);
+		return req.getParameter("isAjaxValidation") == null && isSubmit;
 	}
 
 	/**
 	 * Returns true if we can cancel wizard.
 	 *
 	 * @param req	  {@link HttpServletRequest}
-	 * @param wizard   {@link WizardDef}
+	 * @param wizard   {@link WizardAO}
 	 * @param step	 {@link WizardStepAO}
 	 * @param isSubmit boolean value - true if called from submit
 	 * @return boolean value
 	 */
-	protected boolean isCancellationAllowed(HttpServletRequest req, WizardDef wizard, WizardStepAO step, boolean isSubmit) {
+	protected boolean isCancellationAllowed(HttpServletRequest req, WizardAO wizard, WizardStepAO step, boolean isSubmit) {
 		return !isSubmit;
 	}
 
-	/**
-	 * Current Method checks if some error  present! In this  base  implementation - it  simply search request attribute
-	 * with some name  like "error"  or  attribute  which  contains  something  like "error" in name.
-	 * <Note : in child  classes  override   current  method to extend  functionality >
-	 *
-	 * @param attributeNames request attributes names enumeration
-	 * @return true if error exists, false otherwise
-	 */
-	protected boolean isErrorPresent(Enumeration<String> attributeNames) {
-		while (attributeNames.hasMoreElements()) {
-			String attributeName = attributeNames.nextElement();
-			for (String possibleError : getPossibleNames())
-				if (attributeName.contains(possibleError) || attributeName.equalsIgnoreCase(possibleError))
-					return true;
-
-		}
-		return false;
-	}
-
-	/**
-	 * Current method returns array of different error - names (possible error names or  errors names part).
-	 * If You need - You can  simply override it.
-	 *
-	 * @return {@link String[]}} error names
-	 */
-	protected String[] getPossibleNames() {
-		return ERROR_NAMES;
-	}
 
 	/**
 	 * Handle incoming command method.
@@ -300,64 +158,118 @@ public class BaseWizardHandler implements WizardHandler {
 	 * @param req		 {@link HttpServletRequest}
 	 * @param wizard	  {@link WizardDef}
 	 * @param currentStep {@link WizardStepAO}
-	 * @param navigation  {@link WizardNavigation}
 	 * @param isSubmit	boolean value - true if called from submit
 	 * @return {@link WizardHandlerResponse}
 	 * @throws net.anotheria.anosite.wizard.handler.exceptions.WizardHandlerException
 	 *          on errors
 	 */
-	protected WizardHandlerResponse handleIncomingCommand(HttpServletRequest req, WizardDef wizard, WizardStepAO currentStep, WizardNavigation navigation,
+	protected WizardHandlerResponse handleIncomingCommand(HttpServletRequest req, WizardAO wizard, WizardStepAO currentStep,
 														  boolean isSubmit) throws WizardHandlerException {
-		// handle logic!
 
-
-		if (!wizard.getNavigationRenderingEnabled()) {
-			//only NEXT is allowed now!! means default one
-			return processNextStep(req, wizard, currentStep, isSubmit);
-		}
 		@SuppressWarnings({"unchecked"})
 		WizardCommand command = WizardCommand.getCommandByValue(req.getParameterMap());
 
 		switch (command) {
 			case FINISH:
-				if (!isFinishAllowed(req, wizard, currentStep, isSubmit)) {
-					log.debug("Wizard finish {" + wizard.getId() + "} not performed");
-					return WizardResponseContinue.INSTANCE;
-				}
-				log.debug("Wizard finished {" + wizard.getId() + "}");
-				removeWizardData(wizard);
-				return new WizardResponseFinish(wizard.getWizardFinishRedirectUrl());
+				return processFinish(req, wizard, currentStep, isSubmit);
 			case CANCEL:
-				if (!navigation.getAllowCancellation() || !isCancellationAllowed(req, wizard, currentStep, isSubmit)) {
-					log.debug("Wizard cancel {" + wizard.getId() + "} not performed");
-					return WizardResponseContinue.INSTANCE;
-				}
-				log.debug("Wizard canceled {" + wizard.getId() + "}");
-				removeWizardData(wizard);
-				return new WizardResponseCancel(wizard.getWizardCancelRedirectUrl());
+				return processCancel(req, wizard, currentStep, isSubmit);
 			case PREVIOUS:
-				if (!navigation.getAllowBackStep() || !isPreviousStepAllowed(req, wizard, currentStep, isSubmit)) {
-					log.debug("Wizard previous step {" + wizard.getId() + "} not performed");
-					return WizardResponseContinue.INSTANCE;
-				}
-				log.debug("Wizard previous step {" + wizard.getId() + "}");
-
-				try {
-					WizardStepAO nextStep = wizardAPI.adjustToPreviousStep(wizard.getId());
-				} catch (WizardAPIFirstStepException e) {
-					return WizardResponseContinue.INSTANCE;
-				} catch (WizardAPIException e) {
-					throw new WizardHandlerException(e.getMessage(), e);
-				}
-				return WizardResponseChangeStep.INSTANCE;
-
+				return processPreviousStep(req, wizard, currentStep, isSubmit);
 			case NEXT:
 				return processNextStep(req, wizard, currentStep, isSubmit);
 			case NAVIGATE_TO:
 				return processNavigateToStep(req, wizard, currentStep, isSubmit);
 
 			default:
-				throw new AssertionError("Unknown command" + command);
+				getLogger().warn("Default Command - execution!");
+				return processNextStep(req, wizard, currentStep, isSubmit);
+		}
+	}
+
+	/**
+	 * Process finish command.
+	 *
+	 * @param req		 {@link HttpServletRequest}
+	 * @param wizard	  {@link WizardAO}
+	 * @param currentStep {@link WizardStepAO}
+	 * @param isSubmit	boolean flag
+	 * @return {@link WizardHandlerResponse}
+	 * @throws WizardHandlerException on errors from {@link WizardAPI}
+	 */
+	private WizardHandlerResponse processFinish(HttpServletRequest req, WizardAO wizard, WizardStepAO currentStep, boolean isSubmit) throws WizardHandlerException {
+		if (!isFinishAllowed(req, wizard, currentStep, isSubmit)) {
+			log.debug("Wizard finish {" + wizard.getId() + "} not performed");
+			return WizardResponseContinue.INSTANCE;
+		}
+		log.debug("Wizard finished {" + wizard.getId() + "}");
+		try {
+			if (wizardAPI.finishWizard(wizard))
+				return new WizardResponseFinish(wizard.getFinishRedirectUrl());
+
+			log.debug("Wizard finish {" + wizard.getId() + "} not performed");
+			return WizardResponseContinue.INSTANCE;
+		} catch (WizardAPIException e) {
+			log.error("WizardAPI failed", e);
+			throw new WizardHandlerException(e.getMessage(), e);
+		}
+	}
+
+	/**
+	 * Process CancelCommand.
+	 *
+	 * @param req		 {@link HttpServletRequest}
+	 * @param wizard	  {@link WizardAO}
+	 * @param currentStep {@link WizardStepAO}
+	 * @param isSubmit	boolean flag
+	 * @return {@link WizardHandlerResponse}
+	 * @throws WizardHandlerException on errors from {@link WizardAPI}
+	 */
+	private WizardHandlerResponse processCancel(HttpServletRequest req, WizardAO wizard, WizardStepAO currentStep, boolean isSubmit) throws WizardHandlerException {
+		if (!isCancellationAllowed(req, wizard, currentStep, isSubmit)) {
+			log.debug("Wizard cancel {" + wizard.getId() + "} not performed");
+			return WizardResponseContinue.INSTANCE;
+		}
+		try {
+			if (wizardAPI.cancelWizard(wizard))
+				return new WizardResponseCancel(wizard.getCancelRedirectUrl());
+			log.debug("Wizard cancel {" + wizard.getId() + "} not performed");
+			return WizardResponseContinue.INSTANCE;
+		} catch (WizardAPIException e) {
+			log.error("WizardAPI failed", e);
+			throw new WizardHandlerException(e.getMessage(), e);
+		}
+	}
+
+	/**
+	 * Process Previous step.
+	 *
+	 * @param req		 {@link HttpServletRequest}
+	 * @param wizard	  {@link WizardAO}
+	 * @param currentStep {@link WizardStepAO}
+	 * @param isSubmit	boolean flag
+	 * @return {@link WizardHandlerResponse}
+	 * @throws WizardHandlerException on {@link WizardAPI} errors
+	 */
+	private WizardHandlerResponse processPreviousStep(HttpServletRequest req, WizardAO wizard, WizardStepAO currentStep, boolean isSubmit) throws WizardHandlerException {
+		if (!isPreviousStepAllowed(req, wizard, currentStep, isSubmit)) {
+			log.debug("Wizard previous step {" + wizard.getId() + "} not performed");
+			return WizardResponseContinue.INSTANCE;
+		}
+		try {
+			log.debug("Wizard previous step {" + wizard.getId() + "}");
+			WizardStepAO changed = wizardAPI.adjustToPreviousStep(wizard.getId());
+			//if step was changed!
+			if (changed.equals(currentStep)) {
+				log.debug("Wizard previous step {" + wizard.getId() + "} not performed");
+				return WizardResponseContinue.INSTANCE;
+			}
+			return WizardResponseChangeStep.INSTANCE;
+		} catch (WizardAPIFirstStepException e) {
+			return WizardResponseContinue.INSTANCE;
+		} catch (WizardAPIException e) {
+			log.error("WizardAPI failed", e);
+			throw new WizardHandlerException(e.getMessage(), e);
 		}
 	}
 
@@ -372,8 +284,8 @@ public class BaseWizardHandler implements WizardHandler {
 	 * @return {@link WizardHandlerResponse}
 	 * @throws WizardHandlerException on errors
 	 */
-	private WizardHandlerResponse processNavigateToStep(HttpServletRequest req, WizardDef wizard, WizardStepAO currentStep, boolean isSubmit) throws WizardHandlerException {
-		if (!wizard.getMenuRenderingEnabled() || isSubmit) {
+	private WizardHandlerResponse processNavigateToStep(HttpServletRequest req, WizardAO wizard, WizardStepAO currentStep, boolean isSubmit) throws WizardHandlerException {
+		if (isSubmit) {
 			log.warn("Menu rendering is disabled. NAVIGATE_TO can't be executed.");
 			return WizardResponseContinue.INSTANCE;
 		}
@@ -384,26 +296,27 @@ public class BaseWizardHandler implements WizardHandler {
 			return WizardResponseContinue.INSTANCE;
 		}
 		int stepNumber = Integer.valueOf(stepIndex);
-		if (stepNumber < 0 || stepNumber >= wizard.getWizardStepsSize()) {
+
+
+		if (stepNumber < 0 || stepNumber >= wizard.getWizardSteps().size()) {
 			log.debug("Illegal step " + stepNumber);
 			return WizardResponseContinue.INSTANCE;
 		}
 
-		if (stepNumber == currentStep.getStepIndex() && wizard.getWizardStepsElement(stepNumber).equals(currentStep.getStepId())) {
-			log.debug("step number is current");
-			return WizardResponseContinue.INSTANCE;
-		}
+
 		try {
-			List<WizardStepAO> passedSteps = wizardAPI.getCompletedSteps(wizard.getId());
-			for (WizardStepAO passed : passedSteps)
-				if (passed.getStepIndex() == stepNumber && passed.getStepId().equals(wizard.getWizardStepsElement(stepNumber))) {
-					WizardStepAO nextStep = wizardAPI.adjustToStep(wizard.getId(), stepNumber);
-					return WizardResponseChangeStep.INSTANCE;
-				}
-			log.debug("Can't navigate to not passed step!!!");
-			return WizardResponseContinue.INSTANCE;
+			@SuppressWarnings({"UnusedDeclaration"})
+			WizardStepAO nextStep = wizardAPI.adjustToStep(wizard.getId(), stepNumber);
+			//checking if step changed!
+			if (nextStep.equals(currentStep)) {
+				log.debug("step number is current");
+				return WizardResponseContinue.INSTANCE;
+			}
+
+			return WizardResponseChangeStep.INSTANCE;
 
 		} catch (WizardAPIException e) {
+			log.error("WizardAPI failed", e);
 			throw new WizardHandlerException("process navigateToStep failed  step:{" + stepIndex + "}", e);
 		}
 
@@ -411,38 +324,45 @@ public class BaseWizardHandler implements WizardHandler {
 
 	/**
 	 * Process next step command.
-	 * Current method can work with enabled and disabled navigation.
-	 * If navi rendering is disabled, we can simply finish current wizard!
 	 *
 	 * @param req		 {@link HttpServletRequest}
-	 * @param wizard	  {@link WizardDef}
+	 * @param wizard	  {@link WizardAO}
 	 * @param currentStep {@link WizardStepAO}
 	 * @param isSubmit	is submit
 	 * @return {@link WizardHandlerResponse}
 	 * @throws WizardHandlerException on errors
 	 */
-	private WizardHandlerResponse processNextStep(HttpServletRequest req, WizardDef wizard, WizardStepAO currentStep, boolean isSubmit)
+	private WizardHandlerResponse processNextStep(HttpServletRequest req, WizardAO wizard, WizardStepAO currentStep, boolean isSubmit)
 			throws WizardHandlerException {
 		if (!isNextStepAllowed(req, wizard, currentStep, isSubmit)) {
 			log.debug("Wizard next step {" + wizard.getId() + "} not performed");
 			return WizardResponseContinue.INSTANCE;
 		}
 		try {
-			WizardStepAO nextStep = wizardAPI.adjustToNextStep(wizard.getId());
-		} catch (WizardAPILastStepException e) {
-			//handle FINSH!!! if navi is disabled
-			if (!wizard.getNavigationRenderingEnabled() && isFinishAllowed(req, wizard, currentStep, isSubmit)) {
-
-				log.debug("Wizard finished {" + wizard.getId() + "}");
-				removeWizardData(wizard);
-				return new WizardResponseFinish(wizard.getWizardFinishRedirectUrl());
+			WizardStepAO changed = wizardAPI.adjustToNextStep(wizard.getId());
+			if (changed.equals(currentStep)) {
+				log.debug("Wizard next step {" + wizard.getId() + "} not performed");
+				return WizardResponseContinue.INSTANCE;
 			}
-			return WizardResponseContinue.INSTANCE;
+			return WizardResponseChangeStep.INSTANCE;
+		} catch (WizardAPILastStepException e) {
+			//Last step! trying to finish wizard
+			try {
+				if (wizardAPI.finishWizard(wizard))
+					return new WizardResponseFinish(wizard.getFinishRedirectUrl());
+				log.debug("Wizard finish  step {" + wizard.getId() + "} not performed");
+				return WizardResponseContinue.INSTANCE;
+
+			} catch (WizardAPIException e1) {
+				log.error("WizardAPI failed", e);
+				throw new WizardHandlerException(e1.getMessage(), e1);
+			}
 		} catch (WizardAPIException e) {
+			log.error("WizardAPI failed", e);
 			throw new WizardHandlerException(e.getMessage(), e);
 		}
 
-		return WizardResponseChangeStep.INSTANCE;
+
 	}
 
 	/**
@@ -473,25 +393,6 @@ public class BaseWizardHandler implements WizardHandler {
 		return log;
 	}
 
-
-	/**
-	 * Return step menu request attribute name.
-	 *
-	 * @return string
-	 */
-	protected String getStepMenuAttributeName() {
-		return STEP_MENU_REQUEST_DEFAULT_ATTRIBUTE_NAME;
-	}
-
-	/**
-	 * Return step navigation request attribute name.
-	 *
-	 * @return string
-	 */
-	protected String getStepNavigationAttributeName() {
-		return STEP_NAVIGATION_REQUEST_DEFAULT_ATTRIBUTE_NAME;
-	}
-
 	/**
 	 * Return {@link WizardAPI}.
 	 *
@@ -499,45 +400,6 @@ public class BaseWizardHandler implements WizardHandler {
 	 */
 	public WizardAPI getWizardAPI() {
 		return wizardAPI;
-	}
-
-	/**
-	 * Remove attribute from session.
-	 *
-	 * @param wizard {@link WizardDef}
-	 */
-	private void removeWizardData(WizardDef wizard) {
-		try {
-			wizardAPI.removeWizardData(wizard.getId());
-		} catch (WizardAPIException e) {
-			log.warn("failure removing wizardData wizard{" + wizard.getId() + "}");
-		}
-	}
-
-
-	/**
-	 * Returns true if currently wizard stays on first step.
-	 *
-	 * @param step   {@link WizardStepAO}
-	 * @param wizard {@link WizardDef}
-	 * @return boolean value
-	 */
-	private boolean isFirstStep(WizardStepAO step, WizardDef wizard) {
-		final int firstStepIndex = 0;
-		return step.getStepIndex() == firstStepIndex && step.getWizardId().equals(wizard.getId()) && step.getStepId().equals(wizard.getWizardStepsElement(firstStepIndex));
-	}
-
-	/**
-	 * Returns true if currently wizard stays on last step.
-	 *
-	 * @param step   {@link WizardStepAO}
-	 * @param wizard {@link WizardDef}
-	 * @return boolean value
-	 */
-	private boolean isLastStep(WizardStepAO step, WizardDef wizard) {
-		final int lastStepIndex = wizard.getWizardStepsSize() - 1;
-		return step.getStepIndex() == lastStepIndex && step.getStepId().equals(wizard.getWizardStepsElement
-				(lastStepIndex)) || step.getStepIndex() > lastStepIndex;
 	}
 
 

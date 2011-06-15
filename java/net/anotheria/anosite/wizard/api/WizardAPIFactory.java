@@ -7,7 +7,6 @@ import net.anotheria.anoplass.api.APIFactory;
  *
  * @author h3ll
  */
-
 public class WizardAPIFactory implements APIFactory<WizardAPI> {
 	@Override
 	public WizardAPI createAPI() {

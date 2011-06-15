@@ -9,7 +9,6 @@ import java.io.Serializable;
  *
  * @author h3ll
  */
-
 public abstract class WizardHandlerResponse implements Serializable {
 
 	/**

@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author h3ll
  */
-
 public class WizardHandlerWrapper implements WizardHandler {
 
 	/**

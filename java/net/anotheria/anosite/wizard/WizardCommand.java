@@ -1,5 +1,7 @@
-package net.anotheria.anosite.wizard.handler;
+package net.anotheria.anosite.wizard;
 
+
+import org.apache.log4j.Logger;
 
 import java.util.Map;
 
@@ -8,7 +10,6 @@ import java.util.Map;
  *
  * @author h3ll
  */
-
 public enum WizardCommand {
 	/**
 	 * Cancel.
@@ -66,13 +67,28 @@ public enum WizardCommand {
 	 * @param parameters {@link Map<String,String>} actually request parameter map
 	 * @return {@link WizardCommand}, if not found in map NEXT will be returned
 	 */
-	public static  WizardCommand getCommandByValue(Map<String, String[]> parameters) {
+	public static WizardCommand getCommandByValue(Map<String, String[]> parameters) {
 		for (String param : parameters.keySet())
 			for (WizardCommand button : values())
 				if (param.equals(button.getCommandTitle()))
 					return button;
 
-		//Default
+		Logger.getLogger(WizardCommand.class).debug("Command not found! Relying on defaults!");
+		return DEFAULT_COMMAND;
+	}
+
+	/**
+	 * Return {@link WizardCommand} with selected value. (Comparing using ignore-case).
+	 *
+	 * @param command incoming string
+	 * @return {@link WizardCommand} with selected command value, or DEFAULT_COMMAND if nothing found.
+	 */
+	public static WizardCommand getCommandByValue(String command) {
+		for (WizardCommand wizCommand : values()) {
+			if (wizCommand.getCommandTitle().equalsIgnoreCase(command))
+				return wizCommand;
+		}
+		Logger.getLogger(WizardCommand.class).debug("Command not found! Relying on defaults! command[" + command + "]");
 		return DEFAULT_COMMAND;
 	}
 

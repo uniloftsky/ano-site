@@ -5,7 +5,6 @@ package net.anotheria.anosite.wizard.handler.exceptions;
  *
  * @author h3ll
  */
-
 public class WizardHandlerPreProcessException extends WizardHandlerException {
 
 	/**

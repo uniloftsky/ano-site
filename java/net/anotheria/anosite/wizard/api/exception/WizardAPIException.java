@@ -7,7 +7,6 @@ import net.anotheria.anoplass.api.APIException;
  *
  * @author h3ll
  */
-
 public class WizardAPIException extends APIException {
 
 	/**

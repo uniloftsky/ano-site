@@ -1,48 +1,12 @@
 package net.anotheria.anosite.content.servlet;
 
-import static net.anotheria.anosite.util.AnositeConstants.PARAM_SWITCH_MODE;
-import static net.anotheria.anosite.util.AnositeConstants.PARAM_VALUE_EDIT_MODE;
-import static net.anotheria.anosite.util.AnositeConstants.PARAM_VALUE_VIEW_MODE;
-import static net.anotheria.anosite.util.AnositeConstants.SA_EDIT_MODE_FLAG;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.nio.charset.Charset;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import net.anotheria.anodoc.data.NoSuchDocumentException;
 import net.anotheria.anoplass.api.APICallContext;
 import net.anotheria.anoplass.api.APIFinder;
 import net.anotheria.anoplass.api.session.APISessionImpl;
 import net.anotheria.anoprise.metafactory.MetaFactory;
 import net.anotheria.anoprise.metafactory.MetaFactoryException;
-import net.anotheria.anosite.content.bean.AttributeBean;
-import net.anotheria.anosite.content.bean.AttributeMap;
-import net.anotheria.anosite.content.bean.BoxBean;
-import net.anotheria.anosite.content.bean.BoxTypeBean;
-import net.anotheria.anosite.content.bean.BreadCrumbItemBean;
-import net.anotheria.anosite.content.bean.MediaLinkBean;
-import net.anotheria.anosite.content.bean.NaviItemBean;
-import net.anotheria.anosite.content.bean.PageBean;
-import net.anotheria.anosite.content.bean.ScriptBean;
-import net.anotheria.anosite.content.bean.SiteBean;
-import net.anotheria.anosite.content.bean.StylesheetBean;
+import net.anotheria.anosite.content.bean.*;
 import net.anotheria.anosite.content.variables.VariablesUtility;
 import net.anotheria.anosite.gen.asfederateddata.data.BoxType;
 import net.anotheria.anosite.gen.asfederateddata.service.ASFederatedDataServiceException;
@@ -54,12 +18,7 @@ import net.anotheria.anosite.gen.asresourcedata.data.LocalizationBundle;
 import net.anotheria.anosite.gen.asresourcedata.data.TextResource;
 import net.anotheria.anosite.gen.asresourcedata.service.ASResourceDataServiceException;
 import net.anotheria.anosite.gen.asresourcedata.service.IASResourceDataService;
-import net.anotheria.anosite.gen.assitedata.data.MediaLink;
-import net.anotheria.anosite.gen.assitedata.data.NaviItem;
-import net.anotheria.anosite.gen.assitedata.data.PageAlias;
-import net.anotheria.anosite.gen.assitedata.data.PageTemplate;
-import net.anotheria.anosite.gen.assitedata.data.Script;
-import net.anotheria.anosite.gen.assitedata.data.Site;
+import net.anotheria.anosite.gen.assitedata.data.*;
 import net.anotheria.anosite.gen.assitedata.service.ASSiteDataServiceException;
 import net.anotheria.anosite.gen.assitedata.service.IASSiteDataService;
 import net.anotheria.anosite.gen.aswebdata.data.Attribute;
@@ -75,15 +34,7 @@ import net.anotheria.anosite.gen.shared.data.LinkTypesUtils;
 import net.anotheria.anosite.gen.shared.data.MediaDescUtils;
 import net.anotheria.anosite.guard.ConditionalGuard;
 import net.anotheria.anosite.guard.GuardFactory;
-import net.anotheria.anosite.handler.AbstractRedirectResponse;
-import net.anotheria.anosite.handler.BoxHandler;
-import net.anotheria.anosite.handler.BoxHandlerFactory;
-import net.anotheria.anosite.handler.BoxHandlerResponse;
-import net.anotheria.anosite.handler.ResponseAbort;
-import net.anotheria.anosite.handler.ResponseContinue;
-import net.anotheria.anosite.handler.ResponseRedirectAfterProcessing;
-import net.anotheria.anosite.handler.ResponseRedirectImmediately;
-import net.anotheria.anosite.handler.ResponseStop;
+import net.anotheria.anosite.handler.*;
 import net.anotheria.anosite.handler.exception.BoxHandleException;
 import net.anotheria.anosite.localization.LocalizationEnvironment;
 import net.anotheria.anosite.localization.LocalizationMap;
@@ -98,20 +49,29 @@ import net.anotheria.anosite.wizard.handler.WizardHandlerFactory;
 import net.anotheria.anosite.wizard.handler.exceptions.WizardHandlerException;
 import net.anotheria.anosite.wizard.handler.exceptions.WizardHandlerProcessException;
 import net.anotheria.anosite.wizard.handler.exceptions.WizardHandlerSubmitException;
-import net.anotheria.anosite.wizard.handler.response.WizardHandlerResponse;
-import net.anotheria.anosite.wizard.handler.response.WizardResponseAbort;
-import net.anotheria.anosite.wizard.handler.response.WizardResponseCancel;
-import net.anotheria.anosite.wizard.handler.response.WizardResponseChangeStep;
-import net.anotheria.anosite.wizard.handler.response.WizardResponseContinue;
-import net.anotheria.anosite.wizard.handler.response.WizardResponseFinish;
+import net.anotheria.anosite.wizard.handler.response.*;
 import net.anotheria.asg.exception.ASGRuntimeException;
 import net.anotheria.util.IdCodeGenerator;
 import net.anotheria.util.StringUtils;
+import net.anotheria.util.concurrency.IdBasedLock;
+import net.anotheria.util.concurrency.IdBasedLockManager;
+import net.anotheria.util.concurrency.SafeIdBasedLockManager;
 import net.java.dev.moskito.core.blueprint.BlueprintCallExecutor;
 import net.java.dev.moskito.core.blueprint.BlueprintProducer;
 import net.java.dev.moskito.core.blueprint.BlueprintProducersFactory;
-
 import org.apache.log4j.Logger;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+import static net.anotheria.anosite.util.AnositeConstants.*;
 
 /**
  * This servlet builds and delivers pages (out of pagexs objects) and is therefore one of the main classes in the ano-site framework.
@@ -203,8 +163,14 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	 * Configuration instance.
 	 */
 	private AnositeConfig config = AnositeConfig.getInstance();
-	
+	/**
+	 * {@link SimpleDateFormat}.
+	 */
 	private static SimpleDateFormat generatedFormat = new SimpleDateFormat("dd.MM.yyyy hh:mm:ss");
+	/**
+	 * {@link IdBasedLockManager} instance.
+	 */
+	private IdBasedLockManager lockManager;
 
 
 	@Override
@@ -227,12 +193,14 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		boxExecutor = new BoxBeanCreator();
 		wizardExecutor = new WizardExecutor();
 		config.getServletContext().setAttribute(AnositeConstants.AA_ANOSITE_RANDOM, IdCodeGenerator.generateCode(10));
+		//Lock!
+		lockManager = new SafeIdBasedLockManager();
 	}
 
 	@Override
 	protected void moskitoDoGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		try {
-			processRequest(req, res, false);
+			process(req, res, false);
 		} catch (ASGRuntimeException e) {
 			log.error("moskitoDoGet", e);
 			throw new ServletException("ASG Runtime Exception: " + e.getMessage());
@@ -248,7 +216,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	@Override
 	protected void moskitoDoPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		try {
-			processRequest(req, res, true);
+			process(req, res, true);
 		} catch (ASGRuntimeException e) {
 			log.error("moskitoDoPost", e);
 			throw new ServletException("ASG Runtime Exception: " + e.getMessage());
@@ -258,6 +226,40 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		} catch (WizardHandlerException e) {
 			log.error("moskitoDoPost", e);
 			throw new ServletException("Wizard Handle Exception: " + e.getMessage());
+		}
+	}
+
+	/**
+	 * If we working with wizards - we Should obtain IDBased lock - before processing (to avoid double submits, etc).
+	 * In other  case  - lock - won't be obtained.
+	 *  TODO : it's actually temp solution which will be removed!
+	 *
+	 * @param req {@link HttpServletRequest}
+	 * @param res {@link HttpServletResponse}
+	 * @param submit boolean value
+	 * @throws ServletException	on errors
+	 * @throws IOException		 on input output errors
+	 * @throws ASGRuntimeException on backend failures
+	 * @throws net.anotheria.anosite.handler.exception.BoxHandleException
+	 *                             on box handle errors
+	 * @throws net.anotheria.anosite.wizard.handler.exceptions.WizardHandlerException
+	 *                             on wizard handle errors
+	 */
+	private void process(HttpServletRequest req, HttpServletResponse res, boolean submit) throws ServletException, IOException, ASGRuntimeException,
+			BoxHandleException, WizardHandlerException {
+
+		IdBasedLock lock = null;
+		try {
+			boolean isWizardRequest = isRequestToResource(req, W_HTML_SUFFIX);
+			if (isWizardRequest) {
+				String sId = APICallContext.getCallContext().getCurrentSession().getId();
+				final String lockId = extractPageName(req) + "_" + sId;
+				lock = lockManager.obtainLock(lockId);
+			}
+			processRequest(req, res, submit);
+		} finally {
+			if (lock != null)
+				lockManager.releaseLock(lock);
 		}
 	}
 
@@ -275,6 +277,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	 * @throws net.anotheria.anosite.wizard.handler.exceptions.WizardHandlerException
 	 *                             on wizard handle errors
 	 */
+
 	protected void processRequest(HttpServletRequest req, HttpServletResponse res, boolean submit) throws ServletException, IOException, ASGRuntimeException, BoxHandleException, WizardHandlerException {
 
 		prepareTextResources(req);
@@ -316,7 +319,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			try {
 				//looking for wizard current page id!
 				//if first call - first wizard page will be used
-				String wizardPageId = wizardAPI.getCurrentStepId(wizard.getId());
+				String wizardPageId = wizardAPI.getCurrentStepPageId(wizard.getId());
 				try {
 					if (!StringUtils.isEmpty(wizardPageId))
 						page = webDataService.getPagex(wizardPageId);
@@ -852,20 +855,20 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 
 				BreadCrumbItemBean startpageBean = new BreadCrumbItemBean();
 				startpageBean.setTitle(linkToStartPage.getName());
-				
+
 				String sLink = webDataService.getPagex(linkToStartPage.getInternalLink()).getName() + HTML_SUFFIX;
-				
+
 				// aliased link to startpage
-				if(linkToStartPage.getPageAlias().length() > 0) {
+				if (linkToStartPage.getPageAlias().length() > 0) {
 					String pageAliasId = linkToStartPage.getPageAlias();
 					PageAlias alias = siteDataService.getPageAlias(pageAliasId);
 					sLink = alias.getName();
-					if(sLink.startsWith("/")) {
-						sLink = sLink.substring(1,sLink.length());
+					if (sLink.startsWith("/")) {
+						sLink = sLink.substring(1, sLink.length());
 					}
 				}
 				startpageBean.setLink(sLink);
-				
+
 				ret.add(startpageBean);
 				if (linkToStartPage.equals(linkingItem)) {
 					startpageBean.setClickable(false);
@@ -875,53 +878,52 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 				}
 			}
 
-				//ok start page is found and we are not the startPage
-				//now find other... this is now hardcoded for two level navigation.
-				List<BreadCrumbItemBean> items = new ArrayList<BreadCrumbItemBean>();
-				while (linkingItem != null) {
-					BreadCrumbItemBean b = new BreadCrumbItemBean();
-					b.setClickable(items.size() > 0);
-					b.setTitle(linkingItem.getName());
-					try {
-						log.info(linkingItem.getName() + ":" + linkingItem.getInternalLink() + "," + linkingItem.getExternalLink());
-						String link = webDataService.getPagex(linkingItem.getInternalLink()).getName() + HTML_SUFFIX;
-						
-						// aliased link to a page
-						if(linkingItem.getPageAlias().length() > 0) {
-							String pageAliasId = linkingItem.getPageAlias();
-							PageAlias alias = siteDataService.getPageAlias(pageAliasId);
-							link = alias.getName();
-							if(link.startsWith("/")) {
-								link = link.substring(1,link.length());
-							}
+			//ok start page is found and we are not the startPage
+			//now find other... this is now hardcoded for two level navigation.
+			List<BreadCrumbItemBean> items = new ArrayList<BreadCrumbItemBean>();
+			while (linkingItem != null) {
+				BreadCrumbItemBean b = new BreadCrumbItemBean();
+				b.setClickable(items.size() > 0);
+				b.setTitle(linkingItem.getName());
+				try {
+					log.info(linkingItem.getName() + ":" + linkingItem.getInternalLink() + "," + linkingItem.getExternalLink());
+					String link = webDataService.getPagex(linkingItem.getInternalLink()).getName() + HTML_SUFFIX;
+
+					// aliased link to a page
+					if (linkingItem.getPageAlias().length() > 0) {
+						String pageAliasId = linkingItem.getPageAlias();
+						PageAlias alias = siteDataService.getPageAlias(pageAliasId);
+						link = alias.getName();
+						if (link.startsWith("/")) {
+							link = link.substring(1, link.length());
 						}
-						
-						// external Link
-						if(linkingItem.getExternalLink().length() > 0) {
-							link = linkingItem.getExternalLink();
-						}
-						b.setLink(link);
-					} catch (NoSuchDocumentException e) {
-						b.setLink("");
-						b.setClickable(false);
 					}
-					items.add(b);
-					String searchId = linkingItem.getId();
-					linkingItem = null;
-					List<NaviItem> tosearch = siteDataService.getNaviItems();
-					for (NaviItem i : tosearch) {
-						if (i.getSubNavi().contains(searchId)) {
-							linkingItem = i;
-							break;
-						}
+
+					// external Link
+					if (linkingItem.getExternalLink().length() > 0) {
+						link = linkingItem.getExternalLink();
+					}
+					b.setLink(link);
+				} catch (NoSuchDocumentException e) {
+					b.setLink("");
+					b.setClickable(false);
+				}
+				items.add(b);
+				String searchId = linkingItem.getId();
+				linkingItem = null;
+				List<NaviItem> tosearch = siteDataService.getNaviItems();
+				for (NaviItem i : tosearch) {
+					if (i.getSubNavi().contains(searchId)) {
+						linkingItem = i;
+						break;
 					}
 				}
+			}
 
-				Collections.reverse(items);
-				ret.addAll(items);
+			Collections.reverse(items);
+			ret.addAll(items);
 
 
-			
 		} catch (Exception e) {
 			BreadCrumbItemBean b = new BreadCrumbItemBean();
 			b.setTitle("Error: " + e.getMessage());
@@ -1158,7 +1160,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		for (String id : idList) {
 			NaviItemBean bean = new NaviItemBean();
 			NaviItem item = siteDataService.getNaviItem(id);
-			
+
 			boolean do_break = false;
 			//check the guards
 			List<String> gIds = item.getGuards();
@@ -1183,7 +1185,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			bean.setPopup(item.getPopup());
 			bean.setName(item.getName());
 			bean.setTitle(item.getTitle());
-			
+
 			// internal link to a page
 			if (item.getInternalLink().length() > 0) {
 				String pageId = item.getInternalLink();
@@ -1194,24 +1196,24 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			} else {
 				bean.setLink("#");
 			}
-			
+
 			// aliased link to a page
-			if(item.getPageAlias().length() > 0) {
+			if (item.getPageAlias().length() > 0) {
 				String pageAliasId = item.getPageAlias();
 				PageAlias alias = siteDataService.getPageAlias(pageAliasId);
 				String link = alias.getName();
-				if(link.startsWith("/")) {
-					link = link.substring(1,link.length());
+				if (link.startsWith("/")) {
+					link = link.substring(1, link.length());
 				}
 				bean.setLink(link);
 			}
-			
+
 			// external link
 			if (item.getExternalLink().length() > 0) {
 				bean.setLink(item.getExternalLink());
 			}
-			
-			
+
+
 			ret.add(bean);
 			List<String> subNaviIds = item.getSubNavi();
 			if (subNaviIds.size() > 0) {

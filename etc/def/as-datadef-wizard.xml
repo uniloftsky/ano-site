@@ -1,7 +1,7 @@
 <module name="ASWizardData">
     <listener class="net.anotheria.anosite.cms.listener.CRUDLogListener"/>
 
-   <!-- Wizard document! - "MultiPageDialog" -->
+    <!-- Wizard document! - "MultiPageDialog" -->
     <document name="WizardDef">
         <property name="name" type="string"/>
         <property name="wizardSteps" type="list">
@@ -9,23 +9,11 @@
                 <link name="page" type="single" target="ASWebData.Pagex"/>
             </content>
         </property>
-
-        <link name="navigation" type="single" target="ASWizardData.WizardNavigation"/>
         <link name="handler" type="single" target="ASWizardData.WizardHandlerDef"/>
-        <property name="menuRenderingEnabled" type="boolean"/>
-        <property name="navigationRenderingEnabled" type="boolean"/>
         <property name="wizardCancelRedirectUrl" type="string"/>
         <property name="wizardFinishRedirectUrl" type="string"/>
-
     </document>
 
-
-     <!-- Wizard Step navy document! - "MultiPageDialog" navigation-->
-    <document name="WizardNavigation">
-        <property name="name" type="string"/>
-        <property name="allowCancellation" type="boolean"/>
-        <property name="allowBackStep" type="boolean"/>
-    </document>
 
     <!-- Wizard Handler-->
     <document name="WizardHandlerDef">

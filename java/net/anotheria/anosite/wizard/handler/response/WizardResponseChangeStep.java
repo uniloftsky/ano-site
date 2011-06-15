@@ -7,7 +7,6 @@ import net.anotheria.anosite.shared.InternalResponseCode;
  *
  * @author h3ll
  */
-
 public class WizardResponseChangeStep extends WizardHandlerResponse {
 	/**
 	 * Basic serial version UID.

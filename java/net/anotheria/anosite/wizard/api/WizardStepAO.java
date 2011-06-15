@@ -7,7 +7,6 @@ import java.io.Serializable;
  *
  * @author h3ll
  */
-
 public class WizardStepAO implements Serializable {
 
 	/**
@@ -24,38 +23,38 @@ public class WizardStepAO implements Serializable {
 	 */
 	private int stepIndex;
 	/**
-	 * WizardStepAO 'stepId'.
+	 * WizardStepAO 'pagexId'.
+	 * Actually PagexId.
 	 */
-	private String stepId;
-
+	private String pagexId;
 
 	/**
 	 * Constructor.
 	 *
 	 * @param aWizardId  id of wizard
-	 * @param aStepId	id of step
 	 * @param aStepIndex step index
+	 * @param aPagexId   id of Ano-Pagex  which is  linked to current step
 	 */
-	public WizardStepAO(String aWizardId, String aStepId, int aStepIndex) {
-		this.stepId = aStepId;
+	public WizardStepAO(String aWizardId, int aStepIndex, String aPagexId) {
 		this.stepIndex = aStepIndex;
 		this.wizardId = aWizardId;
-	}
-
-	public String getStepId() {
-		return stepId;
-	}
-
-	public void setStepId(String stepId) {
-		this.stepId = stepId;
+		this.pagexId = aPagexId;
 	}
 
 	public int getStepIndex() {
 		return stepIndex;
 	}
 
-	public void setStepIndex(int stepIndex) {
-		this.stepIndex = stepIndex;
+	public void setStepIndex(int aStepIndex) {
+		this.stepIndex = aStepIndex;
+	}
+
+	public String getPagexId() {
+		return pagexId;
+	}
+
+	public void setPagexId(String aPagexId) {
+		this.pagexId = aPagexId;
 	}
 
 	public String getWizardId() {
@@ -73,8 +72,7 @@ public class WizardStepAO implements Serializable {
 
 		WizardStepAO that = (WizardStepAO) o;
 
-		if (stepIndex != that.stepIndex) return false;
-		if (stepId != null ? !stepId.equals(that.stepId) : that.stepId != null) return false;
+		if (pagexId != null ? !pagexId.equals(that.pagexId) : that.pagexId != null) return false;
 		if (wizardId != null ? !wizardId.equals(that.wizardId) : that.wizardId != null) return false;
 
 		return true;
@@ -84,19 +82,16 @@ public class WizardStepAO implements Serializable {
 	public int hashCode() {
 		int result = wizardId != null ? wizardId.hashCode() : 0;
 		final int mult = 31;
-		result = mult * result + stepIndex;
-		result = mult * result + (stepId != null ? stepId.hashCode() : 0);
+		result = mult * result + (pagexId != null ? pagexId.hashCode() : 0);
 		return result;
 	}
 
 	@Override
 	public String toString() {
-		final StringBuilder sb = new StringBuilder();
-		sb.append("WizardStepAO");
-		sb.append("{stepId='").append(stepId).append('\'');
-		sb.append(", wizardId='").append(wizardId).append('\'');
-		sb.append(", stepIndex=").append(stepIndex);
-		sb.append('}');
-		return sb.toString();
+		return "WizardStepAO{" +
+				"wizardId='" + wizardId +
+				", stepIndex=" + stepIndex +
+				", pagexId='" + pagexId +
+				'}';
 	}
 }

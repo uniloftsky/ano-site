@@ -1,7 +1,5 @@
 package net.anotheria.anosite.wizard.api;
 
-import net.anotheria.anosite.gen.aswizarddata.data.WizardNavigation;
-
 import java.io.Serializable;
 import java.util.List;
 
@@ -10,7 +8,6 @@ import java.util.List;
  *
  * @author h3ll
  */
-
 public class WizardAO implements Serializable {
 
 	/**
@@ -22,31 +19,14 @@ public class WizardAO implements Serializable {
 	 * WizardBean 'id'.
 	 */
 	private String id;
-
 	/**
 	 * WizardBean 'name'.
 	 */
 	private String name;
-
 	/**
 	 * WizardBean 'wizardSteps'. Actually Page ids collection.
 	 */
 	private List<WizardStepAO> wizardSteps;
-
-	/**
-	 * WizardStepBean 'navigation'.
-	 */
-	private WizardNavigation navigation;
-
-	/**
-	 * WizardBean 'navigationEnabled'.
-	 */
-	private boolean navigationEnabled;
-
-	/**
-	 * WizardBean 'menuEnabled'.
-	 */
-	private boolean menuEnabled;
 	/**
 	 * WizardBean 'handlerId'.
 	 */
@@ -93,37 +73,12 @@ public class WizardAO implements Serializable {
 		return id;
 	}
 
-
-	public boolean isMenuEnabled() {
-		return menuEnabled;
-	}
-
-	public void setMenuEnabled(boolean menuEnabled) {
-		this.menuEnabled = menuEnabled;
-	}
-
 	public String getName() {
 		return name;
 	}
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public WizardNavigation getNavigation() {
-		return navigation;
-	}
-
-	public void setNavigation(WizardNavigation navigation) {
-		this.navigation = navigation;
-	}
-
-	public boolean isNavigationEnabled() {
-		return navigationEnabled;
-	}
-
-	public void setNavigationEnabled(boolean navigationEnabled) {
-		this.navigationEnabled = navigationEnabled;
 	}
 
 	public List<WizardStepAO> getWizardSteps() {

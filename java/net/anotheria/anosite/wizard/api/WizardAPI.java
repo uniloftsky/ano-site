@@ -10,7 +10,6 @@ import java.util.List;
  *
  * @author h3ll
  */
-
 public interface WizardAPI extends API {
 
 	/**
@@ -39,12 +38,12 @@ public interface WizardAPI extends API {
 	 * @return string id of step
 	 * @throws WizardAPIException on errors
 	 */
-	String getCurrentStepId(String wizardId) throws WizardAPIException;
+	String getCurrentStepPageId(String wizardId) throws WizardAPIException;
 
 	/**
 	 * Returns current step for wizard. If step does not exist, then new one will be created.
 	 *
-	 * @param wizardId	id of wizard
+	 * @param wizardId id of wizard
 	 * @return {@link WizardStepAO }
 	 * @throws WizardAPIException on errors
 	 */
@@ -62,7 +61,7 @@ public interface WizardAPI extends API {
 	/**
 	 * Adjusting to next step.
 	 *
-	 * @param wizardId	id
+	 * @param wizardId id
 	 * @return {@link WizardStepAO}
 	 * @throws WizardAPIException on errors
 	 */
@@ -71,7 +70,7 @@ public interface WizardAPI extends API {
 	/**
 	 * Adjusting to previous step.
 	 *
-	 * @param wizardId	id
+	 * @param wizardId id
 	 * @return {@link WizardStepAO}
 	 * @throws WizardAPIException on errors
 	 */
@@ -81,20 +80,62 @@ public interface WizardAPI extends API {
 	/**
 	 * Adjusting to step.
 	 *
-	 * @param wizardId	id of wizard
-	 * @param stepIndex   step of step
+	 * @param wizardId  id of wizard
+	 * @param stepIndex step of step
 	 * @return {@link WizardStepAO}
 	 * @throws WizardAPIException on errors
 	 */
 	WizardStepAO adjustToStep(String wizardId, int stepIndex) throws WizardAPIException;
 
 	/**
-	 * Remove wizard data from temp storage.
+	 * Finish wizard.
 	 *
-	 * @param wizardId id
+	 * @param wizard {@link WizardAO}
+	 * @return true if wizard finished, false otherwise
 	 * @throws WizardAPIException on errors
 	 */
-	void removeWizardData(String wizardId) throws WizardAPIException;
+	boolean finishWizard(WizardAO wizard) throws WizardAPIException;
+
+	/**
+	 * Cancel wizard.
+	 *
+	 * @param wizard {@link WizardAO}
+	 * @return true if wizard canceled, false otherwise
+	 * @throws WizardAPIException
+	 */
+	boolean cancelWizard(WizardAO wizard) throws WizardAPIException;
+
+	/**
+	 * Allow next step.
+	 *
+	 * @param wizard	 {@link WizardAO}
+	 * @param wizardStep {@link WizardStepAO}
+	 */
+	void allowNextStepNavigation(WizardAO wizard, WizardStepAO wizardStep);
+
+	/**
+	 * Allow previous step.
+	 *
+	 * @param wizard	 {@link WizardAO}
+	 * @param wizardStep {@link WizardStepAO}
+	 */
+	void allowPreviousStepNavigation(WizardAO wizard, WizardStepAO wizardStep);
+
+	/**
+	 * Allow wizard cancel step.
+	 *
+	 * @param wizard	 {@link WizardAO}
+	 * @param wizardStep {@link WizardStepAO}
+	 */
+	void allowWizardCancel(WizardAO wizard, WizardStepAO wizardStep);
+
+	/**
+	 * Allow wizard finish step.
+	 *
+	 * @param wizard	 {@link WizardAO}
+	 * @param wizardStep {@link WizardStepAO}
+	 */
+	void allowWizardFinish(WizardAO wizard, WizardStepAO wizardStep);
 
 
 }

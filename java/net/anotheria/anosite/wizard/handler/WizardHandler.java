@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author h3ll
  */
-
 public interface WizardHandler {
 
 	/**

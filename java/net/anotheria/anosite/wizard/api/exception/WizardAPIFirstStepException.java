@@ -5,7 +5,6 @@ package net.anotheria.anosite.wizard.api.exception;
  *
  * @author h3ll
  */
-
 public class WizardAPIFirstStepException extends WizardAPIException {
 
 	/**

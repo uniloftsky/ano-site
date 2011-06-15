@@ -7,7 +7,6 @@ import net.anotheria.anosite.shared.InternalResponseCode;
  *
  * @author h3ll
  */
-
 public class WizardResponseAbort extends WizardHandlerResponse {
 
 	/**
