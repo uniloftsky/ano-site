@@ -261,8 +261,8 @@ public class BaseWizardHandler implements WizardHandler {
 			WizardStepAO changed = wizardAPI.adjustToPreviousStep(wizard.getId());
 			//if step was changed!
 			if (changed.equals(currentStep)) {
+				//only logging!! Anyway changing step -  simply  to remove  back-step parameter!
 				log.debug("Wizard previous step {" + wizard.getId() + "} not performed");
-				return WizardResponseContinue.INSTANCE;
 			}
 			return WizardResponseChangeStep.INSTANCE;
 		} catch (WizardAPIFirstStepException e) {
@@ -297,22 +297,18 @@ public class BaseWizardHandler implements WizardHandler {
 		}
 		int stepNumber = Integer.valueOf(stepIndex);
 
-
 		if (stepNumber < 0 || stepNumber >= wizard.getWizardSteps().size()) {
 			log.debug("Illegal step " + stepNumber);
 			return WizardResponseContinue.INSTANCE;
 		}
 
-
 		try {
 			@SuppressWarnings({"UnusedDeclaration"})
 			WizardStepAO nextStep = wizardAPI.adjustToStep(wizard.getId(), stepNumber);
-			//checking if step changed!
 			if (nextStep.equals(currentStep)) {
+				//only logging!! Anyway changing step -  simply  to remove  back-step parameter!
 				log.debug("step number is current");
-				return WizardResponseContinue.INSTANCE;
 			}
-
 			return WizardResponseChangeStep.INSTANCE;
 
 		} catch (WizardAPIException e) {
