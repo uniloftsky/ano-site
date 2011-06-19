@@ -3,6 +3,7 @@ package net.anotheria.anosite.content.servlet;
 import net.anotheria.anodoc.data.NoSuchDocumentException;
 import net.anotheria.anoplass.api.APICallContext;
 import net.anotheria.anoplass.api.APIFinder;
+import net.anotheria.anoplass.api.session.APISession;
 import net.anotheria.anoplass.api.session.APISessionImpl;
 import net.anotheria.anoprise.metafactory.MetaFactory;
 import net.anotheria.anoprise.metafactory.MetaFactoryException;
@@ -842,12 +843,24 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	 */
 	private List<BreadCrumbItemBean> prepareBreadcrumb(Pagex page, Site site) {
 		List<BreadCrumbItemBean> ret = new ArrayList<BreadCrumbItemBean>();
+		APISession session = APICallContext.getCallContext().getCurrentSession();
+
+		BrowsingHistory naviHistory = (BrowsingHistory)session.getAttribute("as.history.navi");
+		if (naviHistory==null){
+			naviHistory = new BrowsingHistory();
+			session.setAttribute("as.history.navi", naviHistory);
+		}
+		
+		
+		
 		try {
 			//first find navi item
 			List<NaviItem> linkingItems = siteDataService.getNaviItemsByProperty(NaviItem.LINK_PROP_INTERNAL_LINK, page.getId());
 			if (linkingItems.size() == 0)
 				return ret;
 			NaviItem linkingItem = linkingItems.get(0);
+			
+			naviHistory.addHistoryItem(linkingItem.getId());
 
 			if (site.getStartpage().length() > 0) {
 				linkingItems = siteDataService.getNaviItemsByProperty(NaviItem.LINK_PROP_INTERNAL_LINK, site.getStartpage());
@@ -912,10 +925,28 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 				String searchId = linkingItem.getId();
 				linkingItem = null;
 				List<NaviItem> tosearch = siteDataService.getNaviItems();
-				for (NaviItem i : tosearch) {
-					if (i.getSubNavi().contains(searchId)) {
-						linkingItem = i;
-						break;
+				
+				String previousNaviItemId = naviHistory.getPreviousItem(); 
+				
+				if (previousNaviItemId!=null){
+					for (NaviItem i : tosearch) {
+						//System.out.println("checking "+i);
+						if (i.getSubNavi().contains(searchId) ){
+						}						
+						
+						if (i.getSubNavi().contains(searchId) && i.getId().equals(previousNaviItemId)){
+							linkingItem = i;
+							break;
+						}
+					}
+				}
+
+				if (linkingItem==null){
+					for (NaviItem i : tosearch) {
+						if (i.getSubNavi().contains(searchId)) {
+							linkingItem = i;
+							break;
+						}
 					}
 				}
 			}
