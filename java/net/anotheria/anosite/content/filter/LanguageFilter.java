@@ -1,5 +1,8 @@
 package net.anotheria.anosite.content.filter;
 
+import static net.anotheria.anosite.util.AnositeConstants.PARAM_LANGUAGE;
+import static net.anotheria.anosite.util.AnositeConstants.SA_LANGUAGE;
+
 import java.io.IOException;
 import java.util.Locale;
 
@@ -12,13 +15,10 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.struts.action.Action;
-
 import net.anotheria.anodoc.util.context.ContextManager;
 import net.anotheria.anosite.gen.shared.service.AnoDocConfigurator;
 
-import static net.anotheria.anosite.util.AnositeConstants.PARAM_LANGUAGE;
-import static net.anotheria.anosite.util.AnositeConstants.SA_LANGUAGE;
+import org.apache.struts.action.Action;
 
 public class LanguageFilter implements Filter{
 	

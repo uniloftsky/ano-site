@@ -1,7 +1,11 @@
 package net.anotheria.anosite.content.filter;
 
-import net.anotheria.anosite.gen.shared.service.AnoDocConfigurator;
+import static net.anotheria.anosite.util.AnositeConstants.PARAM_SWITCH_MODE;
+import static net.anotheria.anosite.util.AnositeConstants.PARAM_VALUE_EDIT_MODE;
+import static net.anotheria.anosite.util.AnositeConstants.PARAM_VALUE_VIEW_MODE;
+import static net.anotheria.anosite.util.AnositeConstants.SA_EDIT_MODE_FLAG;
 
+import java.io.IOException;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -10,9 +14,8 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 
-import static net.anotheria.anosite.util.AnositeConstants.*;
+import net.anotheria.anosite.gen.shared.service.AnoDocConfigurator;
 
 /**
  * This filter is used to switch the on-site edit mode on and off. To perform this task it checks whether the switch mode parameter is present.
