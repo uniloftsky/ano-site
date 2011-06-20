@@ -38,8 +38,8 @@ public class ContentChangeListener implements IServiceListener{
 	 * @param object some document
 	 */
 	private void sendEvent(ContentChangeType type, DataObject object){
-		ContentChangeEvent event = new ContentChangeEvent(type, object.getDefinedName(), object.getId());
 		throw new AssertionError("Not supported anymore!");
+		//ContentChangeEvent event = new ContentChangeEvent(type, object.getDefinedName(), object.getId());
 		//APISessionManager.getInstance().propagateContentChangeEvent(event);
 	}
 
