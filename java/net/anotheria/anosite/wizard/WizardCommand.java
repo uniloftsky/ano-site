@@ -36,7 +36,7 @@ public enum WizardCommand {
 	/**
 	 * WizardCommand default.
 	 */
-	public static WizardCommand DEFAULT_COMMAND = WizardCommand.NEXT;
+	public static final WizardCommand DEFAULT_COMMAND = WizardCommand.NEXT;
 
 	/**
 	 * ButtonTitle.
