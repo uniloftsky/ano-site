@@ -1,5 +1,8 @@
 package net.anotheria.anosite.wizard.handler;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import net.anotheria.anoplass.api.APIFinder;
 import net.anotheria.anosite.gen.aswizarddata.data.WizardDef;
 import net.anotheria.anosite.wizard.WizardCommand;
@@ -13,12 +16,14 @@ import net.anotheria.anosite.wizard.handler.exceptions.WizardHandlerException;
 import net.anotheria.anosite.wizard.handler.exceptions.WizardHandlerPreProcessException;
 import net.anotheria.anosite.wizard.handler.exceptions.WizardHandlerProcessException;
 import net.anotheria.anosite.wizard.handler.exceptions.WizardHandlerSubmitException;
-import net.anotheria.anosite.wizard.handler.response.*;
+import net.anotheria.anosite.wizard.handler.response.WizardHandlerResponse;
+import net.anotheria.anosite.wizard.handler.response.WizardResponseCancel;
+import net.anotheria.anosite.wizard.handler.response.WizardResponseChangeStep;
+import net.anotheria.anosite.wizard.handler.response.WizardResponseContinue;
+import net.anotheria.anosite.wizard.handler.response.WizardResponseFinish;
 import net.anotheria.util.StringUtils;
-import org.apache.log4j.Logger;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import org.apache.log4j.Logger;
 
 /**
  * BaseWizardHandler as main class for Wizard handlers.
