@@ -68,7 +68,7 @@ public class AttributeDecorator implements IAttributeDecorator{
 				href = "aswebdataBoxAttributesShow?ownerId="+doc.getId()+"&pId="+doc.getId()+"&ts="+System.currentTimeMillis();
 			}
 			
-			String title = "";
+			StringBuilder title = new StringBuilder("");
 			for (String id : ids){
 				String name ;
 				try{
@@ -79,16 +79,16 @@ public class AttributeDecorator implements IAttributeDecorator{
 					name = "*ERR-"+e.getMessage()+"*";
 				}
 				if (title.length()>0)
-					title += ", ";
-				title += name;
+					title.append(", ");
+				title.append(name);
 					
 			}
-			if (title.length()>0)
-				title = " title=\""+title+"\"";
+
+			String stitle = title.length()>0 ? " title=\""+title.toString()+"\"" : "";
 			
 			String hrefTarget = href.length()>1 ? " target=\"_blank\"" : "";
 			
-			return "<a href=\""+href+"\""+hrefTarget+title+">"+value+"</a>";
+			return "<a href=\""+href+"\""+hrefTarget+stitle+">"+value+"</a>";
 				
 		}catch(NoSuchPropertyException e){
 			return "none";
