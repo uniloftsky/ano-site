@@ -2,7 +2,6 @@ package net.anotheria.anosite.localization;
 
 import java.util.List;
 
-import net.anotheria.anoplass.api.APICallContext;
 import net.anotheria.anoprise.metafactory.MetaFactory;
 import net.anotheria.anoprise.metafactory.MetaFactoryException;
 import net.anotheria.anosite.gen.asresourcedata.data.TextResource;
@@ -36,8 +35,8 @@ public enum LocalizationResolver {
 
 	public String getLocalizedMessage(String key) {
 		// Try to find resource with given key in LocalizationMap
-		LocalizationMap localization = (LocalizationMap) APICallContext.getCallContext().getAttribute(LocalizationMap.CALL_CONTEXT_SCOPE_NAME);
-		String message = localization != null ? localization.getMessage(key) : null;
+		
+		String message = LocalizationMap.getCurrentLocalizationMap().getMessage(key);
 		if (message != null)
 			return message;
 
