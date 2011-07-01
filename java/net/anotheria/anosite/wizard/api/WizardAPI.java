@@ -137,5 +137,11 @@ public interface WizardAPI extends API {
 	 */
 	void allowWizardFinish(WizardAO wizard, WizardStepAO wizardStep);
 
-
+	/**
+	 * Allow navigate To command.
+	 *
+	 * @param wizard	 {@link WizardAO}
+	 * @param wizardStep {@link WizardStepAO}
+	 */
+	void allowWizardNavigateTo(WizardAO wizard, WizardStepAO wizardStep);
 }

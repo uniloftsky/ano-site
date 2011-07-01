@@ -237,7 +237,7 @@ public class BaseWizardAPIImpl extends AbstractAPIImpl implements WizardAPI {
 		WizardStepAO stepAO = wizard.getWizardSteps().get(stepIndex);
 
 		List<WizardStepAO> passed = getCompletedSteps(wizard.getId());
-		if (!passed.contains(stepAO)) {
+		if (!passed.contains(stepAO) && !isCommandAllowed(wizard.getId(), stepAO.getPagexId(), NAVIGATE_TO)) {
 			log.debug(stepAO + "is not passed! Navigation is not allowed!");
 			return false;
 		}
@@ -304,6 +304,10 @@ public class BaseWizardAPIImpl extends AbstractAPIImpl implements WizardAPI {
 	@Override
 	public void allowWizardFinish(WizardAO wizard, WizardStepAO wizardStep) {
 		allowCommand(wizard.getId(), wizardStep.getPagexId(), FINISH);
+	}
+
+	public void allowWizardNavigateTo(WizardAO wizard, WizardStepAO wizardStep) {
+		allowCommand(wizard.getId(), wizardStep.getPagexId(), NAVIGATE_TO);
 	}
 
 	/**
