@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import net.anotheria.anodoc.util.context.ContextManager;
+import net.anotheria.anoplass.api.APICallContext;
 import net.anotheria.anosite.gen.shared.service.AnoDocConfigurator;
 
 import org.apache.struts.action.Action;
