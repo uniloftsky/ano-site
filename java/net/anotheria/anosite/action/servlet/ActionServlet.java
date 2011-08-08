@@ -19,6 +19,10 @@ import net.anotheria.anosite.shared.presentation.servlet.BaseAnoSiteServlet;
 
 public class ActionServlet extends BaseAnoSiteServlet {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static Logger log = Logger.getLogger(ActionServlet.class);
 
 	@Override
