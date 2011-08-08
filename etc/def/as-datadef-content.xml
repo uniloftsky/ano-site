@@ -16,6 +16,11 @@
         	</content>
         </property>
 		<link type="single" target="ASSiteData.PageTemplate" name="template"/>
+		<property name="attributes" type="list">
+	        <content>
+				<link name="attribute" type="single" target="Attribute"/>
+        	</content>
+        </property>
 		<property name="c1" type="list">
 	        <content>
 				<link name="box" type="single" target="ASWebData.Box"/>

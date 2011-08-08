@@ -61,6 +61,11 @@ public class PageBean {
 	 * Generated timestamp (last updated timestamp formated for meta generated)
 	 */
 	private String generated;
+	/**
+	 * Attributes assigned to the page.
+	 */
+	private AttributeMap attributes;
+	
 
 	public PageBean() {
 		column1 = new ArrayList<BoxBean>();
@@ -216,6 +221,14 @@ public class PageBean {
 
 	public void setGenerated(String generated) {
 		this.generated = generated;
+	}
+	
+	public AttributeMap getAttributes() {
+		return attributes;
+	}
+	
+	public void setAttributes(AttributeMap attributes) {
+		this.attributes = attributes;
 	}
 	
 }

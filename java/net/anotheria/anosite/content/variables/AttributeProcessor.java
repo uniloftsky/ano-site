@@ -14,6 +14,7 @@ import net.anotheria.anosite.content.bean.AttributeMap;
  * PREFIX_SESSION_AND_DELETE_ATTRIBUTE
  * PREFIX_CONTEXT_ATTRIBUTE
  * PREFIX_BOX_ATTRIBUTE
+ * PREFIX_PAGE_ATTRIBUTE
  * @author lrosenberg
  *
  */
@@ -39,7 +40,12 @@ public class AttributeProcessor implements VariablesProcessor {
 			ret = req.getSession().getServletContext().getAttribute(variable);
 		
 		if (DefinitionPrefixes.PREFIX_BOX_ATTRIBUTE.equals(prefix)){
-			AttributeBean bean = ((AttributeMap)APICallContext.getCallContext().getAttribute(AttributeMap.CALL_CONTEXT_SCOPE_NAME)).getAttribute(variable); 
+			AttributeBean bean = ((AttributeMap)APICallContext.getCallContext().getAttribute(AttributeMap.BOX_ATTRIBUTES_CALL_CONTEXT_SCOPE_NAME)).getAttribute(variable); 
+			ret = bean == null ? null : bean.getValue();
+		}
+		
+		if (DefinitionPrefixes.PREFIX_PAGE_ATTRIBUTE.equals(prefix)){
+			AttributeBean bean = ((AttributeMap)APICallContext.getCallContext().getAttribute(AttributeMap.PAGE_ATTRIBUTES_CALL_CONTEXT_SCOPE_NAME)).getAttribute(variable); 
 			ret = bean == null ? null : bean.getValue();
 		}
 		

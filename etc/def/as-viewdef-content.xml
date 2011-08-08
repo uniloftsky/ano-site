@@ -62,6 +62,7 @@
 						<element type="field" name="scripts" />
 						<element type="field" name="localizations" /> 
 		      			<element type="field" name="template" /> 
+		      			<element type="field" name="attributes"/>
 						<element type="empty"/>
 						<element type="field" name="c1" /> 
 						<element type="field" name="c2" /> 

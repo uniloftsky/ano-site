@@ -45,6 +45,10 @@ public final class DefinitionPrefixes {
 	 */
 	public static final String PREFIX_BOX_ATTRIBUTE = "ba";
 	/**
+	 * Page attribute.
+	 */
+	public static final String PREFIX_PAGE_ATTRIBUTE = "pa";
+	/**
 	 * Constant, performed by constants processor.
 	 */
 	public static final String PREFIX_CONSTANT = "c";

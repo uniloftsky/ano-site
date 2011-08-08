@@ -51,5 +51,36 @@
 		<bodycontent>empty</bodycontent>	
 	</tag>
 	
-
+	<tag>
+		<name>boxAttribute</name>
+		<tagclass>net.anotheria.anosite.tags.content.BoxAttributeTag</tagclass>
+		<bodycontent>empty</bodycontent>
+		<attribute>
+			<name>name</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>defaultValue</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	
+	<tag>
+		<name>pageAttribute</name>
+		<tagclass>net.anotheria.anosite.tags.content.PageAttributeTag</tagclass>
+		<bodycontent>empty</bodycontent>
+		<attribute>
+			<name>name</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>defaultValue</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	
 </taglib>

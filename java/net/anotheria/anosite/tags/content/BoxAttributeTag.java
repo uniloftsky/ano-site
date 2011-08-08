@@ -1,11 +1,5 @@
 package net.anotheria.anosite.tags.content;
 
-import javax.servlet.jsp.JspException;
-
-import net.anotheria.tags.BaseTagSupport;
-import org.apache.log4j.Logger;
-
-import net.anotheria.anosite.content.bean.AttributeBean;
 import net.anotheria.anosite.content.bean.AttributeMap;
 import net.anotheria.anosite.content.bean.BoxBean;
 
@@ -14,52 +8,18 @@ import net.anotheria.anosite.content.bean.BoxBean;
  * @author lrosenberg
  *
  */
-public class BoxAttributeTag extends BaseTagSupport {
+public class BoxAttributeTag extends AbstractAttributeTag {
+
 	/**
-	 * Attribute name.
+	 * Serial version UID.
 	 */
-	private String name;
-	/**
-	 * Default value (same as in VariableProcessors).
-	 */
-	private String defaultValue = "UNSET";
-	/**
-	 * Log-
-	 */
-	private static Logger log = Logger.getLogger(BoxAttributeTag.class);
+	private static final long serialVersionUID = 6330988588913126149L;
 
-	@Override public int doEndTag() throws JspException {
-
-		try{
-			BoxBean box = (BoxBean) pageContext.getAttribute("box");
-			AttributeMap attributes = box.getAttributes();
-
-			AttributeBean bean = (AttributeBean) attributes.getAttribute(name);
-			String value = bean == null ? defaultValue : bean.getValue();
-			write(value);
-		}catch(Exception e){
-			log.error("doEndTag(), name: "+name, e);
-			write(e.getMessage());
-		}
-
-		return SKIP_BODY;
+	@Override
+	protected AttributeMap getAttributeMap() {
+		BoxBean box = (BoxBean) pageContext.getAttribute("box");
+		AttributeMap attributes = box.getAttributes();
+		return attributes != null ? attributes : new AttributeMap(); 
 	}
-
-	public String getDefaultValue() {
-		return defaultValue;
-	}
-
-	public void setDefaultValue(String defaultValue) {
-		this.defaultValue = defaultValue;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
 
 }

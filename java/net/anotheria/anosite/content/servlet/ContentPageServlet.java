@@ -989,8 +989,8 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		ret.setMediaLinks(createMediaLinkBeanList(box.getMediaLinks(), req));
 		ret.setScripts(createScriptBeanList(box.getScripts(), req));
 
-		AttributeMap attributeMap = createAttributeMap(req, res, box);
-		APICallContext.getCallContext().setAttribute(AttributeMap.CALL_CONTEXT_SCOPE_NAME, attributeMap);
+		AttributeMap attributeMap = createAttributeMap(req, res, box.getAttributes());
+		APICallContext.getCallContext().setAttribute(AttributeMap.BOX_ATTRIBUTES_CALL_CONTEXT_SCOPE_NAME, attributeMap);
 		ret.setAttributes(attributeMap);
 
 		prepareBoxLocalization(ret, box.getLocalizations());
@@ -1405,6 +1405,11 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		//Scripts
 		ret.addScripts(createScriptBeanList(template.getScripts(), req));
 		ret.addScripts(createScriptBeanList(page.getScripts(), req));
+		
+		//attributes
+		AttributeMap attributeMap = createAttributeMap(req, res, page.getAttributes());
+		APICallContext.getCallContext().setAttribute(AttributeMap.PAGE_ATTRIBUTES_CALL_CONTEXT_SCOPE_NAME, attributeMap);
+		ret.setAttributes(attributeMap);
 
 		InternalResponse response = new InternalResponseContinue();
 
@@ -1856,12 +1861,13 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	 *
 	 * @param req {@link HttpServletRequest}
 	 * @param res {@link HttpServletResponse}
-	 * @param box {@link Box}
+	 * @param attributeIds {@link List&lt;String&gt;} - ids of box or page attributes.
 	 * @return {@link AttributeMap}
 	 * @throws ASGRuntimeException on errors
 	 */
-	private AttributeMap createAttributeMap(HttpServletRequest req, HttpServletResponse res, Box box) throws ASGRuntimeException {
-		List<String> attributeIds = box.getAttributes();
+	private AttributeMap createAttributeMap(HttpServletRequest req, HttpServletResponse res,  List<String> attributeIds) throws ASGRuntimeException {
+		if (attributeIds == null || attributeIds.isEmpty())
+			return new AttributeMap();
 
 		List<Attribute> attributes = createAttributes(req, res, attributeIds);
 

@@ -14,9 +14,13 @@ public class AttributeMap {
 	 */
 	private Map<String, AttributeBean> attributes;
 	/**
-	 * The name under which the attribute map is stored in the call context to allow access by the variable processors.
+	 * The name under which the box attribute map is stored in the call context to allow access by the variable processors.
 	 */
-	public static final String CALL_CONTEXT_SCOPE_NAME = AttributeMap.class.getName();
+	public static final String BOX_ATTRIBUTES_CALL_CONTEXT_SCOPE_NAME = "boxAttributes" + AttributeMap.class.getName();
+	/**
+	 * The name under which the page attribute map is stored in the call context to allow access by the variable processors.
+	 */
+	public static final String PAGE_ATTRIBUTES_CALL_CONTEXT_SCOPE_NAME = "pageAttributes" + AttributeMap.class.getName();
 	/**
 	 * Creates a new attribute map.
 	 */
