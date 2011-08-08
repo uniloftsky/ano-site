@@ -10,6 +10,11 @@ import net.java.dev.moskito.web.MoskitoHttpServlet;
  *
  */
 public abstract class BaseAnoSiteServlet extends MoskitoHttpServlet{
+	/**
+	 * SerialVersion UID.
+	 */
+	private static final long serialVersionUID = 1L;
+
 	protected static String extractArtifactName(HttpServletRequest req) {
 		String servletPath = req.getServletPath();
 		if (servletPath.length() > 0 && servletPath.charAt(0) == '/')
