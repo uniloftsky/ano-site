@@ -120,46 +120,46 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	/**
 	 * WebDataService for boxes and pages.
 	 */
-	private IASWebDataService webDataService;
+	private transient IASWebDataService webDataService;
 	/**
 	 * Site service for layout and site objects.
 	 */
-	private IASSiteDataService siteDataService;
+	private transient IASSiteDataService siteDataService;
 	/**
 	 * Federated data.
 	 */
-	private IASFederatedDataService federatedDataService;
+	private transient IASFederatedDataService federatedDataService;
 	/**
 	 * Layout data.
 	 */
-	private IASLayoutDataService layoutDataService;
+	private transient IASLayoutDataService layoutDataService;
 	/**
 	 * Resources service.
 	 */
-	private IASResourceDataService resourceDataService;
+	private transient IASResourceDataService resourceDataService;
 
 	/**
 	 * Wizard service.
 	 */
-	private IASWizardDataService wizardDataService;
+	private transient IASWizardDataService wizardDataService;
 
 	/**
 	 * WizardAPI instance.
 	 */
-	private WizardAPI wizardAPI;
+	private transient WizardAPI wizardAPI;
 	/**
 	 * BlueprintCallExecutor pageExecutor, for creating and handling Pages with built In moskito stats.
 	 */
-	private BlueprintCallExecutor pageExecutor;
+	private transient BlueprintCallExecutor pageExecutor;
 	/**
 	 * BlueprintCallExecutor boxExecutor, for creating and handling Boxes with built In moskito stats.
 	 */
-	private BlueprintCallExecutor boxExecutor;
+	private transient BlueprintCallExecutor boxExecutor;
 
 	/**
 	 * BlueprintCallExecutor wizardExecutor.
 	 */
-	private BlueprintCallExecutor wizardExecutor;
+	private transient BlueprintCallExecutor wizardExecutor;
 	/**
 	 * Configuration instance.
 	 */
@@ -171,7 +171,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	/**
 	 * {@link IdBasedLockManager} instance.
 	 */
-	private IdBasedLockManager lockManager;
+	private transient IdBasedLockManager lockManager;
 
 
 	@Override
