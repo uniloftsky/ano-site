@@ -16,8 +16,8 @@ public interface Action {
 	 * @param req the http request.
 	 * @param resp the http response.
 	 * @param mapping default mapping as configured in the CMS.
-	 * @return
-	 * @throws Exception
+	 * @return {@link ActionCommand}
+	 * @throws Exception on different kind of errors
 	 */
 	ActionCommand execute(HttpServletRequest req, HttpServletResponse resp, ActionMapping mapping) throws Exception;
 }
