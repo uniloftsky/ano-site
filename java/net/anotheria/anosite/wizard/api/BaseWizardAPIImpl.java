@@ -136,12 +136,12 @@ public class BaseWizardAPIImpl extends AbstractAPIImpl implements WizardAPI {
 
 		WizardAO wizard = getWizard(wizardId);
 		WizardStepAO currentStep = getCurrentStep(wizardId);
+
+
+		if (isLastStep(wizard, currentStep))
+			throw new WizardAPILastStepException(wizardId, currentStep.getPagexId(), currentStep.getStepIndex());
+
 		try {
-
-			if (isLastStep(wizard, currentStep))
-				throw new WizardAPILastStepException(wizardId, currentStep.getPagexId(), currentStep.getStepIndex());
-
-
 			//check if next is allowed!
 			if (!isCommandAllowed(wizard.getId(), currentStep.getPagexId(), NEXT)) {
 				LOG.debug("Next step is not allowed! Stay on current!");
@@ -169,10 +169,13 @@ public class BaseWizardAPIImpl extends AbstractAPIImpl implements WizardAPI {
 			throw new WizardAPIException("adjustToPreviousStep(" + wizardId + ") . There is no data found.");
 		}
 		WizardStepAO currentStep = getCurrentStep(wizardId);
+
 		WizardAO wizard = getWizard(wizardId);
+
+		if (isFirstStep(wizard, currentStep))
+			throw new WizardAPIFirstStepException(wizardId, currentStep.getPagexId(), currentStep.getStepIndex());
+
 		try {
-			if (isFirstStep(wizard, currentStep))
-				throw new WizardAPIFirstStepException(wizardId, currentStep.getPagexId(), currentStep.getStepIndex());
 
 			if (!isCommandAllowed(wizard.getId(), currentStep.getPagexId(), PREVIOUS)) {
 				LOG.debug("Previous step is not allowed! Stay on current!");
