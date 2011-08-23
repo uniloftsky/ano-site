@@ -443,7 +443,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 				}
 
 				if (!wizardResponse.canContinue()) {
-					log.warn("Wizard " + wizard + " response can't continue");
+					log.debug("Wizard " + wizard + " response can't continue");
 					return;
 				}
 			} catch (Exception e) {
