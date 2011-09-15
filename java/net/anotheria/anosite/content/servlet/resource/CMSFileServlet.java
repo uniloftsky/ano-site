@@ -9,12 +9,12 @@ import javax.servlet.ServletException;
 import java.util.List;
 
 /**
- * CSMFileServlet as ResourceServlet.
+ * CMSFileServlet as ResourceServlet.
  *
  * @author h3ll
  */
 
-public class CSMFileServlet extends ResourceServlet {
+public class CMSFileServlet extends ResourceServlet {
 
 	@Override
 	protected String getFileName(ResourceReadType type, String propertyValue) throws ServletException {
