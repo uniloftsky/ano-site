@@ -1,44 +1,81 @@
 package net.anotheria.anosite.content.variables;
 
-import javax.servlet.http.HttpServletRequest;
-
 import net.anotheria.anoprise.metafactory.MetaFactory;
 import net.anotheria.anoprise.metafactory.MetaFactoryException;
 import net.anotheria.anosite.gen.asresourcedata.data.Image;
+import net.anotheria.anosite.gen.asresourcedata.service.ASResourceDataServiceException;
 import net.anotheria.anosite.gen.asresourcedata.service.IASResourceDataService;
-
+import net.anotheria.anosite.shared.ResourceServletMappingConfig;
+import net.anotheria.util.StringUtils;
 import org.apache.log4j.Logger;
 
-public class ImageProcessor implements VariablesProcessor{
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
+
+/**
+ * Image processor.
+ */
+public class ImageProcessor implements VariablesProcessor {
+
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOG = Logger.getLogger(ImageProcessor.class);
+	/**
+	 * {@link IASResourceDataService} instance.
+	 */
 	private static IASResourceDataService service;
-	static{
-		try{
+	/**
+	 * {@link ResourceServletMappingConfig} instance.
+	 */
+	private static ResourceServletMappingConfig mappingConfig = ResourceServletMappingConfig.getInstance();
+	/**
+	 * URL separator.
+	 */
+	private static final String SEPARATOR_STRING = "/";
+
+	/**
+	 * Static initialization block.
+	 */
+	static {
+		try {
 			service = MetaFactory.get(IASResourceDataService.class);
-		}catch(MetaFactoryException e){
+		} catch (MetaFactoryException e) {
 			Logger.getLogger(ImageLinkProcessor.class).fatal("Not properly initialized, can't find resource data service.");
 		}
-		
 	}
 
-
-	
-	
+	@Override
 	public String replace(String prefix, String variable, String defValue, HttpServletRequest req) {
-		
-		try{
-			Image img = service.getImagesByProperty(Image.PROP_NAME, variable).get(0);
-			String filepath = req.getContextPath()+"/file/"+img.getImage();
+		if (StringUtils.isEmpty(variable)) {
+			LOG.debug("Invalid incoming parameter! Variable!");
+			return null;
+		}
+
+		try {
+			List<Image> imgList = service.getImagesByProperty(Image.PROP_NAME, variable);
+			if (imgList == null || imgList.isEmpty()) {
+				LOG.debug("Image with name " + variable + " not found!");
+				return null;
+			}
+			Image img = imgList.get(0);
+			if (img == null) {
+				return null;
+			}
+
+			String filePath = mappingConfig.getImageServletMapping() + img.getImage();
+			if (!req.getContextPath().isEmpty())
+				filePath = req.getContextPath() + filePath;
+
 			String title = img.getTitle();
-			
-			return "<img src=\""+filepath+"\" alt=\""+title+"\" border=\"0\"/>";
-		}catch(Exception e){
-			e.printStackTrace();
+
+			return "<img src=\"" + filePath + "\" alt=\"" + title + "\" border=\"0\"/>";
+		} catch (ASResourceDataServiceException e) {
+			LOG.error("ASResourceDataServiceException failed", e);
 			return null;
 		}
 	}
 
 
-
-	
-	
 }

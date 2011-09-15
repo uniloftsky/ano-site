@@ -1,0 +1,4 @@
+{
+    imageServletMapping  : "/cmsImage/",
+    fileServletMapping : "/cmsFile/",
+}
