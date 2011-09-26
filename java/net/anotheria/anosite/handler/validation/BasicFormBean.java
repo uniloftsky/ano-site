@@ -59,7 +59,7 @@ public class BasicFormBean extends AbstractFormBean {
 	 * @return {@link String}
 	 */
 	public String getFirstName() {
-		return firstNameTypeClass.cast(readField(FIRST_NAME));
+		return readField(FIRST_NAME, String.class, EMPTY_STRING);
 	}
 
 	/**
@@ -68,7 +68,7 @@ public class BasicFormBean extends AbstractFormBean {
 	 * @return {@link String}
 	 */
 	public String getLastName() {
-		return lastNameTypeClass.cast(readField(LAST_NAME));
+		return readField(LAST_NAME, String.class, EMPTY_STRING);
 	}
 
 }

@@ -75,6 +75,23 @@ public abstract class AbstractFormBean implements Serializable {
 	}
 
 	/**
+	 * Read field value from form data storage in real type. Can be returned with some default value if real value not exist in storage.
+	 * 
+	 * @param name
+	 *            - field name
+	 * @param fieldType
+	 *            - field value type class
+	 * @return T
+	 */
+	protected final <T> T readField(final String name, Class<T> fieldType, T dafaultValue) {
+		Object value = readField(name);
+		if (value == null)
+			return dafaultValue;
+
+		return fieldType.cast(value);
+	}
+
+	/**
 	 * Get array of all form fields names.
 	 * 
 	 * @return array of {@link String}
