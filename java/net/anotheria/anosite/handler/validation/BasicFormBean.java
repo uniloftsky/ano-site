@@ -20,19 +20,9 @@ public class BasicFormBean extends AbstractFormBean {
 	public static final String FIRST_NAME = "firstName";
 
 	/**
-	 * First name type class.
-	 */
-	private static final Class<String> firstNameTypeClass = String.class;
-
-	/**
 	 * Last name.
 	 */
 	public static final String LAST_NAME = "lastName";
-
-	/**
-	 * Last name type class.
-	 */
-	private static final Class<String> lastNameTypeClass = String.class;
 
 	@Override
 	protected String[] getFieldsNames() {
@@ -46,11 +36,8 @@ public class BasicFormBean extends AbstractFormBean {
 
 	@Override
 	protected void prepare(HttpServletRequest req) {
-		String firstName = firstNameTypeClass.cast(req.getAttribute(FIRST_NAME));
-		saveField(FIRST_NAME, firstName);
-
-		String lastName = lastNameTypeClass.cast(req.getAttribute(LAST_NAME));
-		saveField(LAST_NAME, lastName);
+		saveField(FIRST_NAME, req.getAttribute(FIRST_NAME));
+		saveField(LAST_NAME, req.getAttribute(LAST_NAME));
 	}
 
 	/**
