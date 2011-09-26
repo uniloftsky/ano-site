@@ -4,7 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Length validator settings.
+ * Empty validator settings.
  * 
  * @author Alexandr Bolbat
  */

@@ -277,12 +277,19 @@ public class ValidationSettings implements Serializable {
 		vs.addMessage("msg-input1-empty", "Empty field");
 		System.out.println(vs.toString());
 
+		// example how to use length validator settings
 		ValidatorSettings s = LengthValidatorSettings.create().setMaxLength(24).setMoreThenMaxErrorKey("not-valid-key-too-long");
 		vs.addValidatorSettings("sampleForm1", "sampleField1", s);
 		vs.addValidKey("sampleForm1", "sampleField1", "valid-key");
+		// example how to use empty validator settings
 		s = EmptyValidatorSettings.create().setErrorKey("not-valid-key-empty-field-value");
 		vs.addValidatorSettings("sampleForm2", "sampleField2", s);
 		vs.addValidKey("sampleForm2", "sampleField2", "valid-key");
+		// example how to use complexity validator settings
+		s = ComplexityValidatorSettings.create().setRequireNumbers(true).setRequireLowerCase(true).setErrorKey("not-valid-key-no-complexity");
+		vs.addValidatorSettings("sampleForm2", "samplePasswordField2", s);
+		vs.addValidKey("sampleForm2", "samplePasswordField2", "valid-password-key");
+
 		System.out.println(vs.toString());
 	}
 
