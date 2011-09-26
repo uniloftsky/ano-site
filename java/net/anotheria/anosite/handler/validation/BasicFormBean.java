@@ -15,18 +15,18 @@ public class BasicFormBean extends AbstractFormBean {
 	private static final long serialVersionUID = 5952785433197663177L;
 
 	/**
-	 * First name.
+	 * Attribute name for first name.
 	 */
-	public static final String FIRST_NAME = "firstName";
+	public static final String ATTR_NAME_FIRST_NAME = "firstName";
 
 	/**
-	 * Last name.
+	 * Attribute name for last name.
 	 */
-	public static final String LAST_NAME = "lastName";
+	public static final String ATTR_NAME_LAST_NAME = "lastName";
 
 	@Override
 	protected String[] getFieldsNames() {
-		return new String[] { FIRST_NAME, LAST_NAME };
+		return new String[] { ATTR_NAME_FIRST_NAME, ATTR_NAME_LAST_NAME };
 	}
 
 	@Override
@@ -36,8 +36,8 @@ public class BasicFormBean extends AbstractFormBean {
 
 	@Override
 	protected void prepare(HttpServletRequest req) {
-		saveField(FIRST_NAME, req.getAttribute(FIRST_NAME));
-		saveField(LAST_NAME, req.getAttribute(LAST_NAME));
+		saveField(ATTR_NAME_FIRST_NAME, req.getAttribute(ATTR_NAME_FIRST_NAME));
+		saveField(ATTR_NAME_LAST_NAME, req.getAttribute(ATTR_NAME_LAST_NAME));
 	}
 
 	/**
@@ -46,7 +46,7 @@ public class BasicFormBean extends AbstractFormBean {
 	 * @return {@link String}
 	 */
 	public String getFirstName() {
-		return readField(FIRST_NAME, String.class, EMPTY_STRING);
+		return readField(ATTR_NAME_FIRST_NAME, String.class, EMPTY_STRING);
 	}
 
 	/**
@@ -55,7 +55,7 @@ public class BasicFormBean extends AbstractFormBean {
 	 * @return {@link String}
 	 */
 	public String getLastName() {
-		return readField(LAST_NAME, String.class, EMPTY_STRING);
+		return readField(ATTR_NAME_LAST_NAME, String.class, EMPTY_STRING);
 	}
 
 }
