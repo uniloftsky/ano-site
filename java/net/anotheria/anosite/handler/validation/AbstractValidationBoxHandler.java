@@ -1,0 +1,271 @@
+package net.anotheria.anosite.handler.validation;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import net.anotheria.anosite.content.bean.BoxBean;
+import net.anotheria.anosite.gen.aswebdata.data.Box;
+import net.anotheria.anosite.handler.AbstractBoxHandler;
+import net.anotheria.anosite.handler.BoxHandlerResponse;
+import net.anotheria.anosite.handler.ResponseContinue;
+import net.anotheria.anosite.handler.exception.BoxProcessException;
+import net.anotheria.anosite.handler.exception.BoxSubmitException;
+import net.anotheria.anosite.handler.validation.ValidationResponse.Format;
+import net.anotheria.util.StringUtils;
+
+/**
+ * Abstract box handler for handling requests with validation functional.
+ * 
+ * @author Alexandr Bolbat
+ */
+public abstract class AbstractValidationBoxHandler<T extends AbstractFormBean> extends AbstractBoxHandler {
+
+	/**
+	 * JSON response encoding.
+	 */
+	public static final String JSON_RESPONSE_CODEPAGE = "UTF-8";
+
+	/**
+	 * JSON response content type.
+	 */
+	public static final String JSON_RESPONSE_CONTENT_TYPE = "text/x-json";
+
+	/**
+	 * Request parameter name for validation request only.
+	 */
+	public static final String REQ_PARAM_VALIDATION_ONLY = "validationOnly";
+
+	/**
+	 * Attribute postfix for storing form bean in request attribute.
+	 */
+	private static final String ATTR_FORM_BEAN = "formBean";
+
+	/**
+	 * Attribute postfix for storing validation response in request attribute.
+	 */
+	private static final String ATTR_VALIDATION_RESPONSE = "validationResponse";
+
+	/**
+	 * Attribute postfix for storing validation settings in request attribute.
+	 */
+	private static final String ATTR_VALIDATION_SETTINGS = "validationSettings";
+
+	/**
+	 * Attribute name for storing validation response string in request.
+	 */
+	public static final String ATTR_VALIDATION_RESPONSE_STRING = "vResponse";
+
+	/**
+	 * Attribute name for storing validation settings string in request.
+	 */
+	public static final String ATTR_VALIDATION_SETTINGS_STRING = "vSettings";
+
+	@Override
+	public final BoxHandlerResponse process(final HttpServletRequest req, final HttpServletResponse res, final Box box, final BoxBean bean)
+			throws BoxProcessException {
+		// executing "process" step for preparing required stuff for renderer
+		BoxHandlerResponse response = executeProcess(req, res, box, bean);
+
+		// publishing validation settings
+		if (req.getAttribute(ATTR_VALIDATION_SETTINGS) != null)
+			req.setAttribute(ATTR_VALIDATION_SETTINGS_STRING, getFormValidationSettings(req).toString());
+
+		// preparing form data
+		T formBean = getFormBean(req);
+
+		// publishing form data if this request fail on "submit" step on validation
+		ValidationResponse vResponse = ValidationResponse.class.cast(req.getAttribute(getFormId() + ATTR_VALIDATION_RESPONSE));
+		if (vResponse.hasErrors()) {
+			for (String fieldName : formBean.getFieldsNames())
+				req.setAttribute(fieldName, formBean.getFieldValue(fieldName));
+
+			// publishing validation response to request attribute for rendering later as HTML page part
+			req.setAttribute(ATTR_VALIDATION_RESPONSE_STRING, vResponse.toString(Format.HTML_JS_JSON));
+		}
+
+		return response;
+	}
+
+	@Override
+	public final BoxHandlerResponse submit(final HttpServletRequest req, final HttpServletResponse res, final Box box) throws BoxSubmitException {
+		// preventing submit form id empty in getFormId method or without form id in request
+		if (StringUtils.isEmpty(getFormId()) || StringUtils.isEmpty(req.getParameter(getFormId())))
+			throw new BoxSubmitException("Wrong form id.");
+
+		// preparing form data
+		T formBean = getFormBean(req);
+
+		// validation form data
+		ValidationResponse vResponse = validate(formBean, req, res, box);
+		req.setAttribute(getFormId() + ATTR_VALIDATION_RESPONSE, vResponse);
+
+		// writing JSON response if this request only for validation
+		boolean isValidationOnly = req.getParameter(REQ_PARAM_VALIDATION_ONLY) != null;
+		if (isValidationOnly)
+			return writeJSONResponse(res, vResponse.toString(Format.JSON));
+
+		// submitting if no any validation errors
+		if (!vResponse.hasErrors())
+			return executeSubmit(req, res, box);
+
+		// continue executing without real submitting because validation fail and need show errors after executing "process" step
+		return ResponseContinue.INSTANCE;
+	}
+
+	/**
+	 * Real process method for overriding in sub classes.
+	 * 
+	 * @param req
+	 *            - request
+	 * @param res
+	 *            - response
+	 * @param box
+	 *            - box
+	 * @param bean
+	 *            - box bean
+	 * @return {@link BoxHandlerResponse}
+	 * @throws BoxProcessException
+	 */
+	protected BoxHandlerResponse executeProcess(final HttpServletRequest req, final HttpServletResponse res, final Box box, final BoxBean bean)
+			throws BoxProcessException {
+		return super.process(req, res, box, bean);
+	}
+
+	/**
+	 * Real submit method for overriding in sub classes.
+	 * 
+	 * @param req
+	 *            - request
+	 * @param res
+	 *            - response
+	 * @param box
+	 *            - box
+	 * @return {@link BoxHandlerResponse}
+	 * @throws BoxSubmitException
+	 */
+	protected BoxHandlerResponse executeSubmit(final HttpServletRequest req, final HttpServletResponse res, final Box box) throws BoxSubmitException {
+		return super.submit(req, res, box);
+	}
+
+	/**
+	 * Use this method if we want put some validation settings to page.
+	 * 
+	 * @return {@link ValidationSettings}
+	 */
+	protected final ValidationSettings getFormValidationSettings(final HttpServletRequest req) {
+		ValidationSettings vSettings = ValidationSettings.class.cast(req.getAttribute(ATTR_VALIDATION_SETTINGS));
+		if (vSettings == null) {
+			vSettings = ValidationSettings.create();
+			req.setAttribute(ATTR_VALIDATION_SETTINGS, vSettings);
+		}
+
+		return vSettings;
+	}
+
+	/**
+	 * Get form bean. On first call to this method form bean will be created and prepared from request.
+	 * 
+	 * @param req
+	 *            - request
+	 * @return T
+	 * @throws BoxSubmitException
+	 */
+	protected final T getFormBean(final HttpServletRequest req) {
+		T bean = getFormBeanClass().cast(req.getAttribute(getFormId() + ATTR_FORM_BEAN));
+		if (bean == null) {
+			bean = prepareFormBean(createFormBean(), req);
+			req.setAttribute(getFormId() + ATTR_FORM_BEAN, bean);
+		}
+
+		return bean;
+	}
+
+	/**
+	 * Prepare form bean.
+	 * 
+	 * @param bean
+	 *            - form bean
+	 * @param req
+	 *            - request
+	 * @return T
+	 * @throws BoxSubmitException
+	 */
+	private final T prepareFormBean(final T bean, final HttpServletRequest req) {
+		bean.prepare(req);
+		return bean;
+	}
+
+	/**
+	 * Create instance of form bean.
+	 * 
+	 * @return T
+	 * @throws BoxSubmitException
+	 */
+	private final T createFormBean() {
+		try {
+			return getFormBeanClass().newInstance();
+		} catch (InstantiationException e) {
+			throw new RuntimeException("Can't instantiate form bean.", e);
+		} catch (IllegalAccessException e) {
+			throw new RuntimeException("Can't instantiate form bean.", e);
+		}
+	}
+
+	/**
+	 * Form bean implementation class.
+	 * 
+	 * @return {@link Class} of T
+	 */
+	protected abstract Class<T> getFormBeanClass();
+
+	/**
+	 * Form id for this handler.
+	 * 
+	 * @return {@link String}
+	 */
+	protected abstract String getFormId();
+
+	/**
+	 * Validate submit request.
+	 * 
+	 * @param formBean
+	 *            - form bean
+	 * @param req
+	 *            - request
+	 * @param res
+	 *            - response
+	 * @param box
+	 *            - box
+	 * @return {@link ValidationResponse}
+	 */
+	protected ValidationResponse validate(final T formBean, final HttpServletRequest req, final HttpServletResponse res, final Box box) {
+		return ValidationResponse.EMPTY_RESPONSE;
+	}
+
+	/**
+	 * Writes JSON response and flush the stream.
+	 * 
+	 * @param res
+	 *            - HttpServletResponse
+	 * @param json
+	 *            - response
+	 * @return {@link BoxHandlerResponse}
+	 * @throws IOException
+	 */
+	protected final BoxHandlerResponse writeJSONResponse(final HttpServletResponse res, final String json) throws BoxSubmitException {
+		res.setCharacterEncoding(JSON_RESPONSE_CODEPAGE);
+		res.setContentType(JSON_RESPONSE_CONTENT_TYPE);
+		try {
+			PrintWriter writer = res.getWriter();
+			writer.write(json);
+			writer.flush();
+			return ResponseContinue.INSTANCE;
+		} catch (IOException e) {
+			throw new BoxSubmitException(e);
+		}
+	}
+
+}
