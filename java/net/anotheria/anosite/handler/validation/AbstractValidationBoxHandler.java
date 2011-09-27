@@ -156,12 +156,12 @@ public abstract class AbstractValidationBoxHandler<T extends AbstractFormBean> e
 	 * @return {@link ValidationSettings}
 	 */
 	protected final ValidationSettings getFormValidationSettings(final HttpServletRequest req) {
-		ValidationSettings vSettings = ValidationSettings.class.cast(req.getAttribute(ATTR_VALIDATION_SETTINGS));
-		if (vSettings == null) {
-			vSettings = ValidationSettings.create();
-			req.setAttribute(ATTR_VALIDATION_SETTINGS, vSettings);
-		}
+		Object vSettingsObj = req.getAttribute(ATTR_VALIDATION_SETTINGS);
+		if (vSettingsObj != null)
+			return ValidationSettings.class.cast(vSettingsObj);
 
+		ValidationSettings vSettings = ValidationSettings.create();
+		req.setAttribute(ATTR_VALIDATION_SETTINGS, vSettings);
 		return vSettings;
 	}
 
