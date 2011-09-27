@@ -174,12 +174,13 @@ public abstract class AbstractValidationBoxHandler<T extends AbstractFormBean> e
 	 * @throws BoxSubmitException
 	 */
 	protected final T getFormBean(final HttpServletRequest req) {
-		T bean = getFormBeanClass().cast(req.getAttribute(getFormId() + ATTR_FORM_BEAN));
-		if (bean == null) {
-			bean = prepareFormBean(createFormBean(), req);
-			req.setAttribute(getFormId() + ATTR_FORM_BEAN, bean);
+		Object beanObj = req.getAttribute(getFormId() + ATTR_FORM_BEAN);
+		if (beanObj != null) {
+			return getFormBeanClass().cast(beanObj);
 		}
 
+		T bean = prepareFormBean(createFormBean(), req);
+		req.setAttribute(getFormId() + ATTR_FORM_BEAN, bean);
 		return bean;
 	}
 
