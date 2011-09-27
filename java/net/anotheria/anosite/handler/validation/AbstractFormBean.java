@@ -83,10 +83,10 @@ public abstract class AbstractFormBean implements Serializable {
 	 *            - field value type class
 	 * @return T
 	 */
-	protected final <T> T readField(final String name, Class<T> fieldType, T dafaultValue) {
+	protected final <T> T readField(final String name, Class<T> fieldType, T defaultValue) {
 		Object value = readField(name);
 		if (value == null)
-			return dafaultValue;
+			return defaultValue;
 
 		return fieldType.cast(value);
 	}
