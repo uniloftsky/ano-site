@@ -52,7 +52,7 @@ public abstract class AbstractFormBean implements Serializable {
 	private final Map<String, Object> formData = new HashMap<String, Object>();
 
 	/**
-	 * Get set of all form fields names by default.
+	 * Get set of all form fields names. By default it use key set from internal storage.
 	 *
 	 * @return Set of {@link String}
 	 */
@@ -61,13 +61,15 @@ public abstract class AbstractFormBean implements Serializable {
 	}
 
 	/**
-	 * Get form field value by form field name.
+	 * Get form field value by form field name. By default it use internal storage.
 	 *
 	 * @param fieldName
 	 *            - form field name
 	 * @return {@link Object}
 	 */
-	public abstract Object getFieldValue(final String fieldName);
+	public Object getFieldValue(final String fieldName) {
+		return readField(fieldName);
+	}
 
 	/**
 	 * Save field value to form data storage.
