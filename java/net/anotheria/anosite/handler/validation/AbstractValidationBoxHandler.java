@@ -109,7 +109,7 @@ public abstract class AbstractValidationBoxHandler<T extends AbstractFormBean> e
 
 		// submitting if no any validation errors
 		if (!vResponse.hasErrors())
-			return executeSubmit(req, res, box);
+			return executeSubmit(formBean, req, res, box);
 
 		// continue executing without real submitting because validation fail and need show errors after executing "process" step
 		return ResponseContinue.INSTANCE;
@@ -133,13 +133,14 @@ public abstract class AbstractValidationBoxHandler<T extends AbstractFormBean> e
 	/**
 	 * Real submit method for overriding in sub classes.
 	 *
+	 * @param formBean - form bean
 	 * @param req - request
 	 * @param res - response
 	 * @param box - box
 	 * @return {@link BoxHandlerResponse}
 	 * @throws BoxSubmitException
 	 */
-	protected BoxHandlerResponse executeSubmit(final HttpServletRequest req, final HttpServletResponse res, final Box box) throws BoxSubmitException {
+	protected BoxHandlerResponse executeSubmit(final T formBean, final HttpServletRequest req, final HttpServletResponse res, final Box box) throws BoxSubmitException {
 		return super.submit(req, res, box);
 	}
 
