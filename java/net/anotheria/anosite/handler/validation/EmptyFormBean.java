@@ -15,12 +15,7 @@ public final class EmptyFormBean extends AbstractFormBean {
 	private static final long serialVersionUID = 3888810209768869496L;
 
 	@Override
-	protected final String[] getFieldsNames() {
-		return new String[] {};
-	}
-
-	@Override
-	protected final Object getFieldValue(String fieldName) {
+	public final Object getFieldValue(String fieldName) {
 		return EMPTY_STRING;
 	}
 

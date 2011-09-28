@@ -93,7 +93,7 @@ public abstract class AbstractValidationBoxHandler<T extends AbstractFormBean> e
 	public final BoxHandlerResponse submit(final HttpServletRequest req, final HttpServletResponse res, final Box box) throws BoxSubmitException {
 		// preventing submit form id empty in getFormId method or without form id in request
 		if (StringUtils.isEmpty(getFormId()) || StringUtils.isEmpty(req.getParameter(getFormId())))
-			throw new BoxSubmitException("Wrong form id.");
+			return ResponseContinue.INSTANCE;
 
 		// preparing form data
 		T formBean = getFormBean(req);

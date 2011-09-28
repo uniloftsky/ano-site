@@ -52,6 +52,24 @@ public abstract class AbstractFormBean implements Serializable {
 	private final Map<String, Object> formData = new HashMap<String, Object>();
 
 	/**
+	 * Get set of all form fields names by default.
+	 *
+	 * @return Set of {@link String}
+	 */
+	public Set<String> getFieldsNames(){
+		return formData.keySet();
+	}
+
+	/**
+	 * Get form field value by form field name.
+	 *
+	 * @param fieldName
+	 *            - form field name
+	 * @return {@link Object}
+	 */
+	public abstract Object getFieldValue(final String fieldName);
+
+	/**
 	 * Save field value to form data storage.
 	 * 
 	 * @param name
@@ -90,22 +108,6 @@ public abstract class AbstractFormBean implements Serializable {
 
 		return fieldType.cast(value);
 	}
-
-	/**
-	 * Get array of all form fields names.
-	 * 
-	 * @return array of {@link String}
-	 */
-	protected abstract String[] getFieldsNames();
-
-	/**
-	 * Get form field value by form field name.
-	 * 
-	 * @param fieldName
-	 *            - form field name
-	 * @return {@link Object}
-	 */
-	protected abstract Object getFieldValue(final String fieldName);
 
 	/**
 	 * Any bean extended from this abstract class must have possibility to initialize by self from request.

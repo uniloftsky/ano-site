@@ -25,12 +25,7 @@ public class BasicFormBean extends AbstractFormBean {
 	public static final String ATTR_NAME_LAST_NAME = "lastName";
 
 	@Override
-	protected String[] getFieldsNames() {
-		return new String[] { ATTR_NAME_FIRST_NAME, ATTR_NAME_LAST_NAME };
-	}
-
-	@Override
-	protected Object getFieldValue(String fieldName) {
+	public Object getFieldValue(String fieldName) {
 		return readField(fieldName);
 	}
 
