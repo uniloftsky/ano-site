@@ -71,7 +71,7 @@ public abstract class AbstractValidationBoxHandler<T extends AbstractFormBean> e
 
 		// preparing and publishing validation settings
 		ValidationSettings vSettings = getFormValidationSettings(req);
-		prepareValidationSettings(vSettings);
+		prepareFormValidationSettings(vSettings);
 		req.setAttribute(ATTR_VALIDATION_SETTINGS_STRING, vSettings.toString());
 
 		// publishing form data if this request fail on "submit" step on validation
@@ -152,7 +152,7 @@ public abstract class AbstractValidationBoxHandler<T extends AbstractFormBean> e
 	 * @param vSettings
 	 *            - request instant validation settings, this settings contains settings for every form in request
 	 */
-	protected final void prepareValidationSettings(final ValidationSettings vSettings) {
+	protected void prepareFormValidationSettings(final ValidationSettings vSettings) {
 	}
 
 	/**
