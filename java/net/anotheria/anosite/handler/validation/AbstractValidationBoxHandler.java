@@ -69,9 +69,10 @@ public abstract class AbstractValidationBoxHandler<T extends AbstractFormBean> e
 		// executing "process" step for preparing required stuff for renderer
 		BoxHandlerResponse response = executeProcess(req, res, box, bean);
 
-		// publishing validation settings
-		if (req.getAttribute(ATTR_VALIDATION_SETTINGS) != null)
-			req.setAttribute(ATTR_VALIDATION_SETTINGS_STRING, getFormValidationSettings(req).toString());
+		// preparing and publishing validation settings
+		ValidationSettings vSettings = getFormValidationSettings(req);
+		prepareValidationSettings(vSettings);
+		req.setAttribute(ATTR_VALIDATION_SETTINGS_STRING, vSettings.toString());
 
 		// publishing form data if this request fail on "submit" step on validation
 		ValidationResponse vResponse = ValidationResponse.class.cast(req.getAttribute(getFormId() + ATTR_VALIDATION_RESPONSE));
@@ -143,6 +144,15 @@ public abstract class AbstractValidationBoxHandler<T extends AbstractFormBean> e
 	 */
 	protected BoxHandlerResponse executeSubmit(final HttpServletRequest req, final HttpServletResponse res, final Box box) throws BoxSubmitException {
 		return super.submit(req, res, box);
+	}
+
+	/**
+	 * Prepare instant validation settings for current handler form.
+	 * 
+	 * @param vSettings
+	 *            - request instant validation settings, this settings contains settings for every form in request
+	 */
+	protected final void prepareValidationSettings(final ValidationSettings vSettings) {
 	}
 
 	/**
