@@ -42,6 +42,12 @@ public class ValidationSettings implements Serializable {
 	}
 
 	/**
+	 * Private constructor.
+	 */
+	private ValidationSettings() {
+	}
+
+	/**
 	 * Add new message to settings with some key.
 	 */
 	public void addMessage(String key, String message) {

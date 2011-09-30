@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.anotheria.util.StringUtils;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,7 +27,7 @@ public class ValidationResponse implements Serializable {
 	/**
 	 * Empty validation response.
 	 */
-	public static final ValidationResponse EMPTY_RESPONSE = new ValidationResponse();
+	public static final ValidationResponse EMPTY_RESPONSE = new ValidationResponse("empty-response");
 
 	/**
 	 * Fields data.
@@ -33,12 +35,32 @@ public class ValidationResponse implements Serializable {
 	private final Map<String, FieldData> fieldsData = new HashMap<String, FieldData>();
 
 	/**
+	 * Form id.
+	 */
+	private final String formId;
+
+	/**
 	 * Create new instance of {@link ValidationResponse}.
 	 * 
+	 * @param aFormId
+	 *            - form id
 	 * @return {@link ValidationResponse}
 	 */
-	public static ValidationResponse create() {
-		return new ValidationResponse();
+	public static ValidationResponse create(final String aFormId) {
+		return new ValidationResponse(aFormId);
+	}
+
+	/**
+	 * Private constructor.
+	 * 
+	 * @param aFormId
+	 *            - form id
+	 */
+	private ValidationResponse(final String aFormId) {
+		if (StringUtils.isEmpty(aFormId))
+			throw new IllegalArgumentException("empty form id");
+
+		this.formId = aFormId;
 	}
 
 	/**
@@ -88,6 +110,7 @@ public class ValidationResponse implements Serializable {
 
 		// prepare status
 		result.put("status", (hasErrors() ? "ERROR" : "OK"));
+		result.put("formId", formId);
 
 		// prepare errors
 		if (hasErrors()) {
@@ -139,7 +162,7 @@ public class ValidationResponse implements Serializable {
 	}
 
 	public static void main(String... args) {
-		ValidationResponse vr = ValidationResponse.create();
+		ValidationResponse vr = ValidationResponse.create("testForm");
 		System.out.println(vr.toString());
 		vr.addError("testField1", "error-key");
 		vr.addError("testField2", "error-key-1");
