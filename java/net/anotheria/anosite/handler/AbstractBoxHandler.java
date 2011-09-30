@@ -1,5 +1,7 @@
 package net.anotheria.anosite.handler;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -8,10 +10,14 @@ import net.anotheria.anoplass.api.session.APISessionImpl;
 import net.anotheria.anoprise.metafactory.MetaFactory;
 import net.anotheria.anoprise.metafactory.MetaFactoryException;
 import net.anotheria.anosite.content.bean.BoxBean;
+import net.anotheria.anosite.gen.asresourcedata.data.TextResource;
 import net.anotheria.anosite.gen.asresourcedata.service.IASResourceDataService;
 import net.anotheria.anosite.gen.aswebdata.data.Box;
 import net.anotheria.anosite.handler.exception.BoxProcessException;
 import net.anotheria.anosite.handler.exception.BoxSubmitException;
+import net.anotheria.anosite.localization.LocalizationMap;
+import net.anotheria.asg.exception.ASGRuntimeException;
+import net.anotheria.util.StringUtils;
 
 import org.apache.log4j.Logger;
 
@@ -24,8 +30,7 @@ public abstract class AbstractBoxHandler implements BoxHandler{
 	/**
 	 * Log. Each subclass has indirect access to this log via getLog. The log is named by the subclass and created in the constructor.
 	 */
-	private Logger log;
-	
+	private Logger log;	
 	/**
 	 * A resource service instance.
 	 */
@@ -73,7 +78,6 @@ public abstract class AbstractBoxHandler implements BoxHandler{
 		return resourceService;
 	}
 
-
 	/**
 	 * Used to put attribute to current request till next request
 	 * 
@@ -82,5 +86,32 @@ public abstract class AbstractBoxHandler implements BoxHandler{
 	 */
 	protected void sendAttributeToPage(String name, Object attribute){
 		((APISessionImpl)APICallContext.getCallContext().getCurrentSession()).addAttributeToActionScope(name, attribute);
+	}
+	
+	/**
+	 * Returns a text resource by its name.
+	 * 
+	 * @param name
+	 *            - resource name
+	 * @return {@link String} text resource or warning about missing resource
+	 */
+	protected static String getTextResource(String name) {
+		try {
+			// Try to find resource with given key in LocalizationMap
+			LocalizationMap localization = (LocalizationMap) APICallContext.getCallContext().getAttribute(LocalizationMap.CALL_CONTEXT_SCOPE_NAME);
+			String txt = localization != null ? localization.getMessage(name) : null;
+			if (!StringUtils.isEmpty(txt))
+				return txt;
+
+			List<TextResource> resources = getResourceDataService().getTextResourcesByProperty(TextResource.PROP_NAME, name);
+			if (resources == null || resources.size() == 0)
+				return "Missing key: " + name;
+
+			return resources.get(0).getValue();
+		} catch (ASGRuntimeException e) {
+			String message = "getTextResourceByName(" + name + ") fail.";
+			Logger.getLogger(AbstractBoxHandler.class).error(message, e);
+			throw new RuntimeException(message, e);
+		}
 	}
 }
