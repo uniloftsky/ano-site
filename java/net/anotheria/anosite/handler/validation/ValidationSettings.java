@@ -91,25 +91,10 @@ public class ValidationSettings implements Serializable {
 	@Override
 	public final String toString() {
 		try {
-			return asHTML_JS_JSON();
+			return asJSON();
 		} catch (JSONException e) {
 			throw new RuntimeException("Preparing JSON fail.", e);
 		}
-	}
-
-	/**
-	 * Get settings as HTML_JS_JSON {@link String}.
-	 * 
-	 * @return {@link String}
-	 * @throws JSONException
-	 */
-	private String asHTML_JS_JSON() throws JSONException {
-		StringBuilder sb = new StringBuilder();
-		sb.append("<script type=\"text/javascript\">");
-		sb.append("var validationSettings = ");
-		sb.append(asJSON());
-		sb.append("</script>");
-		return sb.toString();
 	}
 
 	/**

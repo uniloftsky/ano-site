@@ -68,92 +68,10 @@ public class ValidationResponse implements Serializable {
 		return !fieldsData.isEmpty();
 	}
 
-	/**
-	 * {@link ValidationResponse} supported formats.
-	 * 
-	 * @author Alexandr Bolbat
-	 */
-	public enum Format {
-
-		/**
-		 * Pure JSON output.
-		 */
-		JSON("json"),
-
-		/**
-		 * JSON in HTML JavaScript tag.
-		 */
-		HTML_JS_JSON("htmlJsJson");
-
-		/**
-		 * Default format.
-		 */
-		public static final Format DEFAULT = JSON;
-
-		/**
-		 * Format name.
-		 */
-		private String name;
-
-		/**
-		 * Constructor.
-		 * 
-		 * @param aName
-		 *            - format name
-		 */
-		Format(String aName) {
-			this.name = aName;
-		}
-
-		/**
-		 * Get format by name. If format with given name not found - DEFAULT format will be returned.
-		 * 
-		 * @param aName
-		 *            - format name
-		 * @return {@link Format}
-		 */
-		public static final Format getFormat(final String aName) {
-			for (Format format : Format.values())
-				if (format.name.equalsIgnoreCase(aName))
-					return format;
-
-			return DEFAULT;
-		}
-	}
-
 	@Override
 	public final String toString() {
-		return toString(Format.DEFAULT);
-	}
-
-	/**
-	 * Get response as {@link String} in some supported format.
-	 * 
-	 * @param formatName
-	 *            - format name
-	 * @return {@link String}
-	 */
-	public final String toString(String formatName) {
-		return toString(Format.getFormat(formatName));
-	}
-
-	/**
-	 * Get response as {@link String} in some supported format.
-	 * 
-	 * @param format
-	 *            - format
-	 * @return {@link String}
-	 */
-	public final String toString(Format format) {
 		try {
-			switch (format) {
-			case JSON:
-				return asJSON();
-			case HTML_JS_JSON:
-				return asHTML_JS_JSON();
-			default:
-				return toString(Format.DEFAULT);
-			}
+			return asJSON();
 		} catch (JSONException e) {
 			throw new RuntimeException("Preparing JSON fail.", e);
 		}
@@ -183,21 +101,6 @@ public class ValidationResponse implements Serializable {
 		}
 
 		return result.toString();
-	}
-
-	/**
-	 * Get response as HTML_JS_JSON {@link String}.
-	 * 
-	 * @return {@link String}
-	 * @throws JSONException
-	 */
-	private String asHTML_JS_JSON() throws JSONException {
-		StringBuilder sb = new StringBuilder();
-		sb.append("<script type=\"text/javascript\">");
-		sb.append("var validationResponse = ");
-		sb.append(asJSON());
-		sb.append("</script>");
-		return sb.toString();
 	}
 
 	/**
@@ -234,16 +137,14 @@ public class ValidationResponse implements Serializable {
 		}
 
 	}
-	
+
 	public static void main(String... args) {
 		ValidationResponse vr = ValidationResponse.create();
 		System.out.println(vr.toString());
-		System.out.println(vr.toString(Format.HTML_JS_JSON));
 		vr.addError("testField1", "error-key");
 		vr.addError("testField2", "error-key-1");
 		vr.addError("testField2", "error-key-2");
 		System.out.println(vr.toString());
-		System.out.println(vr.toString(Format.HTML_JS_JSON));
 	}
 
 }

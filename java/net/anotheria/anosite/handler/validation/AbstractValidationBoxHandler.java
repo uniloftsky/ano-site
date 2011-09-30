@@ -13,7 +13,6 @@ import net.anotheria.anosite.handler.BoxHandlerResponse;
 import net.anotheria.anosite.handler.ResponseContinue;
 import net.anotheria.anosite.handler.exception.BoxProcessException;
 import net.anotheria.anosite.handler.exception.BoxSubmitException;
-import net.anotheria.anosite.handler.validation.ValidationResponse.Format;
 import net.anotheria.util.StringUtils;
 
 /**
@@ -82,7 +81,7 @@ public abstract class AbstractValidationBoxHandler<T extends AbstractFormBean> e
 			// publishing form bean
 			publishFormBean(formBean, req);
 			// publishing validation response to request attribute for rendering later as HTML page part
-			req.setAttribute(ATTR_VALIDATION_RESPONSE_STRING, vResponse.toString(Format.HTML_JS_JSON));
+			req.setAttribute(ATTR_VALIDATION_RESPONSE_STRING, vResponse.toString());
 		}
 
 		return response;
@@ -101,7 +100,7 @@ public abstract class AbstractValidationBoxHandler<T extends AbstractFormBean> e
 		// writing JSON response if this request only for validation
 		boolean isValidationOnly = req.getParameter(REQ_PARAM_VALIDATION_ONLY) != null;
 		if (isValidationOnly)
-			return writeJSONResponse(res, vResponse.toString(Format.JSON));
+			return writeJSONResponse(res, vResponse.toString());
 
 		// submitting if no any validation errors
 		if (!vResponse.hasErrors())
