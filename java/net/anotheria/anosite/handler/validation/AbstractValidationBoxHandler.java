@@ -11,6 +11,7 @@ import net.anotheria.anosite.gen.aswebdata.data.Box;
 import net.anotheria.anosite.handler.AbstractBoxHandler;
 import net.anotheria.anosite.handler.BoxHandlerResponse;
 import net.anotheria.anosite.handler.ResponseContinue;
+import net.anotheria.anosite.handler.exception.BoxHandleException;
 import net.anotheria.anosite.handler.exception.BoxProcessException;
 import net.anotheria.anosite.handler.exception.BoxSubmitException;
 import net.anotheria.util.StringUtils;
@@ -94,8 +95,13 @@ public abstract class AbstractValidationBoxHandler<T extends AbstractFormBean> e
 			return ResponseContinue.INSTANCE;
 
 		// validation form data
-		ValidationResponse vResponse = validate(req, res, box);
-		req.setAttribute(getFormId() + ATTR_VALIDATION_RESPONSE, vResponse);
+		ValidationResponse vResponse;
+		try {
+			vResponse = validate(req, res, box);
+			req.setAttribute(getFormId() + ATTR_VALIDATION_RESPONSE, vResponse);
+		} catch (BoxHandleException e) {
+			throw new BoxSubmitException(e);
+		}
 
 		// writing JSON response if this request only for validation
 		boolean isValidationOnly = req.getParameter(REQ_PARAM_VALIDATION_ONLY) != null;
@@ -256,7 +262,7 @@ public abstract class AbstractValidationBoxHandler<T extends AbstractFormBean> e
 	 *            - box
 	 * @return {@link ValidationResponse}
 	 */
-	protected ValidationResponse validate(final HttpServletRequest req, final HttpServletResponse res, final Box box) {
+	protected ValidationResponse validate(final HttpServletRequest req, final HttpServletResponse res, final Box box) throws BoxHandleException {
 		return ValidationResponse.EMPTY_RESPONSE;
 	}
 
