@@ -261,6 +261,7 @@ public abstract class AbstractValidationBoxHandler<T extends AbstractFormBean> e
 	 * @param box
 	 *            - box
 	 * @return {@link ValidationResponse}
+	 * @throws BoxHandleException
 	 */
 	protected ValidationResponse validate(final HttpServletRequest req, final HttpServletResponse res, final Box box) throws BoxHandleException {
 		return ValidationResponse.EMPTY_RESPONSE;
