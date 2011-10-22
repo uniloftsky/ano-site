@@ -29,7 +29,7 @@ public class LocalizationMap {
 	}
 
 	private String getPrivateKey(LocalizationEnvironment environment, String key) {
-		return environment.name() + "_" + key;
+		return environment.name() + "_" + key.trim();
 	}
 
 	public String getMessage(String key) {
