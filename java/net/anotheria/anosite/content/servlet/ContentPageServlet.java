@@ -846,21 +846,20 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		List<BreadCrumbItemBean> ret = new ArrayList<BreadCrumbItemBean>();
 		APISession session = APICallContext.getCallContext().getCurrentSession();
 
-		BrowsingHistory naviHistory = (BrowsingHistory)session.getAttribute("as.history.navi");
-		if (naviHistory==null){
+		BrowsingHistory naviHistory = (BrowsingHistory) session.getAttribute("as.history.navi");
+		if (naviHistory == null) {
 			naviHistory = new BrowsingHistory();
 			session.setAttribute("as.history.navi", naviHistory);
 		}
-		
-		
-		
+
+
 		try {
 			//first find navi item
 			List<NaviItem> linkingItems = siteDataService.getNaviItemsByProperty(NaviItem.LINK_PROP_INTERNAL_LINK, page.getId());
 			if (linkingItems.size() == 0)
 				return ret;
 			NaviItem linkingItem = linkingItems.get(0);
-			
+
 			naviHistory.addHistoryItem(linkingItem.getId());
 
 			if (site.getStartpage().length() > 0) {
@@ -926,23 +925,23 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 				String searchId = linkingItem.getId();
 				linkingItem = null;
 				List<NaviItem> tosearch = siteDataService.getNaviItems();
-				
-				String previousNaviItemId = naviHistory.getPreviousItem(); 
-				
-				if (previousNaviItemId!=null){
+
+				String previousNaviItemId = naviHistory.getPreviousItem();
+
+				if (previousNaviItemId != null) {
 					for (NaviItem i : tosearch) {
 						//System.out.println("checking "+i);
-						if (i.getSubNavi().contains(searchId) ){
-						}						
-						
-						if (i.getSubNavi().contains(searchId) && i.getId().equals(previousNaviItemId)){
+						if (i.getSubNavi().contains(searchId)) {
+						}
+
+						if (i.getSubNavi().contains(searchId) && i.getId().equals(previousNaviItemId)) {
 							linkingItem = i;
 							break;
 						}
 					}
 				}
 
-				if (linkingItem==null){
+				if (linkingItem == null) {
 					for (NaviItem i : tosearch) {
 						if (i.getSubNavi().contains(searchId)) {
 							linkingItem = i;
@@ -1398,6 +1397,13 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		ret.setDescription(page.getDescription());
 		ret.setName(page.getName());
 
+		//populate data  to request attributes - ### start
+		req.setAttribute(PageBean.PAGE_NAME_REQUEST_ATTR, page.getName());
+		req.setAttribute(PageBean.PAGE_TITLE_REQUEST_ATTR, page.getTitle());
+		req.setAttribute(PageBean.PAGE_DESCRIPTION_REQUEST_ATTR, page.getDescription());
+		//populate data  to request attributes - ### end
+
+
 		//MediaLinks
 		ret.addMediaLinks(createMediaLinkBeanList(template.getMediaLinks(), req));
 		ret.addMediaLinks(createMediaLinkBeanList(page.getMediaLinks(), req));
@@ -1405,7 +1411,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		//Scripts
 		ret.addScripts(createScriptBeanList(template.getScripts(), req));
 		ret.addScripts(createScriptBeanList(page.getScripts(), req));
-		
+
 		//attributes
 		AttributeMap attributeMap = createAttributeMap(req, res, page.getAttributes());
 		APICallContext.getCallContext().setAttribute(AttributeMap.PAGE_ATTRIBUTES_CALL_CONTEXT_SCOPE_NAME, attributeMap);
@@ -1859,13 +1865,13 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	/**
 	 * Creates attribute map.
 	 *
-	 * @param req {@link HttpServletRequest}
-	 * @param res {@link HttpServletResponse}
+	 * @param req		  {@link HttpServletRequest}
+	 * @param res		  {@link HttpServletResponse}
 	 * @param attributeIds {@link List&lt;String&gt;} - ids of box or page attributes.
 	 * @return {@link AttributeMap}
 	 * @throws ASGRuntimeException on errors
 	 */
-	private AttributeMap createAttributeMap(HttpServletRequest req, HttpServletResponse res,  List<String> attributeIds) throws ASGRuntimeException {
+	private AttributeMap createAttributeMap(HttpServletRequest req, HttpServletResponse res, List<String> attributeIds) throws ASGRuntimeException {
 		if (attributeIds == null || attributeIds.isEmpty())
 			return new AttributeMap();
 
