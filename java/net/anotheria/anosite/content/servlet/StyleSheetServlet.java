@@ -52,6 +52,7 @@ public class StyleSheetServlet extends MoskitoHttpServlet{
 			PageStyle style = layoutDataService.getPageStyle(path);
 			OutputStream out = null;
 			try{
+				res.setContentType("text/css");
 				out = res.getOutputStream();
 				out.write(style.getCss().getBytes());
 				out.flush();
