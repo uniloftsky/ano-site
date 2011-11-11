@@ -4,9 +4,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- *  validator settings.
+ * Filled validator settings.
  * 
- * @author Oliver Tönse
+ * @author Oliver Tonse
  */
 public class FilledValidatorSettings implements ValidatorSettings {
 
