@@ -57,6 +57,7 @@ import net.anotheria.util.StringUtils;
 import net.anotheria.util.concurrency.IdBasedLock;
 import net.anotheria.util.concurrency.IdBasedLockManager;
 import net.anotheria.util.concurrency.SafeIdBasedLockManager;
+import net.anotheria.util.StringUtils;
 import net.java.dev.moskito.core.blueprint.BlueprintCallExecutor;
 import net.java.dev.moskito.core.blueprint.BlueprintProducer;
 import net.java.dev.moskito.core.blueprint.BlueprintProducersFactory;
@@ -1186,7 +1187,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	 * @throws ASSiteDataServiceException on site data service errors
 	 * @throws ASWebDataServiceException  on web data service errors
 	 */
-	private List<NaviItemBean> createNaviItemList(List<String> idList, HttpServletRequest req) throws ASSiteDataServiceException, ASWebDataServiceException {
+	private List<NaviItemBean> createNaviItemList(List<String> idList, HttpServletRequest req) throws ASSiteDataServiceException, ASWebDataServiceException, ASResourceDataServiceException {
 		List<NaviItemBean> ret = new ArrayList<NaviItemBean>(idList.size());
 		for (String id : idList) {
 			NaviItemBean bean = new NaviItemBean();
@@ -1216,6 +1217,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			bean.setPopup(item.getPopup());
 			bean.setName(item.getName());
 			bean.setTitle(item.getTitle());
+			bean.setIcon(item.getIcon());
 
 			// internal link to a page
 			if (item.getInternalLink().length() > 0) {

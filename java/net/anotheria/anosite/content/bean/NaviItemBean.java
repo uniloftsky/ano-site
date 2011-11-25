@@ -6,6 +6,7 @@ import java.util.List;
 public class NaviItemBean {
 	private boolean popup;
 	private String name;
+	private String icon;
 	private String link;
 	private String title;
 	private boolean selected;
@@ -32,6 +33,13 @@ public class NaviItemBean {
 	public void setName(String name) {
 		this.name = name;
 	}
+	public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
 	public boolean isPopup() {
 		return popup;
 	}
@@ -47,10 +55,6 @@ public class NaviItemBean {
 		this.title = title;
 	}
 	
-	public String toString(){
-		return getName()+": "+getLink();
-	}
-
 	public boolean isHasChilds() {
 		return subNavi!=null && subNavi.size()>0;
 	}
@@ -71,4 +75,10 @@ public class NaviItemBean {
 		this.selected = selected;
 	}
 
+	@Override
+	public String toString() {
+		return "NaviItemBean [popup=" + popup + ", name=" + name + ", icon=" + icon + ", link=" + link + ", title=" + title + ", selected=" + selected + ", subNavi=" + subNavi
+				+ "]";
+	}
+	
 }
