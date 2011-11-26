@@ -119,6 +119,7 @@
   	<document name="NaviItem">
 		<property name="name" type="string" multilingual="true"/>
 		<property name="title" type="string" multilingual="true"/>
+		<property name="icon" type="image"/>
 		<property name="externalLink" type="string"/>
 		<link name="internalLink" type="single" target="ASWebData.Pagex"/>
 		<link name="pageAlias" type="single" target="ASSiteData.PageAlias"/>

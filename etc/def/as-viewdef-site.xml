@@ -100,6 +100,7 @@
 		       			<element type="field" name="id" readonly="true"/>
 		      			<element type="field" name="name" /> 
 		      			<element type="field" name="title" /> 
+		      			<element type="field" name="icon" />
 						<element type="field" name="externalLink" /> 
 						<element type="field" name="internalLink" /> 
 						<element type="field" name="pageAlias" /> 
