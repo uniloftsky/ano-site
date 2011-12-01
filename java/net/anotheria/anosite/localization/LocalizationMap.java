@@ -68,6 +68,8 @@ public class LocalizationMap {
 		toParse = StringUtils.removeChar(toParse, '\r');
 		String[] lines = StringUtils.tokenize(toParse, '\n');
 		for (String l : lines) {
+			if(StringUtils.isEmpty(l) || l.trim().startsWith("#"))
+				continue;
 			String[] message = StringUtils.tokenize(l, '=');
 			if (message.length != 2)
 				throw new AssertionError("Invalid format of LocalizationBundel with id " + bundle.getId() + " in line: <" + l + ">. Expected line format: <key=message>");
