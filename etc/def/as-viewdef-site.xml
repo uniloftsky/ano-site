@@ -331,6 +331,7 @@
 					<element type="field" name="startSite" comparable="true"> 
 	        		   	<decorator name="linkTargetName"/>
 					</element>
+					<element type="field" name="type" comparable="true"/>
 					<element type="field" name="defaultEntry" comparable="true"/> 
 					<element type="field" name="domains" comparable="true"/> 
 	        		<element type="function" name="edit"/>
@@ -346,6 +347,7 @@
 		      			<element type="field" name="name" /> 
 						<element type="field" name="startPage" /> 
 						<element type="field" name="startSite" /> 
+						<element type="field" name="type"/>
 						<element type="field" name="defaultEntry"/> 
 						<element type="field" name="domains"/> 
 						<element type="empty"/>
@@ -378,7 +380,7 @@
 	        		   	<decorator name="linkTargetName"/>
 					</element>
 					<element type="field" name="parameters" comparable="true"/>
-					<element type="field" name="type"/>
+					<element type="field" name="type" comarable="true"/>
 					<element type="field" name="pathes" comparable="true"/> 
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>

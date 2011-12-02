@@ -19,8 +19,10 @@ import net.anotheria.anosite.gen.assitedata.data.Site;
 import net.anotheria.anosite.gen.assitedata.service.IASSiteDataService;
 import net.anotheria.anosite.gen.aswebdata.data.Pagex;
 import net.anotheria.anosite.gen.aswebdata.service.IASWebDataService;
+import net.anotheria.anosite.gen.shared.data.PageAliasTypeEnum;
 import net.anotheria.anosite.gen.shared.service.AnoDocConfigurator;
 import net.anotheria.asg.exception.ASGRuntimeException;
+import net.anotheria.asg.exception.ConstantNotFoundException;
 
 import org.apache.log4j.Logger;
 /**
@@ -115,9 +117,30 @@ public class EntryPointFilter implements Filter{
 			
 			String urlQuery = req.getQueryString();
 			urlQuery = urlQuery != null && urlQuery.length() > 0? "?" + urlQuery:"";
-			String redirect = req.getContextPath()+req.getServletPath()+targetPage.getName()+".html" + urlQuery;
-			log.info("Redirecting to: "+redirect);
-			((HttpServletResponse)sres).sendRedirect(redirect);
+			String  pageUrl = targetPage.getName()+".html" + urlQuery;
+			
+			PageAliasTypeEnum command;
+			try{
+				command = PageAliasTypeEnum.getConstantByValue(myEntryPoint.getType());
+			}catch(ConstantNotFoundException e){
+				//Back compatibility
+				command = PageAliasTypeEnum.REDIRECT;
+			}
+			
+			switch (command) {
+			case MASK:
+				log.info("EntryPoint forwarding to: "+pageUrl);
+				req.getRequestDispatcher(pageUrl).forward(sreq, sres);
+				return;
+			case REDIRECT:
+				//Fall down to default 
+			default:
+				String targetUrl = req.getContextPath()+req.getServletPath()+pageUrl;
+				log.info("EntryPoint redirecting to: "+targetUrl);
+				((HttpServletResponse)sres).sendRedirect(targetUrl);
+				return;
+			}
+			
 		}catch(ASGRuntimeException e){
 			throw new ServletException(e);
 		}

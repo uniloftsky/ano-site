@@ -140,6 +140,7 @@
 		<property name="name" type="string"/>
 		<link name="startPage" type="single" target="ASWebData.Pagex"/>
 		<link name="startSite" type="single" target="ASSiteData.Site"/>
+		<property name="type" type="enumeration" enumeration="PageAliasType"/>
 		<property name="defaultEntry" type="boolean"/>
 		<property name="domains" type="list">
 	        <content>
