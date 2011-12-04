@@ -121,7 +121,7 @@ public class EntryPointFilter implements Filter{
 			
 			PageAliasTypeEnum command;
 			try{
-				command = PageAliasTypeEnum.getConstantByValue(myEntryPoint.getType());
+				command = myEntryPoint != null? PageAliasTypeEnum.getConstantByValue(myEntryPoint.getType()): PageAliasTypeEnum.REDIRECT;
 			}catch(ConstantNotFoundException e){
 				//Back compatibility
 				command = PageAliasTypeEnum.REDIRECT;
