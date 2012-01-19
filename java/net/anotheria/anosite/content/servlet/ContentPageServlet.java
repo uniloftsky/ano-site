@@ -813,7 +813,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 							throw new RuntimeException("No exception given");
 						if (e instanceof RuntimeException)
 							throw (RuntimeException) e;
-						throw new RuntimeException("Execution aborted: " + e.getMessage() + " (" + e.getClass());
+						throw new RuntimeException("Execution aborted: " + e.getMessage() + " (" + e.getClass()+")", e);
 					default:
 						throw new AssertionError("Unexpected case in response: " + response.getResponseCode());
 
