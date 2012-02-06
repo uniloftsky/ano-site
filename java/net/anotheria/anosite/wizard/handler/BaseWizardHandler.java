@@ -1,11 +1,12 @@
 package net.anotheria.anosite.wizard.handler;
 
+import static net.anotheria.anosite.handler.validation.AbstractValidationBoxHandler.REQ_PARAM_VALIDATION_ONLY;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.anotheria.anoplass.api.APIFinder;
 import net.anotheria.anosite.gen.aswizarddata.data.WizardDef;
-import static net.anotheria.anosite.handler.validation.AbstractValidationBoxHandler.REQ_PARAM_VALIDATION_ONLY;
 import net.anotheria.anosite.wizard.WizardCommand;
 import net.anotheria.anosite.wizard.api.WizardAO;
 import net.anotheria.anosite.wizard.api.WizardAPI;
