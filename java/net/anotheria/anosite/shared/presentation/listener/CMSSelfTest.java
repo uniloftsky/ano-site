@@ -18,6 +18,9 @@ import net.anotheria.anosite.gen.asgenericdata.data.GenericBoxTypeFactory;
 import net.anotheria.anosite.gen.asgenericdata.data.GenericGuardDef;
 import net.anotheria.anosite.gen.asgenericdata.data.GenericGuardDefFactory;
 import net.anotheria.anosite.gen.asgenericdata.service.IASGenericDataService;
+import net.anotheria.anosite.gen.aslayoutdata.data.PageLayout;
+import net.anotheria.anosite.gen.aslayoutdata.data.PageLayoutFactory;
+import net.anotheria.anosite.gen.aslayoutdata.service.IASLayoutDataService;
 import net.anotheria.anosite.handler.BoxHandler;
 import net.anotheria.anosite.handler.def.ImageBrowserHandler;
 import net.anotheria.anosite.handler.def.RedirectImmediatelyHandler;
@@ -34,12 +37,14 @@ public final class CMSSelfTest {
 	
 	private static  IASGenericDataService genericDataService ;
 	private static  IASCustomDataService  customDataService ;
+	private static  IASLayoutDataService layoutDataService;
 	private static Logger log = Logger.getLogger(CMSSelfTest.class);
 
 	static {
 		try {
 			genericDataService = MetaFactory.get(IASGenericDataService.class);
 			customDataService = MetaFactory.get(IASCustomDataService.class);
+			layoutDataService = MetaFactory.get(IASLayoutDataService.class);
 		} catch (MetaFactoryException e) {
 			log.fatal("ASG services init failure",e);
 		}
@@ -47,9 +52,19 @@ public final class CMSSelfTest {
 	
 	public static final void performSelfTest(){
 		log.info("%%% CMS SELF TEST STARTED %%%");
+		
+		log.info("CMS SELF TEST: Guards");
 		selfTestGuards();
+		
+		log.info("CMS SELF TEST: BoxTypes");
 		selfTestBoxTypes();
+		
+		log.info("CMS SELF TEST: BoxHandlers");
 		selfTestBoxHandlers();
+		
+		log.info("CMS SELF TEST: PageLayouts");
+		selfTestPageLayouts();
+		
 		log.info("%%% CMS SELF TEST FINISHED %%%");
 	}
 	
@@ -83,6 +98,11 @@ public final class CMSSelfTest {
 		ensureGuardExists("GermanContextLanguage", "net.anotheria.anosite.guard.ContextLanguageIsGermanGuard");
 		ensureGuardExists("EnglishContextLanguage", "net.anotheria.anosite.guard.ContextLanguageIsEnglishGuard");
 		
+	}
+	
+	private static void selfTestPageLayouts(){
+		ensurePageLayoutExists("LayoutPlainHtml", "LayoutPlainHtml", "Layout for text/html pages. Intialy doesn't have any HTML markup. Use header/column1/column2/column3/footer fro addidng content boxes.");
+		ensurePageLayoutExists("LayoutPlainText", "LayoutPlainText", "Layout for text/plain pages such a robots.txt or xml files. Use header/column1/column2/column3/footer fro addidng content boxes.");
 	}
 	
 	private static void ensureGuardExists(String name, String clazz){
@@ -190,6 +210,24 @@ public final class CMSSelfTest {
 			
 		}catch(ASGRuntimeException e){
 			log.error("ensureBoxTypeExists("+name+", "+rendererpage+")", e);
+		}
+	}
+	
+	public static void ensurePageLayoutExists(String name, String rendererpage, String description){
+		try{
+			List<PageLayout> layouts = layoutDataService.getPageLayoutsByProperty(PageLayout.PROP_NAME, name);
+			if (layouts.size()>0)
+				return;
+			log.info("%%% Creating PageLayout "+name+", rendererpage: "+rendererpage);
+			PageLayout newPageLayout = PageLayoutFactory.createPageLayout();
+			newPageLayout.setName(name);
+			newPageLayout.setLayoutpage(rendererpage);
+			newPageLayout.setDescription(description);
+			layoutDataService.createPageLayout(newPageLayout);
+			log.info("%%% --> done, created "+newPageLayout);
+			
+		}catch(ASGRuntimeException e){
+			log.error("ensurePageLayoutExists("+name+", "+rendererpage+")", e);
 		}
 	}
 }
