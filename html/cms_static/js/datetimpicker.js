@@ -1308,24 +1308,13 @@ $.timepicker.version = "1.0.0";
         $.fn.DateTimeStamp = function(params){
             options = $.extend({}, defaults, options, params);
             $(this).find("input."+options.class).datetimepicker();
-            $(this).submit(function(){
-            	$(this).find("."+options.class).each(function(){
-                if($(this).val() != "")
-                    {
-
-                        var DateObj = new Date($(this).val());
-                        $(this).val(DateObj.getTime());
-                    }
-                });
-                this.submit();
-                return false;
-            });
             $(document).ready(function () {
               $("."+options.class).each(function(){
-                    if($(this).val() != "")
-                    {
+                    if($(this).val() != "") {
                     	var time = new Date();
-                    	time.setTime($(this).val());
+                        time.setTime($(this).val());
+                        var serverTime = time.getTime() + (time.getTimezoneOffset()*60000 - (-serverTimezoneOffset));
+                    	time.setTime(serverTime);
                         $(this).datetimepicker('setDate', time);
                     }
               });
@@ -1338,10 +1327,10 @@ $.timepicker.version = "1.0.0";
 function FormatTime(selector)
 {
     $("."+selector).each(function(){
-        if($(this).val() != "")
-        {
-            var DateObj = new Date($(this).val());
-            $(this).val(DateObj.getTime());
+        if($(this).val() != "") {
+        	var time = new Date($(this).val());
+            var serverTime =  time.getTime() - (time.getTimezoneOffset()*60000 - (-serverTimezoneOffset));
+            $(this).val(serverTime);
         }
     });
 }
