@@ -1,15 +1,15 @@
 package net.anotheria.anosite.action;
 
 import net.anotheria.anosite.util.AnositeConstants;
+import net.java.dev.moskito.core.calltrace.CurrentlyTracedCall;
+import net.java.dev.moskito.core.calltrace.RunningTraceContainer;
+import net.java.dev.moskito.core.calltrace.TraceStep;
+import net.java.dev.moskito.core.calltrace.TracedCall;
 import net.java.dev.moskito.core.predefined.ActionStats;
 import net.java.dev.moskito.core.predefined.Constants;
 import net.java.dev.moskito.core.producers.IStats;
 import net.java.dev.moskito.core.producers.IStatsProducer;
 import net.java.dev.moskito.core.registry.ProducerRegistryFactory;
-import net.java.dev.moskito.core.usecase.running.ExistingRunningUseCase;
-import net.java.dev.moskito.core.usecase.running.PathElement;
-import net.java.dev.moskito.core.usecase.running.RunningUseCase;
-import net.java.dev.moskito.core.usecase.running.RunningUseCaseContainer;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -85,12 +85,12 @@ public class ActionProducer implements IStatsProducer {
 
 		executeStats.addRequest();
 		long startTime = System.nanoTime();
-		RunningUseCase aRunningUseCase = RunningUseCaseContainer.getCurrentRunningUseCase();
-		PathElement currentElement = null;
-		ExistingRunningUseCase runningUseCase = aRunningUseCase.useCaseRunning() ?
-				(ExistingRunningUseCase) aRunningUseCase : null;
-		if (runningUseCase != null)
-			currentElement = runningUseCase.startPathElement(new StringBuilder(getProducerId()).append('.').append("execute").toString());
+		TracedCall aRunningUseCase = RunningTraceContainer.getCurrentlyTracedCall();
+		TraceStep currentStep = null;
+		CurrentlyTracedCall currentlyTracedCall = aRunningUseCase.callTraced() ?
+				(CurrentlyTracedCall) aRunningUseCase : null;
+		if (currentlyTracedCall != null)
+			currentStep = currentlyTracedCall.startStep(new StringBuilder(getProducerId()).append('.').append("execute").toString(), this);
 		try {
 			return action.execute(req, resp, mapping);
 		} catch (Exception e) {
@@ -100,10 +100,10 @@ public class ActionProducer implements IStatsProducer {
 			long duration = System.nanoTime() - startTime;
 			executeStats.addExecutionTime(duration);
 			executeStats.notifyRequestFinished();
-			if (currentElement != null)
-				currentElement.setDuration(duration);
-			if (runningUseCase != null)
-				runningUseCase.endPathElement();
+			if (currentStep != null)
+				currentStep.setDuration(duration);
+			if (currentlyTracedCall != null)
+				currentlyTracedCall.endStep();
 		}
 	}
 }

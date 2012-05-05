@@ -9,16 +9,16 @@ import javax.servlet.http.HttpServletResponse;
 import net.anotheria.anosite.content.bean.BoxBean;
 import net.anotheria.anosite.gen.aswebdata.data.Box;
 import net.anotheria.anosite.util.AnositeConstants;
+import net.java.dev.moskito.core.calltrace.CurrentlyTracedCall;
+import net.java.dev.moskito.core.calltrace.RunningTraceContainer;
+import net.java.dev.moskito.core.calltrace.TraceStep;
+import net.java.dev.moskito.core.calltrace.TracedCall;
 import net.java.dev.moskito.core.predefined.ActionStats;
 import net.java.dev.moskito.core.predefined.Constants;
 import net.java.dev.moskito.core.producers.IStats;
 import net.java.dev.moskito.core.producers.IStatsProducer;
 import net.java.dev.moskito.core.registry.ProducerRegistryFactory;
 import net.java.dev.moskito.core.stats.Interval;
-import net.java.dev.moskito.core.usecase.running.ExistingRunningUseCase;
-import net.java.dev.moskito.core.usecase.running.PathElement;
-import net.java.dev.moskito.core.usecase.running.RunningUseCase;
-import net.java.dev.moskito.core.usecase.running.RunningUseCaseContainer;
 /**
  * A stats producer for boxhandler for embedding into moskito.
  * @author another
@@ -78,12 +78,12 @@ public class BoxHandlerProducer implements IStatsProducer{
 	BoxHandlerResponse process(HttpServletRequest req, HttpServletResponse res, Box box, BoxBean bean, BoxHandler target){
 		processStats.addRequest();
 		long startTime = System.nanoTime();
-		RunningUseCase aRunningUseCase = RunningUseCaseContainer.getCurrentRunningUseCase();
-		PathElement currentElement = null;
-		ExistingRunningUseCase runningUseCase = aRunningUseCase.useCaseRunning() ? 
-				(ExistingRunningUseCase)aRunningUseCase : null; 
+		TracedCall aRunningUseCase = RunningTraceContainer.getCurrentlyTracedCall();
+		TraceStep currentElement = null;
+		CurrentlyTracedCall runningUseCase = aRunningUseCase.callTraced() ? 
+				(CurrentlyTracedCall)aRunningUseCase : null; 
 		if (runningUseCase !=null)
-			currentElement = runningUseCase.startPathElement(new StringBuilder(getProducerId()).append('.').append("process").toString());
+			currentElement = runningUseCase.startStep(new StringBuilder(getProducerId()).append('.').append("process").toString(), this);
 		try {
 			return target.process(req, res, box, bean);
 		}  catch (Exception e) {
@@ -96,7 +96,7 @@ public class BoxHandlerProducer implements IStatsProducer{
 			if (currentElement!=null)
 				currentElement.setDuration(duration);
 			if (runningUseCase !=null)
-				runningUseCase.endPathElement();
+				runningUseCase.endStep();
 		}
 		
 	}
@@ -104,12 +104,12 @@ public class BoxHandlerProducer implements IStatsProducer{
 	BoxHandlerResponse submit(HttpServletRequest req, HttpServletResponse res, Box box, BoxHandler target){
 		submitStats.addRequest();
 		long startTime = System.nanoTime();
-		RunningUseCase aRunningUseCase = RunningUseCaseContainer.getCurrentRunningUseCase();
-		PathElement currentElement = null;
-		ExistingRunningUseCase runningUseCase = aRunningUseCase.useCaseRunning() ? 
-				(ExistingRunningUseCase)aRunningUseCase : null; 
+		TracedCall aRunningUseCase = RunningTraceContainer.getCurrentlyTracedCall();
+		TraceStep currentElement = null;
+		CurrentlyTracedCall runningUseCase = aRunningUseCase.callTraced() ? 
+				(CurrentlyTracedCall)aRunningUseCase : null; 
 		if (runningUseCase !=null)
-			currentElement = runningUseCase.startPathElement(new StringBuilder(getProducerId()).append('.').append("submit").toString());
+			currentElement = runningUseCase.startStep(new StringBuilder(getProducerId()).append('.').append("submit").toString(), this);
 		try {
 			return target.submit(req, res, box);
 		}  catch (Exception e) {
@@ -122,7 +122,7 @@ public class BoxHandlerProducer implements IStatsProducer{
 			if (currentElement!=null)
 				currentElement.setDuration(duration);
 			if (runningUseCase !=null)
-				runningUseCase.endPathElement();
+				runningUseCase.endStep();
 		}
 		
 	}

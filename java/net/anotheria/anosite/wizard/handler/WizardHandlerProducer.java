@@ -4,19 +4,20 @@ import net.anotheria.anosite.gen.aswizarddata.data.WizardDef;
 import net.anotheria.anosite.util.AnositeConstants;
 import net.anotheria.anosite.wizard.handler.response.WizardHandlerResponse;
 import net.anotheria.anosite.wizard.handler.response.WizardResponseAbort;
+import net.java.dev.moskito.core.calltrace.CurrentlyTracedCall;
+import net.java.dev.moskito.core.calltrace.RunningTraceContainer;
+import net.java.dev.moskito.core.calltrace.TraceStep;
+import net.java.dev.moskito.core.calltrace.TracedCall;
 import net.java.dev.moskito.core.predefined.ActionStats;
 import net.java.dev.moskito.core.predefined.Constants;
 import net.java.dev.moskito.core.producers.IStats;
 import net.java.dev.moskito.core.producers.IStatsProducer;
 import net.java.dev.moskito.core.registry.ProducerRegistryFactory;
 import net.java.dev.moskito.core.stats.Interval;
-import net.java.dev.moskito.core.usecase.running.ExistingRunningUseCase;
-import net.java.dev.moskito.core.usecase.running.PathElement;
-import net.java.dev.moskito.core.usecase.running.RunningUseCase;
-import net.java.dev.moskito.core.usecase.running.RunningUseCaseContainer;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -105,12 +106,12 @@ public final class WizardHandlerProducer implements IStatsProducer {
 	WizardHandlerResponse preProcess(HttpServletRequest req, HttpServletResponse res, WizardDef wizard, WizardHandler target) {
 		preProcessStats.addRequest();
 		long startTime = System.nanoTime();
-		RunningUseCase aRunningUseCase = RunningUseCaseContainer.getCurrentRunningUseCase();
-		PathElement currentElement = null;
-		ExistingRunningUseCase runningUseCase = aRunningUseCase.useCaseRunning() ?
-				(ExistingRunningUseCase) aRunningUseCase : null;
+		TracedCall aRunningUseCase = RunningTraceContainer.getCurrentlyTracedCall();
+		TraceStep currentStep = null;
+		CurrentlyTracedCall runningUseCase = aRunningUseCase.callTraced() ?
+				(CurrentlyTracedCall) aRunningUseCase : null;
 		if (runningUseCase != null)
-			currentElement = runningUseCase.startPathElement(new StringBuilder(getProducerId()).append('.').append("preProcess").toString());
+			currentStep = runningUseCase.startStep(new StringBuilder(getProducerId()).append('.').append("preProcess").toString(), this);
 		try {
 			return target.preProcess(req, res, wizard);
 		} catch (Exception e) {
@@ -120,10 +121,10 @@ public final class WizardHandlerProducer implements IStatsProducer {
 			long duration = System.nanoTime() - startTime;
 			preProcessStats.addExecutionTime(duration);
 			preProcessStats.notifyRequestFinished();
-			if (currentElement != null)
-				currentElement.setDuration(duration);
+			if (currentStep != null)
+				currentStep.setDuration(duration);
 			if (runningUseCase != null)
-				runningUseCase.endPathElement();
+				runningUseCase.endStep();
 		}
 
 	}
@@ -141,12 +142,12 @@ public final class WizardHandlerProducer implements IStatsProducer {
 	WizardHandlerResponse process(HttpServletRequest req, HttpServletResponse res, WizardDef wizard, WizardHandler target) {
 		process.addRequest();
 		long startTime = System.nanoTime();
-		RunningUseCase aRunningUseCase = RunningUseCaseContainer.getCurrentRunningUseCase();
-		PathElement currentElement = null;
-		ExistingRunningUseCase runningUseCase = aRunningUseCase.useCaseRunning() ?
-				(ExistingRunningUseCase) aRunningUseCase : null;
+		TracedCall aRunningUseCase = RunningTraceContainer.getCurrentlyTracedCall();
+		TraceStep currentElement = null;
+		CurrentlyTracedCall runningUseCase = aRunningUseCase.callTraced() ?
+				(CurrentlyTracedCall) aRunningUseCase : null;
 		if (runningUseCase != null)
-			currentElement = runningUseCase.startPathElement(new StringBuilder(getProducerId()).append('.').append("process").toString());
+			currentElement = runningUseCase.startStep(new StringBuilder(getProducerId()).append('.').append("process").toString(), this);
 		try {
 			return target.process(req, res, wizard);
 		} catch (Exception e) {
@@ -159,7 +160,7 @@ public final class WizardHandlerProducer implements IStatsProducer {
 			if (currentElement != null)
 				currentElement.setDuration(duration);
 			if (runningUseCase != null)
-				runningUseCase.endPathElement();
+				runningUseCase.endStep();
 		}
 
 	}
@@ -176,12 +177,12 @@ public final class WizardHandlerProducer implements IStatsProducer {
 	WizardHandlerResponse submit(HttpServletRequest req, HttpServletResponse res, WizardDef wizard, WizardHandler target) {
 		submit.addRequest();
 		long startTime = System.nanoTime();
-		RunningUseCase aRunningUseCase = RunningUseCaseContainer.getCurrentRunningUseCase();
-		PathElement currentElement = null;
-		ExistingRunningUseCase runningUseCase = aRunningUseCase.useCaseRunning() ?
-				(ExistingRunningUseCase) aRunningUseCase : null;
+		TracedCall aRunningUseCase = RunningTraceContainer.getCurrentlyTracedCall();
+		TraceStep currentElement = null;
+		CurrentlyTracedCall runningUseCase = aRunningUseCase.callTraced() ?
+				(CurrentlyTracedCall) aRunningUseCase : null;
 		if (runningUseCase != null)
-			currentElement = runningUseCase.startPathElement(new StringBuilder(getProducerId()).append('.').append("submit").toString());
+			currentElement = runningUseCase.startStep(new StringBuilder(getProducerId()).append('.').append("submit").toString(), this);
 		try {
 			return target.submit(req, res, wizard);
 		} catch (Exception e) {
@@ -194,7 +195,7 @@ public final class WizardHandlerProducer implements IStatsProducer {
 			if (currentElement != null)
 				currentElement.setDuration(duration);
 			if (runningUseCase != null)
-				runningUseCase.endPathElement();
+				runningUseCase.endStep();
 		}
 
 	}
