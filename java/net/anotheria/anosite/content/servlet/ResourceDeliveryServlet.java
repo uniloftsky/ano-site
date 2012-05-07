@@ -79,6 +79,14 @@ public class ResourceDeliveryServlet extends MoskitoHttpServlet {
 			type = ContentType.CSS;
 		if (path.toLowerCase().endsWith(".js"))
 			type = ContentType.JS; // JS resource
+		if (path.toLowerCase().endsWith(".jpg"))
+			type = ContentType.JPG; // image resource
+		if (path.toLowerCase().endsWith(".jpeg"))
+			type = ContentType.JPEG; // image resource
+		if (path.toLowerCase().endsWith(".png"))
+			type = ContentType.PNG; // image resource
+		if (path.toLowerCase().endsWith(".gif"))
+			type = ContentType.GIF; // image resource
 
 		if (type == null) { // content type must be taken from extension or this is HttpServletResponse.SC_BAD_REQUEST
 			res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -169,7 +177,27 @@ public class ResourceDeliveryServlet extends MoskitoHttpServlet {
 		/**
 		 * JavaScript type.
 		 */
-		JS("text/javascript");
+		JS("text/javascript"),
+
+		/**
+		 * PNG image file.
+		 */
+		PNG("image/png"),
+
+		/**
+		 * JPG image file.
+		 */
+		JPG("image/jpg"),
+
+		/**
+		 * JPEG image file.
+		 */
+		JPEG("image/jpeg"),
+
+		/**
+		 * GIF image file.
+		 */
+		GIF("image/gif");
 
 		/**
 		 * String representation for use in HTML page or HTTP header.
