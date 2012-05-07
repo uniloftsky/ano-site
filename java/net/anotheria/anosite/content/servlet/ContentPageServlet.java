@@ -112,6 +112,7 @@ import net.anotheria.util.StringUtils;
 import net.anotheria.util.concurrency.IdBasedLock;
 import net.anotheria.util.concurrency.IdBasedLockManager;
 import net.anotheria.util.concurrency.SafeIdBasedLockManager;
+import net.anotheria.util.maven.MavenVersion;
 import net.anotheria.webutils.util.VersionUtil;
 import net.java.dev.moskito.core.blueprint.BlueprintCallExecutor;
 import net.java.dev.moskito.core.blueprint.BlueprintProducer;
@@ -1635,12 +1636,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	 * @throws ASGRuntimeException on errors
 	 */
 	private List<MediaLinkBean> createMediaLinkBeanList(List<String> mediaLinkIds, HttpServletRequest req) throws ASGRuntimeException {
-		String linkPrefix = "";
-		if (rdConfig.isUseForCMSEnabled()) {
-			linkPrefix = rdConfig.getServletMapping() + "/";
-			if (rdConfig.isUseAppVersionInURL())
-				linkPrefix += rdConfig.getVersionPrefix() + VersionUtil.getWebappVersion(getServletContext()) + "/";
-		}
+		String linkPrefix = getRDPrefix();
 		
 		List<MediaLinkBean> ret = new ArrayList<MediaLinkBean>(mediaLinkIds.size());
 		for (String id : mediaLinkIds) {
@@ -1667,6 +1663,18 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		}
 		return ret;
 	}
+	
+	private String getRDPrefix() {
+		String prefix = "";
+		if (rdConfig.isUseForCMSEnabled()) {
+			prefix = rdConfig.getServletMapping() + "/";
+			if (rdConfig.isUseAppVersionInURL()) {
+				MavenVersion mVersion = VersionUtil.getWebappVersion(getServletContext());
+				prefix += rdConfig.getVersionPrefix() + mVersion.getVersion() + "_" + mVersion.getFileTimestamp() + "/";
+			}
+		}
+		return prefix;
+	}
 
 
 	/**
@@ -1685,12 +1693,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	}
 
 	private List<ScriptBean> createScriptBeanList(List<String> scriptIds, HttpServletRequest req) throws ASGRuntimeException {
-		String linkPrefix = "";
-		if (rdConfig.isUseForCMSEnabled()) {
-			linkPrefix = rdConfig.getServletMapping() + "/";
-			if (rdConfig.isUseAppVersionInURL())
-				linkPrefix += rdConfig.getVersionPrefix() + VersionUtil.getWebappVersion(getServletContext()) + "/";
-		}
+		String linkPrefix = getRDPrefix();
 		
 		List<ScriptBean> ret = new ArrayList<ScriptBean>(scriptIds.size());
 		for (String id : scriptIds) {
