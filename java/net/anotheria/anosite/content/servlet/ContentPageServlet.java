@@ -1670,7 +1670,10 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			prefix = rdConfig.getServletMapping() + "/";
 			if (rdConfig.isUseAppVersionInURL()) {
 				MavenVersion mVersion = VersionUtil.getWebappVersion(getServletContext());
-				prefix += rdConfig.getVersionPrefix() + mVersion.getVersion() + "_" + mVersion.getFileTimestamp() + "/";
+				if (mVersion != null)
+					prefix += rdConfig.getVersionPrefix() + mVersion.getVersion() + "_" + mVersion.getFileTimestamp() + "/";
+				else
+					prefix += rdConfig.getVersionPrefix() + "unknown/";
 			}
 		}
 		return prefix;
