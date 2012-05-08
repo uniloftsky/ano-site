@@ -43,6 +43,7 @@
 						<decorator name="localizations"/>
 					</element>
 					<element type="field" name="httpsonly"/>
+					<element type="function" name="preview"/>
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
 	        		<element type="function" name="deleteWithConfirmation"/>
