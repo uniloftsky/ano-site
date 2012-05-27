@@ -1240,9 +1240,18 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		List<NaviItemBean> ret = new ArrayList<NaviItemBean>(idList.size());
 		for (String id : idList) {
 			NaviItemBean bean = new NaviItemBean();
-			NaviItem item = siteDataService.getNaviItem(id);
-
 			boolean do_break = false;
+
+			NaviItem item = null;
+			try{
+				item = siteDataService.getNaviItem(id);
+			}catch(NoSuchDocumentException nsde){
+				log.warn("Couldn't retrieve navi item with id "+id+", ignored.");
+				//leave the loop
+				break;
+			}
+			
+
 			//check the guards
 			List<String> gIds = item.getGuards();
 			for (String gid : gIds) {
