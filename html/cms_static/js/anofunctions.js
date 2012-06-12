@@ -330,3 +330,43 @@ $('.lang_s_open .button').live('click',
 $(function() {
 	loadCookie();
 });
+
+function initAllCmsDocs() {
+	var checkAllCmsDocsCheckbox = $('#checkAllCmsDocsCheckbox'),
+		cmsDocumentCheckbox = $('tr.cmsDocument input[name="pId"]');
+
+	checkAllCmsDocsCheckbox.click(function() {
+		var checkedStatus = this.checked;
+		
+		cmsDocumentCheckbox.each(function() {
+			this.checked = checkedStatus; 
+		});
+	});
+};
+
+
+function initSelectedCmsDocsDeletion() {
+	var deleteSelectedId = $('#deleteSelectedId'),
+		cmsDocumentCheckboxes = $('tr.cmsDocument input[name="pId"]');
+
+	deleteSelectedId.click(function() {
+		var selectedIds = [];
+		cmsDocumentCheckboxes.each(function (i, checkbox) {
+			if (checkbox.checked) {
+			 	selectedIds.push(checkbox.value);
+			 };
+		});
+		if (selectedIds.length){
+			this.href = this.href + "&" + $.param({pId: selectedIds}, true);
+			return true;
+		} else {
+			return false;
+		}
+	});
+};
+
+$(function() {
+	initAllCmsDocs();
+	initSelectedCmsDocsDeletion();
+	//test
+});
