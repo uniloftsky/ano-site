@@ -61,7 +61,7 @@ public class TextResourceTag extends BaseResourceTag{
 
 		if (editable){
 			//For easy editing decorate resource with link in the CMS
-			String link = "<a href="+quote("cms/textresourceEdit?ts="+System.currentTimeMillis()+"&pId="+resource.getId())+" target="+quote("_blank")+">E</a>&nbsp;";
+			String link = "<a href="+quote("cms/asresourcedataTextResourceEdit?ts="+System.currentTimeMillis()+"&pId="+resource.getId())+" target="+quote("_blank")+">E</a>&nbsp;";
 			write(link);
 		}
 		
