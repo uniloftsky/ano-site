@@ -8,7 +8,7 @@
 	<!--@include:as-viewdef-georesources.xml -->
 	<!--@include:as-viewdef-actions.xml -->
 	<!--@include:as-viewdef-wizard.xml -->
-
+	<!--@include:as-viewdef-user.xml -->
 
 	<!--  AnoSite supports following embedded user roles
 		developer: a developer who works on the code, has access to almost anything.
