@@ -144,7 +144,7 @@
 		      			<element type="field" name="localizations" />
 		      			<element type="field" name="subboxes" />
 		      			<element type="field" name="cssClass"/> 
-		      			<element type="field" name="content" /> 
+		      			<element type="field" name="content" rich="true"/> 
 		      			<element type="field" name="parameter1" /> 
 		      			<element type="field" name="parameter2" /> 
 		      			<element type="field" name="parameter3" /> 
