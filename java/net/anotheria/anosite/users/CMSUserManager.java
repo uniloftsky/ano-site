@@ -11,6 +11,7 @@ import net.anotheria.anosite.gen.asuserdata.service.IASUserDataService;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -36,7 +37,7 @@ public class CMSUserManager {
 
     private CMSUserManager() {
         if (!inited)
-            throw new RuntimeException("Not inited");
+            throw new RuntimeException("CMS user manager not inited");
     }
 
     public static CMSUserManager getInstance() {
@@ -72,10 +73,8 @@ public class CMSUserManager {
             userDataService = MetaFactory.get(IASUserDataService.class);
             
             // initial creating of default roles and users
-            if (defaultRolesAndUsersAreCorrupted()) {
-                createDefaultRolesAndUsers();
-            }
-            
+            createNecessaryDefaultRolesAndUsers();
+
             // initial filling of map from CMS persistence files
             scanUsers();
 
@@ -85,37 +84,54 @@ public class CMSUserManager {
         }
     }
 
-    private static void createDefaultRolesAndUsers() {
+    private static void createNecessaryDefaultRolesAndUsers() {
         try {
             IASUserDataService userDataService = MetaFactory.get(IASUserDataService.class);
 
             // adding default roles
             RoleDefBuilder roleDefBuilder = new RoleDefBuilder();
-            roleDefBuilder.name("admin");
-            RoleDef adminRole = userDataService.createRoleDef(roleDefBuilder.build());
+
+            //if
+            roleDefBuilder.name("developer");
+            userDataService.createRoleDef(roleDefBuilder.build());
+
+            //if
+            roleDefBuilder.name("cmsuser");
+            userDataService.createRoleDef(roleDefBuilder.build());
+
+            //if
+            roleDefBuilder.name("editor");
+            userDataService.createRoleDef(roleDefBuilder.build());
+
+            // if
             roleDefBuilder.name("producer");
             userDataService.createRoleDef(roleDefBuilder.build());
 
+            // if
+            roleDefBuilder.name("admin");
+            RoleDef adminRole = userDataService.createRoleDef(roleDefBuilder.build());
+
+
             // adding default users
             UserDefBuilder userDefBuilder = new UserDefBuilder();
-            userDefBuilder.login("root");
-            userDefBuilder.password("root");
-            List<String> roles = new ArrayList<String>();
-            roles.add(adminRole.getId());
-            userDefBuilder.status(roles);
-            userDataService.createUserDef(userDefBuilder.build());
+            List<UserDef> userDefs;
+
+            // adding admin:admin
+            userDefs = userDataService.getUserDefsByProperty(UserDef.PROP_LOGIN, "admin");
+            if (userDefs == null || userDefs.isEmpty()) {
+                userDefBuilder.login("admin");
+                userDefBuilder.password("admin");
+                userDefBuilder.status(Arrays.asList(adminRole.getId()));
+                userDataService.createUserDef(userDefBuilder.build());
+            }
 
         } catch (MetaFactoryException e) {
-           log.error("MetaFactory failed", e);
+            log.error("MetaFactory failed", e);
             throw new RuntimeException("MetaFactory failed", e);
         } catch (ASUserDataServiceException e) {
             log.error("ASUserDataService failed", e);
             throw new RuntimeException("ASUserDataService failed", e);
         }
-    }
-
-    private static boolean defaultRolesAndUsersAreCorrupted() {
-        return true; // DEBUG
     }
 
     public static void scanUsers() {
@@ -138,7 +154,7 @@ public class CMSUserManager {
                     for (String roleId : rolesIds) {
                         RoleDef roleDef = userDataService.getRoleDef(roleId);
                         if (roleDef != null) {
-                            roles.add(roleDef.getName());
+                            roles.add(roleDef.getName()); // getting name of user role
                         }
                     }
 
