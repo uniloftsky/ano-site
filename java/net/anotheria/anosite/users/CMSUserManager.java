@@ -86,44 +86,21 @@ public class CMSUserManager {
 
     private static void createNecessaryDefaultRolesAndUsers() {
         try {
-            IASUserDataService userDataService = MetaFactory.get(IASUserDataService.class);
-
             // adding default roles
-            RoleDefBuilder roleDefBuilder = new RoleDefBuilder();
-
-            //if
-            roleDefBuilder.name("developer");
-            userDataService.createRoleDef(roleDefBuilder.build());
-
-            //if
-            roleDefBuilder.name("cmsuser");
-            userDataService.createRoleDef(roleDefBuilder.build());
-
-            //if
-            roleDefBuilder.name("editor");
-            userDataService.createRoleDef(roleDefBuilder.build());
-
-            // if
-            roleDefBuilder.name("producer");
-            userDataService.createRoleDef(roleDefBuilder.build());
-
-            // if
-            roleDefBuilder.name("admin");
-            RoleDef adminRole = userDataService.createRoleDef(roleDefBuilder.build());
-
+            // + developer if already not exists
+            addDefaultRole("developer");
+            // + cmsuser if already not exists
+            addDefaultRole("cmsuser");
+            // + editor if already not exists
+            addDefaultRole("editor");
+            // + producer if already not exists
+            addDefaultRole("producer");
+            // + admin if already not exists
+            addDefaultRole("admin");
 
             // adding default users
-            UserDefBuilder userDefBuilder = new UserDefBuilder();
-            List<UserDef> userDefs;
-
-            // adding admin:admin
-            userDefs = userDataService.getUserDefsByProperty(UserDef.PROP_LOGIN, "admin");
-            if (userDefs == null || userDefs.isEmpty()) {
-                userDefBuilder.login("admin");
-                userDefBuilder.password("admin");
-                userDefBuilder.status(Arrays.asList(adminRole.getId()));
-                userDataService.createUserDef(userDefBuilder.build());
-            }
+            // + admin:admin if necessary
+            addDefaultUser("admin", "admin", "admin");
 
         } catch (MetaFactoryException e) {
             log.error("MetaFactory failed", e);
@@ -131,6 +108,37 @@ public class CMSUserManager {
         } catch (ASUserDataServiceException e) {
             log.error("ASUserDataService failed", e);
             throw new RuntimeException("ASUserDataService failed", e);
+        }
+    }
+
+    private static void addDefaultUser(String login, String password, String role) throws ASUserDataServiceException, MetaFactoryException {
+        IASUserDataService userDataService = MetaFactory.get(IASUserDataService.class);
+
+        List<UserDef> userDefs = userDataService.getUserDefsByProperty(UserDef.PROP_LOGIN, login);
+        if (userDefs == null || userDefs.isEmpty()) { // check if such user does not exist
+            List<RoleDef> roleDefs = userDataService.getRoleDefsByProperty(RoleDef.PROP_NAME, role);
+            if (roleDefs == null || roleDefs.isEmpty()) { // check if role for admin user does not exist
+                log.error("There is no admin role for admin user in CMS");
+                throw new RuntimeException("admin role for admin user is undefined");
+            }
+            RoleDef adminRole = roleDefs.get(0);
+
+            UserDefBuilder userDefBuilder = new UserDefBuilder();
+            userDefBuilder.login(login);
+            userDefBuilder.password(password);
+            userDefBuilder.status(Arrays.asList(adminRole.getId()));
+            userDataService.createUserDef(userDefBuilder.build());
+        }
+    }
+
+    private static void addDefaultRole(String role) throws ASUserDataServiceException, MetaFactoryException {
+        IASUserDataService userDataService = MetaFactory.get(IASUserDataService.class);
+
+        List<RoleDef> roleDefs = userDataService.getRoleDefsByProperty(RoleDef.PROP_NAME, role);
+        if (roleDefs == null || roleDefs.isEmpty()) { // check if such role does not exist
+            RoleDefBuilder roleDefBuilder = new RoleDefBuilder();
+            roleDefBuilder.name(role);
+            userDataService.createRoleDef(roleDefBuilder.build());
         }
     }
 
