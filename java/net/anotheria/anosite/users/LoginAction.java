@@ -4,6 +4,7 @@ import net.anotheria.maf.action.ActionForward;
 import net.anotheria.maf.action.ActionMapping;
 import net.anotheria.maf.bean.FormBean;
 import net.anotheria.webutils.actions.AccessControlMafAction;
+import net.anotheria.util.crypt.CryptTool;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +17,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class LoginAction extends AccessControlMafAction {
 
+    private static final String AUTH_KEY = "97531f6c04afcbd529028f3f45221cce";
+    private static CryptTool crypt = new CryptTool(AUTH_KEY);
     public static final String P_USER_ID = "pUserId";
     public static final String P_PASSWORD = "pPassword";
 
@@ -64,7 +67,7 @@ public class LoginAction extends AccessControlMafAction {
 
         try {
             userId = getStringParameter(req, P_USER_ID);
-            password = getStringParameter(req, P_PASSWORD);
+            password = crypt.encryptToHex(getStringParameter(req, P_PASSWORD)) + "//encrypted";
             if (!manager.canLoginUser(userId, password))
                 throw new RuntimeException("Can't login.");
 

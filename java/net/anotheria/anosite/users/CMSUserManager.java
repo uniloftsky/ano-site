@@ -8,6 +8,7 @@ import net.anotheria.anosite.gen.asuserdata.data.UserDef;
 import net.anotheria.anosite.gen.asuserdata.data.UserDefBuilder;
 import net.anotheria.anosite.gen.asuserdata.service.ASUserDataServiceException;
 import net.anotheria.anosite.gen.asuserdata.service.IASUserDataService;
+import net.anotheria.util.crypt.CryptTool;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -24,6 +25,10 @@ import java.util.concurrent.ConcurrentHashMap;
  * @see net.anotheria.anosite.gen.shared.action.BaseAnositeAction
  **/
 public class CMSUserManager {
+    
+    private static final String AUTH_KEY = "97531f6c04afcbd529028f3f45221cce";
+    private static CryptTool crypt = new CryptTool(AUTH_KEY);
+
     private static Map<String, CMSUser> users;
 
     private static IASUserDataService userDataService;
@@ -100,7 +105,7 @@ public class CMSUserManager {
 
             // adding default users
             // + admin:admin if necessary
-            addDefaultUser("admin", "admin", "admin");
+            addDefaultUser("admin", crypt.encryptToHex("admin") + "//encrypted", "admin");
 
         } catch (MetaFactoryException e) {
             log.error("MetaFactory failed", e);
