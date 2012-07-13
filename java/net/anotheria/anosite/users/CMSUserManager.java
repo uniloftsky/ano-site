@@ -40,10 +40,12 @@ public class CMSUserManager {
         log = Logger.getLogger(CMSUserManager.class);
     }
 
+
     private CMSUserManager() {
         if (!inited)
             throw new RuntimeException("CMS user manager not inited");
     }
+
 
     public static CMSUserManager getInstance() {
         if (instance == null) {
@@ -52,21 +54,26 @@ public class CMSUserManager {
         return instance;
     }
 
+
     public boolean canLoginUser(String userId, String password) {
         CMSUser user = users.get(userId);
+        password = crypt.encryptToHex(password) + "//encrypted";
         if (user == null) {
             return false;
         }
         return user.getPassword().equals(password);
     }
 
+
     public boolean userInRole(String userId, String role) {
         return isKnownUser(userId) && users.get(userId).isUserInRole(role);
     }
 
+
     public boolean isKnownUser(String userId) {
         return users.containsKey(userId);
     }
+
 
     public static void init() {
         if (inited) {
@@ -88,6 +95,7 @@ public class CMSUserManager {
             log.error("init", e);
         }
     }
+
 
     private static void createNecessaryDefaultRolesAndUsers() {
         try {
@@ -116,6 +124,7 @@ public class CMSUserManager {
         }
     }
 
+
     private static void addDefaultUser(String login, String password, String role) throws ASUserDataServiceException, MetaFactoryException {
         IASUserDataService userDataService = MetaFactory.get(IASUserDataService.class);
 
@@ -136,6 +145,7 @@ public class CMSUserManager {
         }
     }
 
+
     private static void addDefaultRole(String role) throws ASUserDataServiceException, MetaFactoryException {
         IASUserDataService userDataService = MetaFactory.get(IASUserDataService.class);
 
@@ -146,6 +156,24 @@ public class CMSUserManager {
             userDataService.createRoleDef(roleDefBuilder.build());
         }
     }
+
+
+    public static void changeUserPassword(String login, String newPassword) {
+        try {
+            IASUserDataService userDataService = MetaFactory.get(IASUserDataService.class);
+            List<UserDef> userDefs = userDataService.getUserDefsByProperty(UserDef.PROP_LOGIN, login);
+            UserDef user = userDefs.get(0);
+            user.setPassword(crypt.encryptToHex(newPassword) + "//encrypted");
+            userDataService.updateUserDef(user);
+        } catch (MetaFactoryException e) {
+            log.error("MetaFactory failed", e);
+            throw new RuntimeException("MetaFactory failed", e);
+        } catch (ASUserDataServiceException e) {
+            log.error("ASUserDataService failed", e);
+            throw new RuntimeException("ASUserDataService failed", e);
+        }
+    }
+
 
     public static void scanUsers() {
         String username;
