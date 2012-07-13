@@ -50,7 +50,7 @@ public class ChangePassAction extends BaseAction {
 
             // try again if new password doesn't match with confirmed one
             if (!newPass1.equals(newPass2)) {
-                req.setAttribute("Message", "Entered password doesn't match with confirmed. Try again.");
+                req.setAttribute("Message", "Entered password doesn't match with confirmed.");
                 return mapping.findCommand("success");
             }
 
@@ -67,7 +67,7 @@ public class ChangePassAction extends BaseAction {
             res.sendRedirect(redUrl);
             return null;
         }
-        req.setAttribute("Message", "Incorrect current password. Try again.");
+        req.setAttribute("Message", "Incorrect current password.");
         return mapping.findCommand("success");
     }
 

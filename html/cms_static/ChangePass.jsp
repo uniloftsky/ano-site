@@ -27,7 +27,7 @@
   <tr>
    <td align="right">New password (confirm):<td align="left"><input type="password" name="NewPass2" value="">
   <tr>
-   <td colspan=2 align="center"><br><input type="Submit" value="Change password">
+   <td colspan=2 align="center"><br><input type="Submit" value="Change password"> <input type="button" OnClick="location.href='/cms/index'" value="Cancel">
  </table>
  <input type="hidden" name="isSubmit" value="true">
 </form>
