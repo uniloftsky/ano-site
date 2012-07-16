@@ -16,16 +16,12 @@
                     <decorator name="editLink"/>
                 </element>
                 <element type="field" name="status" comparable="true">
-		   <decorator name="editLink"/>
-		</element>
-                <element type="field" name="password" comparable="true"/>
-
+		            <decorator name="editLink"/>
+		        </element>
                 <element type="function" name="edit"/>
-                <element type="function" name="duplicate"/>
                 <element type="function" name="deleteWithConfirmation"/>
                 <element type="function" name="lock"/>
                 <element type="function" name="unlock"/>
-                <element type="function" name="version"/>
             </elements>
             <dialog name="Edit" title="Edit User">
                 <elements>
@@ -65,11 +61,9 @@
                     <decorator name="editLink"/>
                 </element>
                 <element type="function" name="edit"/>
-                <element type="function" name="duplicate"/>
                 <element type="function" name="deleteWithConfirmation"/>
                 <element type="function" name="lock"/>
                 <element type="function" name="unlock"/>
-                <element type="function" name="version"/>
             </elements>
             <dialog name="Edit" title="Edit User">
                 <elements>

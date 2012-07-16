@@ -96,7 +96,7 @@ table {margin:5px 0;}
 table tr {height:27px;}
 table td[align="right"] {width:1%; vertical-align:top; padding-top:6px; white-space:nowrap;}
 table td[align="left"] {} 
-table input[type="text"], table textarea {padding:1px; width:90%;}
+table input[type="text"], input[type="password"], table textarea {padding:1px; width:90%;}
 table textarea {padding:5px 3px; margin-bottom:5px; margin-top:5px;}
 
 .filter_open {padding-right:10px; background:url("../img/icons.gif") 100% -18px no-repeat; position:relative; top:10px;}

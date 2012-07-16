@@ -9,7 +9,7 @@
 				<link name="statusLink" type="single" target="ASUserData.RoleDef"/>
         	</content>
         </property>
-        	<property name="password" type="string"/>
+        <property name="password" type="password"/>
 	</document>
 
 	<document name="RoleDef">
