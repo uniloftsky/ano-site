@@ -2,16 +2,13 @@ package net.anotheria.anosite.cms.listener;
 
 import net.anotheria.anoprise.metafactory.MetaFactory;
 import net.anotheria.anoprise.metafactory.MetaFactoryException;
-import net.anotheria.anosite.gen.asuserdata.service.IASUserDataService;
 import net.anotheria.anosite.gen.asuserdata.data.UserDef;
-import net.anotheria.anosite.gen.asuserdata.service.IASUserDataService;
 import net.anotheria.anosite.gen.asuserdata.service.ASUserDataServiceException;
-import net.anotheria.anosite.guard.SystemEnvironmentAbstractGuard;
+import net.anotheria.anosite.gen.asuserdata.service.IASUserDataService;
 import net.anotheria.asg.data.DataObject;
-import net.anotheria.asg.data.ObjectInfo;
 import net.anotheria.asg.util.listener.IServiceListener;
-import net.anotheria.util.NumberUtils;
 import net.anotheria.util.crypt.CryptTool;
+import org.apache.log4j.Logger;
 
 import java.util.List;
 
@@ -25,6 +22,11 @@ public class UpdateUserListener implements IServiceListener {
 
 	private static final String AUTH_KEY = "97531f6c04afcbd529028f3f45221cce";
 	private static CryptTool crypt = new CryptTool(AUTH_KEY);
+    private static Logger log;
+
+    static {
+        log = Logger.getLogger(UpdateUserListener.class);
+    }
 
 	@Override
     public void documentUpdated(DataObject dataObject, DataObject dataObject1) {
@@ -51,38 +53,43 @@ public class UpdateUserListener implements IServiceListener {
 		updateUser(null);
 	}
 
-	/**
-     * Just creates string with doc.id && clazz name
-     *
-     * @param dataObjects objects array
-     * @return created string
-     */
+
     private void updateUser(DataObject... dataObjects) {
-       try {
-            IASUserDataService userDataService = MetaFactory.get(IASUserDataService.class);
-            List<UserDef> userDefs = userDataService.getUserDefs();
-            for (DataObject obj : dataObjects) {
-		        UserDef user = (UserDef) obj;
-                //if(checkUsers(userDefs, user))
-                //    user.setLogin(user.getLogin() + user.getId());
-		        if(user.getPassword().indexOf("//encrypted") == -1)
-			        user.setPassword(crypt.encryptToHex(user.getPassword()) + "//encrypted");
+        for (DataObject obj : dataObjects) {
+            UserDef userDef = (UserDef) obj;
+
+            if(isLoginAlreadyExists(userDef.getLogin())) {
+                userDef.setLogin(userDef.getLogin() + userDef.getId());
+            }
+
+            if(!userDef.getPassword().contains("//encrypted")) {
+                userDef.setPassword(crypt.encryptToHex(userDef.getPassword()) + "//encrypted");
             }
         }
+    }
+
+
+    private boolean isLoginAlreadyExists(String login) {
+        try {
+            IASUserDataService userDataService = MetaFactory.get(IASUserDataService.class);
+            List<UserDef> existedUserDefs = userDataService.getUserDefs();
+
+            boolean isExists = false;
+            for(UserDef existedUserDef : existedUserDefs)
+                if(login.equals(existedUserDef.getLogin())) {
+                    isExists = true;
+                }
+
+            return isExists;
+        }
         catch(MetaFactoryException e) {
-            System.out.println("UpdateUserListener corrupted: " + e);
+            log.error("MetaFactory failed", e);
+            throw new RuntimeException("MetaFactory failed", e);
         }
         catch(ASUserDataServiceException e) {
-            System.out.println("UpdateUserListener corrupted: " + e);
+            log.error("ASUserDataService failed", e);
+            throw new RuntimeException("ASUserDataService failed", e);
         }
     }
 
-
-    private boolean checkUsers(List<UserDef> userDefs, UserDef user) {
-        boolean flag = false;
-        for(int i = 0; i < userDefs.size(); i++)
-            if(user.getLogin().equals(userDefs.get(i).getLogin()))
-                flag = true;
-        return flag;
-    }
 }
