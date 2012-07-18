@@ -1,5 +1,6 @@
 <module name="ASUserData">
-	<listener class="net.anotheria.anosite.cms.listener.CreateNewUserListener"/>
+    <listener class="net.anotheria.anosite.cms.listener.CRUDLogListener"/>
+    <listener class="net.anotheria.anosite.cms.listener.UpdateUserListener"/>
 
 	<!-- User document! - "MultiPageDialog" -->
 	<document name="UserDef">
@@ -9,7 +10,7 @@
 				<link name="statusLink" type="single" target="ASUserData.RoleDef"/>
         	</content>
         </property>
-        <property name="password" type="password"/>
+        <property name="password" type="string"/>
 	</document>
 
 	<document name="RoleDef">
