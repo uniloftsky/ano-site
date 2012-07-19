@@ -14,8 +14,6 @@ import java.util.List;
 
 /**
  * Listener for checking user's updates
- *
- * @author h3llka
  */
 
 public class UpdateUserListener implements IServiceListener {
@@ -23,9 +21,17 @@ public class UpdateUserListener implements IServiceListener {
 	private static final String AUTH_KEY = "97531f6c04afcbd529028f3f45221cce";
 	private static CryptTool crypt = new CryptTool(AUTH_KEY);
     private static Logger log;
+    private static IASUserDataService userDataService;
 
     static {
         log = Logger.getLogger(UpdateUserListener.class);
+
+        try {
+            userDataService= MetaFactory.get(IASUserDataService.class);
+        } catch(MetaFactoryException e) {
+            log.error("MetaFactory failed", e);
+            throw new RuntimeException("MetaFactory failed", e);
+        }
     }
 
 	@Override
@@ -49,42 +55,42 @@ public class UpdateUserListener implements IServiceListener {
     }
 
 	@Override
-	public void persistenceChanged() {
-		updateUser(null);
-	}
+	public void persistenceChanged() {}
 
 
-    private void updateUser(DataObject obj) {
-        UserDef userDef = (UserDef) obj;
+    private void updateUser(DataObject dataObject) {
+        UserDef userDef = (UserDef) dataObject;
 
-        if(isLoginAlreadyExists(userDef.getLogin(), userDef.getId())) {
-                userDef.setLogin(userDef.getLogin() + userDef.getId());
+        if(isTryingToCreateExistedLogin(userDef)) {
+            userDef.setLogin(userDef.getLogin() + userDef.getId());
         }
 
         if(!userDef.getPassword().contains("//encrypted")) {
-           userDef.setPassword(crypt.encryptToHex(userDef.getPassword()) + "//encrypted");
+            userDef.setPassword(crypt.encryptToHex(userDef.getPassword()) + "//encrypted");
         }
     }
 
 
-    private boolean isLoginAlreadyExists(String login, String id) {
+    private boolean isTryingToCreateExistedLogin(UserDef userDef) {
         try {
-            IASUserDataService userDataService = MetaFactory.get(IASUserDataService.class);
             List<UserDef> existedUserDefs = userDataService.getUserDefs();
 
-            boolean isExists = false;
+            if (existedUserDefs == null || existedUserDefs.isEmpty()) {
+                return false;
+            }
+
+            boolean isTrying = false;
+
             for(UserDef existedUserDef : existedUserDefs)
-                if(login.equals(existedUserDef.getLogin()) && !id.equals(existedUserDef.getId())) {
-                    isExists = true;
+                if(userDef.getLogin().equals(existedUserDef.getLogin())) {
+                    if (!userDef.getId().equals(existedUserDef.getId())) { // additional comparing of ids to allow user to change his password
+                        isTrying = true;
+                    }
                 }
 
-            return isExists;
-        }
-        catch(MetaFactoryException e) {
-            log.error("MetaFactory failed", e);
-            throw new RuntimeException("MetaFactory failed", e);
-        }
-        catch(ASUserDataServiceException e) {
+            return isTrying;
+
+        } catch(ASUserDataServiceException e) {
             log.error("ASUserDataService failed", e);
             throw new RuntimeException("ASUserDataService failed", e);
         }
