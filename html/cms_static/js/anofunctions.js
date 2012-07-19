@@ -365,6 +365,19 @@ function initSelectedCmsDocsDeletion() {
 	});
 };
 
+//tinyMCE saving Hack
+function customSubmit() {
+	 var editors = tinyMCE.editors;
+	 for(i = 0; i<editors.length; i++){
+		 if (tinyMCE.get(editors[i].id).isHidden()){
+			 tinyMCE.get(editors[i].id).load();
+		 }
+		 else {
+			 tinyMCE.get(editors[i].id).save();
+		 }
+	}
+}
+
 $(function() {
 	initAllCmsDocs();
 	initSelectedCmsDocsDeletion();
