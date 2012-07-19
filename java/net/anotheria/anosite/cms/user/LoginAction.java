@@ -1,5 +1,6 @@
 package net.anotheria.anosite.users;
 
+import net.anotheria.anosite.cms.user.CMSUserManager;
 import net.anotheria.maf.action.ActionForward;
 import net.anotheria.maf.action.ActionMapping;
 import net.anotheria.maf.bean.FormBean;
