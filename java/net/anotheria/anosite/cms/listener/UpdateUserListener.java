@@ -30,7 +30,7 @@ public class UpdateUserListener implements IServiceListener {
 
 	@Override
     public void documentUpdated(DataObject dataObject, DataObject dataObject1) {
-        updateUser(dataObject, dataObject1);
+        updateUser(dataObject1);
     }
 
     @Override
@@ -54,29 +54,27 @@ public class UpdateUserListener implements IServiceListener {
 	}
 
 
-    private void updateUser(DataObject... dataObjects) {
-        for (DataObject obj : dataObjects) {
-            UserDef userDef = (UserDef) obj;
+    private void updateUser(DataObject obj) {
+        UserDef userDef = (UserDef) obj;
 
-            if(isLoginAlreadyExists(userDef.getLogin())) {
+        if(isLoginAlreadyExists(userDef.getLogin(), userDef.getId())) {
                 userDef.setLogin(userDef.getLogin() + userDef.getId());
-            }
+        }
 
-            if(!userDef.getPassword().contains("//encrypted")) {
-                userDef.setPassword(crypt.encryptToHex(userDef.getPassword()) + "//encrypted");
-            }
+        if(!userDef.getPassword().contains("//encrypted")) {
+           userDef.setPassword(crypt.encryptToHex(userDef.getPassword()) + "//encrypted");
         }
     }
 
 
-    private boolean isLoginAlreadyExists(String login) {
+    private boolean isLoginAlreadyExists(String login, String id) {
         try {
             IASUserDataService userDataService = MetaFactory.get(IASUserDataService.class);
             List<UserDef> existedUserDefs = userDataService.getUserDefs();
 
             boolean isExists = false;
             for(UserDef existedUserDef : existedUserDefs)
-                if(login.equals(existedUserDef.getLogin())) {
+                if(login.equals(existedUserDef.getLogin()) && !id.equals(existedUserDef.getId())) {
                     isExists = true;
                 }
 
