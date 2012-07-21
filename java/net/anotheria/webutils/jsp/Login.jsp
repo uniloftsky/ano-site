@@ -31,7 +31,7 @@
 		      Username:&nbsp;
 		  	</td>
 		  	<td width="65%" align="left">
-		      <input class="myinput" type="text" size="20" name="pUserId">
+		      <input class="myinput" type="text" size="20" name="pUserLogin">
 		  	</td>
 		  </tr>
 		  <tr class="logintextq">

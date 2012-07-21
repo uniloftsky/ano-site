@@ -26,8 +26,8 @@ import java.util.concurrent.ConcurrentHashMap;
  **/
 public class CMSUserManager {
     
-    private static final String AUTH_KEY = "97531f6c04afcbd529028f3f45221cce";
-    private static CryptTool crypt = new CryptTool(AUTH_KEY);
+    private static final String CRYPT_KEY = "97531f6c04afcbd529028f3f45221cce";
+    private static CryptTool crypt;
 
     private static Map<String, CMSUser> users;
 
@@ -38,12 +38,13 @@ public class CMSUserManager {
 
     static {
         log = Logger.getLogger(CMSUserManager.class);
+        crypt = new CryptTool(CRYPT_KEY);
     }
 
 
     private CMSUserManager() {
         if (!inited)
-            throw new RuntimeException("CMS user manager not inited");
+            throw new RuntimeException("CMS user manager is not initialized");
     }
 
 
@@ -55,9 +56,9 @@ public class CMSUserManager {
     }
 
 
-    public boolean canLoginUser(String userId, String password) {
-        CMSUser user = users.get(userId);
-        password = crypt.encryptToHex(password) + "//encrypted";
+    public boolean canLoginUser(String login, String password) {
+        CMSUser user = users.get(login);
+        password = encryptPassword(password);
         if (user == null) {
             return false;
         }
@@ -66,12 +67,13 @@ public class CMSUserManager {
 
 
     public boolean userInRole(String userId, String role) {
-        return isKnownUser(userId) && users.get(userId).isUserInRole(role);
+        String login = getUserDefLoginById(userId);
+        return isKnownUser(login) && users.get(login).isUserInRole(role);
     }
 
 
-    public boolean isKnownUser(String userId) {
-        return users.containsKey(userId);
+    public boolean isKnownUser(String login) {
+        return users.containsKey(login);
     }
 
 
@@ -91,8 +93,10 @@ public class CMSUserManager {
             scanUsers();
 
             inited = true;
+
         } catch (MetaFactoryException e) {
-            log.error("init", e);
+            log.error("init failed", e);
+            throw new RuntimeException("MetaFactory failed", e);
         }
     }
 
@@ -113,11 +117,8 @@ public class CMSUserManager {
 
             // adding default users
             // + admin:admin if necessary
-            addDefaultUser("admin", crypt.encryptToHex("admin") + "//encrypted", "admin");
+            addDefaultUser("admin", encryptPassword("admin"), "admin");
 
-        } catch (MetaFactoryException e) {
-            log.error("MetaFactory failed", e);
-            throw new RuntimeException("MetaFactory failed", e);
         } catch (ASUserDataServiceException e) {
             log.error("ASUserDataService failed", e);
             throw new RuntimeException("ASUserDataService failed", e);
@@ -125,9 +126,7 @@ public class CMSUserManager {
     }
 
 
-    private static void addDefaultUser(String login, String password, String role) throws ASUserDataServiceException, MetaFactoryException {
-        IASUserDataService userDataService = MetaFactory.get(IASUserDataService.class);
-
+    private static void addDefaultUser(String login, String password, String role) throws ASUserDataServiceException {
         List<UserDef> userDefs = userDataService.getUserDefsByProperty(UserDef.PROP_LOGIN, login);
         if (userDefs == null || userDefs.isEmpty()) { // check if such user does not exist
             List<RoleDef> roleDefs = userDataService.getRoleDefsByProperty(RoleDef.PROP_NAME, role);
@@ -146,9 +145,7 @@ public class CMSUserManager {
     }
 
 
-    private static void addDefaultRole(String role) throws ASUserDataServiceException, MetaFactoryException {
-        IASUserDataService userDataService = MetaFactory.get(IASUserDataService.class);
-
+    private static void addDefaultRole(String role) throws ASUserDataServiceException {
         List<RoleDef> roleDefs = userDataService.getRoleDefsByProperty(RoleDef.PROP_NAME, role);
         if (roleDefs == null || roleDefs.isEmpty()) { // check if such role does not exist
             RoleDefBuilder roleDefBuilder = new RoleDefBuilder();
@@ -160,26 +157,56 @@ public class CMSUserManager {
 
     public static void changeUserPassword(String login, String newPassword) {
         try {
-            IASUserDataService userDataService = MetaFactory.get(IASUserDataService.class);
-            List<UserDef> userDefs = userDataService.getUserDefsByProperty(UserDef.PROP_LOGIN, login);
-            UserDef user = userDefs.get(0);
-            user.setPassword(crypt.encryptToHex(newPassword) + "//encrypted");
+            UserDef user = getUserDefByLogin(login);
+            user.setPassword(encryptPassword(newPassword));
             userDataService.updateUserDef(user);
-        } catch (MetaFactoryException e) {
-            log.error("MetaFactory failed", e);
-            throw new RuntimeException("MetaFactory failed", e);
         } catch (ASUserDataServiceException e) {
-            log.error("ASUserDataService failed", e);
+            log.error("change user password failed", e);
+            throw new RuntimeException("ASUserDataService failed", e);
+        }
+    }
+
+
+    public static String encryptPassword(String plainTextPassword) {
+        return crypt.encryptToHex(plainTextPassword) + getCryptMarker();
+    }
+
+    public static String getCryptMarker() {
+        return "//encrypted";
+    }
+
+
+    public static String getUserDefIdByLogin(String login) {
+         return getUserDefByLogin(login).getId();
+    }
+
+
+    public static String getUserDefLoginById(String id) {
+        try {
+            return userDataService.getUserDef(id).getLogin();
+
+        } catch (ASUserDataServiceException e) {
+            log.error("get user def by login failed", e);
+            throw new RuntimeException("ASUserDataService failed", e);
+        }
+    }
+
+
+    private static UserDef getUserDefByLogin (String login) {
+        try {
+            List<UserDef> userDefs = userDataService.getUserDefsByProperty(UserDef.PROP_LOGIN, login);
+            return userDefs.get(0);
+
+        } catch (ASUserDataServiceException e) {
+            log.error("get user def by login failed", e);
             throw new RuntimeException("ASUserDataService failed", e);
         }
     }
 
 
     public static void scanUsers() {
-        String username;
-        String password;
-        List<String> rolesIds;
-        List<String> roles;
+        String username, password;
+        List<String> rolesIds, roles;
 
         try {
             List<UserDef> usersList = userDataService.getUserDefs();
@@ -204,7 +231,8 @@ public class CMSUserManager {
                 }
             }
         } catch (ASUserDataServiceException e) {
-            log.error("scan users", e);
+            log.error("scan users failed", e);
+            throw new RuntimeException("ASUserDataService failed", e);
         }
     }
 

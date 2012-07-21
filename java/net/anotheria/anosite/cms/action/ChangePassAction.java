@@ -17,17 +17,24 @@ public class ChangePassAction extends BaseAction {
 
     private static final String LOGIN_PAGE_PATH = "/cms/login";
     private static final String INDEX_PAGE_PATH = "/cms/index";
-    private static final String IS_SUBMIT_PARAM = "isSubmit";
-    private static final String OLD_PASS_PARAM = "OldPass";
-    private static final String NEW_PASS_1_PARAM = "NewPass1";
-    private static final String NEW_PASS_2_PARAM = "NewPass2";
+
+    private static final String P_IS_SUBMIT = "pIsSubmit";
+    private static final String P_OLD_PASS = "pOldPass";
+    private static final String P_NEW_PASS_1 = "pNewPass1";
+    private static final String P_NEW_PASS_2 = "pNewPass2";
+
     private static final String BEAN_CHANGE_PASS_PAGE_MESSAGE = "Message";
+    private static final String BEAN_USER_LOGIN = "currentUserLogin";
+
 
     @Override
     public ActionCommand execute(ActionMapping mapping, FormBean formBean, HttpServletRequest req, HttpServletResponse res) throws Exception {
 
         /* page is just opened */
-        if (req.getParameter(IS_SUBMIT_PARAM) == null) {
+        String userId = (String)getBeanFromSession(req, BEAN_USER_ID);
+        String login = CMSUserManager.getUserDefLoginById(userId);
+
+        if (req.getParameter(P_IS_SUBMIT) == null) {
             /* for case when not logged user goes on ChangePass page directly */
             if (isAuthorizationRequired()){
                 boolean authorized = checkAuthorization(req);
@@ -36,6 +43,7 @@ public class ChangePassAction extends BaseAction {
                     return null;
                 }
 
+                addBeanToSession(req, BEAN_USER_LOGIN, login); // updating user name in session if user have changed his login while current session
                 addBeanToRequest(req, BEAN_CHANGE_PASS_PAGE_MESSAGE, "Fill this fields to change password.");
                 return mapping.findCommand("success");
             }
@@ -43,12 +51,11 @@ public class ChangePassAction extends BaseAction {
 
         /* user have submitted ChangePass form */
         CMSUserManager manager = CMSUserManager.getInstance();
-        String userId = (String)getBeanFromSession(req, BEAN_USER_ID);
-        String oldPass = req.getParameter(OLD_PASS_PARAM);
+        String oldPass = req.getParameter(P_OLD_PASS);
 
-        if (req.getParameter(IS_SUBMIT_PARAM).equals("true") && manager.canLoginUser(userId, oldPass)) {
-            String newPass1 = req.getParameter(NEW_PASS_1_PARAM);
-            String newPass2 = req.getParameter(NEW_PASS_2_PARAM);
+        if (req.getParameter(P_IS_SUBMIT).equals("true") && manager.canLoginUser(login, oldPass)) {
+            String newPass1 = req.getParameter(P_NEW_PASS_1);
+            String newPass2 = req.getParameter(P_NEW_PASS_2);
 
             // new password field is empty
             if (newPass1.isEmpty()) {
@@ -63,13 +70,13 @@ public class ChangePassAction extends BaseAction {
             }
 
             // changing password
-            CMSUserManager.changeUserPassword(userId, newPass1);
-
-            // redirect to index page (login with new password first will not be required while session is alive)
-            res.sendRedirect(INDEX_PAGE_PATH);
+            CMSUserManager.changeUserPassword(login, newPass1);
 
             // scan users to update password (user should be able to login with new password from another browser)
             CMSUserManager.scanUsers();
+
+            // redirect to index page (login with new password first will not be required while session is alive)
+            res.sendRedirect(INDEX_PAGE_PATH);
             return null;
         }
         addBeanToRequest(req, BEAN_CHANGE_PASS_PAGE_MESSAGE, "Incorrect current password.");

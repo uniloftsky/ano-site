@@ -10,18 +10,21 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 /**
  * @author another
  * @see net.anotheria.anosite.cms.user.CMSUserManager
  */
 public class LoginAction extends AccessControlMafAction {
 
-    public static final String P_USER_ID = "pUserId";
+    public static final String P_USER_LOGIN = "pUserLogin";
     public static final String P_PASSWORD = "pPassword";
+
+    private static final String BEAN_USER_LOGIN = "currentUserLogin";
+
 
 
     private CMSUserManager manager;
+
 
     public LoginAction() {
         manager = CMSUserManager.getInstance();
@@ -46,11 +49,13 @@ public class LoginAction extends AccessControlMafAction {
                 int index = authString.indexOf(AUTH_DELIMITER);
                 String userId = authString.substring(0, index);
                 String password = authString.substring(index + 1);
+                String login = CMSUserManager.getUserDefLoginById(userId);
 
-                if (userId != null && password != null) {
-                    if (manager.canLoginUser(userId, password)) {
+                if (login != null && password != null) {
+                    if (manager.canLoginUser(login, password)) {
                         // CAUTION: HttpSession is serializable in Tomcat by default!
                         addBeanToSession(req, BEAN_USER_ID, userId);
+                        addBeanToSession(req, BEAN_USER_LOGIN, login);
                         res.sendRedirect(getRedirectTarget(req));
                         return null;
                     }
@@ -62,19 +67,23 @@ public class LoginAction extends AccessControlMafAction {
 
         /// END COOKIE AUTH
 
-        String userId, password;
+        String login, password, userId;
 
         try {
-            userId = getStringParameter(req, P_USER_ID);
+            login = getStringParameter(req, P_USER_LOGIN);
             password = getStringParameter(req, P_PASSWORD);
-            if (!manager.canLoginUser(userId, password))
+
+            if (!manager.canLoginUser(login, password))
                 throw new RuntimeException("Can't login.");
 
+            userId = CMSUserManager.getUserDefIdByLogin(login);
             res.addCookie(createAuthCookie(req, userId, password));
         } catch (Exception e) {
             return mapping.findForward("success");
         }
+
         addBeanToSession(req, BEAN_USER_ID, userId);
+        addBeanToSession(req, BEAN_USER_LOGIN, login);
         res.sendRedirect(getRedirectTarget(req));
         return null;
     }

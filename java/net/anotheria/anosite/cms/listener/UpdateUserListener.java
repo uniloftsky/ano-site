@@ -2,24 +2,24 @@ package net.anotheria.anosite.cms.listener;
 
 import net.anotheria.anoprise.metafactory.MetaFactory;
 import net.anotheria.anoprise.metafactory.MetaFactoryException;
+import net.anotheria.anosite.cms.user.CMSUserManager;
 import net.anotheria.anosite.gen.asuserdata.data.UserDef;
 import net.anotheria.anosite.gen.asuserdata.service.ASUserDataServiceException;
 import net.anotheria.anosite.gen.asuserdata.service.IASUserDataService;
 import net.anotheria.asg.data.DataObject;
 import net.anotheria.asg.util.listener.IServiceListener;
-import net.anotheria.util.crypt.CryptTool;
 import org.apache.log4j.Logger;
 
 import java.util.List;
 
 /**
  * Listener for checking user's updates
+ *
+ * @see CMSUserManager
  */
 
 public class UpdateUserListener implements IServiceListener {
 
-	private static final String AUTH_KEY = "97531f6c04afcbd529028f3f45221cce";
-	private static CryptTool crypt = new CryptTool(AUTH_KEY);
     private static Logger log;
     private static IASUserDataService userDataService;
 
@@ -65,9 +65,13 @@ public class UpdateUserListener implements IServiceListener {
             userDef.setLogin(userDef.getLogin() + userDef.getId());
         }
 
-        if(!userDef.getPassword().contains("//encrypted")) {
-            userDef.setPassword(crypt.encryptToHex(userDef.getPassword()) + "//encrypted");
+        if(!userDef.getPassword().contains(CMSUserManager.getCryptMarker())) {
+            userDef.setPassword(CMSUserManager.encryptPassword(userDef.getPassword()));
         }
+
+        // updating info as user probably has new login or password
+        CMSUserManager.scanUsers();
+
     }
 
 
