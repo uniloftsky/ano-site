@@ -1,66 +1,37 @@
-<%@ page contentType="text/html;charset=UTF-8" session="true"
-%><html>
+<%@ page contentType="text/html;charset=UTF-8" session="true"%>
+<!DOCTYPE html>
+
+<html>
+
 <head>
-<title>please login</title>
-<META http-equiv=Content-Type content="text/html; charset=UTF-8">
+	<meta charset="utf-8">
+	<title>Login page</title>
+
+	<link rel="stylesheet" type="text/css" href="/cms_static/css/newadmin.css">
 </head>
-<body bgcolor="#FFFFFF" leftMargin="0" topMargin="0" marginwidth="0" marginheight="0">
-<center>
-<br><br><br>
-<table width=500 border=0 cellpadding=1 cellspacing=0>
- <tr class="aktiv">
-   <td width=100%>
-		<table width=100% border=0 cellpadding=3 cellspacing=0>
-		 <form name="Login" method="POST" action="login">
-		  <tr width=100% class="taborange">
-		    <td valign="middle" colspan=2>
-				<strong>LOGIN</strong>
-		    </td> 
-		  </tr>  
-		  <tr width=100% class="logintext">
-		   <td colspan=2></td>
-		  </tr>
-		  <tr class="qsinfo">
-		  	<td colspan="2" align="center"><br>
-		      This page is not public. Please login to access this page.
-		      <br><br>
-		  	</td>
-		  </tr>
-		  <tr class="logintextq">
-		  	<td width=35% align="right">
-		      Username:&nbsp;
-		  	</td>
-		  	<td width="65%" align="left">
-		      <input class="myinput" type="text" size="20" name="pUserLogin">
-		  	</td>
-		  </tr>
-		  <tr class="logintextq">
-		  	<td width=35% align="right">
-		      Password:&nbsp;
-		  	</td>
-		  	<td width="65%" align="left">
-		      <input class="myinput" type="password" size="20" name="pPassword">
-		  	</td>
-		  </tr>
-		  <tr class="logintext">
-		  	<td colspan="2">&nbsp;</td>
-		  </tr>
-		  <tr class="logintextq">
-		  	<td width=35% align="right">
-		      &nbsp;
-		  	</td>
-		  	<td width="65%" align="left" class="logintextq">
-		            <input type="submit" value="Login">
-		  	</td>
-		  </tr>
-		  <tr width=100% class="logintextq">
-		    <td colspan=2></td>
-		  </tr>
-		  </form>
-		</table>
-	</td>
- </tr>
-</table>
-</center>
-</BODY>
-</HTML>
+<body class="login_page">
+	<div class="login_box">
+		<form name="Login" method="POST" action="login">
+			<div class="login_box_header">
+				<a href="" class="login_asg_logo"></a>
+				<h2 class="login_box_header_title">Login</h2>
+			</div>
+			<div class="login_hint_box">
+				This page is not public. Please login to access this page.
+			</div>
+
+			<div class="login_input_box">
+				<label class="input_box_label" for="login_username">Username:</label>
+				<input id="login_username" type="text" name="pUserLogin">
+			</div>
+
+			<div class="login_input_box">
+				<label class="input_box_label" for="login_password">Password:</label>
+				<input id="login_password" type="password" name="pPassword">
+			</div>
+
+			<input class='login_button' type="submit" value="Login">
+		</form>
+	</div>
+</body>
+</html>
