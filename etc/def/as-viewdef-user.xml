@@ -16,7 +16,7 @@
                     <decorator name="editLink"/>
                 </element>
                 <element type="field" name="status" comparable="true">
-		            <decorator name="editLink"/>
+                    <decorator name="roles"/>
 		        </element>
                 <element type="function" name="edit"/>
                 <element type="function" name="deleteWithConfirmation"/>
@@ -28,9 +28,7 @@
                     <element type="empty"/>
                     <element type="field" name="id" readonly="true"/>
                     <element type="empty"/>
-                    <element type="field" name="login" title="Login">
-			<decorator name="editLink"/>
-		    </element>
+                    <element type="field" name="login" title="Login"/>
                     <element type="empty"/>
                     <element type="field" name="status" title="Status"/>
                     <element type="empty"/>
