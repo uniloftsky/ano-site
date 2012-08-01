@@ -19,9 +19,7 @@ public class LoginAction extends AccessControlMafAction {
     public static final String P_USER_LOGIN = "pUserLogin";
     public static final String P_PASSWORD = "pPassword";
 
-    private static final String BEAN_USER_LOGIN = "currentUserLogin";
-
-
+    private static final String BEAN_USER_DEF_ID = "currentUserDefId";
 
     private CMSUserManager manager;
 
@@ -47,15 +45,15 @@ public class LoginAction extends AccessControlMafAction {
 
             if (authString != null) {
                 int index = authString.indexOf(AUTH_DELIMITER);
-                String userId = authString.substring(0, index);
+                String login = authString.substring(0, index);
                 String password = authString.substring(index + 1);
-                String login = CMSUserManager.getUserDefLoginById(userId);
+                String userId = CMSUserManager.getIdByLogin(login);
 
                 if (login != null && password != null) {
                     if (manager.canLoginUser(login, password)) {
                         // CAUTION: HttpSession is serializable in Tomcat by default!
-                        addBeanToSession(req, BEAN_USER_ID, userId);
-                        addBeanToSession(req, BEAN_USER_LOGIN, login);
+                        addBeanToSession(req, BEAN_USER_ID, login);
+                        addBeanToSession(req, BEAN_USER_DEF_ID, userId);
                         res.sendRedirect(getRedirectTarget(req));
                         return null;
                     }
@@ -76,14 +74,14 @@ public class LoginAction extends AccessControlMafAction {
             if (!manager.canLoginUser(login, password))
                 throw new RuntimeException("Can't login.");
 
-            userId = CMSUserManager.getUserDefIdByLogin(login);
-            res.addCookie(createAuthCookie(req, userId, password));
+            userId = CMSUserManager.getIdByLogin(login);
+            res.addCookie(createAuthCookie(req, login, password));
         } catch (Exception e) {
             return mapping.findForward("success");
         }
 
-        addBeanToSession(req, BEAN_USER_ID, userId);
-        addBeanToSession(req, BEAN_USER_LOGIN, login);
+        addBeanToSession(req, BEAN_USER_ID, login);
+        addBeanToSession(req, BEAN_USER_DEF_ID, userId);
         res.sendRedirect(getRedirectTarget(req));
         return null;
     }

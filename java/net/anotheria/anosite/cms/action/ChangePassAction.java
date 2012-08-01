@@ -1,6 +1,5 @@
 package net.anotheria.anosite.cms.action;
 
-import net.anotheria.anodoc.util.context.ContextManager;
 import net.anotheria.anosite.cms.user.CMSUserManager;
 import net.anotheria.maf.action.ActionCommand;
 import net.anotheria.maf.action.ActionMapping;
@@ -24,15 +23,15 @@ public class ChangePassAction extends BaseAction {
     private static final String P_NEW_PASS_2 = "pNewPass2";
 
     private static final String BEAN_CHANGE_PASS_PAGE_MESSAGE = "Message";
-    private static final String BEAN_USER_LOGIN = "currentUserLogin";
+    private static final String BEAN_USER_DEF_ID = "currentUserDefId";
 
 
     @Override
     public ActionCommand execute(ActionMapping mapping, FormBean formBean, HttpServletRequest req, HttpServletResponse res) throws Exception {
 
         /* page is just opened */
-        String userId = (String)getBeanFromSession(req, BEAN_USER_ID);
-        String login = CMSUserManager.getUserDefLoginById(userId);
+        String userId = (String)getBeanFromSession(req, BEAN_USER_DEF_ID);
+        String login = CMSUserManager.getLoginById(userId);
 
         if (req.getParameter(P_IS_SUBMIT) == null) {
             /* for case when not logged user goes on ChangePass page directly */
@@ -43,7 +42,7 @@ public class ChangePassAction extends BaseAction {
                     return null;
                 }
 
-                addBeanToSession(req, BEAN_USER_LOGIN, login); // updating user name in session if user have changed his login while current session
+                addBeanToSession(req, BEAN_USER_ID, login); // updating user name in session if user have changed his login while current session
                 addBeanToRequest(req, BEAN_CHANGE_PASS_PAGE_MESSAGE, "Fill this fields to change password.");
                 return mapping.findCommand("success");
             }
@@ -86,10 +85,7 @@ public class ChangePassAction extends BaseAction {
 
     protected boolean checkAuthorization(HttpServletRequest req){
         String userId = (String)getBeanFromSession(req, BEAN_USER_ID);
-        if(userId == null)
-            return false;
-        ContextManager.getCallContext().setCurrentAuthor(userId);
-        return true;
+        return userId != null;
     }
 
 

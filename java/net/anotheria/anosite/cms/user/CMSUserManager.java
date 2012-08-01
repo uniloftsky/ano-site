@@ -66,8 +66,7 @@ public class CMSUserManager {
     }
 
 
-    public boolean userInRole(String userId, String role) {
-        String login = getUserDefLoginById(userId);
+    public boolean userInRole(String login, String role) {
         return isKnownUser(login) && users.get(login).isUserInRole(role);
     }
 
@@ -176,12 +175,12 @@ public class CMSUserManager {
     }
 
 
-    public static String getUserDefIdByLogin(String login) {
+    public static String getIdByLogin(String login) {
          return getUserDefByLogin(login).getId();
     }
 
 
-    public static String getUserDefLoginById(String id) {
+    public static String getLoginById(String id) {
         try {
             return userDataService.getUserDef(id).getLogin();
 

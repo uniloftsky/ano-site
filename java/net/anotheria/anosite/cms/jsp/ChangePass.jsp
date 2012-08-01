@@ -11,7 +11,7 @@
   <meta charset="utf-8">
   <title>Login page</title>
 
-  <link rel="stylesheet" type="text/css" href="/cms_static/css/newadmin.css">
+  <link rel="stylesheet" type="text/css" href="../cms_static/css/newadmin.css">
 </head>
 <body class="login_page">
   <div class="login_box">
@@ -26,7 +26,7 @@
 
       <div class="login_input_box">
         <label class="change_password_label" for="change_password_login">Your login:</label>
-        <input id="change_password_login" type="text" name="Login" disabled="disabled" value="<ano:write name="currentUserLogin"/>">
+        <input id="change_password_login" type="text" name="Login" disabled="disabled" value="<ano:write name="currentUserId"/>">
       </div>
 
       <div class="login_input_box">
