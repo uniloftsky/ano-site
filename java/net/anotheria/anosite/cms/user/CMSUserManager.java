@@ -8,7 +8,7 @@ import net.anotheria.anosite.gen.asuserdata.data.UserDef;
 import net.anotheria.anosite.gen.asuserdata.data.UserDefBuilder;
 import net.anotheria.anosite.gen.asuserdata.service.ASUserDataServiceException;
 import net.anotheria.anosite.gen.asuserdata.service.IASUserDataService;
-import net.anotheria.util.crypt.CryptTool;
+import net.anotheria.util.crypt.MD5Util;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -25,9 +25,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * @see net.anotheria.anosite.gen.shared.action.BaseAnositeAction
  **/
 public class CMSUserManager {
-    
-    private static final String CRYPT_KEY = "97531f6c04afcbd529028f3f45221cce";
-    private static CryptTool crypt;
 
     private static Map<String, CMSUser> users;
 
@@ -38,7 +35,6 @@ public class CMSUserManager {
 
     static {
         log = Logger.getLogger(CMSUserManager.class);
-        crypt = new CryptTool(CRYPT_KEY);
     }
 
 
@@ -58,7 +54,7 @@ public class CMSUserManager {
 
     public boolean canLoginUser(String login, String password) {
         CMSUser user = users.get(login);
-        password = encryptPassword(password);
+        password = hashPassword(password);
         if (user == null) {
             return false;
         }
@@ -85,10 +81,10 @@ public class CMSUserManager {
         try {
             userDataService = MetaFactory.get(IASUserDataService.class);
             
-            // initial creating of default roles and users
+            /* initial creating of default roles and users */
             createNecessaryDefaultRolesAndUsers();
 
-            // initial filling of map from CMS persistence files
+            /* initial filling of map from CMS persistence files */
             scanUsers();
 
             inited = true;
@@ -102,21 +98,15 @@ public class CMSUserManager {
 
     private static void createNecessaryDefaultRolesAndUsers() {
         try {
-            // adding default roles
-            // + developer if already not exists
+            /* adding each of default roles if it already not exists */
             addDefaultRole("developer");
-            // + cmsuser if already not exists
             addDefaultRole("cmsuser");
-            // + editor if already not exists
             addDefaultRole("editor");
-            // + producer if already not exists
             addDefaultRole("producer");
-            // + admin if already not exists
             addDefaultRole("admin");
 
-            // adding default users
-            // + admin:admin if necessary
-            addDefaultUser("admin", encryptPassword("admin"), "admin");
+            /* adding default users */
+            addDefaultUser("admin", hashPassword("admin"), "admin"); // + admin:admin if necessary
 
         } catch (ASUserDataServiceException e) {
             log.error("ASUserDataService failed", e);
@@ -157,7 +147,7 @@ public class CMSUserManager {
     public static void changeUserPassword(String login, String newPassword) {
         try {
             UserDef user = getUserDefByLogin(login);
-            user.setPassword(encryptPassword(newPassword));
+            user.setPassword(hashPassword(newPassword));
             userDataService.updateUserDef(user);
         } catch (ASUserDataServiceException e) {
             log.error("change user password failed", e);
@@ -166,12 +156,12 @@ public class CMSUserManager {
     }
 
 
-    public static String encryptPassword(String plainTextPassword) {
-        return crypt.encryptToHex(plainTextPassword) + getCryptMarker();
+    public static String hashPassword(String plainTextPassword) {
+        return MD5Util.getMD5Hash(plainTextPassword) + getHashMarker();
     }
 
-    public static String getCryptMarker() {
-        return "//encrypted";
+    public static String getHashMarker() {
+        return "//hash";
     }
 
 

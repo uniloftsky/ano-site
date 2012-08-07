@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  * Listener for checking user's updates
- *
+ * @author vbezuhlyi
  * @see CMSUserManager
  */
 
@@ -65,11 +65,11 @@ public class UpdateUserListener implements IServiceListener {
             userDef.setLogin(userDef.getLogin() + userDef.getId());
         }
 
-        if(!userDef.getPassword().contains(CMSUserManager.getCryptMarker())) {
-            userDef.setPassword(CMSUserManager.encryptPassword(userDef.getPassword()));
+        if(!userDef.getPassword().contains(CMSUserManager.getHashMarker())) {
+            userDef.setPassword(CMSUserManager.hashPassword(userDef.getPassword()));
         }
 
-        // updating info as user probably has new login or password
+        /* updating info as user probably has new login or password */
         CMSUserManager.scanUsers();
 
     }

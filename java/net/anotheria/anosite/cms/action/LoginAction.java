@@ -11,8 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * @author another
+ * @author vbezuhlyi
  * @see net.anotheria.anosite.cms.user.CMSUserManager
+ * @see LogoutAction
+ * @see ChangePassAction
  */
 public class LoginAction extends AccessControlMafAction {
 
@@ -21,18 +23,18 @@ public class LoginAction extends AccessControlMafAction {
 
     private static final String BEAN_USER_DEF_ID = "currentUserDefId";
 
-    private CMSUserManager manager;
+    private CMSUserManager userManager;
 
 
     public LoginAction() {
-        manager = CMSUserManager.getInstance();
+        userManager = CMSUserManager.getInstance();
     }
 
 
     public ActionForward execute(ActionMapping mapping, FormBean bean, HttpServletRequest req, HttpServletResponse res) throws Exception {
-        // // // First try to read auth from cookie.
         CMSUserManager.scanUsers();
 
+        /* first try to read auth from cookie */
         try {
             String authString = null;
             String cookieName = getAuthCookieName(req);
@@ -50,8 +52,8 @@ public class LoginAction extends AccessControlMafAction {
                 String userId = CMSUserManager.getIdByLogin(login);
 
                 if (login != null && password != null) {
-                    if (manager.canLoginUser(login, password)) {
-                        // CAUTION: HttpSession is serializable in Tomcat by default!
+                    if (userManager.canLoginUser(login, password)) {
+                        /* CAUTION: HttpSession is serializable in Tomcat by default! */
                         addBeanToSession(req, BEAN_USER_ID, login);
                         addBeanToSession(req, BEAN_USER_DEF_ID, userId);
                         res.sendRedirect(getRedirectTarget(req));
@@ -62,8 +64,7 @@ public class LoginAction extends AccessControlMafAction {
         } catch (Exception e) {
             log.warn("read auth from cookie", e);
         }
-
-        /// END COOKIE AUTH
+        /* end of cookie auth */
 
         String login, password, userId;
 
@@ -71,7 +72,7 @@ public class LoginAction extends AccessControlMafAction {
             login = getStringParameter(req, P_USER_LOGIN);
             password = getStringParameter(req, P_PASSWORD);
 
-            if (!manager.canLoginUser(login, password))
+            if (!userManager.canLoginUser(login, password))
                 throw new RuntimeException("Can't login.");
 
             userId = CMSUserManager.getIdByLogin(login);
@@ -108,3 +109,11 @@ public class LoginAction extends AccessControlMafAction {
 
 
 }
+
+/* TODO:
+ * In future it's better to generate ChangePassAction and LoginAction to make it possible to extend them
+ * from BaseAnositeAction which class name is generated depending on project name (e.g. BaseAnositeExampleProjectAction),
+ * so duplicated attribute BEAN_USER_DEF_ID would be in single place. Thus, creation of cookies and it's reading methods
+ * should be moved directly into LoginAction to remove dependency from AccessControlMafAction,
+ * that allows to extend LoginAction from BaseAnositeAction.
+ */

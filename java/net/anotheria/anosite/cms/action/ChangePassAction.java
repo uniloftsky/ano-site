@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author vbezuhlyi
+ * @see LoginAction
+ * @see CMSUserManager
  */
 public class ChangePassAction extends BaseAction {
 
@@ -29,7 +31,7 @@ public class ChangePassAction extends BaseAction {
     @Override
     public ActionCommand execute(ActionMapping mapping, FormBean formBean, HttpServletRequest req, HttpServletResponse res) throws Exception {
 
-        /* page is just opened */
+        /* page is just opened (it's not submit) */
         String userId = (String)getBeanFromSession(req, BEAN_USER_DEF_ID);
         String login = CMSUserManager.getLoginById(userId);
 
@@ -42,13 +44,12 @@ public class ChangePassAction extends BaseAction {
                     return null;
                 }
 
-                addBeanToSession(req, BEAN_USER_ID, login); // updating user name in session if user have changed his login while current session
                 addBeanToRequest(req, BEAN_CHANGE_PASS_PAGE_MESSAGE, "Fill this fields to change password.");
                 return mapping.findCommand("success");
             }
         }
 
-        /* user have submitted ChangePass form */
+        /* so, user have submitted ChangePass form */
         CMSUserManager manager = CMSUserManager.getInstance();
         String oldPass = req.getParameter(P_OLD_PASS);
 
@@ -94,3 +95,12 @@ public class ChangePassAction extends BaseAction {
     }
 
 }
+
+/* TODO:
+ * In future it's better to generate ChangePassAction and LoginAction to make it possible to extend them
+ * from BaseAnositeAction which class name is generated depending on project name (e.g. BaseAnositeExampleProjectAction),
+ * so duplicated attribute BEAN_USER_DEF_ID would be in single place. Thus, creation of cookies and it's reading methods
+ * should be moved directly into LoginAction to remove dependency from AccessControlMafAction,
+ * that allows to extend LoginAction from BaseAnositeAction.
+ */
+
