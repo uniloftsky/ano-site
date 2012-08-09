@@ -8,3 +8,5 @@
     <!--@include:as-datadef-georesources.xml -->
     <!--@include:as-datadef-action.xml -->
     <!--@include:as-datadef-wizard.xml -->
+	<!--@include:as-datadef-user.xml -->
+
