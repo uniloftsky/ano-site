@@ -1,4 +1,4 @@
-package net.anotheria.anosite.users;
+package net.anotheria.anosite.cms.user;
 
 import net.anotheria.anosite.cms.user.CMSUserManager;
 import net.anotheria.maf.action.ActionForward;

@@ -7,7 +7,7 @@
 	<meta charset="utf-8">
 	<title>Login page</title>
 
-	<link rel="stylesheet" type="text/css" href="../cms_static/css/newadmin.css">
+	<link rel="stylesheet" type="text/css" href="/cms_static/css/newadmin.css">
 </head>
 <body class="login_page">
 	<div class="login_box">

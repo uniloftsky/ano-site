@@ -1,4 +1,4 @@
-package net.anotheria.anosite.users;
+package net.anotheria.anosite.cms.user;
 
 import net.anotheria.anodoc.util.context.ContextManager;
 import net.anotheria.anosite.cms.user.CMSUserManager;
