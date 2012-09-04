@@ -25,6 +25,10 @@ input.search {height:14px; padding:1px 2px; color:#808080; font-size:12px; margi
 .adv_s_open ul li label {display:block; float:left; font-size:12px; margin-top:1px;}
 .button {float:left; height:19px; padding-right:4px; background:url("../img/blue_borders.gif") 100% -35px no-repeat; display:block; margin-right:10px;}
 .button span {float:left; display:block; color:white; font-size:12px; height:17px; padding:2px 4px 0 8px; background:url("../img/blue_borders.gif") 0 -16px no-repeat;}
+.button_grey {float:left; height:19px; padding-right:4px; background:url("../img/blue_borders_1.gif") 100% -113px no-repeat; display:block; margin-right:10px;}
+.button_grey span {font-weight: bold; color:#ffffff; float:left; display:block; font-size:12px; height:17px; padding:2px 4px 0 8px; background:url("../img/blue_borders_1.gif") 0 -94px no-repeat;}
+.add_error_mess {font-weight: bold; color:#780000;}
+
 .button span img {margin-right:5px;}
 .button:hover span, .button:hover {text-decoration:none;}
 .button:hover {background:url("../img/blue_borders.gif") 100% -73px no-repeat;}
