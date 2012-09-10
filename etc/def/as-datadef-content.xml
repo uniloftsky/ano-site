@@ -52,6 +52,7 @@
         	</content>
         </property>
 		<property type="boolean" name="httpsonly"/>
+		<link name="accessOperation" type="single" target="AnoAccessConfiguration.AccessOperation" />
 	</document>
 	<document name="Box">
 		<property name="name" type="string"/>
@@ -99,6 +100,7 @@
 				<link name="attribute" type="single" target="Attribute"/>
         	</content>
         </property>
+        <link name="accessOperation" type="single" target="AnoAccessConfiguration.AccessOperation" />
 	</document>
 
 	<document name="Attribute">

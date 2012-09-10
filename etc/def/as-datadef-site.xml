@@ -134,7 +134,7 @@
 				<link name="guard" type="single" target="ASFederatedData.GuardDef"/>
         	</content>
         </property>
-        
+        <link name="accessOperation" type="single" target="AnoAccessConfiguration.AccessOperation" />
   	</document>
   	<document name="EntryPoint">
 		<property name="name" type="string"/>

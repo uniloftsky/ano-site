@@ -107,7 +107,8 @@
 						<element type="field" name="subNavi" /> 
 						<element type="field" name="popup" /> 
 						<element type="field" name="guards"/>
-						<element type="empty"/>
+						<element type="empty" />
+						<element type="field" name="accessOperation" />
 						<element type="list">
 							<element type="function" name="updateAndClose"/>
 							<element type="function" name="updateAndStay"/>

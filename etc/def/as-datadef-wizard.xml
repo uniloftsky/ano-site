@@ -12,6 +12,7 @@
         <link name="handler" type="single" target="ASWizardData.WizardHandlerDef"/>
         <property name="wizardCancelRedirectUrl" type="string"/>
         <property name="wizardFinishRedirectUrl" type="string"/>
+        <link name="accessOperation" type="single" target="AnoAccessConfiguration.AccessOperation" />
     </document>
 
 
