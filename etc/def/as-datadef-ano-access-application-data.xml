@@ -6,9 +6,9 @@
 
 	<document name="UserData">
 		<property type="string" name="userId" />
-		<property name="permissions" type="list">
+		<property name="roles" type="list">
 			<content>
-				<link name="permission" type="single" target="AnoAccessConfiguration.Permission" />
+				<link name="role" type="single" target="AnoAccessConfiguration.Role" />
 			</content>
 		</property>
 	</document>

@@ -1,6 +1,6 @@
 <view name="AnoAccessApplicationData" title="Ano-Access Data" requiredroles="admin,developer,editor">
 	<sections>
-		<section title="UserData" type="module">
+		<section title="User Data" type="module">
 			<module>AnoAccessApplicationData</module>
 			<document>UserData</document>
 			<filter name="AZ" field="userId" />
@@ -13,7 +13,7 @@
 				<element type="field" name="userId" comparable="default">
 					<decorator name="editLink" />
 				</element>
-				<element type="field" name="permissions" />
+				<element type="field" name="roles" />
 				<element type="function" name="edit" />
 				<element type="function" name="deleteWithConfirmation" />
 				<element type="function" name="lock" />
@@ -25,7 +25,7 @@
 					<element type="empty" />
 					<element type="field" name="id" readonly="true" />
 					<element type="field" name="userId" />
-					<element type="field" name="permissions" />
+					<element type="field" name="roles" />
 					<element type="empty" />
 					<element type="list">
 						<element type="function" name="updateAndClose" />
