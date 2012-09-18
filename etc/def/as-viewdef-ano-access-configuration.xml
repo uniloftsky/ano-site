@@ -13,8 +13,6 @@
 				<element type="field" name="name" comparable="default">
 					<decorator name="editLink" />
 				</element>
-				<element type="field" name="permissions" />
-				<element type="field" name="contextInitializers" />
 				<element type="field" name="description" />
 				<element type="function" name="edit" />
 				<element type="function" name="duplicate" />
@@ -28,8 +26,6 @@
 					<element type="empty" />
 					<element type="field" name="id" readonly="true" />
 					<element type="field" name="name" />
-					<element type="field" name="permissions" />
-					<element type="field" name="contextInitializers" />
 					<element type="field" name="description" />
 					<element type="empty" />
 					<element type="list">
@@ -57,6 +53,7 @@
 					<decorator name="editLink" />
 				</element>
 				<element type="field" name="permissions" />
+				<element type="field" name="contextInitializers" />
 				<element type="field" name="description" />
 				<element type="function" name="edit" />
 				<element type="function" name="duplicate" />
@@ -71,6 +68,7 @@
 					<element type="field" name="id" readonly="true" />
 					<element type="field" name="name" />
 					<element type="field" name="permissions" />
+					<element type="field" name="contextInitializers" />
 					<element type="field" name="description" />
 					<element type="empty" />
 					<element type="list">
@@ -97,6 +95,8 @@
 				<element type="field" name="name" comparable="default">
 					<decorator name="editLink" />
 				</element>
+				<element type="field" name="accessOperation" />
+				<element type="field" name="priority" />
 				<element type="field" name="constraints" />
 				<element type="field" name="description" />
 				<element type="function" name="edit" />
@@ -111,6 +111,8 @@
 					<element type="empty" />
 					<element type="field" name="id" readonly="true" />
 					<element type="field" name="name" />
+					<element type="field" name="accessOperation" />
+					<element type="field" name="priority" />
 					<element type="field" name="constraints" />
 					<element type="field" name="description" />
 					<element type="empty" />
@@ -160,11 +162,6 @@
 					<element type="field" name="parameter3" />
 					<element type="field" name="parameter4" />
 					<element type="field" name="parameter5" />
-					<element type="field" name="parameter6" />
-					<element type="field" name="parameter7" />
-					<element type="field" name="parameter8" />
-					<element type="field" name="parameter9" />
-					<element type="field" name="parameter10" />
 					<element type="field" name="description" />
 					<element type="empty" />
 					<element type="list">

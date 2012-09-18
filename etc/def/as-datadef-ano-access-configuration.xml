@@ -7,6 +7,11 @@
 
 	<document name="AccessOperation">
 		<property type="string" name="name" />
+		<property type="string" name="description" />
+	</document>
+
+	<document name="Role">
+		<property type="string" name="name" />
 		<property name="permissions" type="list">
 			<content>
 				<link name="permission" type="single" target="AnoAccessConfiguration.Permission" />
@@ -20,19 +25,10 @@
 		<property type="string" name="description" />
 	</document>
 
-	<document name="Role">
-		<property type="string" name="name" />
-		<property name="permissions" type="list">
-			<content>
-				<link name="permission" type="single" target="AnoAccessConfiguration.Permission" />
-			</content>
-		</property>
-		<property type="string" name="description" />
-	</document>
-
 	<document name="Permission">
 		<property type="string" name="name" />
 		<link name="accessOperation" type="single" target="AnoAccessConfiguration.AccessOperation" />
+		<property name="priority" type="int" />
 		<property name="constraints" type="list">
 			<content>
 				<link name="constraint" type="single" target="AnoAccessConfiguration.Constraint" />
@@ -54,11 +50,6 @@
 		<property name="parameter3" type="string" />
 		<property name="parameter4" type="string" />
 		<property name="parameter5" type="string" />
-		<property name="parameter6" type="string" />
-		<property name="parameter7" type="string" />
-		<property name="parameter8" type="string" />
-		<property name="parameter9" type="string" />
-		<property name="parameter10" type="string" />
 		<property type="string" name="description" />
 	</document>
 
