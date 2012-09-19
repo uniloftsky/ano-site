@@ -28,11 +28,11 @@
                     <element type="empty"/>
                     <element type="field" name="id" readonly="true"/>
                     <element type="empty"/>
-                    <element type="field" name="login" title="Login"/>
+                    <element type="field" name="login" title="Login" autocompleteOff="true"/>
                     <element type="empty"/>
                     <element type="field" name="status" title="Status"/>
                     <element type="empty"/>
-                    <element type="field" name="password" title="Password"/>
+                    <element type="field" name="password" title="Password" autocompleteOff="true"/>
                     <element type="empty"/>
                     <element type="list">
                         <element type="function" name="updateAndClose"/>
@@ -63,7 +63,7 @@
                 <element type="function" name="lock"/>
                 <element type="function" name="unlock"/>
             </elements>
-            <dialog name="Edit" title="Edit User">
+            <dialog name="Edit" title="Edit Role">
                 <elements>
                     <element type="empty"/>
                     <element type="field" name="id" readonly="true"/>
