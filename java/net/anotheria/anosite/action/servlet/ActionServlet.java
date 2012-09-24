@@ -69,7 +69,7 @@ public class ActionServlet extends BaseAnoSiteServlet {
 		try {
 			if (!StringUtils.isEmpty(def.getAction()) && def.getAction().toLowerCase().startsWith("c-")) // applicable only for custom actions
 				if (!accessAPI.isAllowedForAction(def.getAction().substring(2))) {
-					res.sendRedirect(req.getContextPath() + "/" + "403.html");
+					res.setStatus(HttpServletResponse.SC_FORBIDDEN);
 					return;
 				}
 		} catch (Exception e) {
