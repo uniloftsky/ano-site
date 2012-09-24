@@ -3,11 +3,11 @@ package net.anotheria.anosite.acess;
 import net.anotheria.anoplass.api.APIException;
 
 /**
- * {@link AccessAPI} main exception.
+ * {@link AnoSiteAccessAPI} main exception.
  * 
  * @author Alexandr Bolbat
  */
-public class AccessAPIException extends APIException {
+public class AnoSiteAccessAPIException extends APIException {
 
 	/**
 	 * Basic serialVersionUID variable.
@@ -17,7 +17,7 @@ public class AccessAPIException extends APIException {
 	/**
 	 * Default constructor.
 	 */
-	public AccessAPIException() {
+	public AnoSiteAccessAPIException() {
 	}
 
 	/**
@@ -26,7 +26,7 @@ public class AccessAPIException extends APIException {
 	 * @param message
 	 *            - exception message
 	 */
-	public AccessAPIException(final String message) {
+	public AnoSiteAccessAPIException(final String message) {
 		super(message);
 	}
 
@@ -38,7 +38,7 @@ public class AccessAPIException extends APIException {
 	 * @param cause
 	 *            - exception cause
 	 */
-	public AccessAPIException(final String message, final Exception cause) {
+	public AnoSiteAccessAPIException(final String message, final Exception cause) {
 		super(message, cause);
 	}
 

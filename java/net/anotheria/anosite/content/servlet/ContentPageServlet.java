@@ -33,8 +33,8 @@ import net.anotheria.anoplass.api.session.APISession;
 import net.anotheria.anoplass.api.session.APISessionImpl;
 import net.anotheria.anoprise.metafactory.MetaFactory;
 import net.anotheria.anoprise.metafactory.MetaFactoryException;
-import net.anotheria.anosite.acess.AccessAPI;
-import net.anotheria.anosite.acess.AccessAPIException;
+import net.anotheria.anosite.acess.AnoSiteAccessAPI;
+import net.anotheria.anosite.acess.AnoSiteAccessAPIException;
 import net.anotheria.anosite.config.ResourceDeliveryConfig;
 import net.anotheria.anosite.content.bean.AttributeBean;
 import net.anotheria.anosite.content.bean.AttributeMap;
@@ -226,9 +226,9 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	private transient IdBasedLockManager lockManager;
 	
 	/**
-	 * {@link AccessAPI} instance.
+	 * {@link AnoSiteAccessAPI} instance.
 	 */
-	private AccessAPI accessAPI;
+	private AnoSiteAccessAPI accessAPI;
 
 
 	@Override
@@ -243,7 +243,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			resourceDataService = MetaFactory.get(IASResourceDataService.class);
 			wizardDataService = MetaFactory.get(IASWizardDataService.class);
 			wizardAPI = APIFinder.findAPI(WizardAPI.class);
-			accessAPI = APIFinder.findAPI(AccessAPI.class);
+			accessAPI = APIFinder.findAPI(AnoSiteAccessAPI.class);
 		} catch (MetaFactoryException e) {
 			log.fatal("Init ASG services failure", e);
 			throw new ServletException("Init ASG services failure", e);
@@ -499,7 +499,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 					return;
 				// wizard submit part
 			}
-		} catch (AccessAPIException e) {
+		} catch (AnoSiteAccessAPIException e) {
 			log.error(e);
 			throw new ServletException(e);
 		}

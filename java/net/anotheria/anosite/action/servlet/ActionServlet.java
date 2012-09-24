@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.anotheria.anoplass.api.APIFinder;
-import net.anotheria.anosite.acess.AccessAPI;
+import net.anotheria.anosite.acess.AnoSiteAccessAPI;
 import net.anotheria.anosite.action.Action;
 import net.anotheria.anosite.action.ActionCommand;
 import net.anotheria.anosite.action.ActionMapping;
@@ -30,15 +30,15 @@ public class ActionServlet extends BaseAnoSiteServlet {
 	private static Logger log = Logger.getLogger(ActionServlet.class);
 	
 	/**
-	 * {@link AccessAPI} instance.
+	 * {@link AnoSiteAccessAPI} instance.
 	 */
-	private AccessAPI accessAPI;
+	private AnoSiteAccessAPI accessAPI;
 	
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 		log.info("Init ActionServlet");
-		accessAPI = APIFinder.findAPI(AccessAPI.class);
+		accessAPI = APIFinder.findAPI(AnoSiteAccessAPI.class);
 	}
 
 	@Override

@@ -55,16 +55,16 @@ import net.anotheria.util.sorter.SortType;
 import org.apache.log4j.Logger;
 
 /**
- * {@link AccessAPI} implementation.
+ * {@link AnoSiteAccessAPI} implementation.
  * 
  * @author Alexandr Bolbat
  */
-public class AccessAPIImpl implements AccessAPI {
+public class AnoSiteAccessAPIImpl implements AnoSiteAccessAPI {
 
 	/**
 	 * {@link Logger} instance.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(AccessAPIImpl.class);
+	private static final Logger LOGGER = Logger.getLogger(AnoSiteAccessAPIImpl.class);
 
 	/**
 	 * {@link AccessService} instance.
@@ -126,7 +126,7 @@ public class AccessAPIImpl implements AccessAPI {
 
 		try {
 			configureAccessService();
-		} catch (AccessAPIException e) {
+		} catch (AnoSiteAccessAPIException e) {
 			String message = LogMessageUtil.failMsg(e) + " Can't initialize access service with current configuration.";
 			LOGGER.fatal(message, e);
 			throw new APIInitException(message, e);
@@ -141,8 +141,8 @@ public class AccessAPIImpl implements AccessAPI {
 	}
 
 	@Override
-	public boolean isAllowedForPage(final String pageId) throws AccessAPIException {
-		if (!AccessAPIConfig.getInstance().isEnabled()) // allowing access if access control disabled by configuration
+	public boolean isAllowedForPage(final String pageId) throws AnoSiteAccessAPIException {
+		if (!AnoSiteAccessAPIConfig.getInstance().isEnabled()) // allowing access if access control disabled by configuration
 			return true;
 
 		try {
@@ -151,13 +151,13 @@ public class AccessAPIImpl implements AccessAPI {
 		} catch (ASWebDataServiceException e) {
 			String message = LogMessageUtil.failMsg(e, pageId);
 			LOGGER.error(message, e);
-			throw new AccessAPIException(message, e);
+			throw new AnoSiteAccessAPIException(message, e);
 		}
 	}
 
 	@Override
-	public boolean isAllowedForBox(final String boxId) throws AccessAPIException {
-		if (!AccessAPIConfig.getInstance().isEnabled()) // allowing access if access control disabled by configuration
+	public boolean isAllowedForBox(final String boxId) throws AnoSiteAccessAPIException {
+		if (!AnoSiteAccessAPIConfig.getInstance().isEnabled()) // allowing access if access control disabled by configuration
 			return true;
 
 		try {
@@ -166,13 +166,13 @@ public class AccessAPIImpl implements AccessAPI {
 		} catch (ASWebDataServiceException e) {
 			String message = LogMessageUtil.failMsg(e, boxId);
 			LOGGER.error(message, e);
-			throw new AccessAPIException(message, e);
+			throw new AnoSiteAccessAPIException(message, e);
 		}
 	}
 
 	@Override
-	public boolean isAllowedForNaviItem(String naviItemId) throws AccessAPIException {
-		if (!AccessAPIConfig.getInstance().isEnabled()) // allowing access if access control disabled by configuration
+	public boolean isAllowedForNaviItem(String naviItemId) throws AnoSiteAccessAPIException {
+		if (!AnoSiteAccessAPIConfig.getInstance().isEnabled()) // allowing access if access control disabled by configuration
 			return true;
 
 		try {
@@ -181,13 +181,13 @@ public class AccessAPIImpl implements AccessAPI {
 		} catch (ASSiteDataServiceException e) {
 			String message = LogMessageUtil.failMsg(e, naviItemId);
 			LOGGER.error(message, e);
-			throw new AccessAPIException(message, e);
+			throw new AnoSiteAccessAPIException(message, e);
 		}
 	}
 
 	@Override
-	public boolean isAllowedForAction(final String actionId) throws AccessAPIException {
-		if (!AccessAPIConfig.getInstance().isEnabled()) // allowing access if access control disabled by configuration
+	public boolean isAllowedForAction(final String actionId) throws AnoSiteAccessAPIException {
+		if (!AnoSiteAccessAPIConfig.getInstance().isEnabled()) // allowing access if access control disabled by configuration
 			return true;
 
 		try {
@@ -196,13 +196,13 @@ public class AccessAPIImpl implements AccessAPI {
 		} catch (ASCustomActionServiceException e) {
 			String message = LogMessageUtil.failMsg(e, actionId);
 			LOGGER.error(message, e);
-			throw new AccessAPIException(message, e);
+			throw new AnoSiteAccessAPIException(message, e);
 		}
 	}
 
 	@Override
-	public boolean isAllowedForWizard(final String wizardId) throws AccessAPIException {
-		if (!AccessAPIConfig.getInstance().isEnabled()) // allowing access if access control disabled by configuration
+	public boolean isAllowedForWizard(final String wizardId) throws AnoSiteAccessAPIException {
+		if (!AnoSiteAccessAPIConfig.getInstance().isEnabled()) // allowing access if access control disabled by configuration
 			return true;
 
 		try {
@@ -211,7 +211,7 @@ public class AccessAPIImpl implements AccessAPI {
 		} catch (ASWizardDataServiceException e) {
 			String message = LogMessageUtil.failMsg(e, wizardId);
 			LOGGER.error(message, e);
-			throw new AccessAPIException(message, e);
+			throw new AnoSiteAccessAPIException(message, e);
 		}
 	}
 
@@ -221,9 +221,9 @@ public class AccessAPIImpl implements AccessAPI {
 	 * @param accessOperationId
 	 *            - access operation id
 	 * @return <code>true</code> if operation allowed or <code>false</code>
-	 * @throws AccessAPIException
+	 * @throws AnoSiteAccessAPIException
 	 */
-	private boolean isAllowed(final String accessOperationId) throws AccessAPIException {
+	private boolean isAllowed(final String accessOperationId) throws AnoSiteAccessAPIException {
 		// if access operation not configured (not required)
 		if (StringUtils.isEmpty(accessOperationId))
 			return true;
@@ -249,7 +249,7 @@ public class AccessAPIImpl implements AccessAPI {
 				if (!SecurityContextInitializer.class.isAssignableFrom(undefinedClass)) { // validating class type
 					String message = LogMessageUtil.failMsg(new RuntimeException(), accessOperationId) + " Wrong security context class[" + clazz + "] type.";
 					LOGGER.warn(message);
-					throw new AccessAPIException(message);
+					throw new AnoSiteAccessAPIException(message);
 				}
 
 				@SuppressWarnings("unchecked")
@@ -269,15 +269,15 @@ public class AccessAPIImpl implements AccessAPI {
 			} catch (ClassNotFoundException e) {
 				String message = LogMessageUtil.failMsg(e, accessOperationId) + " Wrong security context class[" + clazz + "].";
 				LOGGER.warn(message, e);
-				throw new AccessAPIException(message, e);
+				throw new AnoSiteAccessAPIException(message, e);
 			} catch (InstantiationException e) {
 				String message = LogMessageUtil.failMsg(e, accessOperationId) + " Can't instantiate security context class[" + clazz + "].";
 				LOGGER.warn(message, e);
-				throw new AccessAPIException(message, e);
+				throw new AnoSiteAccessAPIException(message, e);
 			} catch (IllegalAccessException e) {
 				String message = LogMessageUtil.failMsg(e, accessOperationId) + " Can't instantiate security context class[" + clazz + "].";
 				LOGGER.warn(message, e);
-				throw new AccessAPIException(message, e);
+				throw new AnoSiteAccessAPIException(message, e);
 			}
 		}
 
@@ -303,13 +303,13 @@ public class AccessAPIImpl implements AccessAPI {
 	 * Return currently logged user id.
 	 * 
 	 * @return {@link String} id of currently logged user
-	 * @throws AccessAPIException
+	 * @throws AnoSiteAccessAPIException
 	 */
-	private String getCurrentUserId() throws AccessAPIException {
+	private String getCurrentUserId() throws AnoSiteAccessAPIException {
 		try {
 			return loginAPI.getLogedUserId();
 		} catch (APIException e) {
-			throw new AccessAPIException("No logged user.");
+			throw new AnoSiteAccessAPIException("No logged user.");
 		}
 	}
 
@@ -319,15 +319,15 @@ public class AccessAPIImpl implements AccessAPI {
 	 * @param id
 	 *            - given access operation id
 	 * @return {@link AccessOperation}, can't be <code>null</code>
-	 * @throws AccessAPIException
+	 * @throws AnoSiteAccessAPIException
 	 */
-	private AccessOperation getAccessOperation(final String id) throws AccessAPIException {
+	private AccessOperation getAccessOperation(final String id) throws AnoSiteAccessAPIException {
 		try {
 			return accessConfigurationService.getAccessOperation(id);
 		} catch (AccessOperationNotFoundInAnoAccessConfigurationServiceException e) {
-			throw new AccessAPIException("Access operation with given id[" + id + "] not found.", e);
+			throw new AnoSiteAccessAPIException("Access operation with given id[" + id + "] not found.", e);
 		} catch (AnoAccessConfigurationServiceException e) {
-			throw new AccessAPIException(LogMessageUtil.failMsg(e, id), e);
+			throw new AnoSiteAccessAPIException(LogMessageUtil.failMsg(e, id), e);
 		}
 	}
 
@@ -335,9 +335,9 @@ public class AccessAPIImpl implements AccessAPI {
 	 * Get {@link List} of {@link Role} by given id's.
 	 * 
 	 * @return {@link List} of {@link Role}, can be empty but not <code>null</code>
-	 * @throws AccessAPIException
+	 * @throws AnoSiteAccessAPIException
 	 */
-	private List<Role> getRoles() throws AccessAPIException {
+	private List<Role> getRoles() throws AnoSiteAccessAPIException {
 		List<Role> result = new ArrayList<Role>();
 
 		try {
@@ -350,7 +350,7 @@ public class AccessAPIImpl implements AccessAPI {
 		} catch (AnoAccessConfigurationServiceException e) {
 			String message = LogMessageUtil.failMsg(e) + " Can't load roles.";
 			LOGGER.error(message, e);
-			throw new AccessAPIException(message, e);
+			throw new AnoSiteAccessAPIException(message, e);
 		}
 	}
 
@@ -360,9 +360,9 @@ public class AccessAPIImpl implements AccessAPI {
 	 * @param accessOperationId
 	 *            - access operation id
 	 * @return {@link List} of {@link Permission}, can be empty but not <code>null</code>
-	 * @throws AccessAPIException
+	 * @throws AnoSiteAccessAPIException
 	 */
-	private List<Permission> getPermissions(final String accessOperationId) throws AccessAPIException {
+	private List<Permission> getPermissions(final String accessOperationId) throws AnoSiteAccessAPIException {
 		List<Permission> result = new ArrayList<Permission>();
 
 		try {
@@ -375,7 +375,7 @@ public class AccessAPIImpl implements AccessAPI {
 		} catch (AnoAccessConfigurationServiceException e) {
 			String message = LogMessageUtil.failMsg(e, accessOperationId) + " Can't load permissions.";
 			LOGGER.error(message, e);
-			throw new AccessAPIException(message, e);
+			throw new AnoSiteAccessAPIException(message, e);
 		}
 	}
 
@@ -385,9 +385,9 @@ public class AccessAPIImpl implements AccessAPI {
 	 * @param ids
 	 *            - id's
 	 * @return {@link List} of {@link Permission}, can be empty but not <code>null</code>
-	 * @throws AccessAPIException
+	 * @throws AnoSiteAccessAPIException
 	 */
-	private List<Permission> getPermissions(final List<String> ids) throws AccessAPIException {
+	private List<Permission> getPermissions(final List<String> ids) throws AnoSiteAccessAPIException {
 		List<Permission> result = new ArrayList<Permission>();
 
 		if (ids == null || ids.isEmpty())
@@ -401,7 +401,7 @@ public class AccessAPIImpl implements AccessAPI {
 		} catch (AnoAccessConfigurationServiceException e) {
 			String message = LogMessageUtil.failMsg(e, ids) + " Can't load permissions.";
 			LOGGER.error(message, e);
-			throw new AccessAPIException(message, e);
+			throw new AnoSiteAccessAPIException(message, e);
 		}
 	}
 
@@ -411,9 +411,9 @@ public class AccessAPIImpl implements AccessAPI {
 	 * @param ids
 	 *            - id's
 	 * @return {@link List} of {@link Constraint}, can be empty but not <code>null</code>
-	 * @throws AccessAPIException
+	 * @throws AnoSiteAccessAPIException
 	 */
-	private List<Constraint> getConstraint(final List<String> ids) throws AccessAPIException {
+	private List<Constraint> getConstraint(final List<String> ids) throws AnoSiteAccessAPIException {
 		List<Constraint> result = new ArrayList<Constraint>();
 
 		if (ids == null || ids.isEmpty())
@@ -427,7 +427,7 @@ public class AccessAPIImpl implements AccessAPI {
 		} catch (AnoAccessConfigurationServiceException e) {
 			String message = LogMessageUtil.failMsg(e, ids) + " Can't load constraints.";
 			LOGGER.error(message, e);
-			throw new AccessAPIException(message, e);
+			throw new AnoSiteAccessAPIException(message, e);
 		}
 	}
 
@@ -437,9 +437,9 @@ public class AccessAPIImpl implements AccessAPI {
 	 * @param ids
 	 *            - id's
 	 * @return {@link List} of {@link ContextInitializer}, can be empty but not <code>null</code>
-	 * @throws AccessAPIException
+	 * @throws AnoSiteAccessAPIException
 	 */
-	private List<ContextInitializer> getContextInitializers(final List<String> ids) throws AccessAPIException {
+	private List<ContextInitializer> getContextInitializers(final List<String> ids) throws AnoSiteAccessAPIException {
 		List<ContextInitializer> result = new ArrayList<ContextInitializer>();
 
 		if (ids == null || ids.isEmpty())
@@ -453,16 +453,16 @@ public class AccessAPIImpl implements AccessAPI {
 		} catch (AnoAccessConfigurationServiceException e) {
 			String message = LogMessageUtil.failMsg(e, ids) + " Can't load context initializers.";
 			LOGGER.error(message, e);
-			throw new AccessAPIException(message, e);
+			throw new AnoSiteAccessAPIException(message, e);
 		}
 	}
 
 	/**
 	 * Configuring {@link AccessService} instance with current configuration.
 	 * 
-	 * @throws AccessAPIException
+	 * @throws AnoSiteAccessAPIException
 	 */
-	private synchronized void configureAccessService() throws AccessAPIException {
+	private synchronized void configureAccessService() throws AnoSiteAccessAPIException {
 		for (Role role : getRoles()) {
 			StaticRole configuredRole = new StaticRole(role.getId());
 
@@ -483,7 +483,7 @@ public class AccessAPIImpl implements AccessAPI {
 						if (!net.anotheria.access.impl.Constraint.class.isAssignableFrom(undefinedClass)) { // validating class type
 							String message = LogMessageUtil.failMsg(new RuntimeException()) + " Wrong constraint class[" + clazz + "] type.";
 							LOGGER.warn(message);
-							throw new AccessAPIException(message);
+							throw new AnoSiteAccessAPIException(message);
 						}
 
 						if (ParametrizedConstraint.class.isAssignableFrom(undefinedClass)) {
@@ -506,15 +506,15 @@ public class AccessAPIImpl implements AccessAPI {
 					} catch (ClassNotFoundException e) {
 						String message = LogMessageUtil.failMsg(e) + " Wrong constraint class[" + clazz + "].";
 						LOGGER.warn(message, e);
-						throw new AccessAPIException(message, e);
+						throw new AnoSiteAccessAPIException(message, e);
 					} catch (InstantiationException e) {
 						String message = LogMessageUtil.failMsg(e) + " Can't instantiate constraint class[" + clazz + "].";
 						LOGGER.warn(message, e);
-						throw new AccessAPIException(message, e);
+						throw new AnoSiteAccessAPIException(message, e);
 					} catch (IllegalAccessException e) {
 						String message = LogMessageUtil.failMsg(e) + " Can't instantiate constraint class[" + clazz + "].";
 						LOGGER.warn(message, e);
-						throw new AccessAPIException(message, e);
+						throw new AnoSiteAccessAPIException(message, e);
 					}
 				}
 
@@ -574,7 +574,7 @@ public class AccessAPIImpl implements AccessAPI {
 				LOGGER.debug("Access configuration changed. Re-Configuring AccessService...");
 				configureAccessService();
 				LOGGER.debug("Re-Configuration of AccessService finished.");
-			} catch (AccessAPIException e) {
+			} catch (AnoSiteAccessAPIException e) {
 				LOGGER.warn(LogMessageUtil.failMsg(e), e);
 			}
 		}

@@ -9,7 +9,7 @@ import org.configureme.annotations.ConfigureMe;
 import org.configureme.annotations.DontConfigure;
 
 @ConfigureMe(name = "ano-site-access-api-config")
-public final class AccessAPIConfig implements Serializable {
+public final class AnoSiteAccessAPIConfig implements Serializable {
 
 	/**
 	 * Basic serialVersionUID variable.
@@ -21,18 +21,18 @@ public final class AccessAPIConfig implements Serializable {
 	 * {@link Logger} instance.
 	 */
 	@DontConfigure
-	private static final Logger LOGGER = Logger.getLogger(AccessAPIConfig.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(AnoSiteAccessAPIConfig.class.getName());
 
 	/**
-	 * {@link AccessAPIConfig} instance.
+	 * {@link AnoSiteAccessAPIConfig} instance.
 	 */
 	@DontConfigure
-	private static final AccessAPIConfig INSTANCE = new AccessAPIConfig();
+	private static final AnoSiteAccessAPIConfig INSTANCE = new AnoSiteAccessAPIConfig();
 
 	@Configure
 	private boolean enabled;
 
-	private AccessAPIConfig() {
+	private AnoSiteAccessAPIConfig() {
 		try {
 			ConfigurationManager.INSTANCE.configure(this);
 			LOGGER.info("AccessAPIConfig() Configured. Configuration[" + this.toString() + "].");
@@ -50,7 +50,7 @@ public final class AccessAPIConfig implements Serializable {
 		this.enabled = enabled;
 	}
 
-	public static AccessAPIConfig getInstance() {
+	public static AnoSiteAccessAPIConfig getInstance() {
 		return INSTANCE;
 	}
 

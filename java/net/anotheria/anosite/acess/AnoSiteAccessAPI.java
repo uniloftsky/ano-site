@@ -7,7 +7,7 @@ import net.anotheria.anoplass.api.API;
  * 
  * @author Alexandr Bolbat
  */
-public interface AccessAPI extends API {
+public interface AnoSiteAccessAPI extends API {
 
 	/**
 	 * Validate access for given page. If access operation not configured for given page this validation return <code>true</code>.
@@ -15,9 +15,9 @@ public interface AccessAPI extends API {
 	 * @param pageId
 	 *            - given page it
 	 * @return <code>true</code> if have access or <code>false</code>
-	 * @throws AccessAPIException
+	 * @throws AnoSiteAccessAPIException
 	 */
-	boolean isAllowedForPage(String pageId) throws AccessAPIException;
+	boolean isAllowedForPage(String pageId) throws AnoSiteAccessAPIException;
 
 	/**
 	 * Validate access for given box. If access operation not configured for given box this validation return <code>true</code>.
@@ -25,9 +25,9 @@ public interface AccessAPI extends API {
 	 * @param boxId
 	 *            - given box it
 	 * @return <code>true</code> if have access or <code>false</code>
-	 * @throws AccessAPIException
+	 * @throws AnoSiteAccessAPIException
 	 */
-	boolean isAllowedForBox(String boxId) throws AccessAPIException;
+	boolean isAllowedForBox(String boxId) throws AnoSiteAccessAPIException;
 
 	/**
 	 * Validate access for given navigation item. If access operation not configured for given navigation item this validation return <code>true</code>.
@@ -35,9 +35,9 @@ public interface AccessAPI extends API {
 	 * @param naviItemId
 	 *            - given navigation item it
 	 * @return <code>true</code> if have access or <code>false</code>
-	 * @throws AccessAPIException
+	 * @throws AnoSiteAccessAPIException
 	 */
-	boolean isAllowedForNaviItem(String naviItemId) throws AccessAPIException;
+	boolean isAllowedForNaviItem(String naviItemId) throws AnoSiteAccessAPIException;
 
 	/**
 	 * Validate access for given action. If access operation not configured for given action this validation return <code>true</code>.
@@ -45,9 +45,9 @@ public interface AccessAPI extends API {
 	 * @param actionId
 	 *            - given action it
 	 * @return <code>true</code> if have access or <code>false</code>
-	 * @throws AccessAPIException
+	 * @throws AnoSiteAccessAPIException
 	 */
-	boolean isAllowedForAction(String actionId) throws AccessAPIException;
+	boolean isAllowedForAction(String actionId) throws AnoSiteAccessAPIException;
 
 	/**
 	 * Validate access for given wizard. If access operation not configured for given wizard this validation return <code>true</code>.
@@ -55,8 +55,8 @@ public interface AccessAPI extends API {
 	 * @param wizardId
 	 *            - given wizard it
 	 * @return <code>true</code> if have access or <code>false</code>
-	 * @throws AccessAPIException
+	 * @throws AnoSiteAccessAPIException
 	 */
-	boolean isAllowedForWizard(String wizardId) throws AccessAPIException;
+	boolean isAllowedForWizard(String wizardId) throws AnoSiteAccessAPIException;
 
 }
