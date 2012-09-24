@@ -29,6 +29,7 @@
 		<property type="string" name="name" />
 		<link name="accessOperation" type="single" target="AnoAccessConfiguration.AccessOperation" />
 		<property name="priority" type="int" />
+		<property type="boolean" name="deny" />
 		<property name="constraints" type="list">
 			<content>
 				<link name="constraint" type="single" target="AnoAccessConfiguration.Constraint" />

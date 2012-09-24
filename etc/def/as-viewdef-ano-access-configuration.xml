@@ -97,6 +97,7 @@
 				</element>
 				<element type="field" name="accessOperation" />
 				<element type="field" name="priority" />
+				<element type="field" name="deny" />
 				<element type="field" name="constraints" />
 				<element type="field" name="description" />
 				<element type="function" name="edit" />
@@ -113,6 +114,7 @@
 					<element type="field" name="name" />
 					<element type="field" name="accessOperation" />
 					<element type="field" name="priority" />
+					<element type="field" name="deny" />
 					<element type="field" name="constraints" />
 					<element type="field" name="description" />
 					<element type="empty" />

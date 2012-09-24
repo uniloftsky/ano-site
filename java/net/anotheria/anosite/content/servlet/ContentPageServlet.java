@@ -33,6 +33,8 @@ import net.anotheria.anoplass.api.session.APISession;
 import net.anotheria.anoplass.api.session.APISessionImpl;
 import net.anotheria.anoprise.metafactory.MetaFactory;
 import net.anotheria.anoprise.metafactory.MetaFactoryException;
+import net.anotheria.anosite.acess.AccessAPI;
+import net.anotheria.anosite.acess.AccessAPIException;
 import net.anotheria.anosite.config.ResourceDeliveryConfig;
 import net.anotheria.anosite.content.bean.AttributeBean;
 import net.anotheria.anosite.content.bean.AttributeMap;
@@ -222,6 +224,11 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	 * {@link IdBasedLockManager} instance.
 	 */
 	private transient IdBasedLockManager lockManager;
+	
+	/**
+	 * {@link AccessAPI} instance.
+	 */
+	private AccessAPI accessAPI;
 
 
 	@Override
@@ -236,6 +243,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			resourceDataService = MetaFactory.get(IASResourceDataService.class);
 			wizardDataService = MetaFactory.get(IASWizardDataService.class);
 			wizardAPI = APIFinder.findAPI(WizardAPI.class);
+			accessAPI = APIFinder.findAPI(AccessAPI.class);
 		} catch (MetaFactoryException e) {
 			log.fatal("Init ASG services failure", e);
 			throw new ServletException("Init ASG services failure", e);
@@ -452,31 +460,48 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 				submit = true;
 
 		}
-		if (submit) {
-			///// Box submit
-			InternalResponse response = processSubmit(req, res, page, template, handlerCache);
-			if (response.getCode() == InternalResponseCode.CONTINUE_AND_REDIRECT) {
-				res.sendRedirect(InternalRedirectResponse.class.cast(response).getUrl());
-				return;
-			}
+		try {
+			if (submit) {
+				// /// Box submit
+				// checking access
+				if (!accessAPI.isAllowedForPage(page.getId())) {
+					res.sendRedirect(req.getContextPath() + "/" + "403.html");
+					return;
+				}
 
-			if (!response.canContinue())
-				return;
-			///// Box submit End
-
-			//wizard submit part
-			if (handleWizard) {
-				response = processSubmitWizard(req, res, wizard);
+				InternalResponse response = processSubmit(req, res, page, template, handlerCache);
 				if (response.getCode() == InternalResponseCode.CONTINUE_AND_REDIRECT) {
 					res.sendRedirect(InternalRedirectResponse.class.cast(response).getUrl());
 					return;
 				}
-			}
 
-			//TODO any further actions needed?
-			if (!response.canContinue())
-				return;
-			//wizard submit part
+				if (!response.canContinue())
+					return;
+				// /// Box submit End
+
+				// wizard submit part
+				if (handleWizard) {
+					// checking access
+					if (!accessAPI.isAllowedForWizard(wizard.getId())) {
+						res.sendRedirect(req.getContextPath() + "/" + "403.html");
+						return;
+					}
+
+					response = processSubmitWizard(req, res, wizard);
+					if (response.getCode() == InternalResponseCode.CONTINUE_AND_REDIRECT) {
+						res.sendRedirect(InternalRedirectResponse.class.cast(response).getUrl());
+						return;
+					}
+				}
+
+				// TODO any further actions needed?
+				if (!response.canContinue())
+					return;
+				// wizard submit part
+			}
+		} catch (AccessAPIException e) {
+			log.error(e);
+			throw new ServletException(e);
 		}
 
 		//ok, if we got sofar, we have at least continue and error or continue responses.
@@ -485,6 +510,12 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		if (handleWizard) {
 			//////////////Wizard start //////////////
 			try {
+				// checking access
+				if (!accessAPI.isAllowedForWizard(wizard.getId())) {
+					res.sendRedirect(req.getContextPath() + "/" + "403.html");
+					return;
+				}
+				
 				BlueprintProducer wizardProducer = BlueprintProducersFactory.getBlueprintProducer("Wizard-" + wizard.getId() + "-" + wizard.getName(), "wizard",
 						AnositeConstants.AS_MOSKITO_SUBSYSTEM);
 				InternalResponse wizardResponse = InternalResponse.class.cast(wizardProducer.execute(wizardExecutor, req, res, wizard));
@@ -510,10 +541,15 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		req.setAttribute("site", siteBean);
 
 		///////////////// PAGE START ////////////////////
-		//OLD - InternalResponse pageResponse = createPageBean(req, res, page, template);
 		InternalResponse pageResponse;
-		BlueprintProducer pageProducer = BlueprintProducersFactory.getBlueprintProducer("Page-" + page.getId() + "-" + page.getName(), "page", AnositeConstants.AS_MOSKITO_SUBSYSTEM);
 		try {
+			// checking access
+			if (!accessAPI.isAllowedForPage(page.getId() )) {
+				res.sendRedirect(req.getContextPath() + "/" + "403.html");
+				return;
+			}
+			
+			BlueprintProducer pageProducer = BlueprintProducersFactory.getBlueprintProducer("Page-" + page.getId() + "-" + page.getName(), "page", AnositeConstants.AS_MOSKITO_SUBSYSTEM);	
 			pageResponse = (InternalResponse) pageProducer.execute(pageExecutor, req, res, page, template);
 		} catch (Exception e) {
 			log.error(e);
@@ -1171,6 +1207,14 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		for (String boxId : boxIds) {
 
 			Box box = webDataService.getBox(boxId);
+			
+			// checking access
+			try {
+				if (!accessAPI.isAllowedForBox(box.getId()))
+					continue;
+			} catch (Exception e) {
+				log.warn("Error in AccessAPI. Box: " + box + ", BoxId: " + boxId + ")", e);
+			}
 
 			if (disabledByGuards(req, box))
 				continue;
@@ -1251,6 +1295,13 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 				break;
 			}
 			
+			// checking access
+			try {
+				if (!accessAPI.isAllowedForNaviItem(item.getId()))
+					continue;
+			} catch (Exception e) {
+				log.warn("Error in AccessAPI. NaviItem: " + item + ", NaviItemId: " + id + ")", e);
+			}
 
 			//check the guards
 			List<String> gIds = item.getGuards();

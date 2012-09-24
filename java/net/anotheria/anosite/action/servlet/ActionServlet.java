@@ -2,13 +2,13 @@ package net.anotheria.anosite.action.servlet;
 
 import java.io.IOException;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.anotheria.anosite.util.ModelObjectMapper;
-import org.apache.log4j.Logger;
-
+import net.anotheria.anoplass.api.APIFinder;
+import net.anotheria.anosite.acess.AccessAPI;
 import net.anotheria.anosite.action.Action;
 import net.anotheria.anosite.action.ActionCommand;
 import net.anotheria.anosite.action.ActionMapping;
@@ -16,6 +16,10 @@ import net.anotheria.anosite.action.servlet.cms.ActionFactory;
 import net.anotheria.anosite.action.servlet.cms.ActionHelper;
 import net.anotheria.anosite.gen.ascustomaction.data.ActionMappingDef;
 import net.anotheria.anosite.shared.presentation.servlet.BaseAnoSiteServlet;
+import net.anotheria.anosite.util.ModelObjectMapper;
+import net.anotheria.util.StringUtils;
+
+import org.apache.log4j.Logger;
 
 public class ActionServlet extends BaseAnoSiteServlet {
 	
@@ -24,6 +28,18 @@ public class ActionServlet extends BaseAnoSiteServlet {
 	 */
 	private static final long serialVersionUID = 1L;
 	private static Logger log = Logger.getLogger(ActionServlet.class);
+	
+	/**
+	 * {@link AccessAPI} instance.
+	 */
+	private AccessAPI accessAPI;
+	
+	@Override
+	public void init(ServletConfig config) throws ServletException {
+		super.init(config);
+		log.info("Init ActionServlet");
+		accessAPI = APIFinder.findAPI(AccessAPI.class);
+	}
 
 	@Override
 	protected void moskitoDoGet(HttpServletRequest req, HttpServletResponse res)
@@ -47,6 +63,17 @@ public class ActionServlet extends BaseAnoSiteServlet {
 		if (def==null){
 			log.warn("ActionMapping not found: "+actionMappingName);
 			return;
+		}
+		
+		// checking access
+		try {
+			if (!StringUtils.isEmpty(def.getAction()) && def.getAction().toLowerCase().startsWith("c-")) // applicable only for custom actions
+				if (!accessAPI.isAllowedForAction(def.getAction().substring(2))) {
+					res.sendRedirect(req.getContextPath() + "/" + "403.html");
+					return;
+				}
+		} catch (Exception e) {
+			log.warn("Error in AccessAPI. ActionMappingDef: " + def + ", actionMappingName: " + actionMappingName + ")", e);
 		}
 		                                                                                                             
 		//create mapping:
