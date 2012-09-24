@@ -3,4 +3,4 @@
  * 
  * @author Alexandr Bolbat
  */
-package net.anotheria.anosite.acess;
+package net.anotheria.anosite.access;

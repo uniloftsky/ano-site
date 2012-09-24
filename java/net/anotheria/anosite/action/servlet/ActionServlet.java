@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.anotheria.anoplass.api.APIFinder;
-import net.anotheria.anosite.acess.AnoSiteAccessAPI;
+import net.anotheria.anosite.access.AnoSiteAccessAPI;
 import net.anotheria.anosite.action.Action;
 import net.anotheria.anosite.action.ActionCommand;
 import net.anotheria.anosite.action.ActionMapping;

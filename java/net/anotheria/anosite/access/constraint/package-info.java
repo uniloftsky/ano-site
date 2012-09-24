@@ -3,4 +3,4 @@
  * 
  * @author Alexandr Bolbat
  */
-package net.anotheria.anosite.acess.constraint;
+package net.anotheria.anosite.access.constraint;

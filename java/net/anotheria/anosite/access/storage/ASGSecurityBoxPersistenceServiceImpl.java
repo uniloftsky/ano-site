@@ -1,4 +1,4 @@
-package net.anotheria.anosite.acess.storage;
+package net.anotheria.anosite.access.storage;
 
 import java.util.List;
 

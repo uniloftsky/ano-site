@@ -1,4 +1,4 @@
-package net.anotheria.anosite.acess;
+package net.anotheria.anosite.access;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -19,8 +19,8 @@ import net.anotheria.anoplass.api.APIInitException;
 import net.anotheria.anoplass.api.generic.login.LoginAPI;
 import net.anotheria.anoprise.metafactory.MetaFactory;
 import net.anotheria.anoprise.metafactory.MetaFactoryException;
-import net.anotheria.anosite.acess.constraint.ParametrizedConstraint;
-import net.anotheria.anosite.acess.context.SecurityContextInitializer;
+import net.anotheria.anosite.access.constraint.ParametrizedConstraint;
+import net.anotheria.anosite.access.context.SecurityContextInitializer;
 import net.anotheria.anosite.gen.anoaccessapplicationdata.data.UserData;
 import net.anotheria.anosite.gen.anoaccessapplicationdata.service.IAnoAccessApplicationDataService;
 import net.anotheria.anosite.gen.anoaccessconfiguration.data.AccessOperation;

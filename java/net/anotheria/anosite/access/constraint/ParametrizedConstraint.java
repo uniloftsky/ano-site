@@ -1,4 +1,4 @@
-package net.anotheria.anosite.acess.constraint;
+package net.anotheria.anosite.access.constraint;
 
 import net.anotheria.access.impl.Constraint;
 

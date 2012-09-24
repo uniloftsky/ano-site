@@ -1,4 +1,4 @@
-package net.anotheria.anosite.acess;
+package net.anotheria.anosite.access;
 
 import java.io.Serializable;
 
