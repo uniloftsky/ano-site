@@ -463,7 +463,7 @@ public class AnoSiteAccessAPIImpl implements AnoSiteAccessAPI {
 	 * @throws AnoSiteAccessAPIException
 	 */
 	private synchronized void configureAccessService() throws AnoSiteAccessAPIException {
-		boolean reset = true;
+		accessService.reset(); // clearing current configuration
 
 		for (Role role : getRoles()) {
 			StaticRole configuredRole = new StaticRole(role.getId());
@@ -525,10 +525,6 @@ public class AnoSiteAccessAPIImpl implements AnoSiteAccessAPI {
 			}
 
 			// configuring access service with role and its permission collection
-			if (reset) {
-				accessService.reset();
-				reset = false;
-			}
 			accessService.addPermissionCollection(permissionCollection);
 			accessService.addRole(configuredRole);
 		}
