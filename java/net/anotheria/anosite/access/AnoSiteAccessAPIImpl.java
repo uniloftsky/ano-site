@@ -488,23 +488,20 @@ public class AnoSiteAccessAPIImpl implements AnoSiteAccessAPI {
 							throw new AnoSiteAccessAPIException(message);
 						}
 
-						if (ParametrizedConstraint.class.isAssignableFrom(undefinedClass)) {
-							@SuppressWarnings("unchecked")
-							Class<ParametrizedConstraint> constraintClass = (Class<ParametrizedConstraint>) undefinedClass;
-							ParametrizedConstraint instance = constraintClass.newInstance();
-							instance.setParameter1(constraint.getParameter1());
-							instance.setParameter2(constraint.getParameter2());
-							instance.setParameter3(constraint.getParameter3());
-							instance.setParameter4(constraint.getParameter4());
-							instance.setParameter5(constraint.getParameter5());
-							// instantiating constraint and adding it to permission
-							configuredPermission.addConstraint(constraintClass.newInstance());
-						} else {
-							@SuppressWarnings("unchecked")
-							Class<net.anotheria.access.impl.Constraint> constraintClass = (Class<net.anotheria.access.impl.Constraint>) undefinedClass;
-							// instantiating constraint and adding it to permission
-							configuredPermission.addConstraint(constraintClass.newInstance());
+						@SuppressWarnings("unchecked")
+						Class<net.anotheria.access.impl.Constraint> constraintClass = (Class<net.anotheria.access.impl.Constraint>) undefinedClass;
+						net.anotheria.access.impl.Constraint instance = constraintClass.newInstance();
+
+						if (instance instanceof ParametrizedConstraint) {
+							ParametrizedConstraint parametrizedInstance = ParametrizedConstraint.class.cast(instance);
+							parametrizedInstance.setParameter1(constraint.getParameter1());
+							parametrizedInstance.setParameter2(constraint.getParameter2());
+							parametrizedInstance.setParameter3(constraint.getParameter3());
+							parametrizedInstance.setParameter4(constraint.getParameter4());
+							parametrizedInstance.setParameter5(constraint.getParameter5());
 						}
+
+						configuredPermission.addConstraint(instance);
 					} catch (ClassNotFoundException e) {
 						String message = LogMessageUtil.failMsg(e) + " Wrong constraint class[" + clazz + "].";
 						LOGGER.warn(message, e);
