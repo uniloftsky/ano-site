@@ -2,6 +2,7 @@ package net.anotheria.anosite.action.servlet;
 
 import java.io.IOException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -95,7 +96,8 @@ public class ActionServlet extends BaseAnoSiteServlet {
 			
 			switch(ret.getType()){
 			case Forward:
-				return;
+				RequestDispatcher dispatcher = req.getRequestDispatcher(ret.getTarget());
+				dispatcher.forward(req, res);
 			case Redirect:
 				res.sendRedirect(ret.getTarget());
 				return;
