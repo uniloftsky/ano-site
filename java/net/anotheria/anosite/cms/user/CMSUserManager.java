@@ -192,20 +192,20 @@ public class CMSUserManager {
 			for (UserDef userDef : usersList) {
 				username = userDef.getLogin();
 				password = userDef.getPassword();
-				rolesIds = userDef.getStatus(); // getting ID of user role
+                rolesIds = userDef.getStatus(); // getting IDs of user roles
 
-				roles = new ArrayList<String>();
-				if (rolesIds != null && !rolesIds.isEmpty()) {
-					for (String roleId : rolesIds) {
-						RoleDef roleDef = userDataService.getRoleDef(roleId);
-						if (roleDef != null) {
-							roles.add(roleDef.getName()); // getting name of user role
-						}
-					}
+                roles = new ArrayList<String>();
+                if (rolesIds != null && !rolesIds.isEmpty()) {
+                    for (String roleId : rolesIds) {
+                        RoleDef roleDef = userDataService.getRoleDef(roleId);
+                        if (roleDef != null) {
+                            roles.add(roleDef.getName()); // getting name of user role
+                        }
+                    }
+                }
 
-					CMSUser userToAdd = new CMSUser(username, password, roles);
-					users.put(userToAdd.getUsername(), userToAdd);
-				}
+                CMSUser userToAdd = new CMSUser(username, password, roles);
+                users.put(userToAdd.getUsername(), userToAdd);
 			}
 		} catch (ASUserDataServiceException e) {
 			log.error("scan users failed", e);

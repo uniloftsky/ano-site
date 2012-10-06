@@ -1,6 +1,6 @@
 <module name="ASUserData">
     <listener class="net.anotheria.anosite.cms.listener.CRUDLogListener"/>
-    <listener class="net.anotheria.anosite.cms.listener.UpdateUserListener"/>
+    <listener class="net.anotheria.anosite.cms.listener.UserListener"/>
 
 	<!-- User document! - "MultiPageDialog" -->
 	<document name="UserDef">
