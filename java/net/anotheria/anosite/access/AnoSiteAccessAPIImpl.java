@@ -228,6 +228,19 @@ public class AnoSiteAccessAPIImpl implements AnoSiteAccessAPI {
 		if (StringUtils.isEmpty(accessOperationId))
 			return true;
 
+		AccessOperation accessOperation = null;
+		try {
+			accessOperation = getAccessOperation(accessOperationId);
+		} catch (AccessOperationNotFoundAPIException e) {
+			LOGGER.warn(LogMessageUtil.failMsg(e, accessOperationId) + " AccessOperation not found. Skipping security check.");
+			return true;
+		}
+
+		if (accessOperation == null) { // to be sure
+			LOGGER.warn(LogMessageUtil.failMsg(new RuntimeException(), accessOperationId) + " AccessOperation not found. Skipping security check.");
+			return true;
+		}
+
 		// if no logged user
 		if (!isLoggedIn())
 			return false;
@@ -283,7 +296,7 @@ public class AnoSiteAccessAPIImpl implements AnoSiteAccessAPI {
 
 		// executing main security logic
 		try {
-			return accessService.isAllowed(getAccessOperation(accessOperationId).getId(), securityObject, null).isAllowed();
+			return accessService.isAllowed(accessOperation.getId(), securityObject, null).isAllowed();
 		} catch (AccessServiceException e) {
 			LOGGER.warn(LogMessageUtil.failMsg(e, accessOperationId) + " Skipping exception and don't allow execution.", e);
 			return false;
@@ -325,7 +338,7 @@ public class AnoSiteAccessAPIImpl implements AnoSiteAccessAPI {
 		try {
 			return accessConfigurationService.getAccessOperation(id);
 		} catch (AccessOperationNotFoundInAnoAccessConfigurationServiceException e) {
-			throw new AnoSiteAccessAPIException("Access operation with given id[" + id + "] not found.", e);
+			throw new AccessOperationNotFoundAPIException("Access operation with given id[" + id + "] not found.", e);
 		} catch (AnoAccessConfigurationServiceException e) {
 			throw new AnoSiteAccessAPIException(LogMessageUtil.failMsg(e, id), e);
 		}
