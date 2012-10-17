@@ -2,6 +2,8 @@ package net.anotheria.anosite.shared.presentation.listener;
 
 import net.anotheria.anodoc.service.LockHolder;
 import net.anotheria.anoplass.api.APIFinder;
+import net.anotheria.anosite.blog.api.BlogAPI;
+import net.anotheria.anosite.blog.api.BlogAPIFactory;
 import net.anotheria.anosite.cms.helper.BoxHelperUtility;
 import net.anotheria.anosite.config.Config;
 import net.anotheria.anosite.wizard.api.WizardAPI;
@@ -55,7 +57,8 @@ public class ContextInitializer implements ServletContextListener{
 
 		//configure API!
 		log.info(myname+"Configure api");
-		APIFinder.addAPIFactory(WizardAPI.class,new WizardAPIFactory());
+		APIFinder.addAPIFactory(WizardAPI.class, new WizardAPIFactory());
+		APIFinder.addAPIFactory(BlogAPI.class,new BlogAPIFactory());
 		log.info(myname+"API configured");
 		LockHolder.addShutdownHook();
 		log.info(myname+"added shutdown hook");

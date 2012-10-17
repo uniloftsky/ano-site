@@ -1,8 +1,5 @@
 package net.anotheria.anosite.cms.listener;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.anotheria.anodoc.query2.QueryNotEqualProperty;
 import net.anotheria.anodoc.query2.QueryProperty;
 import net.anotheria.anoprise.metafactory.MetaFactory;
@@ -13,14 +10,17 @@ import net.anotheria.anosite.gen.asuserdata.service.ASUserDataServiceException;
 import net.anotheria.anosite.gen.asuserdata.service.IASUserDataService;
 import net.anotheria.asg.data.DataObject;
 import net.anotheria.asg.util.listener.IServiceListener;
-
 import org.apache.log4j.Logger;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * Listener for checking user's updates
- * 
+ * Listener for checking user's updates.
+ *
  * @author vbezuhlyi
  * @see CMSUserManager
+ * @see IASUserDataService
  */
 
 public class UserListener implements IServiceListener {

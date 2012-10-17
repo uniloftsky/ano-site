@@ -2,7 +2,6 @@
     <listener class="net.anotheria.anosite.cms.listener.CRUDLogListener"/>
     <listener class="net.anotheria.anosite.cms.listener.UserListener"/>
 
-	<!-- User document! - "MultiPageDialog" -->
 	<document name="UserDef">
 		<property name="login" type="string"/>
 		<property name="status" type="list">

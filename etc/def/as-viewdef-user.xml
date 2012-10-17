@@ -1,4 +1,4 @@
-<!-- Wizard expert mode view :)-->
+<!-- Managing of users view -->
 <view name="User" title="UserManagement" requiredroles="admin">
     <sections>
         <!-- User Document section-->
