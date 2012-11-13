@@ -238,6 +238,7 @@
 					<element type="field" name="rev" comparable="true"/>
 					<element type="field" name="hreflang" comparable="true"/>
 					<element type="field" name="charset" comparable="true"/>
+					<element type="field" name="browserFiltering" comparable="true"/>
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
 	        		<element type="function" name="deleteWithConfirmation"/>
@@ -256,7 +257,8 @@
 						<element type="field" name="rel"/>
 						<element type="field" name="rev"/>
 						<element type="field" name="hreflang"/>  
-						<element type="field" name="charset"/> 
+						<element type="field" name="charset"/>
+						<element type="field" name="browserFiltering"/> 
 						<element type="empty"/>
 						<element type="list">
 							<element type="function" name="updateAndClose"/>
@@ -285,6 +287,7 @@
 					</element>
 					<element type="field" name="file" comparable="true"/>
 					<element type="field" name="link" comparable="true"/>
+					<element type="field" name="browserFiltering" comparable="true"/>
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
 	        		<element type="function" name="deleteWithConfirmation"/>
@@ -299,6 +302,7 @@
 		      			<element type="field" name="file" />
 						<element type="field" name="link"/>
 						<element type="field" name="content"/> 
+						<element type="field" name="browserFiltering"/>
 						<element type="empty"/>
 						<element type="list">
 							<element type="function" name="updateAndClose"/>

@@ -1719,6 +1719,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			bean.setRev(item.getRev() > LinkTypesUtils.none ? LinkTypesUtils.getName(item.getRev()) : "");
 			bean.setCharset(item.getCharset());
 			bean.setHreflang(item.getHreflang());
+			bean.setBrowserFiltering(item.getBrowserFiltering());
 			ret.add(bean);
 		}
 		return ret;
@@ -1773,6 +1774,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 				bean.setLink(getCMSFileUrl(item.getFile(), req));
 
 			bean.setContent(item.getContent());
+			bean.setBrowserFiltering(item.getBrowserFiltering());
 			ret.add(bean);
 		}
 		return ret;

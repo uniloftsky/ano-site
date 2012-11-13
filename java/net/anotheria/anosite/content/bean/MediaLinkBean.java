@@ -1,8 +1,7 @@
 package net.anotheria.anosite.content.bean;
 
-
 public class MediaLinkBean {
-	
+
 	private String id;
 	private String name;
 	private String href;
@@ -12,88 +11,112 @@ public class MediaLinkBean {
 	private String rev;
 	private String charset;
 	private String hreflang;
-	
-	public MediaLinkBean(){
+	private String browserFiltering;
+
+	public MediaLinkBean() {
 	}
-	
-	public MediaLinkBean(String anId){
-		id = anId;
+
+	public MediaLinkBean(final String aId) {
+		this.id = aId;
 	}
-	
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(final String aId) {
+		this.id = aId;
+	}
+
 	public String getName() {
 		return name;
 	}
-	public void setName(String name) {
-		this.name = name;
+
+	public void setName(final String aName) {
+		this.name = aName;
 	}
+
 	public String getHref() {
 		return href;
 	}
-	public void setHref(String href) {
-		this.href = href;
+
+	public void setHref(final String aHref) {
+		this.href = aHref;
 	}
+
 	public String getType() {
 		return type;
 	}
-	public void setType(String type) {
-		this.type = type;
+
+	public void setType(final String aType) {
+		this.type = aType;
 	}
+
 	public String getMedia() {
 		return media;
 	}
-	public void setMedia(String media) {
-		this.media = media;
+
+	public void setMedia(final String aMedia) {
+		this.media = aMedia;
 	}
+
 	public String getRel() {
 		return rel;
 	}
-	public void setRel(String rel) {
-		this.rel = rel;
+
+	public void setRel(final String aRel) {
+		this.rel = aRel;
 	}
+
 	public String getRev() {
 		return rev;
 	}
-	public void setRev(String rev) {
-		this.rev = rev;
+
+	public void setRev(final String aRev) {
+		this.rev = aRev;
 	}
+
 	public String getCharset() {
 		return charset;
 	}
-	public void setCharset(String charset) {
-		this.charset = charset;
+
+	public void setCharset(final String aCharset) {
+		this.charset = aCharset;
 	}
+
 	public String getHreflang() {
 		return hreflang;
 	}
-	public void setHreflang(String hreflang) {
-		this.hreflang = hreflang;
+
+	public void setHreflang(final String aHreflang) {
+		this.hreflang = aHreflang;
 	}
-	
-	@Override public boolean equals(Object anotherObj){
-		if(!(anotherObj instanceof MediaLinkBean))
+
+	public String getBrowserFiltering() {
+		return browserFiltering;
+	}
+
+	public void setBrowserFiltering(final String aBrowserFiltering) {
+		this.browserFiltering = aBrowserFiltering;
+	}
+
+	@Override
+	public boolean equals(Object anotherObj) {
+		if (!(anotherObj instanceof MediaLinkBean))
 			return false;
-		return id.equals(((MediaLinkBean)anotherObj).getId());
+		return id.equals(((MediaLinkBean) anotherObj).getId());
 	}
-	
-	@Override public int hashCode(){
+
+	@Override
+	public int hashCode() {
 		return id.hashCode();
 	}
-	
-	@Override public String toString(){
+
+	@Override
+	public String toString() {
 		String ret = "";
 		ret += "MediaLinkBean " + id;
 		return ret;
 	}
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
-	}
-	
-	public static void main(String[] args) {
-		System.out.println(new MediaLinkBean("1").equals(new MediaLinkBean("1")));
-		System.out.println(new MediaLinkBean("1").equals(new MediaLinkBean("2")));
-		
-	}
+
 }

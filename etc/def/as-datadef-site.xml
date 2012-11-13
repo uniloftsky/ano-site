@@ -87,12 +87,14 @@
 		<property name="rev" type="enumeration" enumeration="LinkTypes"/>
 		<property name="charset" type="string"/>
 		<property name="hreflang" type="string"/>
+		<property name="browserFiltering" type="string"/>
 	</document>
 	<document name="Script">
 		<property name="name" type="string"/>
 		<link name="file" type="single" target="ASResourceData.FileLink"/>
 		<property name="link" type="string"/>
 		<property name="content" type="text"/>
+		<property name="browserFiltering" type="string"/>
 	</document>
   	<document name="Site">
 		<property name="name" type="string"/>
