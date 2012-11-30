@@ -22,7 +22,9 @@ import org.apache.log4j.Logger;
 import java.util.*;
 
 /**
- * @author : vzarva
+ * Enum represents type of elements and can find usages of current element by its id.
+ *
+ * @author vzarva
  */
 public enum DocumentEnum {
 
@@ -139,10 +141,12 @@ public enum DocumentEnum {
             return findUsagesOfCustomGuard(pId);
         }
     };
+
     /**
      * Logger by default.
      */
     private static final Logger LOGGER = Logger.getLogger(DocumentEnum.class);
+
     /**
      * Data services.
      */
@@ -172,8 +176,9 @@ public enum DocumentEnum {
 
     /**
      * Method find usages of element by its id.
-     * @param pId - id of element.
-     * @return - list of references to the elements, where element was used.
+     *
+     * @param pId - id of element
+     * @return - list of references to the elements, where element was used
      */
     public abstract List<String> findReferences(String pId);
 
@@ -193,7 +198,6 @@ public enum DocumentEnum {
             for (Box box : webDataService.getBoxs()){
                 mapOfAllBoxes.put(box.getId(), box);
             }
-
 
             for (Pagex p : webDataService.getPagexs()){
                 result.addAll(findBoxUsages(p.getName(), p.getC1(), pId, p, Pagex.PROP_C1, mapOfAllBoxes));
@@ -215,7 +219,6 @@ public enum DocumentEnum {
                 result.addAll(findBoxUsages(pt.getName(), pt.getFooter(), pId, pt, PageTemplate.PROP_FOOTER, mapOfAllBoxes));
             }
 
-
             for (Map.Entry<String, Box> entry : mapOfAllBoxes.entrySet()){
                 String currentBoxId = entry.getKey();
                 if (currentBoxId.equalsIgnoreCase(pId))
@@ -231,7 +234,6 @@ public enum DocumentEnum {
                     findBoxInSubboxesRecursively(subboxList, pId, tempPath, result, mapOfAllBoxes);
                 }
             }
-
         } catch (ASWebDataServiceException e) {
             LOGGER.error("can't retrieve pagex getPagex()",e);
         } catch (ASSiteDataServiceException e) {
@@ -247,7 +249,7 @@ public enum DocumentEnum {
         List<String> ret = new ArrayList<String>();
 
         String module = "aswebdata";
-        if (dataObject.getDefinedName().equalsIgnoreCase("PageTemplate")){
+        if (dataObject.getDefinedName() != null && dataObject.getDefinedName().equalsIgnoreCase("PageTemplate")){
             module = "assitedata";
         }
 
@@ -255,15 +257,18 @@ public enum DocumentEnum {
                 " <a href=\""+module+dataObject.getDefinedName()+ WordUtils.capitalize(c)+"Show?ownerId="+dataObject.getId()+"\" > "+WordUtils.capitalize(c)+" </a>");
 
         for (String id : list) {
-                Box box = mapOfAllBoxes.get(id);
-                if (id.equalsIgnoreCase(searchElemId)) {
-                    ret.add(pathBefore+"</br>");
-                }
-                List<String> subboxList = box.getSubboxes();
-                if (!subboxList.isEmpty()){
-                    findBoxInSubboxesRecursively(subboxList, searchElemId, pathBefore.append("-> <a href=\"aswebdataBoxEdit?pId=" + id + "\" > Box [" + box.getName() + "] </a> ->" +
-                            " <a href=\"aswebdataBoxSubboxesShow?ownerId=" + id + "\"> Subboxes </a>"), ret, mapOfAllBoxes);
-                }
+            Box box = mapOfAllBoxes.get(id);
+            if (box == null)
+                continue;
+
+            if (id.equalsIgnoreCase(searchElemId)) {
+                ret.add(pathBefore+"</br>");
+            }
+            List<String> subboxList = box.getSubboxes();
+            if (!subboxList.isEmpty()){
+                findBoxInSubboxesRecursively(subboxList, searchElemId, pathBefore.append("-> <a href=\"aswebdataBoxEdit?pId=" + id + "\" > Box [" + box.getName() + "] </a> ->" +
+                        " <a href=\"aswebdataBoxSubboxesShow?ownerId=" + id + "\"> Subboxes </a>"), ret, mapOfAllBoxes);
+            }
         }
 
         return ret;
@@ -271,16 +276,19 @@ public enum DocumentEnum {
 
     private static void findBoxInSubboxesRecursively(List<String> list, String searchElementId, StringBuffer pathBefore, List<String> tempList,  Map<String, Box> mapOfAllBoxes){
         for(String id: list){
-                Box box = mapOfAllBoxes.get(id);
-                StringBuffer tempPath = new StringBuffer(" -> <a href=\"aswebdataBoxEdit?pId="+id+"\" > Box ["+box.getName()+"] </a> -> " +
-                        " <a href=\"aswebdataBoxSubboxesShow?ownerId="+id+"\"> Subboxes </a>");
-                if (id.equalsIgnoreCase(searchElementId)){
-                    tempList.add(pathBefore+" </br>");
-                }
-                List<String> subboxList = box.getSubboxes();
-                if(!subboxList.isEmpty()){
-                    findBoxInSubboxesRecursively(subboxList, searchElementId, pathBefore.append(tempPath), tempList, mapOfAllBoxes);
-                }
+            Box box = mapOfAllBoxes.get(id);
+            if (box == null)
+                continue;
+
+            StringBuffer tempPath = new StringBuffer(" -> <a href=\"aswebdataBoxEdit?pId="+id+"\" > Box ["+box.getName()+"] </a> -> " +
+                    " <a href=\"aswebdataBoxSubboxesShow?ownerId="+id+"\"> Subboxes </a>");
+            if (id.equalsIgnoreCase(searchElementId)){
+                tempList.add(pathBefore+" </br>");
+            }
+            List<String> subboxList = box.getSubboxes();
+            if(!subboxList.isEmpty()){
+                findBoxInSubboxesRecursively(subboxList, searchElementId, pathBefore.append(tempPath), tempList, mapOfAllBoxes);
+            }
         }
     }
 
@@ -297,6 +305,9 @@ public enum DocumentEnum {
                         " <a href=\"aswebdataPagexAttributesShow?ownerId="+pagex.getId()+"\" > Attributes </a>");
                 for (String attributeId: pagex.getAttributes()){
                     Attribute attribute = mapOfAllAttributes.get(attributeId);
+                    if (attribute == null)
+                        continue;
+
                     if (attributeId.equalsIgnoreCase(pId)){
                         result.add(pathBefore+"</br>");
                     }
@@ -313,6 +324,9 @@ public enum DocumentEnum {
                         " <a href=\"aswebdataBoxAttributesShow?ownerId="+box.getId()+"\" > Attributes </a>");
                 for (String attributeId: box.getAttributes()){
                     Attribute attribute = mapOfAllAttributes.get(attributeId);
+                    if (attribute == null)
+                        continue;
+
                     if (attributeId.equalsIgnoreCase(pId)){
                         result.add(pathBefore+"</br>");
                     }
@@ -331,6 +345,9 @@ public enum DocumentEnum {
                         " <a href=\"aswebdataAttributeSubattributesShow?ownerId="+entry.getValue().getId()+"\" > Attributes </a>");
                 for (String attributeId: entry.getValue().getSubattributes()){
                     Attribute attribute = mapOfAllAttributes.get(attributeId);
+                    if (attribute == null)
+                        continue;
+
                     if (attributeId.equalsIgnoreCase(pId)){
                         result.add(pathBefore+"</br>");
                     }
@@ -350,16 +367,20 @@ public enum DocumentEnum {
 
     private static void findAttributeInSubattributesRecursively(List<String> listOfSubattributes, String searcheElementId, StringBuffer pathBefore, List<String> resList, Map<String, Attribute> mapOfAllAttributes){
         for (String subAttributeId : listOfSubattributes){
-                Attribute attribute = mapOfAllAttributes.get(subAttributeId);
-                if (subAttributeId.equalsIgnoreCase(searcheElementId)){
-                    resList.add(pathBefore+"</br>");
-                }
-                List<String> subattrubutes = attribute.getSubattributes();
-                if (!subattrubutes.isEmpty()){
-                    StringBuffer pathWithCurrentAttr = new StringBuffer(" ->   <a href=\"aswebdataAttributeEdit?pId="+attribute.getId()+"\" > Attribute ["+attribute.getName()+"]  </a> ->" +
-                            "<a href=\"aswebdataAttributeSubattributesShow?ownerId="+attribute.getId()+"\" > subattributes </a>");
-                    findAttributeInSubattributesRecursively(subattrubutes,searcheElementId,pathBefore.append(pathWithCurrentAttr),resList, mapOfAllAttributes);
-                }
+            Attribute attribute = mapOfAllAttributes.get(subAttributeId);
+            if (attribute == null)
+                continue;
+
+            if (subAttributeId.equalsIgnoreCase(searcheElementId)){
+                resList.add(pathBefore+"</br>");
+            }
+            List<String> subattrubutes = attribute.getSubattributes();
+            if (!subattrubutes.isEmpty()){
+                StringBuffer pathWithCurrentAttr = new StringBuffer(" ->   <a href=\"aswebdataAttributeEdit?pId="+attribute.getId()+"\" > Attribute ["+attribute.getName()+"]  </a> ->" +
+                        "<a href=\"aswebdataAttributeSubattributesShow?ownerId="+attribute.getId()+"\" > subattributes </a>");
+                findAttributeInSubattributesRecursively(subattrubutes,searcheElementId,pathBefore.append(pathWithCurrentAttr),resList, mapOfAllAttributes);
+            }
+
         }
     }
 
@@ -437,10 +458,11 @@ public enum DocumentEnum {
         List<String> result = new ArrayList<String>();
         try {
             for (Box b : webDataService.getBoxs()){
-                if (b.getHandler().startsWith("C-")){
-                    if (handlerId.equalsIgnoreCase(b.getHandler().replaceAll("C-",""))){
-                        result.add("</br><a href=\"aswebdataBoxEdit?pId="+b.getId()+"\" > Box ["+b.getName()+"] </a>");
-                    }
+                if (b == null || b.getHandler() == null)
+                    continue;
+                String searchedId = "C-" + handlerId ;
+                if (searchedId.equalsIgnoreCase(b.getHandler())){
+                    result.add("</br><a href=\"aswebdataBoxEdit?pId="+b.getId()+"\" > Box ["+b.getName()+"] </a>");
                 }
             }
         } catch (ASWebDataServiceException e) {
@@ -453,10 +475,12 @@ public enum DocumentEnum {
         List<String> result = new ArrayList<String>();
         try {
             for (Box b : webDataService.getBoxs()){
-                if (b.getHandler().startsWith("G-")){
-                    if (handlerId.equalsIgnoreCase(b.getHandler().replaceAll("G-",""))){
-                        result.add("</br><a href=\"aswebdataBoxEdit?pId="+b.getId()+"\" > Box ["+b.getName()+"] </a>");
-                    }
+                if (b == null || b.getHandler() == null)
+                    continue;
+
+                String searchedId = "G-" + handlerId ;
+                if (searchedId.equalsIgnoreCase(b.getHandler())){
+                    result.add("</br><a href=\"aswebdataBoxEdit?pId="+b.getId()+"\" > Box ["+b.getName()+"] </a>");
                 }
             }
         } catch (ASWebDataServiceException e) {
@@ -469,10 +493,11 @@ public enum DocumentEnum {
         List<String> result = new ArrayList<String>();
         try {
             for (Box b : webDataService.getBoxs()){
-                if (b.getType().startsWith("C-")){
-                    if (typeId.equalsIgnoreCase(b.getType().replaceAll("C-",""))){
-                        result.add("</br><a href=\"aswebdataBoxEdit?pId="+b.getId()+"\" > Box ["+b.getName()+"] </a>");
-                    }
+                if (b == null || b.getType() == null)
+                    continue;
+                String searchedId = "C-" + typeId ;
+                if (searchedId.equalsIgnoreCase(b.getType())){
+                    result.add("</br><a href=\"aswebdataBoxEdit?pId="+b.getId()+"\" > Box ["+b.getName()+"] </a>");
                 }
             }
         } catch (ASWebDataServiceException e) {
@@ -485,10 +510,11 @@ public enum DocumentEnum {
         List<String> result = new ArrayList<String>();
         try {
             for (Box b : webDataService.getBoxs()){
-                if (b.getType().startsWith("G-")){
-                    if (typeId.equalsIgnoreCase(b.getType().replaceAll("G-",""))){
-                        result.add("</br><a href=\"aswebdataBoxEdit?pId="+b.getId()+"\" > Box ["+b.getName()+"]</a>");
-                    }
+                if (b == null || b.getType() == null)
+                    continue;
+                String searchedId = "G-" + typeId ;
+                if (searchedId.equalsIgnoreCase(b.getType())){
+                    result.add("</br><a href=\"aswebdataBoxEdit?pId="+b.getId()+"\" > Box ["+b.getName()+"]</a>");
                 }
             }
         } catch (ASWebDataServiceException e) {
@@ -499,34 +525,29 @@ public enum DocumentEnum {
 
     private static List<String> findUsagesOfGenericGuard(String guardId){
         List<String> result = new ArrayList<String>();
+        String searchedId = "G-" + guardId ;
         try {
             for (Box b : webDataService.getBoxs()){
                 for(String guard : b.getGuards()){
-                    if (guard.startsWith("G-")){
-                        if (guardId.equalsIgnoreCase(guard.replaceAll("G-",""))){
-                            result.add("</br><a href=\"aswebdataBoxEdit?pId="+b.getId()+"\" > Box ["+b.getName()+"] </a> - "  +
-                                    "<a href=\"aswebdataBoxGuardsShow?ownerId="+b.getId()+"\" > Guards </a>");
-                        }
+                    if (searchedId.equalsIgnoreCase(guard)){
+                        result.add("</br><a href=\"aswebdataBoxEdit?pId="+b.getId()+"\" > Box ["+b.getName()+"] </a> - "  +
+                                "<a href=\"aswebdataBoxGuardsShow?ownerId="+b.getId()+"\" > Guards </a>");
                     }
                 }
             }
             for (Attribute attribute : webDataService.getAttributes()){
                 for(String guard : attribute.getGuards()){
-                    if (guard.startsWith("G-")){
-                        if (guardId.equalsIgnoreCase(guard.replaceAll("G-",""))){
-                            result.add("</br><a href=\"aswebdataAttributeEdit?pId="+attribute.getId()+"\" > Attribute ["+attribute.getName()+"] </a> - "  +
-                                    "<a href=\"aswebdataAttributeGuardsShow?ownerId="+attribute.getId()+"\" > Guards </a>");
-                        }
+                    if (searchedId.equalsIgnoreCase(guard)){
+                        result.add("</br><a href=\"aswebdataAttributeEdit?pId="+attribute.getId()+"\" > Attribute ["+attribute.getName()+"] </a> - "  +
+                                "<a href=\"aswebdataAttributeGuardsShow?ownerId="+attribute.getId()+"\" > Guards </a>");
                     }
                 }
             }
             for (NaviItem naviItem : siteDataService.getNaviItems()){
                 for(String guard : naviItem.getGuards()){
-                    if (guard.startsWith("G-")){
-                        if (guardId.equalsIgnoreCase(guard.replaceAll("G-",""))){
-                            result.add("</br><a href=\"assitedataNaviItemEdit?pId="+naviItem.getId()+"\" > NaviItem ["+naviItem.getName()+"] </a> - "  +
-                                    "<a href=\"assitedataNaviItemGuardsShow?ownerId="+naviItem.getId()+"\" > Guards </a>");
-                        }
+                    if (searchedId.equalsIgnoreCase(guard)){
+                        result.add("</br><a href=\"assitedataNaviItemEdit?pId="+naviItem.getId()+"\" > NaviItem ["+naviItem.getName()+"] </a> - "  +
+                                "<a href=\"assitedataNaviItemGuardsShow?ownerId="+naviItem.getId()+"\" > Guards </a>");
                     }
                 }
             }
@@ -540,34 +561,29 @@ public enum DocumentEnum {
 
     private static List<String> findUsagesOfCustomGuard(String guardId){
         List<String> result = new ArrayList<String>();
+        String searchedId = "C-" + guardId ;
         try {
             for (Box b : webDataService.getBoxs()){
                 for(String guard : b.getGuards()){
-                    if (guard.startsWith("C-")){
-                        if (guardId.equalsIgnoreCase(guard.replaceAll("C-",""))){
-                            result.add("</br><a href=\"aswebdataBoxEdit?pId="+b.getId()+"\" > Box ["+b.getName()+"] </a> - "  +
-                                    "<a href=\"aswebdataBoxGuardsShow?ownerId="+b.getId()+"\" > Guards </a>");
-                        }
+                    if (searchedId.equalsIgnoreCase(guard)){
+                        result.add("</br><a href=\"aswebdataBoxEdit?pId="+b.getId()+"\" > Box ["+b.getName()+"] </a> - "  +
+                                "<a href=\"aswebdataBoxGuardsShow?ownerId="+b.getId()+"\" > Guards </a>");
                     }
                 }
             }
             for (Attribute attribute : webDataService.getAttributes()){
                 for(String guard : attribute.getGuards()){
-                    if (guard.startsWith("C-")){
-                        if (guardId.equalsIgnoreCase(guard.replaceAll("C-",""))){
-                            result.add("</br><a href=\"aswebdataAttributeEdit?pId="+attribute.getId()+"\" > Attributes ["+attribute.getName()+"] </a> - "  +
-                                    "<a href=\"aswebdataAttributeGuardsShow?ownerId="+attribute.getId()+"\" > Guards </a>");
-                        }
+                    if (searchedId.equalsIgnoreCase(guard)){
+                        result.add("</br><a href=\"aswebdataAttributeEdit?pId="+attribute.getId()+"\" > Attributes ["+attribute.getName()+"] </a> - "  +
+                                "<a href=\"aswebdataAttributeGuardsShow?ownerId="+attribute.getId()+"\" > Guards </a>");
                     }
                 }
             }
             for (NaviItem naviItem : siteDataService.getNaviItems()){
                 for(String guard : naviItem.getGuards()){
-                    if (guard.startsWith("C-")){
-                        if (guardId.equalsIgnoreCase(guard.replaceAll("C-",""))){
-                            result.add("</br><a href=\"assitedataNaviItemEdit?pId="+naviItem.getId()+"\" > NaviItem ["+naviItem.getName()+"] </a> - "  +
-                                    "<a href=\"assitedataNaviItemGuardsShow?ownerId="+naviItem.getId()+"\" > Guards </a>");
-                        }
+                    if (searchedId.equalsIgnoreCase(guard)){
+                        result.add("</br><a href=\"assitedataNaviItemEdit?pId="+naviItem.getId()+"\" > NaviItem ["+naviItem.getName()+"] </a> - "  +
+                                "<a href=\"assitedataNaviItemGuardsShow?ownerId="+naviItem.getId()+"\" > Guards </a>");
                     }
                 }
             }
@@ -583,6 +599,9 @@ public enum DocumentEnum {
         List<String> result = new ArrayList<String>();
         try {
             for (NaviItem naviItem : siteDataService.getNaviItems()){
+                if (naviItem == null || naviItem.getPageAlias() == null)
+                    continue;
+
                 if (naviItem.getPageAlias().equalsIgnoreCase(pageAliasId)){
                     result.add("</br><a href=\"assitedataNaviItemEdit?pId="+naviItem.getId()+"\" > NaviItem ["+naviItem.getName()+"] </a>");
                 }
@@ -597,21 +616,33 @@ public enum DocumentEnum {
         List<String> result = new ArrayList<String>();
         try {
             for (Site site : siteDataService.getSites()){
+                if (site == null || site.getSearchpage() == null)
+                    continue;
+
                 if (site.getStartpage().equalsIgnoreCase(pageId) || site.getSearchpage().equalsIgnoreCase(pageId)){
                     result.add("</br><a href=\"assitedataSiteEdit?pId="+site.getId()+"\" > Site ["+site.getName()+"] </a> ");
                 }
             }
             for (NaviItem naviItem : siteDataService.getNaviItems()){
+                if (naviItem == null || naviItem.getInternalLink() == null)
+                    continue;
+
                 if (naviItem.getInternalLink().equalsIgnoreCase(pageId)){
                     result.add("</br><a href=\"assitedataNaviItemEdit?pId="+naviItem.getId()+"\" > NaviItem ["+naviItem.getName()+"] </a> ");
                 }
             }
             for (EntryPoint entryPoint : siteDataService.getEntryPoints()){
+                if (entryPoint == null || entryPoint.getStartPage() == null)
+                    continue;
+
                 if (entryPoint.getStartPage().equalsIgnoreCase(pageId)){
                     result.add("</br><a href=\"assitedataEntryPointEdit?pId="+entryPoint.getId()+"\" > EntryPoint ["+entryPoint.getName()+"] </a> ");
                 }
             }
             for (PageAlias pageAlias : siteDataService.getPageAliass()){
+                if (pageAlias == null || pageAlias.getTargetPage() == null)
+                    continue;
+
                 if (pageAlias.getTargetPage().equalsIgnoreCase(pageId)){
                     result.add("</br><a href=\"assitedataPageAliasEdit?pId="+pageAlias.getId()+"\" > PageAlias ["+pageAlias.getName()+"] </a> ");
                 }
@@ -626,16 +657,25 @@ public enum DocumentEnum {
         List<String> result = new ArrayList<String>();
         try {
             for (PageTemplate pageTemplate : siteDataService.getPageTemplates()){
+                if (pageTemplate == null || pageTemplate.getSite() == null)
+                    continue;
+
                 if (pageTemplate.getSite().equalsIgnoreCase(siteId)){
                     result.add("</br><a href=\"assitedataPageTemplateEdit?pId="+pageTemplate.getId()+"\" > PageTemplate ["+pageTemplate.getName()+"] </a> ");
                 }
             }
             for (EntryPoint entryPoint : siteDataService.getEntryPoints()){
+                if (entryPoint == null || entryPoint.getStartSite() == null)
+                    continue;
+
                 if (entryPoint.getStartSite().equalsIgnoreCase(siteId)){
                     result.add("</br><a href=\"assitedataEntryPointEdit?pId="+entryPoint.getId()+"\" > EntryPoint ["+entryPoint.getName()+"] </a> ");
                 }
             }
             for (PageAlias pageAlias : siteDataService.getPageAliass()){
+                if (pageAlias == null || pageAlias.getTargetPage() == null)
+                    continue;
+
                 if (pageAlias.getTargetPage().equalsIgnoreCase(siteId)){
                     result.add("</br><a href=\"assitedataPageAliasEdit?pId="+pageAlias.getId()+"\" > PageAlias ["+pageAlias.getName()+"] </a> ");
                 }
@@ -650,9 +690,12 @@ public enum DocumentEnum {
         List<String> result = new ArrayList<String>();
         try {
             for (Pagex p : webDataService.getPagexs()){
-                    if (p.getTemplate().equalsIgnoreCase(pageTemplateId)){
-                        result.add("</br><a href=\"aswebdataPagexEdit?pId="+p.getId()+"\" > Page ["+p.getName()+"] </a>");
-                    }
+                if (p == null || p.getTemplate() == null)
+                    continue;
+
+                if (p.getTemplate().equalsIgnoreCase(pageTemplateId)){
+                    result.add("</br><a href=\"aswebdataPagexEdit?pId="+p.getId()+"\" > Page ["+p.getName()+"] </a>");
+                }
             }
         } catch (ASWebDataServiceException e) {
             LOGGER.error("failed to use WebDataService.",e);
@@ -664,6 +707,9 @@ public enum DocumentEnum {
         List<String> result = new ArrayList<String>();
         try {
             for (PageTemplate pageTemplate : siteDataService.getPageTemplates()){
+                if (pageTemplate == null || pageTemplate.getLayout() == null)
+                    continue;
+
                 if (pageTemplate.getLayout().equalsIgnoreCase(layoutId)){
                     result.add("</br><a href=\"assitedataPageTemplateEdit?pId="+pageTemplate.getId()+"\" > PageTemplate ["+pageTemplate.getName()+"] </a> ");
                 }
@@ -678,6 +724,9 @@ public enum DocumentEnum {
         List<String> result = new ArrayList<String>();
         try {
             for (PageLayout pageLayout : layoutDataService.getPageLayouts()){
+                if (pageLayout == null || pageLayout.getStyle() == null)
+                    continue;
+
                 if (pageLayout.getStyle().equalsIgnoreCase(styleId)){
                     result.add("</br><a href=\"aslayoutdataPageLayoutEdit?pId="+pageLayout.getId()+"\" > Layout ["+pageLayout.getName()+"] </a> ");
                 }
@@ -697,9 +746,13 @@ public enum DocumentEnum {
             }
             for (Map.Entry<String, NaviItem> entry : mapOfAllNaviItems.entrySet()){
                 for (String naviId : entry.getValue().getSubNavi()){
+
                     StringBuffer pathBefore = new StringBuffer("</br><a href=\"assitedataNaviItemEdit?pId="+entry.getValue().getId()+"\" > NaviItem ["+entry.getValue().getName()+"] </a> -> " +
                             "<a href=\"assitedataNaviItemSubNaviShow?ownerId="+entry.getValue().getId()+"\" > SubNavi </a>");
                     NaviItem tempNaviItem = mapOfAllNaviItems.get(naviId);
+                    if (tempNaviItem == null)
+                        continue;
+
                     if (naviId.equalsIgnoreCase(naviItemId)){
                         result.add(pathBefore+"</br>");
                     }
@@ -720,6 +773,9 @@ public enum DocumentEnum {
     private static void findNaviItemInSubNaviRecursively(List<String> listOfSubNavi, String searcheElementId, StringBuffer pathBefore, List<String> resList, Map<String, NaviItem> mapOfAllNaviItems){
         for (String subNaviId : listOfSubNavi){
             NaviItem naviItem = mapOfAllNaviItems.get(subNaviId);
+            if (naviItem == null)
+                continue;
+
             if (subNaviId.equalsIgnoreCase(searcheElementId)){
                 resList.add(pathBefore+"</br>");
             }

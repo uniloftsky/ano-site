@@ -22,13 +22,15 @@ import java.util.List;
 /**
  * Action shows usages of specific element in cms.
  *
- * @author : vzarva
+ * @author vzarva
  */
-public class ShowUsesAction extends BaseAction {
+public class ShowUsagesOfDocumentAction extends BaseAction {
+
     /**
      * Logger by default.
      */
-    private static final Logger LOGGER = Logger.getLogger(ShowUsesAction.class);
+    private static final Logger LOGGER = Logger.getLogger(ShowUsagesOfDocumentAction.class);
+
     /**
      * Encoding.
      */
@@ -37,20 +39,21 @@ public class ShowUsesAction extends BaseAction {
      * Content type.
      */
     private static final String TEXT_X_JSON = "application/json";
+
     /**
-     * Get method.
+     * Type of searched element.
      */
-    private static final String GET = "GET";
+    private static final String DOC_PARAM = "doc";
+
     /**
-     * POST method.
+     * Id of searched element.
      */
-    private static final String POST = "POST";
+    private static final String SEARCHED_ELEMENT_ID_PARAM = "pId";
+
     /**
-     * Parameters.
+     * References to usages of current document.
      */
     private static final String REFERENCES_ATTR = "references";
-    private static final String DOC_PARAM = "doc";
-    private static final String SEARCHED_ELEMENT_ID_PARAM = "pId";
 
 
     @Override
@@ -59,16 +62,9 @@ public class ShowUsesAction extends BaseAction {
         String doc = req.getParameter(DOC_PARAM);
         String pId = req.getParameter(SEARCHED_ELEMENT_ID_PARAM);
 
-        String method = req.getMethod();
-        if (GET.equals(method)) {
-            LOGGER.warn("execute() - failed, GET method is not supported -  return 403 - Forbidden response code");
-            response.addError("Forbidden");
-            writeTextToResponse(res, response);
-            return null;
-        }
         if (StringUtils.isEmpty(doc) || StringUtils.isEmpty(pId)){
-            LOGGER.warn("Incoming parameters doc["+doc+"] or pId["+pId+"] is empty");
-            response.addError("Incoming parameters doc["+doc+"] or pId["+pId+"] is empty");
+            LOGGER.warn("Incoming parameters doc[" + doc + "] or pId[" + pId + "] is empty");
+            response.addError("Incoming parameters doc[" + doc + "] or pId[" + pId + "] is empty");
             writeTextToResponse(res, response);
             return null;
         }
