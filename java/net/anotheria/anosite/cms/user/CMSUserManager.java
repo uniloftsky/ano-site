@@ -100,7 +100,7 @@ public class CMSUserManager {
 			addDefaultRole("admin");
 
 			/* adding default users */
-			addDefaultUser("admin", hashPassword("admin"), "admin"); // + admin:admin if necessary
+			addDefaultUser("admin", "admin", "admin"); // + admin:admin if necessary
 
 		} catch (ASUserDataServiceException e) {
 			log.error("ASUserDataService failed", e);
