@@ -49,6 +49,7 @@
 				<element type="function" name="deleteWithConfirmation" />
 				<element type="function" name="lock" />
 				<element type="function" name="unlock" />
+				<element type="function" name="showUsages" />
 				<element type="function" name="version" />
 			</elements>
 			<dialog name="Edit" title="Edit Page">
@@ -132,6 +133,7 @@
 				<element type="function" name="deleteWithConfirmation" />
 				<element type="function" name="lock" />
 				<element type="function" name="unlock" />
+                <element type="function" name="showUsages" />
 				<element type="function" name="version" />
 			</elements>
 			<dialog name="Edit" title="Edit Box">
@@ -201,6 +203,7 @@
 				<element type="function" name="deleteWithConfirmation" />
 				<element type="function" name="lock" />
 				<element type="function" name="unlock" />
+                <element type="function" name="showUsages" />
 			</elements>
 			<dialog name="Edit" title="Edit Attribute">
 				<elements>

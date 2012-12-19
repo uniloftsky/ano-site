@@ -22,6 +22,7 @@
 	        		<element type="function" name="deleteWithConfirmation"/>
 					<element type="function" name="lock"/>
 	        		<element type="function" name="unlock"/>
+                    <element type="function" name="showUsages" />
 	      		</elements>
 	      		<dialog name="Edit" title="Edit Style">
         			<elements>
@@ -68,6 +69,7 @@
 	        		<element type="function" name="deleteWithConfirmation"/>
 					<element type="function" name="lock"/>
 	        		<element type="function" name="unlock"/>
+                    <element type="function" name="showUsages" />
 	      		</elements>
 	      		<dialog name="Edit" title="Edit Template">
         			<elements>
