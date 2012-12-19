@@ -616,7 +616,7 @@ public enum DocumentEnum {
         List<String> result = new ArrayList<String>();
         try {
             for (Site site : siteDataService.getSites()){
-                if (site == null || site.getSearchpage() == null)
+                if (site == null || site.getSearchpage() == null || site.getStartpage() == null)
                     continue;
 
                 if (site.getStartpage().equalsIgnoreCase(pageId) || site.getSearchpage().equalsIgnoreCase(pageId)){
@@ -764,6 +764,25 @@ public enum DocumentEnum {
                     }
                 }
             }
+
+            for (Site site : siteDataService.getSites()){
+                if (site == null || site.getTopNavi() == null || site.getMainNavi() == null)
+                    continue;
+
+                if (!site.getTopNavi().isEmpty()){
+                    StringBuffer pathBeforeTopNavi = new StringBuffer("</br><a href=\"assitedataSiteEdit?pId="+site.getId()+"\" > Site ["+site.getName()+"] </a> -> " +
+                            "<a href=\"assitedataSiteTopNaviShow?ownerId="+site.getId()+"\" > TopNavi </a>");
+                    findNaviItemInSubNaviRecursively(site.getTopNavi(),naviItemId,pathBeforeTopNavi,result,mapOfAllNaviItems);
+                }
+
+                if (!site.getMainNavi().isEmpty()){
+                    StringBuffer pathBeforeMainNavi = new StringBuffer("</br><a href=\"assitedataSiteEdit?pId="+site.getId()+"\" > Site ["+site.getName()+"] </a> -> " +
+                            "<a href=\"assitedataSiteMainNaviShow?ownerId="+site.getId()+"\" > TopNavi </a>");
+                    findNaviItemInSubNaviRecursively(site.getTopNavi(),naviItemId,pathBeforeMainNavi,result,mapOfAllNaviItems);
+                }
+                //TODO implement search of naviitem through site document
+            }
+
         } catch (ASSiteDataServiceException e) {
             LOGGER.error("failed to use SiteDataService.", e);
         }
