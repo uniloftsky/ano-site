@@ -87,6 +87,16 @@ public class ResourceDeliveryServlet extends MoskitoHttpServlet {
 			type = ContentType.PNG; // image resource
 		if (path.toLowerCase().endsWith(".gif"))
 			type = ContentType.GIF; // image resource
+		if (path.toLowerCase().endsWith(".eot"))
+			type = ContentType.EOT; // font resource
+		if (path.toLowerCase().endsWith(".ttf"))
+			type = ContentType.TRUE_TYPE; // font resource
+		if (path.toLowerCase().endsWith(".otf"))
+			type = ContentType.OPEN_TYPE; // font resource
+		if (path.toLowerCase().endsWith(".woff"))
+			type = ContentType.WOFF; // font resource
+		if (path.toLowerCase().endsWith(".svg"))
+			type = ContentType.SVG; // font resource
 
 		if (type == null) { // content type must be taken from extension or this is HttpServletResponse.SC_BAD_REQUEST
 			res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -197,7 +207,32 @@ public class ResourceDeliveryServlet extends MoskitoHttpServlet {
 		/**
 		 * GIF image file.
 		 */
-		GIF("image/gif");
+		GIF("image/gif"),
+
+		/**
+		 * EOT font file.
+		 */
+		EOT("application/vnd.ms-fontobject"),
+
+		/**
+		 * TrueType font file.
+		 */
+		TRUE_TYPE("font/ttf"),
+
+		/**
+		 * OpenType font file.
+		 */
+		OPEN_TYPE("font/opentype"),
+
+		/**
+		 * WOFF font file.
+		 */
+		WOFF("font/x-woff"),
+
+		/**
+		 * SVG font file.
+		 */
+		SVG("image/svg+xml");
 
 		/**
 		 * String representation for use in HTML page or HTTP header.
