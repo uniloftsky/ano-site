@@ -80,13 +80,14 @@
 					<element type="field" name="name" comparable="default"> 
 	        		   	<decorator name="editLink"/>
 					</element>
-					<element type="field" name="externalLink" comparable="true"/> 
+					<element type="field" name="externalLink" comparable="true"/>
 					<element type="field" name="internalLink" comparable="true">
 	        		   	<decorator name="linkTargetName"/>
 					</element>
 					<element type="field" name="pageAlias" comarable="true">
 						<decorator name="linkTargetName"/>
 					</element>
+                    <element name="className" type="field" comparable="true"/>
 					<element type="field" name="subNavi" comparable="true">
 						<decorator name="naviitem"/>
 					</element> 
@@ -105,7 +106,8 @@
 		      			<element type="field" name="icon" />
 						<element type="field" name="externalLink" /> 
 						<element type="field" name="internalLink" /> 
-						<element type="field" name="pageAlias" /> 
+						<element type="field" name="pageAlias" />
+                        <element type="field" name="className"/>
 						<element type="field" name="subNavi" /> 
 						<element type="field" name="popup" /> 
 						<element type="field" name="guards"/>

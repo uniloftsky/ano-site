@@ -1327,6 +1327,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			bean.setName(item.getName());
 			bean.setTitle(item.getTitle());
 			bean.setIcon(item.getIcon());
+			bean.setClassName(item.getClassName());
 
 			// internal link to a page
 			if (item.getInternalLink().length() > 0) {

@@ -126,6 +126,8 @@
 		<link name="internalLink" type="single" target="ASWebData.Pagex"/>
 		<link name="pageAlias" type="single" target="ASSiteData.PageAlias"/>
 		<property name="popup" type="boolean"/>
+        <!-- sometimes it's  useful to have such class name for easy rendering with proper class name-->
+		<property name="className" type="string"/>
 		<property name="subNavi" type="list">
 	        <content>
 				<link name="item" type="single" target="ASSiteData.NaviItem"/>
