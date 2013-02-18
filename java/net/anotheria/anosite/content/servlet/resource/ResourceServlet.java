@@ -5,9 +5,9 @@ import net.anotheria.anoprise.metafactory.MetaFactoryException;
 import net.anotheria.anosite.content.servlet.resource.type.ResourceReadType;
 import net.anotheria.anosite.gen.asresourcedata.service.IASResourceDataService;
 import net.anotheria.anosite.shared.ResourceServletMappingConfig;
+import net.anotheria.moskito.web.MoskitoHttpServlet;
 import net.anotheria.util.StringUtils;
 import net.anotheria.webutils.filehandling.actions.FileStorage;
-import net.java.dev.moskito.web.MoskitoHttpServlet;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;

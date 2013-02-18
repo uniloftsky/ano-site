@@ -5,7 +5,7 @@ import net.anotheria.anoprise.metafactory.MetaFactoryException;
 import net.anotheria.anosite.gen.aslayoutdata.data.PageStyle;
 import net.anotheria.anosite.gen.aslayoutdata.service.ASLayoutDataServiceException;
 import net.anotheria.anosite.gen.aslayoutdata.service.IASLayoutDataService;
-import net.java.dev.moskito.web.MoskitoHttpServlet;
+import net.anotheria.moskito.web.MoskitoHttpServlet;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletConfig;
@@ -18,7 +18,7 @@ import java.io.OutputStream;
  * This servlet is responsible for delivering the styles to the users browser.
  * @author lrosenberg
  */
-public class StyleSheetServlet extends MoskitoHttpServlet{
+public class StyleSheetServlet extends MoskitoHttpServlet {
 	/**
 	 * default serial version uid.
 	 */

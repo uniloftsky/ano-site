@@ -1,15 +1,15 @@
 package net.anotheria.anosite.shared.presentation.servlet;
 
-import javax.servlet.http.HttpServletRequest;
+import net.anotheria.moskito.web.MoskitoHttpServlet;
 
-import net.java.dev.moskito.web.MoskitoHttpServlet;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Base servlet class for anosite servlets.
  * @author another
  *
  */
-public abstract class BaseAnoSiteServlet extends MoskitoHttpServlet{
+public abstract class BaseAnoSiteServlet extends MoskitoHttpServlet {
 	/**
 	 * SerialVersion UID.
 	 */

@@ -19,8 +19,6 @@ import net.anotheria.anodoc.util.context.ContextManager;
 import net.anotheria.anoplass.api.APICallContext;
 import net.anotheria.anosite.gen.shared.service.AnoDocConfigurator;
 
-import org.apache.struts.action.Action;
-
 public class LanguageFilter implements Filter{
 	
 	@Override public void destroy() {
@@ -52,7 +50,7 @@ public class LanguageFilter implements Filter{
 		
 		Locale toSet = new Locale(lang);
 		//TODO remove this?
-		session.setAttribute(Action.LOCALE_KEY, toSet);
+		//session.setAttribute(Action.LOCALE_KEY, toSet);
 		session.setAttribute(SA_LANGUAGE, lang);
 		
 		chain.doFilter(rq, rs);

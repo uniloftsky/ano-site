@@ -1,8 +1,8 @@
 package net.anotheria.anosite.content.servlet;
 
 import net.anotheria.anosite.util.AnositeConstants;
-import net.java.dev.moskito.core.blueprint.BlueprintProducer;
-import net.java.dev.moskito.core.blueprint.BlueprintProducersFactory;
+import net.anotheria.moskito.core.blueprint.BlueprintProducer;
+import net.anotheria.moskito.core.blueprint.BlueprintProducersFactory;
 
 public class ASBlueprintProducerFactory {
 	public static BlueprintProducer getBlueprintProducer(String producerId){

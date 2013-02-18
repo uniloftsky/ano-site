@@ -1,31 +1,5 @@
 package net.anotheria.anosite.content.servlet;
 
-import static net.anotheria.anosite.util.AnositeConstants.PARAM_SWITCH_MODE;
-import static net.anotheria.anosite.util.AnositeConstants.PARAM_VALUE_EDIT_MODE;
-import static net.anotheria.anosite.util.AnositeConstants.PARAM_VALUE_VIEW_MODE;
-import static net.anotheria.anosite.util.AnositeConstants.SA_EDIT_MODE_FLAG;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.nio.charset.Charset;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import net.anotheria.anodoc.data.NoSuchDocumentException;
 import net.anotheria.anoplass.api.APICallContext;
 import net.anotheria.anoplass.api.APIFinder;
@@ -109,6 +83,9 @@ import net.anotheria.anosite.wizard.handler.response.WizardResponseChangeStep;
 import net.anotheria.anosite.wizard.handler.response.WizardResponseContinue;
 import net.anotheria.anosite.wizard.handler.response.WizardResponseFinish;
 import net.anotheria.asg.exception.ASGRuntimeException;
+import net.anotheria.moskito.core.blueprint.BlueprintCallExecutor;
+import net.anotheria.moskito.core.blueprint.BlueprintProducer;
+import net.anotheria.moskito.core.blueprint.BlueprintProducersFactory;
 import net.anotheria.util.IdCodeGenerator;
 import net.anotheria.util.StringUtils;
 import net.anotheria.util.concurrency.IdBasedLock;
@@ -116,11 +93,32 @@ import net.anotheria.util.concurrency.IdBasedLockManager;
 import net.anotheria.util.concurrency.SafeIdBasedLockManager;
 import net.anotheria.util.maven.MavenVersion;
 import net.anotheria.webutils.util.VersionUtil;
-import net.java.dev.moskito.core.blueprint.BlueprintCallExecutor;
-import net.java.dev.moskito.core.blueprint.BlueprintProducer;
-import net.java.dev.moskito.core.blueprint.BlueprintProducersFactory;
-
 import org.apache.log4j.Logger;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static net.anotheria.anosite.util.AnositeConstants.PARAM_SWITCH_MODE;
+import static net.anotheria.anosite.util.AnositeConstants.PARAM_VALUE_EDIT_MODE;
+import static net.anotheria.anosite.util.AnositeConstants.PARAM_VALUE_VIEW_MODE;
+import static net.anotheria.anosite.util.AnositeConstants.SA_EDIT_MODE_FLAG;
 
 /**
  * This servlet builds and delivers pages (out of pagexs objects) and is therefore one of the main classes in the ano-site framework.
@@ -549,7 +547,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 				return;
 			}
 			
-			BlueprintProducer pageProducer = BlueprintProducersFactory.getBlueprintProducer("Page-" + page.getId() + "-" + page.getName(), "page", AnositeConstants.AS_MOSKITO_SUBSYSTEM);	
+			BlueprintProducer pageProducer = BlueprintProducersFactory.getBlueprintProducer("Page-" + page.getId() + "-" + page.getName(), "page", AnositeConstants.AS_MOSKITO_SUBSYSTEM);
 			pageResponse = (InternalResponse) pageProducer.execute(pageExecutor, req, res, page, template);
 		} catch (Exception e) {
 			log.error(e);
