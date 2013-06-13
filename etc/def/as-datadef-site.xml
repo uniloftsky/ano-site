@@ -88,6 +88,11 @@
 		<property name="charset" type="string"/>
 		<property name="hreflang" type="string"/>
 		<property name="browserFiltering" type="string"/>
+        <property name="guards" type="list">
+            <content>
+                <link name="guard" type="single" target="ASFederatedData.GuardDef"/>
+            </content>
+        </property>
 	</document>
 	<document name="Script">
 		<property name="name" type="string"/>
@@ -95,6 +100,11 @@
 		<property name="link" type="string"/>
 		<property name="content" type="text"/>
 		<property name="browserFiltering" type="string"/>
+        <property name="guards" type="list">
+            <content>
+                <link name="guard" type="single" target="ASFederatedData.GuardDef"/>
+            </content>
+        </property>
 	</document>
   	<document name="Site">
 		<property name="name" type="string"/>
