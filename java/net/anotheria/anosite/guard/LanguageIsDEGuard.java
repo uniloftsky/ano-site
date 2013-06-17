@@ -5,7 +5,7 @@ package net.anotheria.anosite.guard;
  * 
  * @author Alexandr Bolbat
  */
-public abstract class LanguageIsDEGuard extends LanguageAbstractGuard {
+public class LanguageIsDEGuard extends LanguageAbstractGuard {
 
 	@Override
 	protected String getTargetLanguage() {

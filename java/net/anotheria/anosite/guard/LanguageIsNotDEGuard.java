@@ -5,7 +5,7 @@ package net.anotheria.anosite.guard;
  * 
  * @author Alexandr Bolbat
  */
-public abstract class LanguageIsNotDEGuard extends LanguageIsDEGuard {
+public class LanguageIsNotDEGuard extends LanguageIsDEGuard {
 
 	@Override
 	protected boolean shouldMatch() {
