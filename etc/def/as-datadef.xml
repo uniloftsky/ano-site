@@ -5,7 +5,6 @@
 	<!--@include:as-datadef-siteconfig.xml -->
     <!--@include:as-datadef-content.xml -->
     <!--@include:as-datadef-resources.xml -->
-    <!--@include:as-datadef-georesources.xml -->
     <!--@include:as-datadef-action.xml -->
     <!--@include:as-datadef-wizard.xml -->
 	<!--@include:as-datadef-user.xml -->

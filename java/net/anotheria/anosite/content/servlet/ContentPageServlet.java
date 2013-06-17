@@ -1188,6 +1188,56 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		}
 		return false;
 	}
+	
+	/**
+	 * Returns true if the box is disabled by conditional guards and should be ignored.
+	 *
+	 * @param req {@link HttpServletRequest}
+	 * @param mediaLink {@link MediaLink}
+	 * @return boolean value
+	 */
+	private boolean disabledByGuards(HttpServletRequest req, MediaLink mediaLink) {
+		//check the guards
+		List<String> gIds = mediaLink.getGuards();
+		for (String gid : gIds) {
+			ConditionalGuard g = null;
+			try {
+				g = GuardFactory.getConditionalGuard(gid);
+				if (!g.isConditionFullfilled(mediaLink, req)) {
+					return true;
+				}
+
+			} catch (Exception e) {
+				log.warn("Caught error in guard processing ( guard: " + g + ", gid: " + gid + ", mediaLinkId: " + mediaLink.getId() + ")", e);
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Returns true if the box is disabled by conditional guards and should be ignored.
+	 *
+	 * @param req {@link HttpServletRequest}
+	 * @param script {@link Script}
+	 * @return boolean value
+	 */
+	private boolean disabledByGuards(HttpServletRequest req, Script script) {
+		//check the guards
+		List<String> gIds = script.getGuards();
+		for (String gid : gIds) {
+			ConditionalGuard g = null;
+			try {
+				g = GuardFactory.getConditionalGuard(gid);
+				if (!g.isConditionFullfilled(script, req)) {
+					return true;
+				}
+
+			} catch (Exception e) {
+				log.warn("Caught error in guard processing ( guard: " + g + ", gid: " + gid + ", scriptId: " + script.getId() + ")", e);
+			}
+		}
+		return false;
+	}
 
 	/**
 	 * Creates a {@link List<BoxBean>} for corresponding boxId collection.
@@ -1698,9 +1748,12 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		String linkPrefix = getRDPrefix();
 		
 		List<MediaLinkBean> ret = new ArrayList<MediaLinkBean>(mediaLinkIds.size());
-		for (String id : mediaLinkIds) {
-			MediaLinkBean bean = new MediaLinkBean();
+		for (String id : mediaLinkIds) {			
 			MediaLink item = siteDataService.getMediaLink(id);
+			if (disabledByGuards(req, item))
+				continue;
+			
+			MediaLinkBean bean = new MediaLinkBean();
 			bean.setId(item.getId());
 			bean.setName(item.getName());
 
@@ -1761,6 +1814,9 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		List<ScriptBean> ret = new ArrayList<ScriptBean>(scriptIds.size());
 		for (String id : scriptIds) {
 			Script item = siteDataService.getScript(id);
+			if (disabledByGuards(req, item))
+				continue;			
+			
 			ScriptBean bean = new ScriptBean(item.getId());
 			bean.setName(item.getName());
 
