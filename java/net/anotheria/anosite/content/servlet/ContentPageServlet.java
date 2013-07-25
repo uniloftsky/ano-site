@@ -2137,22 +2137,15 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	 * @return boolean value
 	 */
 	private boolean fallBackToFileSystem(HttpServletRequest req, HttpServletResponse res) {
-		String requestURI = req.getRequestURI();
-		if (requestURI.indexOf("..") != -1)
-			throw new IllegalArgumentException("Filename contains illegal characters: " + requestURI);
-		String prefix = "webapps";
-		if (req.getContextPath() == null || req.getContextPath().length() == 0)
-			prefix += "/ROOT";
-		String fileName = prefix + requestURI;
-		if (log.isDebugEnabled())
-			log.debug("Trying to load file: " + fileName);
-		File f = new File(fileName);
-		log.debug("Loading uri: " + requestURI + " from file " + fileName + ", exists: " + f.exists());
+		final int pathIndex = StringUtils.isEmpty(req.getContextPath()) ? 0 : req.getContextPath().length();
+		String path = getServletContext().getRealPath(req.getRequestURI().substring(pathIndex));
+
+		File f = new File(path);
+		log.debug("Loading uri: " + req.getRequestURL() + " from file " + path + ", exists: " + f.exists());
 		if (!f.exists())
 			return false;
-
+		
 		FileInputStream fIn = null;
-
 		try {
 			fIn = new FileInputStream(f);
 			BufferedReader reader = new BufferedReader(new InputStreamReader(fIn, MY_FS_CHARSET));
@@ -2166,7 +2159,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			writer.flush();
 			writer.close();
 		} catch (IOException e) {
-			log.error("fallBackToFileSystem(URI: " + requestURI + ")", e);
+			log.error("fallBackToFileSystem(URI: " + req.getRequestURL() + ")", e);
 			return false;
 		} finally {
 			if (fIn != null) {
