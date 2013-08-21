@@ -12,7 +12,7 @@
 	<name>anotheria.net site engine</name>
 
 	<properties>
-		<ano-doc.version>${project.version}</ano-doc.version>
+		<ano-doc.version>2.5.1</ano-doc.version>
 		<ano-util.version>2.1.0</ano-util.version>
 		<ano-tags.version>2.1.0</ano-tags.version>
 		<ano-web.version>2.1.0</ano-web.version>
