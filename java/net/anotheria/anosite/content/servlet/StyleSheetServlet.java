@@ -6,7 +6,9 @@ import net.anotheria.anosite.gen.aslayoutdata.data.PageStyle;
 import net.anotheria.anosite.gen.aslayoutdata.service.ASLayoutDataServiceException;
 import net.anotheria.anosite.gen.aslayoutdata.service.IASLayoutDataService;
 import net.anotheria.moskito.web.MoskitoHttpServlet;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MarkerFactory;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -19,6 +21,12 @@ import java.io.OutputStream;
  * @author lrosenberg
  */
 public class StyleSheetServlet extends MoskitoHttpServlet {
+
+	/**
+	 * {@link Logger} instance.
+	 */
+	private static final Logger fatalLogger = LoggerFactory.getLogger(StyleSheetServlet.class);
+
 	/**
 	 * default serial version uid.
 	 */
@@ -27,14 +35,13 @@ public class StyleSheetServlet extends MoskitoHttpServlet {
 	 * Layout data service for retrieval of stylesheets.
 	 */
 	private IASLayoutDataService layoutDataService;
-	private static Logger fatalLogger = Logger.getLogger(StyleSheetServlet.class);
-	
+
 	@Override public void init(ServletConfig config) throws ServletException{
 		super.init(config);
 		try {
 			layoutDataService = MetaFactory.get(IASLayoutDataService.class);
 		} catch (MetaFactoryException e) {
-			fatalLogger.fatal("ASG service init failure",e);
+			fatalLogger.error(MarkerFactory.getMarker("FATAL"), "ASG service init failure", e);
 			throw new ServletException("ASG services init failure",e);
 		}
 	}

@@ -1,18 +1,5 @@
 package net.anotheria.anosite.content.filter;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import net.anotheria.anoprise.metafactory.MetaFactory;
 import net.anotheria.anoprise.metafactory.MetaFactoryException;
 import net.anotheria.anosite.gen.assitedata.data.PageAlias;
@@ -22,8 +9,22 @@ import net.anotheria.anosite.gen.aswebdata.service.IASWebDataService;
 import net.anotheria.anosite.gen.shared.data.PageAliasTypeEnum;
 import net.anotheria.asg.exception.ASGRuntimeException;
 import net.anotheria.util.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MarkerFactory;
 
-import org.apache.log4j.Logger;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * This filter checks the incoming urls whether they are matching predefined page aliases. 
@@ -63,7 +64,7 @@ public class PageAliasFilter implements Filter{
 	/**
 	 * Logger.
 	 */
-	private static Logger log = Logger.getLogger(PageAliasFilter.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(PageAliasFilter.class);
 
 	/**
 	 * WebDataService for pages retrieval.
@@ -79,7 +80,7 @@ public class PageAliasFilter implements Filter{
 			webDataService = MetaFactory.get(IASWebDataService.class);
 			siteDataService = MetaFactory.get(IASSiteDataService.class);
 		} catch (MetaFactoryException e) {
-			log.fatal("ASG services init failure",e);
+			LOGGER.error(MarkerFactory.getMarker("FATAL"), "ASG services init failure", e);
 			throw new ServletException("ASG services init failure",e);
 		}
 	}
@@ -93,7 +94,7 @@ public class PageAliasFilter implements Filter{
 		HttpServletRequest req = (HttpServletRequest)sreq;
 
 		String pathStr = req.getServletPath();
-		log.info("Resolving alias for path: " + pathStr);
+		LOGGER.info("Resolving alias for path: " + pathStr);
 		
 		if (pathStr==null || pathStr.length()<2){
 			chain.doFilter(sreq, sres);
@@ -108,11 +109,11 @@ public class PageAliasFilter implements Filter{
 					List<PathEntity> aliasPath = parsePath(aliasPathStr);
 					if(!matchPaths(aliasPath, path))
 						continue;
-					log.info("found page alias hit "+pathStr+" to page: "+alias.getTargetPage());
+					LOGGER.info("found page alias hit " + pathStr + " to page: " + alias.getTargetPage());
 					Pagex target = webDataService.getPagex(alias.getTargetPage());
 					
 					String urlQuery = convertPathToQuery(aliasPath, path) + "&" + alias.getParameters().trim();
-					log.info("Query: "+urlQuery);
+					LOGGER.info("Query: " + urlQuery);
 					if(StringUtils.isEmpty(urlQuery))
 						urlQuery = req.getQueryString();
 					
@@ -126,7 +127,7 @@ public class PageAliasFilter implements Filter{
 					
 					
 					String targetUrl = target.getName()+".html" + urlQuery;
-					log.info("Alias: " + targetUrl);
+					LOGGER.info("Alias: " + targetUrl);
 					
 					PageAliasTypeEnum command = PageAliasTypeEnum.getConstantByValue(alias.getType());
 					switch (command) {
@@ -145,7 +146,7 @@ public class PageAliasFilter implements Filter{
 				}
 			}
 		}catch(ASGRuntimeException e){
-			log.error("doFilter", e);
+			LOGGER.error("doFilter", e);
 		}
 
 		chain.doFilter(sreq, sres);

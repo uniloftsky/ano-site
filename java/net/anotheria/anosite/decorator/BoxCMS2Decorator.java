@@ -12,7 +12,8 @@ import net.anotheria.asg.data.DataObject;
 import net.anotheria.asg.exception.ASGRuntimeException;
 import net.anotheria.asg.util.decorators.IAttributeDecorator;
 import net.anotheria.util.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MarkerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,7 @@ public class BoxCMS2Decorator implements IAttributeDecorator{
 		try {
 			service = MetaFactory.get(IASWebDataService.class);
 		} catch (MetaFactoryException e) {
-			Logger.getLogger(BoxCMS2Decorator.class).fatal("IASWebDataService asg service init failure",e);
+			LoggerFactory.getLogger(BoxCMS2Decorator.class).error(MarkerFactory.getMarker("FATAL"), "IASWebDataService asg service init failure", e);
 		}
 	}
 	

@@ -1,7 +1,13 @@
 package net.anotheria.anosite.shared.presentation.filter;
 
-import java.io.IOException;
-import java.util.List;
+import net.anotheria.anoprise.metafactory.MetaFactory;
+import net.anotheria.anoprise.metafactory.MetaFactoryException;
+import net.anotheria.anosite.gen.assitedata.data.RedirectUrl;
+import net.anotheria.anosite.gen.assitedata.service.ASSiteDataServiceException;
+import net.anotheria.anosite.gen.assitedata.service.IASSiteDataService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MarkerFactory;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -11,14 +17,9 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
 
-import net.anotheria.anoprise.metafactory.MetaFactory;
-import net.anotheria.anoprise.metafactory.MetaFactoryException;
-import net.anotheria.anosite.gen.assitedata.data.RedirectUrl;
-import net.anotheria.anosite.gen.assitedata.service.ASSiteDataServiceException;
-import net.anotheria.anosite.gen.assitedata.service.IASSiteDataService;
-
-import org.apache.log4j.Logger;
 
 /**
  * This filter performs ano-site feature of redirecting. Redirects are stored in IASSiteDataService.redirectUrls.
@@ -28,7 +29,7 @@ import org.apache.log4j.Logger;
 public class RedirectFilter implements Filter{
 	private IASSiteDataService siteDataService;
 	
-	private static Logger log = Logger.getLogger(RedirectFilter.class);
+	private static Logger log = LoggerFactory.getLogger(RedirectFilter.class);
     private static final String CHAR = "/";
 
     @Override
@@ -67,7 +68,7 @@ public class RedirectFilter implements Filter{
 		try {
 			siteDataService = MetaFactory.get(IASSiteDataService.class);
 		} catch (MetaFactoryException e) {
-			log.fatal("IASSiteDataService init failure",e);
+			log.error(MarkerFactory.getMarker("FATAL"), "IASSiteDataService init failure", e);
 			throw new ServletException("IASSiteDataService init failure",e);
 		}
 	}

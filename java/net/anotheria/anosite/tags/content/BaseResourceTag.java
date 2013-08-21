@@ -6,7 +6,9 @@ import net.anotheria.anosite.gen.asresourcedata.data.TextResource;
 import net.anotheria.anosite.gen.asresourcedata.service.IASResourceDataService;
 import net.anotheria.asg.exception.ASGRuntimeException;
 import net.anotheria.tags.BaseTagSupport;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MarkerFactory;
 
 import javax.servlet.jsp.JspException;
 import java.util.List;
@@ -24,7 +26,7 @@ public abstract class BaseResourceTag extends BaseTagSupport {
 	/**
 	 * log.
 	 */
-	private static Logger log = Logger.getLogger(BaseResourceTag.class);
+	private static Logger log = LoggerFactory.getLogger(BaseResourceTag.class);
 
 	/**
 	 * Init.
@@ -33,7 +35,7 @@ public abstract class BaseResourceTag extends BaseTagSupport {
 		try {
 			service = MetaFactory.get(IASResourceDataService.class);
 		} catch (MetaFactoryException e) {
-			log.fatal("IASResourceDataService init failure",e);
+			log.error(MarkerFactory.getMarker("FATAL"), "IASResourceDataService init failure", e);
 		}
 	}
 

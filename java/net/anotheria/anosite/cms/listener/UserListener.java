@@ -10,7 +10,8 @@ import net.anotheria.anosite.gen.asuserdata.service.ASUserDataServiceException;
 import net.anotheria.anosite.gen.asuserdata.service.IASUserDataService;
 import net.anotheria.asg.data.DataObject;
 import net.anotheria.asg.util.listener.IServiceListener;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,17 +26,18 @@ import java.util.List;
 
 public class UserListener implements IServiceListener {
 
-    private static final Logger log;
+	/**
+	 * {@link Logger} instance.
+	 */
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserListener.class);
 
     private static final IASUserDataService userDataService;
 
     static {
-        log = Logger.getLogger(UserListener.class);
-
         try {
             userDataService = MetaFactory.get(IASUserDataService.class);
         } catch (MetaFactoryException e) {
-            log.error("MetaFactory for UserListener failed", e);
+            LOGGER.error("MetaFactory for UserListener failed", e);
             throw new RuntimeException("MetaFactory for UserListener failed", e);
         }
     }
@@ -87,7 +89,7 @@ public class UserListener implements IServiceListener {
             try {
                 userDataService.updateUserDef(userDefNew);
             } catch (ASUserDataServiceException e) {
-                log.error("ASUserDataService for UserListener failed", e);
+                LOGGER.error("ASUserDataService for UserListener failed", e);
                 throw new RuntimeException("ASUserDataService for UserListener failed", e);
             }
 
@@ -110,7 +112,7 @@ public class UserListener implements IServiceListener {
             return existedUserDefs != null && !existedUserDefs.isEmpty();
 
         } catch (ASUserDataServiceException e) {
-            log.error("ASUserDataService for UserListener failed", e);
+            LOGGER.error("ASUserDataService for UserListener failed", e);
             throw new RuntimeException("ASUserDataService for UserListener failed", e);
         }
     }

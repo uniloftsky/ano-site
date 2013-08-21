@@ -1,17 +1,5 @@
 package net.anotheria.anosite.content.filter;
 
-import java.io.IOException;
-import java.util.List;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import net.anotheria.anoprise.metafactory.MetaFactory;
 import net.anotheria.anoprise.metafactory.MetaFactoryException;
 import net.anotheria.anosite.gen.assitedata.data.EntryPoint;
@@ -23,8 +11,21 @@ import net.anotheria.anosite.gen.shared.data.PageAliasTypeEnum;
 import net.anotheria.anosite.gen.shared.service.AnoDocConfigurator;
 import net.anotheria.asg.exception.ASGRuntimeException;
 import net.anotheria.asg.exception.ConstantNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MarkerFactory;
 
-import org.apache.log4j.Logger;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
+
 /**
  * With the entry point filter the site is able to define different pages for different subsite or domains. 
  * @author lrosenberg
@@ -35,7 +36,7 @@ public class EntryPointFilter implements Filter{
 	/**
 	 * Logger.
 	 */
-	private static Logger log = Logger.getLogger(EntryPointFilter.class);
+	private static Logger LOGGER = LoggerFactory.getLogger(EntryPointFilter.class);
 
 	/**
 	 * Webdata service to lookup pages.
@@ -91,11 +92,11 @@ public class EntryPointFilter implements Filter{
 				//ok, no entry point defined, lets find first site and its homepage.
 				List<Site> sites = siteDataService.getSites();
 				if (sites == null || sites.size()==0){
-					log.error("No sites found, dont know where to send user.");
+					LOGGER.error("No sites found, dont know where to send user.");
 				}else{
 					Site firstSite = sites.get(0);
 					if (firstSite.getStartpage()==null || firstSite.getStartpage().length()==0){
-						log.error("First site doesnt have a startpage.");
+						LOGGER.error("First site doesnt have a startpage.");
 					}else{
 						targetPage = webDataService.getPagex(firstSite.getStartpage());
 					}
@@ -129,14 +130,14 @@ public class EntryPointFilter implements Filter{
 			
 			switch (command) {
 			case MASK:
-				log.info("EntryPoint forwarding to: "+pageUrl);
+				LOGGER.info("EntryPoint forwarding to: " + pageUrl);
 				req.getRequestDispatcher(pageUrl).forward(sreq, sres);
 				return;
 			case REDIRECT:
 				//Fall down to default 
 			default:
 				String targetUrl = req.getContextPath()+req.getServletPath()+pageUrl;
-				log.info("EntryPoint redirecting to: "+targetUrl);
+				LOGGER.info("EntryPoint redirecting to: " + targetUrl);
 				((HttpServletResponse)sres).sendRedirect(targetUrl);
 				return;
 			}
@@ -152,7 +153,7 @@ public class EntryPointFilter implements Filter{
 			webDataService = MetaFactory.get(IASWebDataService.class);
 			siteDataService = MetaFactory.get(IASSiteDataService.class);
 		} catch (MetaFactoryException e) {
-			log.fatal("ASG services init failure",e);
+			LOGGER.error(MarkerFactory.getMarker("FATAL"), "ASG services init failure", e);
 			throw new ServletException("ASG services init failure",e);
 		}
 	}

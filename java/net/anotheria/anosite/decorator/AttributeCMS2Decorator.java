@@ -1,8 +1,5 @@
 package net.anotheria.anosite.decorator;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.anotheria.anodoc.data.Document;
 import net.anotheria.anodoc.data.NoSuchDocumentException;
 import net.anotheria.anodoc.data.NoSuchPropertyException;
@@ -15,8 +12,12 @@ import net.anotheria.anosite.gen.aswebdata.service.IASWebDataService;
 import net.anotheria.asg.data.DataObject;
 import net.anotheria.asg.util.decorators.IAttributeDecorator;
 import net.anotheria.util.StringUtils;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MarkerFactory;
 
-import org.apache.log4j.Logger;
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * Decorator for linked attributes.
@@ -34,7 +35,7 @@ public class AttributeCMS2Decorator implements IAttributeDecorator{
 		try {
 			service = MetaFactory.get(IASWebDataService.class);
 		} catch (MetaFactoryException e) {
-			Logger.getLogger(AttributeCMS2Decorator.class).fatal("IASWebDataService asg service init failure",e);
+			LoggerFactory.getLogger(AttributeCMS2Decorator.class).error(MarkerFactory.getMarker("FATAL"), "IASWebDataService asg service init failure", e);
 		}
 	}
 	

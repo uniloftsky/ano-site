@@ -4,9 +4,8 @@ import net.anotheria.anoprise.metafactory.MetaFactory;
 import net.anotheria.anoprise.metafactory.MetaFactoryException;
 import net.anotheria.anosite.gen.assitedata.service.IASSiteDataService;
 import net.anotheria.asg.exception.ASGRuntimeException;
-
-import org.apache.log4j.Logger;
-
+import org.slf4j.LoggerFactory;
+import org.slf4j.MarkerFactory;
 
 /**
  * Decorator for linked localizations.
@@ -26,7 +25,7 @@ public class MediaLinksListDecorator extends LinksListDecorator{
 		try {
 			service = MetaFactory.get(IASSiteDataService.class);
 		} catch (MetaFactoryException e) {
-          Logger.getLogger(MediaLinksListDecorator.class).fatal("IASSiteDataService  init failure",e);
+          LoggerFactory.getLogger(MediaLinksListDecorator.class).error(MarkerFactory.getMarker("FATAL"), "IASSiteDataService  init failure", e);
 		}
 	}
 

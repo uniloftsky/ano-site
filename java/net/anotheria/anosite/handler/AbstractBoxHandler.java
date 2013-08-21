@@ -1,10 +1,5 @@
 package net.anotheria.anosite.handler;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import net.anotheria.anoplass.api.APICallContext;
 import net.anotheria.anoplass.api.session.APISessionImpl;
 import net.anotheria.anoprise.metafactory.MetaFactory;
@@ -18,8 +13,14 @@ import net.anotheria.anosite.handler.exception.BoxSubmitException;
 import net.anotheria.anosite.localization.LocalizationMap;
 import net.anotheria.asg.exception.ASGRuntimeException;
 import net.anotheria.util.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MarkerFactory;
 
-import org.apache.log4j.Logger;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+
 
 /**
  * Adapter style implementation of a boxhandler.
@@ -30,7 +31,7 @@ public abstract class AbstractBoxHandler implements BoxHandler{
 	/**
 	 * Log. Each subclass has indirect access to this log via getLog. The log is named by the subclass and created in the constructor.
 	 */
-	private Logger log;	
+	private Logger log;
 	/**
 	 * A resource service instance.
 	 */
@@ -42,7 +43,7 @@ public abstract class AbstractBoxHandler implements BoxHandler{
 		try {
 			resourceService = MetaFactory.get(IASResourceDataService.class);
 		} catch (MetaFactoryException e) {
-			Logger.getLogger(AbstractBoxHandler.class).fatal("IASResourceDataService init failure",e);
+			LoggerFactory.getLogger(AbstractBoxHandler.class).error(MarkerFactory.getMarker("FATAL"), "IASResourceDataService init failure", e);
 		}
 	}
 	
@@ -50,7 +51,7 @@ public abstract class AbstractBoxHandler implements BoxHandler{
 	 * Constructor for extending classes.
 	 */
 	protected AbstractBoxHandler(){
-		log = Logger.getLogger(this.getClass());
+		log = LoggerFactory.getLogger(this.getClass());
 	}
 
 	/**
@@ -110,7 +111,7 @@ public abstract class AbstractBoxHandler implements BoxHandler{
 			return resources.get(0).getValue();
 		} catch (ASGRuntimeException e) {
 			String message = "getTextResourceByName(" + name + ") fail.";
-			Logger.getLogger(AbstractBoxHandler.class).error(message, e);
+			LoggerFactory.getLogger(AbstractBoxHandler.class).error(message, e);
 			throw new RuntimeException(message, e);
 		}
 	}

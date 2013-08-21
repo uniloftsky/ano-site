@@ -3,16 +3,20 @@ package net.anotheria.anosite.handler;
 import net.anotheria.anoprise.metafactory.MetaFactory;
 import net.anotheria.anoprise.metafactory.MetaFactoryException;
 import net.anotheria.anosite.gen.asfederateddata.data.BoxHandlerDef;
-import net.anotheria.anosite.gen.asfederateddata.service.ASFederatedDataServiceFactory;
 import net.anotheria.anosite.gen.asfederateddata.service.IASFederatedDataService;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MarkerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class BoxHandlerFactory {
-	
-	private static Logger log = Logger.getLogger(BoxHandlerFactory.class);
+
+	/**
+	 * {@link Logger} instance.
+	 */
+	private static final Logger LOGGER = LoggerFactory.getLogger(BoxHandlerFactory.class);
 	
 	private static IASFederatedDataService service;
 
@@ -20,7 +24,7 @@ public class BoxHandlerFactory {
 		try {
 			service = MetaFactory.get(IASFederatedDataService.class);
 		} catch (MetaFactoryException e) {
-			log.fatal("IASFederatedDataService init failure",e);
+			LOGGER.error(MarkerFactory.getMarker("FATAL"), "IASFederatedDataService init failure", e);
 		}
 	}
 	
@@ -48,7 +52,7 @@ public class BoxHandlerFactory {
 			return wrapper;
 		
 		}catch(Exception e){
-			log.error("createHandler("+id+")", e);
+			LOGGER.error("createHandler(" + id + ")", e);
 			throw new RuntimeException("Handler instantiation failed - "+e.getMessage());
 		}
 		

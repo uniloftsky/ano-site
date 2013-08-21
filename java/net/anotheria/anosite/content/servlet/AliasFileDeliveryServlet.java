@@ -7,7 +7,8 @@ import net.anotheria.anosite.gen.asresourcedata.service.ASResourceDataServiceExc
 import net.anotheria.anosite.gen.asresourcedata.service.IASResourceDataService;
 import net.anotheria.util.StringUtils;
 import net.anotheria.webutils.filehandling.servlet.FileDeliveryServlet;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -20,14 +21,14 @@ import javax.servlet.http.HttpServletRequest;
 public class AliasFileDeliveryServlet extends FileDeliveryServlet {
 
 	/**
+	 * Logger instance.
+	 */
+	private static final Logger LOGGER = LoggerFactory.getLogger(AliasFileDeliveryServlet.class);
+
+	/**
 	 * Generated serialVersionUID.
 	 */
 	private static final long serialVersionUID = -9048929437969384125L;
-
-	/**
-	 * Logger instance.
-	 */
-	private static Logger log = Logger.getLogger(AliasFileDeliveryServlet.class);
 
 	/**
 	 * Instance of IASResourceDataService.
@@ -40,7 +41,7 @@ public class AliasFileDeliveryServlet extends FileDeliveryServlet {
 		try {
 			service = MetaFactory.get(IASResourceDataService.class);
 		} catch (MetaFactoryException e) {
-			log.error("AliasFileDeliveryServlet()", e);
+			LOGGER.error("AliasFileDeliveryServlet()", e);
 			throw new RuntimeException("AliasFileDeliveryServlet()", e);
 		}
 	}
@@ -60,7 +61,7 @@ public class AliasFileDeliveryServlet extends FileDeliveryServlet {
 			}
 
 		} catch (ASResourceDataServiceException e) {
-			log.error("getRequestedResourceName()", e);
+			LOGGER.error("getRequestedResourceName()", e);
 			throw new ServletException("getRequestedResourceName()", e);
 		}
 

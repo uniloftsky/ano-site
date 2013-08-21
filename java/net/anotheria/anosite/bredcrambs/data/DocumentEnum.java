@@ -5,7 +5,11 @@ import net.anotheria.anoprise.metafactory.MetaFactoryException;
 import net.anotheria.anosite.gen.aslayoutdata.data.PageLayout;
 import net.anotheria.anosite.gen.aslayoutdata.service.ASLayoutDataServiceException;
 import net.anotheria.anosite.gen.aslayoutdata.service.IASLayoutDataService;
-import net.anotheria.anosite.gen.assitedata.data.*;
+import net.anotheria.anosite.gen.assitedata.data.EntryPoint;
+import net.anotheria.anosite.gen.assitedata.data.NaviItem;
+import net.anotheria.anosite.gen.assitedata.data.PageAlias;
+import net.anotheria.anosite.gen.assitedata.data.PageTemplate;
+import net.anotheria.anosite.gen.assitedata.data.Site;
 import net.anotheria.anosite.gen.assitedata.service.ASSiteDataServiceException;
 import net.anotheria.anosite.gen.assitedata.service.IASSiteDataService;
 import net.anotheria.anosite.gen.aswebdata.data.Attribute;
@@ -17,9 +21,15 @@ import net.anotheria.asg.data.DataObject;
 import net.anotheria.asg.exception.ConstantNotFoundException;
 import net.anotheria.util.StringUtils;
 import org.apache.commons.lang.WordUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MarkerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Enum represents type of elements and can find usages of current element by its id.
@@ -145,7 +155,7 @@ public enum DocumentEnum {
     /**
      * Logger by default.
      */
-    private static final Logger LOGGER = Logger.getLogger(DocumentEnum.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DocumentEnum.class);
 
     /**
      * Data services.
@@ -160,7 +170,7 @@ public enum DocumentEnum {
             siteDataService = MetaFactory.get(IASSiteDataService.class);
             layoutDataService = MetaFactory.get(IASLayoutDataService.class);
         } catch (MetaFactoryException e) {
-            LOGGER.fatal("Services init failure", e);
+            LOGGER.error(MarkerFactory.getMarker("FATAL"), "Services init failure", e);
         }
     }
 

@@ -93,7 +93,9 @@ import net.anotheria.util.concurrency.IdBasedLockManager;
 import net.anotheria.util.concurrency.SafeIdBasedLockManager;
 import net.anotheria.util.maven.MavenVersion;
 import net.anotheria.webutils.util.VersionUtil;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MarkerFactory;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
@@ -126,6 +128,11 @@ import static net.anotheria.anosite.util.AnositeConstants.SA_EDIT_MODE_FLAG;
  * @author lrosenberg
  */
 public class ContentPageServlet extends BaseAnoSiteServlet {
+
+	/**
+	 * {@link Logger} instance.
+	 */
+	private static Logger LOGGER = LoggerFactory.getLogger(ContentPageServlet.class);
 
 	/**
 	 * Basic, serialVersionUID.
@@ -161,11 +168,6 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	 * Wizard suffix.
 	 */
 	private static final String W_HTML_SUFFIX = ".whtml";
-
-	/**
-	 * Log4j logger.
-	 */
-	private static Logger log = Logger.getLogger(ContentPageServlet.class);
 
 	/**
 	 * WebDataService for boxes and pages.
@@ -232,7 +234,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
-		log.info("Init ContentPageServlet");
+		LOGGER.info("Init ContentPageServlet");
 		try {
 			webDataService = MetaFactory.get(IASWebDataService.class);
 			siteDataService = MetaFactory.get(IASSiteDataService.class);
@@ -243,7 +245,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			wizardAPI = APIFinder.findAPI(WizardAPI.class);
 			accessAPI = APIFinder.findAPI(AnoSiteAccessAPI.class);
 		} catch (MetaFactoryException e) {
-			log.fatal("Init ASG services failure", e);
+			LOGGER.error(MarkerFactory.getMarker("FATAL"), "Init ASG services failure", e);
 			throw new ServletException("Init ASG services failure", e);
 		}
 		pageExecutor = new PageBeanCreator();
@@ -259,13 +261,13 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		try {
 			process(req, res, false);
 		} catch (ASGRuntimeException e) {
-			log.error("moskitoDoGet", e);
+			LOGGER.error("moskitoDoGet", e);
 			throw new ServletException("ASG Runtime Exception: " + e.getMessage());
 		} catch (BoxHandleException e) {
-			log.error("moskitoDoGet", e);
+			LOGGER.error("moskitoDoGet", e);
 			throw new ServletException("Box Handle Exception: " + e.getMessage());
 		} catch (WizardHandlerException e) {
-			log.error("moskitoDoPost", e);
+			LOGGER.error("moskitoDoPost", e);
 			throw new ServletException("Wizard Handle Exception: " + e.getMessage());
 		}
 	}
@@ -275,13 +277,13 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		try {
 			process(req, res, true);
 		} catch (ASGRuntimeException e) {
-			log.error("moskitoDoPost", e);
+			LOGGER.error("moskitoDoPost", e);
 			throw new ServletException("ASG Runtime Exception: " + e.getMessage());
 		} catch (BoxHandleException e) {
-			log.error("moskitoDoPost", e);
+			LOGGER.error("moskitoDoPost", e);
 			throw new ServletException("Box Handle Exception: " + e.getMessage());
 		} catch (WizardHandlerException e) {
-			log.error("moskitoDoPost", e);
+			LOGGER.error("moskitoDoPost", e);
 			throw new ServletException("Wizard Handle Exception: " + e.getMessage());
 		}
 	}
@@ -382,10 +384,10 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 					if (!StringUtils.isEmpty(wizardPageId))
 						page = webDataService.getPagex(wizardPageId);
 				} catch (ASWebDataServiceException e) {
-					log.trace("ignore", e);
+					LOGGER.trace("ignore", e);
 				}
 			} catch (WizardAPIException e) {
-				log.trace("ignore", e);
+				LOGGER.trace("ignore", e);
 			}
 
 		}
@@ -423,7 +425,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			String redirectTarget = "https://";
 			redirectTarget += req.getServerName();
 			redirectTarget += requestURI;
-			log.debug("making secure switch to " + redirectTarget);
+			LOGGER.debug("making secure switch to " + redirectTarget);
 			res.sendRedirect(redirectTarget);
 			return;
 		}
@@ -432,7 +434,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			String redirectTarget = "http://";
 			redirectTarget += req.getServerName();
 			redirectTarget += requestURI;
-			log.debug("making unsecure switch to " + redirectTarget);
+			LOGGER.debug("making unsecure switch to " + redirectTarget);
 			res.sendRedirect(redirectTarget);
 			return;
 		}
@@ -498,7 +500,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 				// wizard submit part
 			}
 		} catch (AnoSiteAccessAPIException e) {
-			log.error(e);
+			LOGGER.error(e.getMessage(), e);
 			throw new ServletException(e);
 		}
 
@@ -522,11 +524,11 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 				}
 
 				if (!wizardResponse.canContinue()) {
-					log.debug("Wizard " + wizard + " response can't continue");
+					LOGGER.debug("Wizard " + wizard + " response can't continue");
 					return;
 				}
 			} catch (Exception e) {
-				log.error("Could not handle WizardDef with ID: " + wizard.getId(), e);
+				LOGGER.error("Could not handle WizardDef with ID: " + wizard.getId(), e);
 				throw new ASGRuntimeException("Could not create WizardBean for WizardDef with ID:" + wizard.getId() + ": " + e.getMessage() + "! See logs for more details.");
 			}
 		}   //////////////Wizard end //////////////
@@ -550,7 +552,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			BlueprintProducer pageProducer = BlueprintProducersFactory.getBlueprintProducer("Page-" + page.getId() + "-" + page.getName(), "page", AnositeConstants.AS_MOSKITO_SUBSYSTEM);
 			pageResponse = (InternalResponse) pageProducer.execute(pageExecutor, req, res, page, template);
 		} catch (Exception e) {
-			log.error(e);
+			LOGGER.error(e.getMessage(), e);
 			throw new ServletException(e);
 		}
 		///////////////// PAGE END //////////////////////
@@ -560,7 +562,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		}
 
 		if (!pageResponse.canContinue()) {
-			log.warn("pageResponse " + pageResponse + " response can't continue");
+			LOGGER.warn("pageResponse " + pageResponse + " response can't continue");
 			return;
 		}
 
@@ -671,7 +673,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 						return wiz;
 			}
 		} catch (ASWizardDataServiceException e) {
-			log.trace("ignored", e);
+			LOGGER.trace("ignored", e);
 		}
 		return null;
 	}
@@ -700,14 +702,14 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 					//redirect to self!
 					return new InternalRedirectResponse(req.getContextPath() + req.getRequestURI());
 				}
-				log.warn("wizard  " + wizard + " trying to rewrite redirect, denied");
+				LOGGER.warn("wizard  " + wizard + " trying to rewrite redirect, denied");
 				return new InternalResponseContinue();
 			case CANCEL_AND_REDIRECT:
 				if (response instanceof WizardResponseCancel)
 					try {
 						res.sendRedirect(WizardResponseCancel.class.cast(response).getRedirectUrl());
 					} catch (IOException e) {
-						log.error("Redirect failed, target: ", e);
+						LOGGER.error("Redirect failed, target: ", e);
 					}
 				//abort execution
 				return new InternalResponse(InternalResponseCode.STOP);
@@ -740,13 +742,13 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		try {
 			List<WizardDef> wizards = wizardDataService.getWizardDefsByProperty(WizardDef.PROP_NAME, wizardName);
 			if (wizards == null || wizards.isEmpty()) {
-				log.debug("Withards are not  configured!");
+				LOGGER.debug("Withards are not  configured!");
 				return null;
 			}
 
 			return wizards.get(0);
 		} catch (ASWizardDataServiceException e) {
-			log.trace(e);
+			LOGGER.trace(e.getMessage(), e);
 			return null;
 		}
 	}
@@ -831,7 +833,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			progress = processSubmit(req, res, getBoxIdsForRenderingStep(page, template, step), handlerCache, progress);
 			step++;
 		}
-		log.debug("Returning at step: " + step + " : " + progress);
+		LOGGER.debug("Returning at step: " + step + " : " + progress);
 		return progress;
 
 
@@ -875,7 +877,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 							doRedirect = true;
 							redirectTarget = ((AbstractRedirectResponse) response).getRedirectTarget();
 						} else {
-							log.warn("box " + box + " trying to rewrite redirect, denied");
+							LOGGER.warn("box " + box + " trying to rewrite redirect, denied");
 						}
 						break;
 					case CANCEL_AND_REDIRECT:
@@ -883,7 +885,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 						try {
 							res.sendRedirect(redirectTarget);
 						} catch (IOException e) {
-							log.error("Redirect failed, target: " + redirectTarget, e);
+							LOGGER.error("Redirect failed, target: " + redirectTarget, e);
 						}
 						//abort execution
 						return new InternalResponse(InternalResponseCode.STOP);
@@ -983,7 +985,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 				b.setClickable(items.size() > 0);
 				b.setTitle(linkingItem.getName());
 				try {
-					log.info(linkingItem.getName() + ":" + linkingItem.getInternalLink() + "," + linkingItem.getExternalLink());
+					LOGGER.info(linkingItem.getName() + ":" + linkingItem.getInternalLink() + "," + linkingItem.getExternalLink());
 					String link = webDataService.getPagex(linkingItem.getInternalLink()).getName() + HTML_SUFFIX;
 
 					// aliased link to a page
@@ -1106,7 +1108,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			try {
 				res.sendRedirect(((ResponseRedirectImmediately) handlerResponse).getRedirectTarget());
 			} catch (IOException e) {
-				log.warn("Couldn't send redirect to " + ((ResponseRedirectImmediately) handlerResponse).getRedirectTarget() + ", aborting execution.", e);
+				LOGGER.warn("Couldn't send redirect to " + ((ResponseRedirectImmediately) handlerResponse).getRedirectTarget() + ", aborting execution.", e);
 			}
 			handlerResponse = new ResponseStop();
 		}
@@ -1129,12 +1131,12 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 				response = new InternalResponse(handlerResponse);
 				//FIX: BoxHanler.process exceptions logging
 				Exception e = ((ResponseAbort) handlerResponse).getCause();
-				log.error("createBoxBean() for Box[" + box.getId() + "] failure: ", e);
+				LOGGER.error("createBoxBean() for Box[" + box.getId() + "] failure: ", e);
 				throw new ASGRuntimeException(e);
 		}
 
 		if (response == null) {
-			log.error("Response is null!");
+			LOGGER.error("Response is null!");
 			throw new RuntimeException("Unhandled handler response: " + handlerResponse);
 		}
 
@@ -1183,7 +1185,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 				}
 
 			} catch (Exception e) {
-				log.warn("Caught error in guard processing ( guard: " + g + ", gid: " + gid + ", boxid: " + box.getId() + ")", e);
+				LOGGER.warn("Caught error in guard processing ( guard: " + g + ", gid: " + gid + ", boxid: " + box.getId() + ")", e);
 			}
 		}
 		return false;
@@ -1208,7 +1210,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 				}
 
 			} catch (Exception e) {
-				log.warn("Caught error in guard processing ( guard: " + g + ", gid: " + gid + ", mediaLinkId: " + mediaLink.getId() + ")", e);
+				LOGGER.warn("Caught error in guard processing ( guard: " + g + ", gid: " + gid + ", mediaLinkId: " + mediaLink.getId() + ")", e);
 			}
 		}
 		return false;
@@ -1233,7 +1235,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 				}
 
 			} catch (Exception e) {
-				log.warn("Caught error in guard processing ( guard: " + g + ", gid: " + gid + ", scriptId: " + script.getId() + ")", e);
+				LOGGER.warn("Caught error in guard processing ( guard: " + g + ", gid: " + gid + ", scriptId: " + script.getId() + ")", e);
 			}
 		}
 		return false;
@@ -1261,7 +1263,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 				if (!accessAPI.isAllowedForBox(box.getId()))
 					continue;
 			} catch (Exception e) {
-				log.warn("Error in AccessAPI. Box: " + box + ", BoxId: " + boxId + ")", e);
+				LOGGER.warn("Error in AccessAPI. Box: " + box + ", BoxId: " + boxId + ")", e);
 			}
 
 			if (disabledByGuards(req, box))
@@ -1273,7 +1275,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			try {
 				response = (InternalResponse) boxProducer.execute(boxExecutor, req, res, box);
 			} catch (Exception e) {
-				log.error("Could not create BoxBean for Box with ID: " + box.getId(), e);
+				LOGGER.error("Could not create BoxBean for Box with ID: " + box.getId(), e);
 				throw new ASGRuntimeException("Could not create BoxBean for Box with ID: " + box.getId() + ": " + e.getMessage() + "! See logs for more details.");
 			}
 
@@ -1305,10 +1307,10 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		if (!StringUtils.isEmpty(boxTypeId)) {
 			type = federatedDataService.getBoxType(boxTypeId);
 		} else {
-			log.debug("BoxType is not defined. Using \"Plain\" as default.");
+			LOGGER.debug("BoxType is not defined. Using \"Plain\" as default.");
 			List<BoxType> types = federatedDataService.getBoxTypesByProperty(BoxType.PROP_NAME, "Plain");
 			if (types.size() != 1) {
-				log.debug("Could not use default BoxType with name \"Plain\": either it doesn't exist or duplicated!");
+				LOGGER.debug("Could not use default BoxType with name \"Plain\": either it doesn't exist or duplicated!");
 				throw new ASGRuntimeException("BoxType is not defined! Please set property \"type\" of Box in the CMS.");
 			}
 			type = types.get(0);
@@ -1338,7 +1340,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			try{
 				item = siteDataService.getNaviItem(id);
 			}catch(NoSuchDocumentException nsde){
-				log.warn("Couldn't retrieve navi item with id "+id+", ignored.");
+				LOGGER.warn("Couldn't retrieve navi item with id " + id + ", ignored.");
 				//leave the loop
 				break;
 			}
@@ -1348,7 +1350,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 				if (!accessAPI.isAllowedForNaviItem(item.getId()))
 					continue;
 			} catch (Exception e) {
-				log.warn("Error in AccessAPI. NaviItem: " + item + ", NaviItemId: " + id + ")", e);
+				LOGGER.warn("Error in AccessAPI. NaviItem: " + item + ", NaviItemId: " + id + ")", e);
 			}
 
 			//check the guards
@@ -1362,7 +1364,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 						break;
 					}
 				} catch (Exception e) {
-					log.warn("Error in guard, caught (guard: " + g + ", gid: " + gid + ", naviitem: " + item + ", itemId: " + id + ")", e);
+					LOGGER.warn("Error in guard, caught (guard: " + g + ", gid: " + gid + ", naviitem: " + item + ", itemId: " + id + ")", e);
 				}
 
 			}
@@ -1467,7 +1469,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		response = response == null ? WizardResponseContinue.INSTANCE : response;
 		InternalResponse result = handleWizardProcessResponse(req, res, wizard, response);
 		if (!result.canContinue()) {
-			log.debug("wizard pre-process :  RESPONSE can't continue. Process won't be executed");
+			LOGGER.debug("wizard pre-process :  RESPONSE can't continue. Process won't be executed");
 			return result;
 		}
 		//execute process
@@ -1501,19 +1503,19 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 						//redirect to self! immediately!!!!
 						res.sendRedirect(req.getContextPath() + req.getRequestURI());
 					} catch (IOException e) {
-						log.error("Redirect failed, target: ", e);
+						LOGGER.error("Redirect failed, target: ", e);
 					}
 					//abort execution
 					return new InternalResponse(InternalResponseCode.STOP);
 				}
-				log.warn("wizard  " + wizard + " trying to rewrite redirect, denied");
+				LOGGER.warn("wizard  " + wizard + " trying to rewrite redirect, denied");
 				return new InternalResponseContinue();
 			case CANCEL_AND_REDIRECT:
 				if (response instanceof WizardResponseCancel)
 					try {
 						res.sendRedirect(WizardResponseCancel.class.cast(response).getRedirectUrl());
 					} catch (IOException e) {
-						log.error("Redirect failed, target: ", e);
+						LOGGER.error("Redirect failed, target: ", e);
 					}
 				//abort execution
 				return new InternalResponse(InternalResponseCode.STOP);
@@ -1525,7 +1527,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 					@SuppressWarnings({"ThrowableResultOfMethodCallIgnored"})
 					Exception cause = abort != null ? abort.getCause() : null;
 					String message = abort != null ? abort.getCauseMessage() : null;
-					log.error("Could not create wizardBean for wizard{" + wizard.getId() + "}" + message != null ? message : "", cause);
+					LOGGER.error("Could not create wizardBean for wizard{" + wizard.getId() + "}" + message != null ? message : "", cause);
 					throw new WizardHandlerException("Execution aborted " + message != null ? message : "", cause != null ? cause : new RuntimeException("No Exception " +
 							"given"));
 				}
@@ -1887,7 +1889,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			//populating logo!
 			populateLogo(req.getContextPath() + FILE_PATH_PART, ret, site.getSiteLogo());
 		} catch (Exception e) {
-			log.warn("createSiteBean(" + template + ",request)", e);
+			LOGGER.warn("createSiteBean(" + template + ",request)", e);
 		}
 
 		return ret;
@@ -1908,7 +1910,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 				if (img != null && isNotNullOrEmpty(img.getImage()))
 					created.setLogo(pathPart + img.getImage());
 			} catch (ASResourceDataServiceException e) {
-				log.warn("SiteLogo Image with id:{" + logoId + "} does not exist!");
+				LOGGER.warn("SiteLogo Image with id:{" + logoId + "} does not exist!");
 			}
 		}
 	}
@@ -2109,7 +2111,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 						break;
 					}
 				} catch (Exception e) {
-					log.warn("exception in guard: " + g + ", attr id: " + id + ", caught.", e);
+					LOGGER.warn("exception in guard: " + g + ", attr id: " + id + ", caught.", e);
 				}
 			}
 
@@ -2141,7 +2143,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		String path = getServletContext().getRealPath(req.getRequestURI().substring(pathIndex));
 
 		File f = new File(path);
-		log.debug("Loading uri: " + req.getRequestURL() + " from file " + path + ", exists: " + f.exists());
+		LOGGER.debug("Loading uri: " + req.getRequestURL() + " from file " + path + ", exists: " + f.exists());
 		if (!f.exists())
 			return false;
 		
@@ -2159,7 +2161,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			writer.flush();
 			writer.close();
 		} catch (IOException e) {
-			log.error("fallBackToFileSystem(URI: " + req.getRequestURL() + ")", e);
+			LOGGER.error("fallBackToFileSystem(URI: " + req.getRequestURL() + ")", e);
 			return false;
 		} finally {
 			if (fIn != null) {

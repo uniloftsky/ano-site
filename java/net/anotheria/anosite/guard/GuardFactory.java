@@ -1,14 +1,15 @@
 package net.anotheria.anosite.guard;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 import net.anotheria.anoprise.metafactory.MetaFactory;
 import net.anotheria.anoprise.metafactory.MetaFactoryException;
 import net.anotheria.anosite.gen.asfederateddata.data.GuardDef;
 import net.anotheria.anosite.gen.asfederateddata.service.IASFederatedDataService;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MarkerFactory;
 
-import org.apache.log4j.Logger;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 
 /**
  * A utility for guard instantiation.
@@ -29,7 +30,7 @@ public final class GuardFactory {
 		try {
 			service = MetaFactory.get(IASFederatedDataService.class);
 		} catch (MetaFactoryException e) {
-			Logger.getLogger(GuardFactory.class).fatal("IASFederatedDataService init failure",e);
+			LoggerFactory.getLogger(GuardFactory.class).error(MarkerFactory.getMarker("FATAL"), "IASFederatedDataService init failure", e);
 
 		}
 	}

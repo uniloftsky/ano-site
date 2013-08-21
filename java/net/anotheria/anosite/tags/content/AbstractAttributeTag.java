@@ -1,12 +1,12 @@
 package net.anotheria.anosite.tags.content;
 
-import javax.servlet.jsp.JspException;
-
 import net.anotheria.anosite.content.bean.AttributeBean;
 import net.anotheria.anosite.content.bean.AttributeMap;
 import net.anotheria.tags.BaseTagSupport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import org.apache.log4j.Logger;
+import javax.servlet.jsp.JspException;
 
 /**
  * Writes the value for the attribute "name" of the current CMS Object(box/page/etc). If no value is specified, writes out the defaultValue.
@@ -25,7 +25,7 @@ public abstract class AbstractAttributeTag extends BaseTagSupport {
 	/**
 	 * Log-
 	 */
-	private static Logger log = Logger.getLogger(AbstractAttributeTag.class);
+	private static Logger log = LoggerFactory.getLogger(AbstractAttributeTag.class);
 
 	/**
 	 * Retrieves attributes from the corresponding object.

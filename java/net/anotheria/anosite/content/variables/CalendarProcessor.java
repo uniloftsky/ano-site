@@ -1,6 +1,8 @@
 package net.anotheria.anosite.content.variables;
 
-import org.apache.log4j.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,7 +15,7 @@ public class CalendarProcessor implements VariablesProcessor {
 	/**
 	 * Logger.
 	 */
-    private static final Logger log = Logger.getLogger(CalendarProcessor.class);
+    private static final Logger log = LoggerFactory.getLogger(CalendarProcessor.class);
 
     
     /**

@@ -2,7 +2,8 @@ package net.anotheria.anosite.content.servlet.resource;
 
 import net.anotheria.util.IOUtils;
 import net.anotheria.util.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,7 +25,8 @@ final class ResourceServletUtils {
 	/**
 	 * {@link Logger} instance.
 	 */
-	private static final Logger LOG = Logger.getLogger(ResourceServletUtils.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ResourceServletUtils.class);
+
 	/**
 	 * Header LAST_MODIFIED.
 	 */

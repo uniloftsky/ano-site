@@ -10,7 +10,8 @@ import net.anotheria.anosite.handler.AbstractBoxHandler;
 import net.anotheria.anosite.handler.BoxHandlerResponse;
 import net.anotheria.anosite.handler.ResponseContinue;
 import net.anotheria.anosite.handler.exception.BoxProcessException;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,7 +25,7 @@ public class BlogListViewHandler extends AbstractBoxHandler {
     /**
      * {@code Log4j} logger instance.
      */
-    private static Logger log;
+    private static final Logger LOGGER = LoggerFactory.getLogger(BlogListViewHandler.class);
 
     /**
      * {@link BlogAPI} instance.
@@ -36,12 +37,10 @@ public class BlogListViewHandler extends AbstractBoxHandler {
      */
     protected static final String ATTR_NAME_BLOG_BEAN = "blog";
 
-
     /**
      * Constructor.
      */
     public BlogListViewHandler() {
-        log = Logger.getLogger(this.getClass());
         blogAPI = APIFinder.findAPI(BlogAPI.class);
     }
 
@@ -52,7 +51,7 @@ public class BlogListViewHandler extends AbstractBoxHandler {
             BlogAO blogAO = blogAPI.getBlog();
             req.setAttribute(ATTR_NAME_BLOG_BEAN, blogAO);
         } catch (BlogAPIException e) {
-            log.error("BlogAPI failed", e);
+            LOGGER.error("BlogAPI failed", e);
             throw new BoxProcessException("process failed", e);
         }
 

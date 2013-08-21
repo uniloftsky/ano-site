@@ -11,8 +11,6 @@ import net.anotheria.anosite.gen.asresourcedata.service.ASResourceDataServiceExc
 import net.anotheria.anosite.gen.asresourcedata.service.IASResourceDataService;
 import net.anotheria.anosite.gen.asresourcedata.service.fixture.ASResourceDataServiceFixtureFactory;
 import net.anotheria.anosite.gen.util.AnositeCallContext;
-import org.apache.log4j.BasicConfigurator;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -49,8 +47,6 @@ public class TextResourceProcessorTestCase {
 
 	@BeforeClass
 	public static void setUp() throws MetaFactoryException, ASResourceDataServiceException {
-
-		BasicConfigurator.configure();
 		MetaFactory.addFactoryClass(IASResourceDataService.class, Extension.CMS, ASResourceDataServiceFixtureFactory.class);
 		MetaFactory.addFactoryClass(IASResourceDataService.class, Extension.LOCAL, ASResourceDataServiceFixtureFactory.class);
 		MetaFactory.addFactoryClass(IASResourceDataService.class, Extension.NONE, ASResourceDataServiceFixtureFactory.class);

@@ -9,7 +9,8 @@ import net.anotheria.anosite.gen.aswebdata.data.Box;
 import net.anotheria.asg.data.DataObject;
 import net.anotheria.asg.exception.ASGRuntimeException;
 import net.anotheria.asg.util.decorators.IAttributeDecorator;
-import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MarkerFactory;
 
 /**
  * This decorator decorates the attribute type of a box.
@@ -28,7 +29,7 @@ public class BoxTypeDecorator implements IAttributeDecorator{
 		try {
 			federatedDataService = MetaFactory.get(IASFederatedDataService.class);
 		} catch (MetaFactoryException e) {
-			Logger.getLogger(BoxTypeDecorator.class).fatal("IASFederatedDataService asg service init failure",e);
+			LoggerFactory.getLogger(BoxTypeDecorator.class).error(MarkerFactory.getMarker("FATAL"), "IASFederatedDataService asg service init failure", e);
 		}
 	}
 

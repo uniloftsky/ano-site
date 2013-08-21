@@ -1,14 +1,16 @@
 package net.anotheria.anosite.localization;
 
-import java.util.List;
-
 import net.anotheria.anoprise.metafactory.MetaFactory;
 import net.anotheria.anoprise.metafactory.MetaFactoryException;
 import net.anotheria.anosite.gen.asresourcedata.data.TextResource;
 import net.anotheria.anosite.gen.asresourcedata.service.IASResourceDataService;
 import net.anotheria.asg.exception.ASGRuntimeException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MarkerFactory;
 
-import org.apache.log4j.Logger;
+import java.util.List;
+
 
 /**
  * Not real resolver but some workaround as localizations adder from
@@ -22,14 +24,18 @@ public enum LocalizationResolver {
 
 	INSTANCE;
 
-	private static Logger log = Logger.getLogger(LocalizationResolver.class);
+	/**
+	 * {@link Logger} instance.
+	 */
+	private static final Logger LOGGER = LoggerFactory.getLogger(LocalizationResolver.class);
+
 	private static IASResourceDataService resourceService;
 
 	static {
 		try {
 			resourceService = MetaFactory.get(IASResourceDataService.class);
 		} catch (MetaFactoryException e) {
-			log.fatal("IASResourceDataService init failure", e);
+			LOGGER.error(MarkerFactory.getMarker("FATAL"), "IASResourceDataService init failure", e);
 		}
 	}
 
@@ -62,7 +68,7 @@ public enum LocalizationResolver {
 				return null;
 			return resources.get(0);
 		} catch (ASGRuntimeException e) {
-			log.error("Error while loading localizations from ResourceDataService: ", e);
+			LOGGER.error("Error while loading localizations from ResourceDataService: ", e);
 			throw new RuntimeException("Error while loading localizations from ResourceDataService: ", e);
 		}
 	}

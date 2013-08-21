@@ -4,7 +4,8 @@ import net.anotheria.anoprise.metafactory.MetaFactory;
 import net.anotheria.anoprise.metafactory.MetaFactoryException;
 import net.anotheria.anosite.gen.asuserdata.service.IASUserDataService;
 import net.anotheria.asg.exception.ASGRuntimeException;
-import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MarkerFactory;
 
 /**
  * Decorator for roles list.
@@ -24,7 +25,7 @@ public class RolesListCMS2Decorator extends LinksListCMS2Decorator {
         try {
             service = MetaFactory.get(IASUserDataService.class);
         } catch (MetaFactoryException e) {
-            Logger.getLogger(ScriptsListCMS2Decorator.class).fatal("IASUserDataService  init failure", e);
+            LoggerFactory.getLogger(ScriptsListCMS2Decorator.class).error(MarkerFactory.getMarker("FATAL"), "IASUserDataService  init failure", e);
         }
     }
     @Override

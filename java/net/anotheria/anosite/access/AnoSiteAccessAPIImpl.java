@@ -1,11 +1,5 @@
 package net.anotheria.anosite.access;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import net.anotheria.access.AccessService;
 import net.anotheria.access.AccessServiceException;
 import net.anotheria.access.SOAttribute;
@@ -51,8 +45,16 @@ import net.anotheria.asg.util.listener.IServiceListener;
 import net.anotheria.util.StringUtils;
 import net.anotheria.util.log.LogMessageUtil;
 import net.anotheria.util.sorter.SortType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MarkerFactory;
 
-import org.apache.log4j.Logger;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 
 /**
  * {@link AnoSiteAccessAPI} implementation.
@@ -64,7 +66,7 @@ public class AnoSiteAccessAPIImpl implements AnoSiteAccessAPI {
 	/**
 	 * {@link Logger} instance.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(AnoSiteAccessAPIImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(AnoSiteAccessAPIImpl.class);
 
 	/**
 	 * {@link AccessService} instance.
@@ -118,7 +120,7 @@ public class AnoSiteAccessAPIImpl implements AnoSiteAccessAPI {
 			wizardConfigurationPersistence = MetaFactory.get(IASWizardDataService.class);
 		} catch (MetaFactoryException e) {
 			String message = LogMessageUtil.failMsg(e) + " Can't initialize required services.";
-			LOGGER.fatal(message, e);
+			LOGGER.error(MarkerFactory.getMarker("FATAL"), message, e);
 			throw new APIInitException(message, e);
 		}
 
@@ -128,7 +130,7 @@ public class AnoSiteAccessAPIImpl implements AnoSiteAccessAPI {
 			configureAccessService();
 		} catch (AnoSiteAccessAPIException e) {
 			String message = LogMessageUtil.failMsg(e) + " Can't initialize access service with current configuration.";
-			LOGGER.fatal(message, e);
+			LOGGER.error(MarkerFactory.getMarker("FATAL"), message, e);
 			throw new APIInitException(message, e);
 		}
 
@@ -550,7 +552,7 @@ public class AnoSiteAccessAPIImpl implements AnoSiteAccessAPI {
 		/**
 		 * {@link Logger} instance.
 		 */
-		private final Logger LOGGER = Logger.getLogger(AccessUserDataChangeListener.class);
+		private final Logger LOGGER = LoggerFactory.getLogger(AccessUserDataChangeListener.class);
 
 		@Override
 		public void documentUpdated(final DataObject oldVersion, final DataObject newVersion) {
@@ -602,7 +604,7 @@ public class AnoSiteAccessAPIImpl implements AnoSiteAccessAPI {
 		/**
 		 * {@link Logger} instance.
 		 */
-		private final Logger LOGGER = Logger.getLogger(AccessUserDataChangeListener.class);
+		private final Logger LOGGER = LoggerFactory.getLogger(AccessUserDataChangeListener.class);
 
 		@Override
 		public void documentUpdated(final DataObject oldVersion, final DataObject newVersion) {

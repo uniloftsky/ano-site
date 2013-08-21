@@ -1,20 +1,20 @@
 package net.anotheria.anosite.content.variables;
 
 
-import static net.anotheria.anosite.content.variables.CalendarVariableNamesConstants.DATE_DEFAULT_FORMAT;
-import static net.anotheria.anosite.content.variables.CalendarVariableNamesConstants.DAY_DEFAULT_FORMAT;
-import static net.anotheria.anosite.content.variables.CalendarVariableNamesConstants.MONTH_DEFAULT_FORMAT;
-import static net.anotheria.anosite.content.variables.CalendarVariableNamesConstants.TIME_DEFAULT_FORMAT;
-import static net.anotheria.anosite.content.variables.CalendarVariableNamesConstants.YEAR_DEFAULT_FORMAT;
+import net.anotheria.anoplass.api.APICallContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import net.anotheria.anoplass.api.APICallContext;
-
-import org.apache.log4j.Logger;
+import static net.anotheria.anosite.content.variables.CalendarVariableNamesConstants.DATE_DEFAULT_FORMAT;
+import static net.anotheria.anosite.content.variables.CalendarVariableNamesConstants.DAY_DEFAULT_FORMAT;
+import static net.anotheria.anosite.content.variables.CalendarVariableNamesConstants.MONTH_DEFAULT_FORMAT;
+import static net.anotheria.anosite.content.variables.CalendarVariableNamesConstants.TIME_DEFAULT_FORMAT;
+import static net.anotheria.anosite.content.variables.CalendarVariableNamesConstants.YEAR_DEFAULT_FORMAT;
 
 /**
  * Represent Variable names for CallendarProcessor.
@@ -70,7 +70,7 @@ public enum CalendarVariableNames {
             return getAllowedTimeFormats();
         }};
 
-    private static final Logger log = Logger.getLogger(CalendarVariableNames.class);
+    private static final Logger log = LoggerFactory.getLogger(CalendarVariableNames.class);
 
 
     /**

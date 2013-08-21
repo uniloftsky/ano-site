@@ -1,10 +1,5 @@
 package net.anotheria.anosite.wizard.handler;
 
-import static net.anotheria.anosite.handler.validation.AbstractValidationBoxHandler.REQ_PARAM_VALIDATION_ONLY;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import net.anotheria.anoplass.api.APIFinder;
 import net.anotheria.anosite.gen.aswizarddata.data.WizardDef;
 import net.anotheria.anosite.wizard.WizardCommand;
@@ -24,8 +19,14 @@ import net.anotheria.anosite.wizard.handler.response.WizardResponseChangeStep;
 import net.anotheria.anosite.wizard.handler.response.WizardResponseContinue;
 import net.anotheria.anosite.wizard.handler.response.WizardResponseFinish;
 import net.anotheria.util.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import org.apache.log4j.Logger;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import static net.anotheria.anosite.handler.validation.AbstractValidationBoxHandler.REQ_PARAM_VALIDATION_ONLY;
+
 
 /**
  * BaseWizardHandler as main class for Wizard handlers.
@@ -49,7 +50,7 @@ public class BaseWizardHandler implements WizardHandler {
 	 * Constructor.
 	 */
 	protected BaseWizardHandler() {
-		log = Logger.getLogger(this.getClass());
+		log = LoggerFactory.getLogger(this.getClass());
 		wizardAPI = APIFinder.findAPI(WizardAPI.class);
 	}
 

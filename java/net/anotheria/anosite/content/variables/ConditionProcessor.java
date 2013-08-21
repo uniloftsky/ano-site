@@ -1,12 +1,13 @@
 package net.anotheria.anosite.content.variables;
 
 import net.anotheria.util.content.template.processors.variables.ConditionProcessorNames;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 
 public class ConditionProcessor implements VariablesProcessor {
-	private final Logger log = Logger.getLogger(ConditionProcessor.class);
+	private final Logger log = LoggerFactory.getLogger(ConditionProcessor.class);
 
 	@Override
 	public String replace(String prefix, String variable, String defValue, HttpServletRequest req) {

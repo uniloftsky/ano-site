@@ -1,7 +1,5 @@
 package net.anotheria.anosite.shared.presentation.listener;
 
-import java.util.List;
-
 import net.anotheria.anoprise.metafactory.MetaFactory;
 import net.anotheria.anoprise.metafactory.MetaFactoryException;
 import net.anotheria.anosite.gen.ascustomdata.data.CustomBoxHandlerDef;
@@ -25,8 +23,11 @@ import net.anotheria.anosite.handler.BoxHandler;
 import net.anotheria.anosite.handler.def.ImageBrowserHandler;
 import net.anotheria.anosite.handler.def.RedirectImmediatelyHandler;
 import net.anotheria.asg.exception.ASGRuntimeException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MarkerFactory;
 
-import org.apache.log4j.Logger;
+import java.util.List;
 
 /**
  * This utility class scans the data on start and ensures that all generic data is created.
@@ -38,7 +39,7 @@ public final class CMSSelfTest {
 	private static  IASGenericDataService genericDataService ;
 	private static  IASCustomDataService  customDataService ;
 	private static  IASLayoutDataService layoutDataService;
-	private static Logger log = Logger.getLogger(CMSSelfTest.class);
+	private static Logger log = LoggerFactory.getLogger(CMSSelfTest.class);
 
 	static {
 		try {
@@ -46,7 +47,7 @@ public final class CMSSelfTest {
 			customDataService = MetaFactory.get(IASCustomDataService.class);
 			layoutDataService = MetaFactory.get(IASLayoutDataService.class);
 		} catch (MetaFactoryException e) {
-			log.fatal("ASG services init failure",e);
+			log.error(MarkerFactory.getMarker("FATAL"), "ASG services init failure",e);
 		}
 	}
 	

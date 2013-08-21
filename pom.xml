@@ -1,5 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>net.anotheria</groupId>
 		<artifactId>ano-doc-parent</artifactId>
@@ -12,65 +12,31 @@
 	<name>anotheria.net site engine</name>
 
 	<properties>
-		<moskito-version>2.1.4</moskito-version>
-		<anodoc-version>${project.version}</anodoc-version>
+		<ano-doc.version>${project.version}</ano-doc.version>
+		<ano-util.version>2.1.0</ano-util.version>
+		<ano-tags.version>2.1.0</ano-tags.version>
+		<ano-web.version>2.1.0</ano-web.version>
+		<ano-maf.version>2.1.0</ano-maf.version>
+		<ano-prise.version>2.1.0</ano-prise.version>
+		<ano-plass.version>2.1.0</ano-plass.version>
+		<ano-access.version>2.1.0</ano-access.version>
+
+		<configureme.version>2.2.0</configureme.version>
+		<moskito.version>2.3.0</moskito.version>
+
+		<commons-io.version>1.4</commons-io.version>
+		<json.version>20090211</json.version>
 	</properties>
 
 	<dependencies>
 		<dependency>
-			<groupId>net.anotheria</groupId>
-			<artifactId>ano-util</artifactId>
-			<version>2.0.0</version>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>net.anotheria</groupId>
-			<artifactId>ano-tags</artifactId>
-			<version>2.0.0</version>
-		</dependency>
-		<dependency>
-			<groupId>net.anotheria</groupId>
-			<artifactId>ano-doc</artifactId>
-			<version>${anodoc-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>net.anotheria</groupId>
-			<artifactId>ano-web</artifactId>
-			<version>2.0.1</version>
-		</dependency>
-		<dependency>
-			<groupId>net.anotheria</groupId>
-			<artifactId>ano-maf</artifactId>
-			<version>2.0.1</version>
-		</dependency>
-		<dependency>
-			<groupId>net.anotheria</groupId>
-			<artifactId>moskito-core</artifactId>
-			<version>${moskito-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>net.anotheria</groupId>
-			<artifactId>moskito-web</artifactId>
-			<version>${moskito-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>net.anotheria</groupId>
-			<artifactId>moskito-webui</artifactId>
-			<version>${moskito-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>net.anotheria</groupId>
-			<artifactId>ano-prise</artifactId>
-			<version>2.0.2</version>
-		</dependency>
-		<dependency>
-			<groupId>net.anotheria</groupId>
-			<artifactId>ano-plass</artifactId>
-			<version>2.0.1</version>
-		</dependency>
-		<dependency>
-			<groupId>net.anotheria</groupId>
-			<artifactId>ano-access</artifactId>
-			<version>2.0.0</version>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -81,16 +47,70 @@
 			<artifactId>jsp-api</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>net.anotheria</groupId>
+			<artifactId>ano-doc</artifactId>
+			<version>${ano-doc.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.anotheria</groupId>
+			<artifactId>ano-util</artifactId>
+			<version>${ano-util.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.anotheria</groupId>
+			<artifactId>ano-tags</artifactId>
+			<version>${ano-tags.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.anotheria</groupId>
+			<artifactId>ano-web</artifactId>
+			<version>${ano-web.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.anotheria</groupId>
+			<artifactId>ano-maf</artifactId>
+			<version>${ano-maf.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.anotheria</groupId>
+			<artifactId>ano-prise</artifactId>
+			<version>${ano-prise.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.anotheria</groupId>
+			<artifactId>ano-plass</artifactId>
+			<version>${ano-plass.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.anotheria</groupId>
+			<artifactId>ano-access</artifactId>
+			<version>${ano-access.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.anotheria</groupId>
+			<artifactId>moskito-core</artifactId>
+			<version>${moskito.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.anotheria</groupId>
+			<artifactId>moskito-web</artifactId>
+			<version>${moskito.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.anotheria</groupId>
+			<artifactId>moskito-webui</artifactId>
+			<version>${moskito.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
-			<version>1.4</version>
+			<version>${commons-io.version}</version>
 		</dependency>
-       <dependency>
-                <groupId>org.json</groupId>
-                <artifactId>json</artifactId>
-                <version>20090211</version>
-        </dependency>
-		
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>${json.version}</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -149,7 +169,7 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore />
+										<ignore/>
 									</action>
 								</pluginExecution>
 								<pluginExecution>
@@ -168,7 +188,7 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore />
+										<ignore/>
 									</action>
 								</pluginExecution>
 							</pluginExecutions>
@@ -180,8 +200,8 @@
 	</build>
 
 	<scm>
-	  <url>svn:svn://svn.anotheria.net/opensource/ano-site/trunk</url>
-	  <connection>scm:svn:svn://svn.anotheria.net/opensource/ano-site/trunk</connection>
-	  <developerConnection>scm:svn:svn://svn.anotheria.net/opensource/ano-site/trunk</developerConnection>
+		<url>svn:svn://svn.anotheria.net/opensource/ano-site/trunk</url>
+		<connection>scm:svn:svn://svn.anotheria.net/opensource/ano-site/trunk</connection>
+		<developerConnection>scm:svn:svn://svn.anotheria.net/opensource/ano-site/trunk</developerConnection>
 	</scm>
 </project>

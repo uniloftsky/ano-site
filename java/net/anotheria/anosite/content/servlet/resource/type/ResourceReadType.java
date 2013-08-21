@@ -1,7 +1,7 @@
 package net.anotheria.anosite.content.servlet.resource.type;
 
 
-import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Defines ways/properties for resource read - by Resource servlet.
@@ -48,7 +48,7 @@ public enum ResourceReadType {
 		for (ResourceReadType type : ResourceReadType.values())
 			if (type.getValue().equals(value))
 				return type;
-		Logger.getLogger(ResourceReadType.class).error("No ResourceReadType found with value " + value + " Returning defaults.");
+		LoggerFactory.getLogger(ResourceReadType.class).error("No ResourceReadType found with value " + value + " Returning defaults.");
 		return BY_ID;
 
 	}

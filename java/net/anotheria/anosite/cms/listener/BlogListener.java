@@ -2,14 +2,14 @@ package net.anotheria.anosite.cms.listener;
 
 import net.anotheria.anoprise.metafactory.MetaFactory;
 import net.anotheria.anoprise.metafactory.MetaFactoryException;
-import net.anotheria.anosite.blog.api.exception.BlogAPIException;
 import net.anotheria.anosite.gen.asblogdata.data.CommentDocument;
 import net.anotheria.anosite.gen.asblogdata.data.PostDocument;
 import net.anotheria.anosite.gen.asblogdata.service.ASBlogDataServiceException;
 import net.anotheria.anosite.gen.asblogdata.service.IASBlogDataService;
 import net.anotheria.asg.data.DataObject;
 import net.anotheria.asg.util.listener.IServiceListener;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 
@@ -20,23 +20,23 @@ import java.util.Date;
  */
 public class BlogListener implements IServiceListener {
 
-    /**
+	/**
+	 * {@link Logger} instance.
+	 */
+	private static final Logger LOGGER = LoggerFactory.getLogger(BlogListener.class);
+
+	/**
      * Parameter name to indicate whether the listener's method was invoked by listener itself
      */
     private static final String CALLED_BY_LISTENER = "calledByListener";
 
-    private static final Logger log;
-
     private static IASBlogDataService blogDataService;
 
-
     static {
-        log = Logger.getLogger(BlogListener.class);
-
         try {
             blogDataService = MetaFactory.get(IASBlogDataService.class);
         } catch (MetaFactoryException e) {
-            log.error("MetaFactory for BlogListener failed", e);
+            LOGGER.error("MetaFactory for BlogListener failed", e);
             throw new RuntimeException("MetaFactory for BlogListener failed", e);
         }
     }
@@ -56,7 +56,7 @@ public class BlogListener implements IServiceListener {
             try {
                 blogDataService.updatePost(updatedPostDocument);
             } catch (ASBlogDataServiceException e) {
-                log.error("updatePost(" + updatedPostDocument.toString() + ")", e);
+                LOGGER.error("updatePost(" + updatedPostDocument.toString() + ")", e);
                 throw new RuntimeException("BlogListener failed", e);
             }
         }
@@ -76,7 +76,7 @@ public class BlogListener implements IServiceListener {
             try {
                 blogDataService.updatePost(postDocument);
             } catch (ASBlogDataServiceException e) {
-                log.error("updatePost(" + postDocument.toString() + ")", e);
+                LOGGER.error("updatePost(" + postDocument.toString() + ")", e);
                 throw new RuntimeException("BlogListener failed", e);
             }
         }
@@ -87,7 +87,7 @@ public class BlogListener implements IServiceListener {
             try {
                 blogDataService.updateComment(commentDocument);
             } catch (ASBlogDataServiceException e) {
-                log.error("updateComment(" + commentDocument.toString() + ")", e);
+                LOGGER.error("updateComment(" + commentDocument.toString() + ")", e);
                 throw new RuntimeException("BlogListener failed", e);
             }
         }

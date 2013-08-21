@@ -4,7 +4,9 @@ import net.anotheria.anoprise.metafactory.MetaFactory;
 import net.anotheria.anoprise.metafactory.MetaFactoryException;
 import net.anotheria.anosite.gen.asfederateddata.service.IASFederatedDataService;
 import net.anotheria.asg.util.helper.cmsview.CMSViewHelper;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MarkerFactory;
 
 import java.util.HashMap;
 
@@ -12,14 +14,17 @@ import java.util.HashMap;
  * BoxHelper abstract class.
  */
 public abstract class BoxHelper implements CMSViewHelper{
+
+	/**
+	 * {@link Logger} instance.
+	 */
+	private static final Logger LOGGER = LoggerFactory.getLogger(BoxHelper.class);
+
 	/**
 	 * IASFederatedDataService ASG.
 	 */
 	private static IASFederatedDataService federatedDataService;
-	/**
-	 * Logger.
-	 */
-	private static Logger log = Logger.getLogger(BoxHelper.class);
+
 	/**
 	 * Init.
 	 */
@@ -27,7 +32,7 @@ public abstract class BoxHelper implements CMSViewHelper{
 		try {
 			federatedDataService= MetaFactory.get(IASFederatedDataService.class);
 		} catch (MetaFactoryException e) {
-			log.fatal("IASFederatedDataService ASG init failure",e);
+			LOGGER.error(MarkerFactory.getMarker("FATAL"), "IASFederatedDataService ASG init failure", e);
 		}
 	}
 

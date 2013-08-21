@@ -1,7 +1,7 @@
 package net.anotheria.anosite.wizard;
 
 
-import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
@@ -73,7 +73,7 @@ public enum WizardCommand {
 				if (param.equals(button.getCommandTitle()))
 					return button;
 
-		Logger.getLogger(WizardCommand.class).debug("Command not found! Relying on defaults!");
+		LoggerFactory.getLogger(WizardCommand.class).debug("Command not found! Relying on defaults!");
 		return DEFAULT_COMMAND;
 	}
 
@@ -88,7 +88,7 @@ public enum WizardCommand {
 			if (wizCommand.getCommandTitle().equalsIgnoreCase(command))
 				return wizCommand;
 		}
-		Logger.getLogger(WizardCommand.class).debug("Command not found! Relying on defaults! command[" + command + "]");
+		LoggerFactory.getLogger(WizardCommand.class).debug("Command not found! Relying on defaults! command[" + command + "]");
 		return DEFAULT_COMMAND;
 	}
 

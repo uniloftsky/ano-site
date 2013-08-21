@@ -8,7 +8,8 @@ import net.anotheria.anosite.shared.ResourceServletMappingConfig;
 import net.anotheria.moskito.web.MoskitoHttpServlet;
 import net.anotheria.util.StringUtils;
 import net.anotheria.webutils.filehandling.actions.FileStorage;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -22,10 +23,11 @@ import java.io.IOException;
  * @author h3ll
  */
 public abstract class ResourceServlet extends MoskitoHttpServlet {
+
 	/**
-	 * Logger.
+	 * {@link Logger} instance.
 	 */
-	private static final Logger LOG = Logger.getLogger(ResourceServlet.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ResourceServlet.class);
 
 	/**
 	 * ResourceServletMappingConfig instance.

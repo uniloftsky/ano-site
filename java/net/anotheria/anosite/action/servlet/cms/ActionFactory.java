@@ -11,7 +11,9 @@ import net.anotheria.anosite.gen.ascustomaction.data.ActionMappingDef;
 import net.anotheria.util.concurrency.IdBasedLock;
 import net.anotheria.util.concurrency.IdBasedLockManager;
 import net.anotheria.util.concurrency.SafeIdBasedLockManager;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MarkerFactory;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -20,14 +22,16 @@ import java.util.concurrent.ConcurrentHashMap;
  * Utility  for Action creation.
  */
 public class ActionFactory {
+
+	/**
+	 * {@link Logger} instance.
+	 */
+	private static Logger LOGGER = LoggerFactory.getLogger(ActionFactory.class);
+
 	/**
 	 * {@link IASActionService} CMS service instance.
 	 */
 	private static IASActionService service;
-	/**
-	 * {@link Logger} instance.
-	 */
-	private static Logger log = Logger.getLogger(ActionFactory.class);
 
 	/**
 	 * Local storage for ActionProducer.
@@ -46,7 +50,7 @@ public class ActionFactory {
 		try {
 			service = MetaFactory.get(IASActionService.class);
 		} catch (MetaFactoryException e) {
-			log.fatal("IASActionService init failure", e);
+			LOGGER.error(MarkerFactory.getMarker("FATAL"), "IASActionService init failure", e);
 		}
 	}
 
@@ -80,7 +84,7 @@ public class ActionFactory {
 
 			return new ActionWrapper((Action) Class.forName(clazz).newInstance(), producer);
 		} catch (Exception e) {
-			log.error("createAction(" + def + ")", e);
+			LOGGER.error("createAction(" + def + ")", e);
 		}
 
 		return null;

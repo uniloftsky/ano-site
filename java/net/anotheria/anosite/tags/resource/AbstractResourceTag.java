@@ -7,7 +7,9 @@ import net.anotheria.anosite.gen.asresourcedata.service.IASResourceDataService;
 import net.anotheria.asg.data.DataObject;
 import net.anotheria.tags.BaseTagSupport;
 import net.anotheria.util.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MarkerFactory;
 
 import javax.servlet.jsp.JspException;
 
@@ -25,7 +27,7 @@ public abstract class AbstractResourceTag extends BaseTagSupport {
 	/**
 	 * log.
 	 */
-	private static final Logger LOG = Logger.getLogger(AbstractResourceTag.class);
+	private static final Logger LOG = LoggerFactory.getLogger(AbstractResourceTag.class);
 	/**
 	 * Separator.
 	 */
@@ -38,7 +40,7 @@ public abstract class AbstractResourceTag extends BaseTagSupport {
 		try {
 			service = MetaFactory.get(IASResourceDataService.class);
 		} catch (MetaFactoryException e) {
-			LOG.fatal("IASResourceDataService init failure", e);
+			LOG.error(MarkerFactory.getMarker("FATAL"), "IASResourceDataService init failure", e);
 		}
 	}
 
@@ -268,7 +270,7 @@ public abstract class AbstractResourceTag extends BaseTagSupport {
 				if (documentSelectProperty.getValue().equals(val))
 					return documentSelectProperty;
 
-			Logger.getLogger(ResultPropertyType.class).error("No ResultPropertyType found with value[" + val + "], relying on defaults!");
+			LoggerFactory.getLogger(ResultPropertyType.class).error("No ResultPropertyType found with value[" + val + "], relying on defaults!");
 			return DEFAULT;
 		}
 
@@ -325,7 +327,7 @@ public abstract class AbstractResourceTag extends BaseTagSupport {
 				if (documentSelectProperty.getValue().equals(val))
 					return documentSelectProperty;
 
-			Logger.getLogger(ReadPropertyType.class).error("No ReadPropertyType found with value[" + val + "], relying on defaults!");
+			LoggerFactory.getLogger(ReadPropertyType.class).error("No ReadPropertyType found with value[" + val + "], relying on defaults!");
 			return DEFAULT;
 		}
 	}

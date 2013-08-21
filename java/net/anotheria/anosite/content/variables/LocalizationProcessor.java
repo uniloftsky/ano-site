@@ -1,10 +1,5 @@
 package net.anotheria.anosite.content.variables;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.JspException;
-
 import net.anotheria.anoplass.api.APICallContext;
 import net.anotheria.anoprise.metafactory.MetaFactory;
 import net.anotheria.anoprise.metafactory.MetaFactoryException;
@@ -14,8 +9,14 @@ import net.anotheria.anosite.localization.LocalizationMap;
 import net.anotheria.anosite.tags.content.BaseResourceTag;
 import net.anotheria.asg.exception.ASGRuntimeException;
 import net.anotheria.util.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MarkerFactory;
 
-import org.apache.log4j.Logger;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.jsp.JspException;
+import java.util.List;
+
 
 /**
  * Variables processor for box translations.
@@ -23,6 +24,11 @@ import org.apache.log4j.Logger;
  * @author rpotopa
  */
 public class LocalizationProcessor implements VariablesProcessor {
+
+	/**
+	 * {@link Logger} instance.
+	 */
+	private static Logger LOGGER = LoggerFactory.getLogger(BaseResourceTag.class);
 
 	/**
 	 * Prefix.
@@ -33,10 +39,6 @@ public class LocalizationProcessor implements VariablesProcessor {
 	 * Resource data service.
 	 */
 	private static IASResourceDataService service;
-	/**
-	 * log.
-	 */
-	private static Logger log = Logger.getLogger(BaseResourceTag.class);
 
 	/**
 	 * Init.
@@ -45,7 +47,7 @@ public class LocalizationProcessor implements VariablesProcessor {
 		try {
 			service = MetaFactory.get(IASResourceDataService.class);
 		} catch (MetaFactoryException e) {
-			log.fatal("IASResourceDataService init failure",e);
+			LOGGER.error(MarkerFactory.getMarker("FATAL"), "IASResourceDataService init failure", e);
 		}
 	}
 
@@ -80,7 +82,7 @@ public class LocalizationProcessor implements VariablesProcessor {
 				return null;
 			return resources.get(0).getValue();
 		}catch(ASGRuntimeException e){
-			log.error("getLocalizationFromResources("+key+")", e);
+			LOGGER.error("getLocalizationFromResources(" + key + ")", e);
 			return null;
 		}
 	}

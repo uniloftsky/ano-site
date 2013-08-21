@@ -7,7 +7,9 @@ import net.anotheria.anosite.gen.asresourcedata.service.ASResourceDataServiceExc
 import net.anotheria.anosite.gen.asresourcedata.service.IASResourceDataService;
 import net.anotheria.anosite.shared.ResourceServletMappingConfig;
 import net.anotheria.util.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MarkerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -21,7 +23,7 @@ public class ImageProcessor implements VariablesProcessor {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOG = Logger.getLogger(ImageProcessor.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ImageProcessor.class);
 	/**
 	 * {@link IASResourceDataService} instance.
 	 */
@@ -42,7 +44,7 @@ public class ImageProcessor implements VariablesProcessor {
 		try {
 			service = MetaFactory.get(IASResourceDataService.class);
 		} catch (MetaFactoryException e) {
-			Logger.getLogger(ImageLinkProcessor.class).fatal("Not properly initialized, can't find resource data service.");
+			LoggerFactory.getLogger(ImageLinkProcessor.class).error(MarkerFactory.getMarker("FATAL"), "Not properly initialized, can't find resource data service.");
 		}
 	}
 

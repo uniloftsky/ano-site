@@ -11,9 +11,14 @@ import net.anotheria.anosite.blog.api.exception.TagNotFoundException;
 import net.anotheria.anosite.gen.asblogdata.data.Comment;
 import net.anotheria.anosite.gen.asblogdata.data.Post;
 import net.anotheria.anosite.gen.asblogdata.data.Tag;
-import net.anotheria.anosite.gen.asblogdata.service.*;
+import net.anotheria.anosite.gen.asblogdata.service.ASBlogDataServiceException;
+import net.anotheria.anosite.gen.asblogdata.service.CommentNotFoundInASBlogDataServiceException;
+import net.anotheria.anosite.gen.asblogdata.service.IASBlogDataService;
+import net.anotheria.anosite.gen.asblogdata.service.PostNotFoundInASBlogDataServiceException;
+import net.anotheria.anosite.gen.asblogdata.service.TagNotFoundInASBlogDataServiceException;
 import net.anotheria.util.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,10 +30,11 @@ import java.util.List;
  * @author vbezuhlyi
  */
 public class BaseBlogAPIImpl extends AbstractAPIImpl implements BlogAPI {
-    /**
-     * {@code Log4j} logger instance.
+
+	/**
+     * {@link Logger} instance.
      */
-    private static final Logger LOG = Logger.getLogger(BaseBlogAPIImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BaseBlogAPIImpl.class);
 
     /**
      * Service: {@link net.anotheria.anosite.gen.asblogdata.service.IASBlogDataService}
@@ -116,7 +122,7 @@ public class BaseBlogAPIImpl extends AbstractAPIImpl implements BlogAPI {
             /* Initializing service */
             blogDataService = MetaFactory.get(IASBlogDataService.class);
         } catch (MetaFactoryException e) {
-            LOG.error("MetaFactory for BlogAPI init failed", e);
+            LOGGER.error("MetaFactory for BlogAPI init failed", e);
             throw new APIInitException("BlogAPI init failed", e);
         }
     }

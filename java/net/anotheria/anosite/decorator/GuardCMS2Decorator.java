@@ -1,8 +1,5 @@
 package net.anotheria.anosite.decorator;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.anotheria.anodoc.data.Document;
 import net.anotheria.anodoc.data.NoSuchDocumentException;
 import net.anotheria.anodoc.data.NoSuchPropertyException;
@@ -15,8 +12,12 @@ import net.anotheria.anosite.gen.aswebdata.data.Pagex;
 import net.anotheria.asg.data.DataObject;
 import net.anotheria.asg.util.decorators.IAttributeDecorator;
 import net.anotheria.util.StringUtils;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MarkerFactory;
 
-import org.apache.log4j.Logger;
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * Decorator for guards.
@@ -37,7 +38,7 @@ public class GuardCMS2Decorator implements IAttributeDecorator{
 		try {
 			service = MetaFactory.get(IASFederatedDataService.class);
 		} catch (MetaFactoryException e) {
-			Logger.getLogger(GuardCMS2Decorator.class).fatal("IASFederatedDataService asg service init failure",e);
+			LoggerFactory.getLogger(GuardCMS2Decorator.class).error(MarkerFactory.getMarker("FATAL"), "IASFederatedDataService asg service init failure", e);
 		}
 	}
 	

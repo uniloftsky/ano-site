@@ -8,9 +8,10 @@ import net.anotheria.maf.bean.FormBean;
 import net.anotheria.maf.json.JSONResponse;
 import net.anotheria.util.StringUtils;
 import net.anotheria.webutils.actions.BaseAction;
-import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,9 +28,9 @@ import java.util.List;
 public class ShowUsagesOfDocumentAction extends BaseAction {
 
     /**
-     * Logger by default.
+     * {@link Logger} instance.
      */
-    private static final Logger LOGGER = Logger.getLogger(ShowUsagesOfDocumentAction.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ShowUsagesOfDocumentAction.class);
 
     /**
      * Encoding.

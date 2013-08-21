@@ -18,8 +18,8 @@ import net.anotheria.anosite.gen.aswebdata.service.IASWebDataService;
 import net.anotheria.asg.data.DataObject;
 import net.anotheria.asg.exception.ASGRuntimeException;
 import net.anotheria.asg.util.decorators.IAttributeDecorator;
-
-import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MarkerFactory;
 
 /**
  * This attribute decorator decorates known anosite objects as links to the linked documents (instead of id).
@@ -51,7 +51,7 @@ public class LinkTargetNameDecorator implements IAttributeDecorator{
 			webDataService = MetaFactory.get(IASWebDataService.class);
 			layoutDataService = MetaFactory.get(IASLayoutDataService.class);
 		} catch (MetaFactoryException e) {
-          Logger.getLogger(LinkTargetNameDecorator.class).fatal("ASG service init failure",e);
+         	LoggerFactory.getLogger(LinkTargetNameDecorator.class).error(MarkerFactory.getMarker("FATAL"), "ASG service init failure", e);
 		}
 	}
 

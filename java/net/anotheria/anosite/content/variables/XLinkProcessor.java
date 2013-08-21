@@ -2,7 +2,8 @@ package net.anotheria.anosite.content.variables;
 
 import net.anotheria.anosite.shared.ResourceServletMappingConfig;
 import net.anotheria.util.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -30,7 +31,7 @@ public abstract class XLinkProcessor implements VariablesProcessor {
 	 * Constructor.
 	 */
 	public XLinkProcessor() {
-		log = Logger.getLogger(this.getClass());
+		log = LoggerFactory.getLogger(this.getClass());
 		resourceServletMappingConfiguration = ResourceServletMappingConfig.getInstance();
 	}
 

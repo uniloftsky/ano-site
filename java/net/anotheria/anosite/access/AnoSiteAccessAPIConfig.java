@@ -1,12 +1,13 @@
 package net.anotheria.anosite.access;
 
-import java.io.Serializable;
-
-import org.apache.log4j.Logger;
 import org.configureme.ConfigurationManager;
 import org.configureme.annotations.Configure;
 import org.configureme.annotations.ConfigureMe;
 import org.configureme.annotations.DontConfigure;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.Serializable;
 
 @ConfigureMe(name = "ano-site-access-api-config")
 public final class AnoSiteAccessAPIConfig implements Serializable {
@@ -21,7 +22,7 @@ public final class AnoSiteAccessAPIConfig implements Serializable {
 	 * {@link Logger} instance.
 	 */
 	@DontConfigure
-	private static final Logger LOGGER = Logger.getLogger(AnoSiteAccessAPIConfig.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(AnoSiteAccessAPIConfig.class.getName());
 
 	/**
 	 * {@link AnoSiteAccessAPIConfig} instance.

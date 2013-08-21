@@ -4,7 +4,8 @@ import net.anotheria.anosite.config.ResourceDeliveryConfig;
 import net.anotheria.moskito.web.MoskitoHttpServlet;
 import net.anotheria.util.log.LogMessageUtil;
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -29,14 +30,14 @@ import java.util.TimeZone;
 public class ResourceDeliveryServlet extends MoskitoHttpServlet {
 
 	/**
+	 * {@link Logger} instance.
+	 */
+	private static final Logger LOGGER = LoggerFactory.getLogger(ResourceDeliveryServlet.class);
+
+	/**
 	 * Basic serialVersionUID variable.
 	 */
 	private static final long serialVersionUID = -8935110768011959639L;
-
-	/**
-	 * {@link Logger} instance.
-	 */
-	private static final Logger LOG = Logger.getLogger(ResourceDeliveryServlet.class);
 
 	/**
 	 * {@link ResourceDeliveryConfig} instance.
@@ -132,7 +133,7 @@ public class ResourceDeliveryServlet extends MoskitoHttpServlet {
 			out.flush();
 		} catch (IOException e) {
 			String message = LogMessageUtil.failMsg(e, resourceFile, res);
-			LOG.warn(message, e);
+			LOGGER.warn(message, e);
 			res.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		} finally {
 			IOUtils.closeQuietly(in);

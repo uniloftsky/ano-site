@@ -1,18 +1,5 @@
 package net.anotheria.anosite.shared.presentation.filter;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import net.anotheria.anoprise.metafactory.MetaFactory;
 import net.anotheria.anoprise.metafactory.MetaFactoryException;
 import net.anotheria.anosite.gen.assiteconfig.data.FilteredIP;
@@ -22,8 +9,22 @@ import net.anotheria.asg.exception.ASGRuntimeException;
 import net.anotheria.util.StringUtils;
 import net.anotheria.util.network.IPRange;
 import net.anotheria.util.network.PlainIPFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MarkerFactory;
 
-import org.apache.log4j.Logger;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * The filter which performs request's IP through allowance/restriction IP filtering rules 
@@ -47,11 +48,15 @@ import org.apache.log4j.Logger;
  * @author dmetelin
  */
 public class IPFilter implements Filter{
-	
+
+	/**
+	 * {@link Logger} instance.
+	 */
+	private static final Logger log = LoggerFactory.getLogger(IPFilter.class);
+
 	private static enum Allowance{ALLOWED,RESTRICTED};
 	
-	private static final Logger log = Logger.getLogger(IPFilter.class);
-	
+
 	private IASSiteConfigService siteConfigService;
 
 	private String maintenancePage;
@@ -71,7 +76,7 @@ public class IPFilter implements Filter{
 		try {
 			siteConfigService = MetaFactory.get(IASSiteConfigService.class);
 		} catch (MetaFactoryException e) {
-			log.fatal("Could not initialize IASSiteConfigService: ", e);
+			log.error(MarkerFactory.getMarker("FATAL"), "Could not initialize IASSiteConfigService: ", e);
 			throw new ServletException("Could not initialize IASSiteConfigService: " + e.getMessage());
 		}
 	}

@@ -4,8 +4,9 @@ import net.anotheria.anoplass.api.APICallContext;
 import net.anotheria.asg.data.DataObject;
 import net.anotheria.asg.util.listener.IServiceListener;
 import net.anotheria.util.NumberUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import org.apache.log4j.Logger;
 
 /**
  * Simplest Listener - for Logging CRUD operations.
@@ -14,10 +15,12 @@ import org.apache.log4j.Logger;
  */
 
 public class CRUDLogListener implements IServiceListener {
+
 	/**
-	 * Logger.
+	 * {@link Logger} instance.
 	 */
-    private final Logger log = Logger.getLogger("cms-crud-log");
+    private static final Logger LOGGER = LoggerFactory.getLogger("cms-crud-log");
+
 	/**
 	 * Separator.
 	 */
@@ -77,6 +80,6 @@ public class CRUDLogListener implements IServiceListener {
         String user = APICallContext.getCallContext().getCurrentUserId();
         String editor = APICallContext.getCallContext().getCurrentEditorId();
         String time = NumberUtils.makeISO8601TimestampString(System.currentTimeMillis());
-        log.info(time + SEPARATOR + operation + SEPARATOR + " uid : " + user + SEPARATOR + "eid : " + editor + SEPARATOR + objData);
+        LOGGER.info(time + SEPARATOR + operation + SEPARATOR + " uid : " + user + SEPARATOR + "eid : " + editor + SEPARATOR + objData);
     }
 }

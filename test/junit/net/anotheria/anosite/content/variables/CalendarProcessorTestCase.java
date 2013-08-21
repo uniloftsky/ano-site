@@ -1,18 +1,18 @@
 package net.anotheria.anosite.content.variables;
 
-import java.text.SimpleDateFormat;
-
 import junit.framework.TestCase;
 import net.anotheria.anoplass.api.APICallContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import org.apache.log4j.Logger;
+import java.text.SimpleDateFormat;
 
 /**
  * @author: h3llka
  */
 public class CalendarProcessorTestCase extends TestCase {
     private CalendarProcessor processor;
-    private final Logger log = Logger.getLogger(CalendarProcessorTestCase.class);
+    private final Logger log = LoggerFactory.getLogger(CalendarProcessorTestCase.class);
 
     public void setUp() throws Exception {
         processor = new CalendarProcessor();

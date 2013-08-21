@@ -15,7 +15,8 @@ import net.anotheria.anosite.wizard.api.exception.WizardAPIFirstStepException;
 import net.anotheria.anosite.wizard.api.exception.WizardAPILastStepException;
 import net.anotheria.anosite.wizard.api.exception.WizardNotFoundException;
 import net.anotheria.util.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -25,7 +26,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static net.anotheria.anosite.wizard.WizardCommand.*;
+import static net.anotheria.anosite.wizard.WizardCommand.CANCEL;
+import static net.anotheria.anosite.wizard.WizardCommand.FINISH;
+import static net.anotheria.anosite.wizard.WizardCommand.NAVIGATE_TO;
+import static net.anotheria.anosite.wizard.WizardCommand.NEXT;
+import static net.anotheria.anosite.wizard.WizardCommand.PREVIOUS;
 
 /**
  * Base implementation of WizardAPI.
@@ -33,6 +38,11 @@ import static net.anotheria.anosite.wizard.WizardCommand.*;
  * @author h3ll
  */
 public class BaseWizardAPIImpl extends AbstractAPIImpl implements WizardAPI {
+
+	/**
+	 * {@link Logger} instance.
+	 */
+	private static final Logger LOG = LoggerFactory.getLogger(BaseWizardAPIImpl.class);
 
 	/**
 	 * BaseWizardAPIImpl  WIZARD_ATTRIBUTE_SUFFIX.
@@ -43,10 +53,7 @@ public class BaseWizardAPIImpl extends AbstractAPIImpl implements WizardAPI {
 	 * Attribute which holds allowed wizard step commands.
 	 */
 	public static final String ALLOWED_WIZARD_STEP_COMMANDS_ATTRIBUTE = "allowedWizardStepCommands";
-	/**
-	 * Log4j logger instance.
-	 */
-	private static final Logger LOG = Logger.getLogger(BaseWizardAPIImpl.class);
+
 	/**
 	 * Wizard service.
 	 */

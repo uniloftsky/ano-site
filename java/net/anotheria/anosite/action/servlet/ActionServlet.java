@@ -1,13 +1,5 @@
 package net.anotheria.anosite.action.servlet;
 
-import java.io.IOException;
-
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import net.anotheria.anoplass.api.APIFinder;
 import net.anotheria.anosite.access.AnoSiteAccessAPI;
 import net.anotheria.anosite.action.Action;
@@ -19,17 +11,29 @@ import net.anotheria.anosite.gen.ascustomaction.data.ActionMappingDef;
 import net.anotheria.anosite.shared.presentation.servlet.BaseAnoSiteServlet;
 import net.anotheria.anosite.util.ModelObjectMapper;
 import net.anotheria.util.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import org.apache.log4j.Logger;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 
 public class ActionServlet extends BaseAnoSiteServlet {
-	
+
+	/**
+	 * {@link Logger} instance.
+	 */
+	private static Logger LOGGER = LoggerFactory.getLogger(ActionServlet.class);
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static Logger log = Logger.getLogger(ActionServlet.class);
-	
+
 	/**
 	 * {@link AnoSiteAccessAPI} instance.
 	 */
@@ -38,7 +42,7 @@ public class ActionServlet extends BaseAnoSiteServlet {
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
-		log.info("Init ActionServlet");
+		LOGGER.info("Init ActionServlet");
 		accessAPI = APIFinder.findAPI(AnoSiteAccessAPI.class);
 	}
 
@@ -62,7 +66,7 @@ public class ActionServlet extends BaseAnoSiteServlet {
 		out("Found def: "+def);
 		
 		if (def==null){
-			log.warn("ActionMapping not found: "+actionMappingName);
+			LOGGER.warn("ActionMapping not found: " + actionMappingName);
 			return;
 		}
 		
@@ -74,7 +78,7 @@ public class ActionServlet extends BaseAnoSiteServlet {
 					return;
 				}
 		} catch (Exception e) {
-			log.warn("Error in AccessAPI. ActionMappingDef: " + def + ", actionMappingName: " + actionMappingName + ")", e);
+			LOGGER.warn("Error in AccessAPI. ActionMappingDef: " + def + ", actionMappingName: " + actionMappingName + ")", e);
 		}
 		                                                                                                             
 		//create mapping:
@@ -83,7 +87,7 @@ public class ActionServlet extends BaseAnoSiteServlet {
 		
 		Action action = ActionFactory.createAction(def);
 		if (action==null){
-			log.warn("Couldn't create an action instance...");
+			LOGGER.warn("Couldn't create an action instance...");
 			return;
 		}		
 		
@@ -106,7 +110,7 @@ public class ActionServlet extends BaseAnoSiteServlet {
 			}
 			
 		} catch(Exception e) {
-			log.error("execute", e);
+			LOGGER.error("execute", e);
 			//send to error page
 		}
 			
@@ -118,7 +122,7 @@ public class ActionServlet extends BaseAnoSiteServlet {
 	}
 	
 	private void out(Object o){
-		log.debug("[ActionServlet] "+o);
+		LOGGER.debug("[ActionServlet] " + o);
 	}
 
 }

@@ -3,6 +3,7 @@ package net.anotheria.anosite.shared;
 import org.configureme.ConfigurationManager;
 import org.configureme.annotations.Configure;
 import org.configureme.annotations.ConfigureMe;
+import org.slf4j.LoggerFactory;
 
 /**
  * ResourceServletMappingConfig.
@@ -51,7 +52,7 @@ public class ResourceServletMappingConfig {
 			try {
 				ConfigurationManager.INSTANCE.configure(instance);
 			} catch (Exception e) {
-				org.apache.log4j.Logger.getLogger(ResourceServletMappingConfig.class).warn("Configuration FAILED. Relying on defaults.", e);
+				LoggerFactory.getLogger(ResourceServletMappingConfig.class).warn("Configuration FAILED. Relying on defaults.", e);
 			}
 		}
 		return instance;

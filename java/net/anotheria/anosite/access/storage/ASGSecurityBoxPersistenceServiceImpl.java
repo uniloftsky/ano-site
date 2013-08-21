@@ -1,7 +1,5 @@
 package net.anotheria.anosite.access.storage;
 
-import java.util.List;
-
 import net.anotheria.access.Role;
 import net.anotheria.access.impl.MetaInfoStorage;
 import net.anotheria.access.impl.SecurityBox;
@@ -18,8 +16,11 @@ import net.anotheria.anosite.gen.anoaccessapplicationdata.service.AnoAccessAppli
 import net.anotheria.anosite.gen.anoaccessapplicationdata.service.IAnoAccessApplicationDataService;
 import net.anotheria.util.log.LogMessageUtil;
 import net.anotheria.util.sorter.SortType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MarkerFactory;
 
-import org.apache.log4j.Logger;
+import java.util.List;
 
 /**
  * File system implementation of {@link SecurityBoxPersistenceService}.
@@ -31,7 +32,7 @@ public class ASGSecurityBoxPersistenceServiceImpl implements SecurityBoxPersiste
 	/**
 	 * {@link Logger} instance.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(ASGSecurityBoxPersistenceServiceImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ASGSecurityBoxPersistenceServiceImpl.class);
 
 	/**
 	 * {@link IAnoAccessApplicationDataService} instance.
@@ -46,7 +47,7 @@ public class ASGSecurityBoxPersistenceServiceImpl implements SecurityBoxPersiste
 			persistence = MetaFactory.get(IAnoAccessApplicationDataService.class);
 		} catch (MetaFactoryException e) {
 			String message = "ASGSecurityBoxPersistenceServiceImpl() initialization fail. Can't initialize persistence service.";
-			LOGGER.fatal(message, e);
+			LOGGER.error(MarkerFactory.getMarker("FATAL"), message, e);
 			throw new RuntimeException(message, e);
 		}
 	}

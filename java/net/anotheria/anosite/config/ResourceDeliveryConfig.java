@@ -1,12 +1,13 @@
 package net.anotheria.anosite.config;
 
-import java.io.Serializable;
-
-import org.apache.log4j.Logger;
 import org.configureme.ConfigurationManager;
 import org.configureme.annotations.Configure;
 import org.configureme.annotations.ConfigureMe;
 import org.configureme.annotations.DontConfigure;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.Serializable;
 
 /**
  * Delivery mode for static content like JS/CSS.
@@ -26,7 +27,7 @@ public final class ResourceDeliveryConfig implements Serializable {
 	 * Logger.
 	 */
 	@DontConfigure
-	private static final Logger LOGGER = Logger.getLogger(ResourceDeliveryConfig.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(ResourceDeliveryConfig.class.getName());
 
 	/**
 	 * Configuration instance.

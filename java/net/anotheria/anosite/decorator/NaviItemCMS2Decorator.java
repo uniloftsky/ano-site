@@ -1,8 +1,5 @@
 package net.anotheria.anosite.decorator;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.anotheria.anodoc.data.Document;
 import net.anotheria.anodoc.data.NoSuchDocumentException;
 import net.anotheria.anodoc.data.NoSuchPropertyException;
@@ -15,8 +12,11 @@ import net.anotheria.asg.data.DataObject;
 import net.anotheria.asg.exception.ASGRuntimeException;
 import net.anotheria.asg.util.decorators.IAttributeDecorator;
 import net.anotheria.util.StringUtils;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MarkerFactory;
 
-import org.apache.log4j.Logger;
+import java.util.ArrayList;
+import java.util.List;
 
 public class NaviItemCMS2Decorator implements IAttributeDecorator{
 	
@@ -29,7 +29,7 @@ public class NaviItemCMS2Decorator implements IAttributeDecorator{
 		try {
 			service = MetaFactory.get(IASWebDataService.class);
 		} catch (MetaFactoryException e) {
-          Logger.getLogger(NaviItemCMS2Decorator.class).fatal("IASSiteDataService  init failure",e);
+          LoggerFactory.getLogger(NaviItemCMS2Decorator.class).error(MarkerFactory.getMarker("FATAL"), "IASSiteDataService  init failure", e);
 		}
 	}
 	

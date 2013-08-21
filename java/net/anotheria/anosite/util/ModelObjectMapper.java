@@ -1,17 +1,16 @@
 package net.anotheria.anosite.util;
 
-import java.lang.reflect.Field;
-
-import javax.servlet.http.HttpServletRequest;
-
 import net.anotheria.anoplass.api.APICallContext;
 import net.anotheria.anoplass.api.validation.ValidationError;
 import net.anotheria.maf.util.FormObjectMapper;
 import net.anotheria.maf.validation.Validator;
 import net.anotheria.maf.validation.annotations.ValidateCustom;
 import net.anotheria.maf.validation.annotations.ValidateNotEmpty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import org.apache.log4j.Logger;
+import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Field;
 
 /**
  * Guitar Model Object.
@@ -35,7 +34,7 @@ public final class ModelObjectMapper {
 	/**
 	 * Mapper log.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(FormObjectMapper.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(FormObjectMapper.class);
 
 	/**
 	 * @param req  http request
@@ -78,9 +77,9 @@ public final class ModelObjectMapper {
 					}
 				}
 			} catch (IllegalAccessException e) {
-				LOGGER.error(e);
+				LOGGER.error(e.getMessage(), e);
 			} catch (InstantiationException e) {
-				LOGGER.error(e);
+				LOGGER.error(e.getMessage(), e);
 			}
 		}
 	}

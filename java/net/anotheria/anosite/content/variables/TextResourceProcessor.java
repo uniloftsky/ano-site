@@ -1,12 +1,13 @@
 package net.anotheria.anosite.content.variables;
 
-import javax.servlet.http.HttpServletRequest;
-
 import net.anotheria.anosite.content.variables.helper.TextResourceProcessorHelper;
 import net.anotheria.anosite.gen.asresourcedata.data.TextResource;
 import net.anotheria.asg.exception.ASGRuntimeException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import org.apache.log4j.Logger;
+import javax.servlet.http.HttpServletRequest;
+
 
 /**
  * TextResourceProcessor.
@@ -17,7 +18,7 @@ public class TextResourceProcessor implements VariablesProcessor {
 	/**
 	 * Logger instance.
 	 */
-	private final Logger log = Logger.getLogger(TextResourceProcessor.class);
+	private final Logger log = LoggerFactory.getLogger(TextResourceProcessor.class);
 	/**
 	 * Processor prefix.
 	 */

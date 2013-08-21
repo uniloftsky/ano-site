@@ -1,11 +1,5 @@
 package net.anotheria.anosite.cms.user;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 import net.anotheria.anoprise.metafactory.MetaFactory;
 import net.anotheria.anoprise.metafactory.MetaFactoryException;
 import net.anotheria.anosite.gen.asuserdata.data.RoleDef;
@@ -15,8 +9,15 @@ import net.anotheria.anosite.gen.asuserdata.data.UserDefBuilder;
 import net.anotheria.anosite.gen.asuserdata.service.ASUserDataServiceException;
 import net.anotheria.anosite.gen.asuserdata.service.IASUserDataService;
 import net.anotheria.util.crypt.MD5Util;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import org.apache.log4j.Logger;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 
 /**
  * @author vbezuhlyi
@@ -27,16 +28,16 @@ import org.apache.log4j.Logger;
  **/
 public class CMSUserManager {
 
+	/**
+	 * {@link Logger} instance.
+	 */
+	private static Logger LOGGER = LoggerFactory.getLogger(CMSUserManager.class);
+
 	private static Map<String, CMSUser> users;
 
 	private static IASUserDataService userDataService;
-	private static Logger log;
 	private static CMSUserManager instance;
 	private static boolean inited;
-
-	static {
-		log = Logger.getLogger(CMSUserManager.class);
-	}
 
 	private CMSUserManager() {
 		if (!inited)
@@ -85,7 +86,7 @@ public class CMSUserManager {
 			inited = true;
 
 		} catch (MetaFactoryException e) {
-			log.error("init failed", e);
+			LOGGER.error("init failed", e);
 			throw new RuntimeException("MetaFactory failed", e);
 		}
 	}
@@ -103,7 +104,7 @@ public class CMSUserManager {
 			addDefaultUser("admin", "admin", "admin"); // + admin:admin if necessary
 
 		} catch (ASUserDataServiceException e) {
-			log.error("ASUserDataService failed", e);
+			LOGGER.error("ASUserDataService failed", e);
 			throw new RuntimeException("ASUserDataService failed", e);
 		}
 	}
@@ -113,7 +114,7 @@ public class CMSUserManager {
 		if (userDefs == null || userDefs.isEmpty()) { // check if such user does not exist
 			List<RoleDef> roleDefs = userDataService.getRoleDefsByProperty(RoleDef.PROP_NAME, role);
 			if (roleDefs == null || roleDefs.isEmpty()) { // check if role for admin user does not exist
-				log.error("There is no admin role for admin user in CMS");
+				LOGGER.error("There is no admin role for admin user in CMS");
 				throw new RuntimeException("admin role for admin user is undefined");
 			}
 			RoleDef adminRole = roleDefs.get(0);
@@ -141,7 +142,7 @@ public class CMSUserManager {
 			user.setPassword(hashPassword(newPassword));
 			userDataService.updateUserDef(user);
 		} catch (ASUserDataServiceException e) {
-			log.error("change user password failed", e);
+			LOGGER.error("change user password failed", e);
 			throw new RuntimeException("ASUserDataService failed", e);
 		}
 	}
@@ -163,7 +164,7 @@ public class CMSUserManager {
 			return userDataService.getUserDef(id).getLogin();
 
 		} catch (ASUserDataServiceException e) {
-			log.error("get user def by login failed", e);
+			LOGGER.error("get user def by login failed", e);
 			throw new RuntimeException("ASUserDataService failed", e);
 		}
 	}
@@ -176,7 +177,7 @@ public class CMSUserManager {
 
 			return userDefs.get(0);
 		} catch (ASUserDataServiceException e) {
-			log.error("get user def by login failed", e);
+			LOGGER.error("get user def by login failed", e);
 			throw new RuntimeException("ASUserDataService failed", e);
 		}
 	}
@@ -208,7 +209,7 @@ public class CMSUserManager {
                 users.put(userToAdd.getUsername(), userToAdd);
 			}
 		} catch (ASUserDataServiceException e) {
-			log.error("scan users failed", e);
+			LOGGER.error("scan users failed", e);
 			throw new RuntimeException("ASUserDataService failed", e);
 		}
 	}

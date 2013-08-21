@@ -5,7 +5,9 @@ import net.anotheria.anoprise.metafactory.MetaFactoryException;
 import net.anotheria.anosite.gen.asresourcedata.data.TextResource;
 import net.anotheria.anosite.gen.asresourcedata.service.IASResourceDataService;
 import net.anotheria.asg.exception.ASGRuntimeException;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MarkerFactory;
 
 import java.util.List;
 
@@ -20,7 +22,8 @@ public final class TextResourceProcessorHelper {
 	/**
 	 * Logger instance.
 	 */
-	private static final Logger log = Logger.getLogger(TextResourceProcessorHelper.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(TextResourceProcessorHelper.class);
+
 	/**
 	 * IASResourceDataService instance.
 	 */
@@ -33,7 +36,7 @@ public final class TextResourceProcessorHelper {
 		try {
 			resourceDataService = MetaFactory.get(IASResourceDataService.class);
 		} catch (MetaFactoryException e) {
-			log.fatal("IASResourceDataService init failure", e);
+			LOGGER.error(MarkerFactory.getMarker("FATAL"), "IASResourceDataService init failure", e);
 			throw new RuntimeException("IASResourceDataService init failure", e);
 		}
 	}

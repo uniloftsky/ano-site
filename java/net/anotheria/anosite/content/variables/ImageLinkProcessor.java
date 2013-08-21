@@ -5,7 +5,8 @@ import net.anotheria.anoprise.metafactory.MetaFactoryException;
 import net.anotheria.anosite.gen.asresourcedata.data.Image;
 import net.anotheria.anosite.gen.asresourcedata.service.IASResourceDataService;
 import net.anotheria.util.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MarkerFactory;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class ImageLinkProcessor extends XLinkProcessor {
 		try {
 			service = MetaFactory.get(IASResourceDataService.class);
 		} catch (MetaFactoryException e) {
-			Logger.getLogger(ImageLinkProcessor.class).fatal("Not properly initialized, can't find resource data service.");
+			LoggerFactory.getLogger(ImageLinkProcessor.class).error(MarkerFactory.getMarker("FATAL"), "Not properly initialized, can't find resource data service.");
 		}
 
 	}

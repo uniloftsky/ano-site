@@ -5,7 +5,9 @@ import net.anotheria.anoprise.metafactory.MetaFactoryException;
 import net.anotheria.anosite.gen.aswizarddata.data.WizardHandlerDef;
 import net.anotheria.anosite.gen.aswizarddata.service.IASWizardDataService;
 import net.anotheria.util.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MarkerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,9 +21,9 @@ import java.util.Map;
 public final class WizardHandlerFactory {
 
 	/**
-	 * Log4j logger.
+	 * {@link Logger} instance.
 	 */
-	private static final Logger log = Logger.getLogger(WizardHandlerFactory.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(WizardHandlerFactory.class);
 
 	/**
 	 * IASWizardDataService instance.
@@ -41,7 +43,7 @@ public final class WizardHandlerFactory {
 		try {
 			wizardService = MetaFactory.get(IASWizardDataService.class);
 		} catch (MetaFactoryException e) {
-			log.fatal("IASWizardDataService init failure", e);
+			LOGGER.error(MarkerFactory.getMarker("FATAL"), "IASWizardDataService init failure", e);
 		}
 	}
 
@@ -72,7 +74,7 @@ public final class WizardHandlerFactory {
 
 
 		} catch (Exception e) {
-			log.error("createWizardHandler(" + id + ")", e);
+			LOGGER.error("createWizardHandler(" + id + ")", e);
 			throw new RuntimeException("WizardHandler instantiation failed - " + e.getMessage());
 		}
 
