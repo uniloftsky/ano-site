@@ -21,6 +21,11 @@
 		<property name="parameters" type="string" />
 		<link type="single" target="ASWebData.Pagex" name="page" />
 		<property name="command" type="enumeration" enumeration="ActionCommandDef" />
+        <property name="localizationBundles" type="list">
+            <content>
+                <link name="localizationBundles" type="single" target="ASResourceData.LocalizationBundle"/>
+            </content>
+        </property>
 	</document>
 </module>
 

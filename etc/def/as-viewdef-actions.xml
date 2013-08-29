@@ -35,6 +35,7 @@
 					<element type="empty" />
 					<element type="field" name="parameters" />
 					<element type="field" name="command" />
+					<element type="field" name="localizationBundles" />
 					<element type="empty" />
 					<element type="list">
 						<element type="function" name="updateAndClose" />

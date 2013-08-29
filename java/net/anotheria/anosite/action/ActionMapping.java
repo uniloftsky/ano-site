@@ -2,6 +2,8 @@ package net.anotheria.anosite.action;
 
 import net.anotheria.anosite.gen.ascustomaction.data.ActionMappingDef;
 
+import java.util.List;
+
 /**
  * Mapping submitted to the action command and defined by an editor/developer in the web interface.
  * @author lrosenberg
@@ -32,4 +34,13 @@ public class ActionMapping {
 	public ActionCommand getPredefinedCommand(){
 		return predefinedCommand;
 	}
+
+    /**
+     * Returns LocalizationBundle ids, that are connected to this ActionMapping.
+     *
+     * @return
+     */
+    public List<String> getLocalizationBundleIds(){
+        return def.getLocalizationBundles();
+    }
 }
