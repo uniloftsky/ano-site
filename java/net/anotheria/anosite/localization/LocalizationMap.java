@@ -1,13 +1,14 @@
 package net.anotheria.anosite.localization;
 
+import net.anotheria.anoplass.api.APICallContext;
+import net.anotheria.anosite.gen.asresourcedata.data.LocalizationBundle;
+import net.anotheria.util.StringUtils;
+import org.apache.log4j.Logger;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import net.anotheria.anoplass.api.APICallContext;
-import net.anotheria.anosite.gen.asresourcedata.data.LocalizationBundle;
-import net.anotheria.util.StringUtils;
 
 /**
  * Storage for localization in different environment.<br/>
@@ -17,6 +18,11 @@ import net.anotheria.util.StringUtils;
  */
 
 public class LocalizationMap {
+
+    /**
+     * {@code log4j} {@link Logger}.
+     */
+    private static final Logger LOGGER = Logger.getLogger(LocalizationMap.class);
 
 	/**
 	 * The name under which the localization map is stored in the call context
@@ -63,16 +69,20 @@ public class LocalizationMap {
 
 	public void addLocalizationBundle(LocalizationEnvironment scope, LocalizationBundle bundle){
 		String toParse = bundle.getMessages();
-		if(toParse == null)
-			throw new NullPointerException("LocalizationBundle " + bundle.getId() + ": message is null!");
+		if(toParse == null){
+			LOGGER.error("LocalizationBundle " + bundle.getId() + ": message is null!");
+            return;
+        }
 		toParse = StringUtils.removeChar(toParse, '\r');
 		String[] lines = StringUtils.tokenize(toParse, '\n');
 		for (String l : lines) {
 			if(StringUtils.isEmpty(l) || l.trim().startsWith("#"))
 				continue;
 			String[] message = StringUtils.tokenize(l, '=');
-			if (message.length != 2)
-				throw new AssertionError("Invalid format of LocalizationBundel with id " + bundle.getId() + " in line: <" + l + ">. Expected line format: <key=message>");
+			if (message.length != 2){
+                LOGGER.error("Invalid format of LocalizationBundel with id " + bundle.getId() + " in line: <" + l + ">. Expected line format: <key=message>");
+                return;
+            }
 			localizationBundles.put(getPrivateKey(scope, message[0]), message[1]);
 		}
 		
