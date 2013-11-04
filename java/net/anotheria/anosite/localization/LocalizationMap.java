@@ -80,8 +80,8 @@ public class LocalizationMap {
 				continue;
 			String[] message = StringUtils.tokenize(l, '=');
 			if (message.length != 2){
-                LOGGER.error("Invalid format of LocalizationBundel with id " + bundle.getId() + " in line: <" + l + ">. Expected line format: <key=message>");
-                return;
+                LOGGER.warn("Invalid format of LocalizationBundel with id " + bundle.getId() + " in line: <" + l + ">. Expected line format: <key=message>");
+                continue;
             }
 			localizationBundles.put(getPrivateKey(scope, message[0]), message[1]);
 		}
