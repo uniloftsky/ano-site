@@ -1760,7 +1760,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			bean.setName(item.getName());
 
 			boolean needUseRDServlet = false;
-			if (!StringUtils.isEmpty(item.getHref()) && (item.getRel() == LinkTypesUtils.stylesheet || item.getRev() == LinkTypesUtils.stylesheet))
+			if (!StringUtils.isEmpty(item.getHref()) && !item.getHref().startsWith("http:") && !item.getHref().startsWith("https:") && (item.getRel() == LinkTypesUtils.stylesheet || item.getRev() == LinkTypesUtils.stylesheet))
 				needUseRDServlet = true;
 			
 			bean.setHref(needUseRDServlet ? linkPrefix + item.getHref() : item.getHref());
