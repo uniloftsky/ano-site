@@ -14,15 +14,25 @@ import net.anotheria.anosite.gen.util.AnositeCallContext;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import javax.servlet.AsyncContext;
+import javax.servlet.DispatcherType;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import javax.servlet.ServletInputStream;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpUpgradeHandler;
+import javax.servlet.http.Part;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.Principal;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Map;
@@ -169,6 +179,11 @@ public class TextResourceProcessorTestCase {
 			return null;
 		}
 
+		@Override
+		public String changeSessionId() {
+			return null;
+		}
+
 		public boolean isRequestedSessionIdValid() {
 			return false;
 		}
@@ -188,6 +203,36 @@ public class TextResourceProcessorTestCase {
 			return false;
 		}
 
+		@Override
+		public boolean authenticate(HttpServletResponse response) throws IOException, ServletException {
+			return false;
+		}
+
+		@Override
+		public void login(String s, String s2) throws ServletException {
+
+		}
+
+		@Override
+		public void logout() throws ServletException {
+
+		}
+
+		@Override
+		public Collection<Part> getParts() throws IOException, ServletException {
+			return null;
+		}
+
+		@Override
+		public Part getPart(String s) throws IOException, ServletException {
+			return null;
+		}
+
+		@Override
+		public <T extends HttpUpgradeHandler> T upgrade(Class<T> tClass) throws IOException, ServletException {
+			return null;
+		}
+
 		public Object getAttribute(String s) {
 			return null;
 		}
@@ -204,6 +249,11 @@ public class TextResourceProcessorTestCase {
 		}
 
 		public int getContentLength() {
+			return 0;
+		}
+
+		@Override
+		public long getContentLengthLong() {
 			return 0;
 		}
 
@@ -303,5 +353,42 @@ public class TextResourceProcessorTestCase {
 		public int getLocalPort() {
 			return 0;
 		}
+
+		@Override
+		public ServletContext getServletContext() {
+			return null;
+		}
+
+		@Override
+		public AsyncContext startAsync() throws IllegalStateException {
+			return null;
+		}
+
+		@Override
+		public AsyncContext startAsync(ServletRequest servletRequest, ServletResponse servletResponse) throws IllegalStateException {
+			return null;
+		}
+
+		@Override
+		public boolean isAsyncStarted() {
+			return false;
+		}
+
+		@Override
+		public boolean isAsyncSupported() {
+			return false;
+		}
+
+		@Override
+		public AsyncContext getAsyncContext() {
+			return null;
+		}
+
+		@Override
+		public DispatcherType getDispatcherType() {
+			return null;
+		}
+
+
 	}
 }
