@@ -1215,6 +1215,8 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			feature = featureService.getFeature(featureId);
 		}catch(ASFeatureServiceException e){
 			return false;
+		}catch(NoSuchDocumentException e){
+			return false;
 		}
 
 		if (!feature.getEnabled())
