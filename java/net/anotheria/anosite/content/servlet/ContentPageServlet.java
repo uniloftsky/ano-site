@@ -1210,6 +1210,8 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	private boolean disabledByFeature(HttpServletRequest req, Box box) {
 		//check the feature
 		String featureId = box.getFeature();
+		if (featureId==null || featureId.length()==0)
+			return false;
 		Feature feature = null;
 		try{
 			feature = featureService.getFeature(featureId);
