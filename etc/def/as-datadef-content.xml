@@ -53,6 +53,7 @@
         </property>
 		<property type="boolean" name="httpsonly"/>
 		<link name="accessOperation" type="single" target="AnoAccessConfiguration.AccessOperation" />
+        <link name="feature" type="single" target="ASFeature.Feature" />
 	</document>
 	<document name="Box">
 		<property name="name" type="string"/>
@@ -101,6 +102,7 @@
         	</content>
         </property>
         <link name="accessOperation" type="single" target="AnoAccessConfiguration.AccessOperation" />
+        <link name="feature" type="single" target="ASFeature.Feature" />
 	</document>
 
 	<document name="Attribute">

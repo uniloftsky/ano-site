@@ -77,6 +77,8 @@
 					<element type="empty" />
 					<element type="field" name="accessOperation" />
 					<element type="empty" />
+                    <element type="field" name="feature" />
+                    <element type="empty" />
 					<element type="list">
 						<element type="function" name="updateAndClose" />
 						<element type="function" name="updateAndStay" />
@@ -128,6 +130,8 @@
 				<element type="field" name="attributes" comparable="true">
 					<decorator name="attributes" />
 				</element>
+                <element type="field" name="feature" />
+                <element type="empty" />
 				<element type="function" name="edit" />
 				<element type="function" name="duplicate" />
 				<element type="function" name="deleteWithConfirmation" />
@@ -163,6 +167,8 @@
 					<element type="field" name="attributes" />
 					<element type="empty" />
 					<element type="field" name="accessOperation" />
+                    <element type="empty" />
+                    <element type="field" name="feature" />
 					<element type="list">
 						<element type="function" name="updateAndClose" />
 						<element type="function" name="updateAndStay" />

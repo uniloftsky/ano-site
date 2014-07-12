@@ -22,6 +22,9 @@ import net.anotheria.anosite.content.bean.ScriptBean;
 import net.anotheria.anosite.content.bean.SiteBean;
 import net.anotheria.anosite.content.bean.StylesheetBean;
 import net.anotheria.anosite.content.variables.VariablesUtility;
+import net.anotheria.anosite.gen.asfeature.data.Feature;
+import net.anotheria.anosite.gen.asfeature.service.ASFeatureServiceException;
+import net.anotheria.anosite.gen.asfeature.service.IASFeatureService;
 import net.anotheria.anosite.gen.asfederateddata.data.BoxType;
 import net.anotheria.anosite.gen.asfederateddata.service.ASFederatedDataServiceException;
 import net.anotheria.anosite.gen.asfederateddata.service.IASFederatedDataService;
@@ -191,6 +194,11 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	private transient IASResourceDataService resourceDataService;
 
 	/**
+	 * Feature service.
+	 */
+	private transient IASFeatureService featureService;
+
+	/**
 	 * Wizard service.
 	 */
 	private transient IASWizardDataService wizardDataService;
@@ -242,6 +250,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			layoutDataService = MetaFactory.get(IASLayoutDataService.class);
 			resourceDataService = MetaFactory.get(IASResourceDataService.class);
 			wizardDataService = MetaFactory.get(IASWizardDataService.class);
+			featureService    = MetaFactory.get(IASFeatureService.class);
 			wizardAPI = APIFinder.findAPI(WizardAPI.class);
 			accessAPI = APIFinder.findAPI(AnoSiteAccessAPI.class);
 		} catch (MetaFactoryException e) {
@@ -1190,7 +1199,42 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		}
 		return false;
 	}
-	
+
+	/**
+	 * Returns true if the box is disabled by conditional guards and should be ignored.
+	 *
+	 * @param req {@link HttpServletRequest}
+	 * @param box {@link Box}
+	 * @return boolean value
+	 */
+	private boolean disabledByFeature(HttpServletRequest req, Box box) {
+		//check the feature
+		String featureId = box.getFeature();
+		Feature feature = null;
+		try{
+			feature = featureService.getFeature(featureId);
+		}catch(ASFeatureServiceException e){
+			return false;
+		}
+
+		if (!feature.getEnabled())
+			return true;
+
+		List<String> gIds = feature.getGuards();
+		for (String gid : gIds) {
+			ConditionalGuard g = null;
+			try {
+				g = GuardFactory.getConditionalGuard(gid);
+				if (!g.isConditionFullfilled(box, req)) {
+					return true;
+				}
+
+			} catch (Exception e) {
+				LOGGER.warn("Caught error in guard processing ( guard: " + g + ", gid: " + gid + ", boxid: " + box.getId() + ")", e);
+			}
+		}
+		return false;
+	}
 	/**
 	 * Returns true if the box is disabled by conditional guards and should be ignored.
 	 *
@@ -1267,6 +1311,9 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			}
 
 			if (disabledByGuards(req, box))
+				continue;
+
+			if (disabledByFeature(req, box))
 				continue;
 			/// END GUARDS HANDLING ///
 

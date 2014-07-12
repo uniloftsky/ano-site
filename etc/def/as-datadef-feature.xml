@@ -1,0 +1,14 @@
+  <module name="ASFeature">
+    <listener class="net.anotheria.anosite.cms.listener.CRUDLogListener"/>
+	<document name="Feature">
+		<property type="string" name="name"/>
+		<property type="boolean" name="enabled" />
+		<property type="text" name="description" />
+        <property name="guards" type="list">
+            <content>
+                <link name="guard" type="single" target="ASFederatedData.GuardDef"/>
+            </content>
+        </property>
+		<link name="accessOperation" type="single" target="AnoAccessConfiguration.AccessOperation" />
+	</document>
+  </module>
