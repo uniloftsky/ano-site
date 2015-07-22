@@ -11,10 +11,10 @@
 	        		 		<rule>3</rule>
 	        		   	</decorator>
 					</element>
-					<element type="field" name="name" comparable="default"> 
+					<element type="field" name="name" comparable="default">
 	        		   	<decorator name="editLink"/>
 					</element>
-					<element type="field" name="value" comparable="true"> 
+					<element type="field" name="value" comparable="true">
 	        		   	<decorator name="editLink"/>
 					</element>
 	        		<element type="function" name="edit"/>
@@ -27,8 +27,8 @@
         			<elements>
 	       				<element type="empty"/>
 		       			<element type="field" name="id" readonly="true"/>
-		      			<element type="field" name="name" /> 
-		      			<element type="field" name="value" /> 
+		      			<element type="field" name="name" />
+		      			<element type="field" name="value" />
 						<element type="empty"/>
 						<element type="list">
 							<element type="function" name="updateAndClose"/>
@@ -40,7 +40,7 @@
         			</elements>
       			</dialog>
 	    	</section>
-	    		    	
+
 			<section title="LocalizationBundles" type="module">
 				<module>ASResourceData</module>
 				<document>LocalizationBundle</document>
@@ -52,7 +52,7 @@
 	        		 		<rule>3</rule>
 	        		   	</decorator>
 					</element>
-					<element type="field" name="name" comparable="default"> 
+					<element type="field" name="name" comparable="default">
 	        		   	<decorator name="editLink"/>
 					</element>
 	        		<element type="function" name="edit"/>
@@ -60,13 +60,14 @@
 	        		<element type="function" name="deleteWithConfirmation"/>
 					<element type="function" name="lock"/>
 	        		<element type="function" name="unlock"/>
+					<element type="function" name="showUsages"/>
 	      		</elements>
 	      		<dialog name="Edit" title="Edit LocalizationBundle">
         			<elements>
 	       				<element type="empty"/>
 		       			<element type="field" name="id" readonly="true"/>
-		      			<element type="field" name="name" /> 
-		      			<element type="field" name="messages" /> 
+		      			<element type="field" name="name" />
+		      			<element type="field" name="messages" />
 						<element type="empty"/>
 						<element type="list">
 							<element type="function" name="updateAndClose"/>
@@ -78,19 +79,19 @@
         			</elements>
       			</dialog>
 	    	</section>
-	    		    	
+
 	    	<section title="Mail Templates" type="module">
 				<module>ASResourceData</module>
 				<document>MailTemplate</document>
 				<filter name="AZ" field="name"/>
-				<filter name="MissingTranslation" field="Any" />				
+				<filter name="MissingTranslation" field="Any" />
 				<elements>
 					<element type="field" name="id" comparable="true">
 	        		   	<decorator name="idToA">
 	        		 		<rule>3</rule>
 	        		   	</decorator>
 					</element>
-					<element type="field" name="name" comparable="default"> 
+					<element type="field" name="name" comparable="default">
 	        		   	<decorator name="editLink"/>
 					</element>
 					<element type="field" name="sender" comparable="true"/>
@@ -105,11 +106,11 @@
         			<elements>
 	       				<element type="empty"/>
 		       			<element type="field" name="id" readonly="true"/>
-		      			<element type="field" name="name" /> 
+		      			<element type="field" name="name" />
 		      			<element type="field" name="sender" />
 						<element type="field" name="senderName"/>
 		      			<element type="field" name="subject" />
-		      			<element type="field" name="message" /> 
+		      			<element type="field" name="message" />
 		      			<element type="field" name="plainMessage" />
 						<element type="empty"/>
 						<element type="list">
@@ -122,7 +123,7 @@
         			</elements>
       			</dialog>
 	    	</section>
-	    	
+
             <section title="Pictures" type="module">
 				<module>ASResourceData</module>
                 <document>Image</document>
@@ -156,7 +157,7 @@
     	        <dialog name="Edit" title="Upload a picture">
                     <elements>
                         <element type="empty"/>
-                        <element type="field" name="id" readonly="true"/>                            
+                        <element type="field" name="id" readonly="true"/>
                         <element type="field" name="name" />
 	                    <element type="field" name="title"/>
     	                <element type="field" name="alias"/>
@@ -173,7 +174,7 @@
         	      	</elements>
 				</dialog>
 			</section>
-	    	
+
             <section title="File" type="module">
 				<module>ASResourceData</module>
                 <document>FileLink</document>
@@ -202,7 +203,7 @@
     	        <dialog name="Edit" title="Upload a picture">
                     <elements>
                         <element type="empty"/>
-                        <element type="field" name="id" readonly="true"/>                            
+                        <element type="field" name="id" readonly="true"/>
                         <element type="field" name="name" />
 	                    <element type="field" name="title"/>
     	                <element type="field" name="file"/>

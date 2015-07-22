@@ -150,6 +150,15 @@ public enum DocumentEnum {
         public List<String> findReferences(String pId) {
             return findUsagesOfCustomGuard(pId);
         }
+    },
+
+    //Resources menu.
+
+    LOCALIZATION_BUNDLE("LOCALIZATIONBUNDLE") {
+        @Override
+        public List<String> findReferences(String pId) {
+            return findUsagesOfLocalizationBundle(pId);
+        }
     };
 
     /**
@@ -788,7 +797,7 @@ public enum DocumentEnum {
                 if (!site.getMainNavi().isEmpty()){
                     StringBuffer pathBeforeMainNavi = new StringBuffer("</br><a href=\"assitedataSiteEdit?pId="+site.getId()+"\" > Site ["+site.getName()+"] </a> -> " +
                             "<a href=\"assitedataSiteMainNaviShow?ownerId="+site.getId()+"\" > TopNavi </a>");
-                    findNaviItemInSubNaviRecursively(site.getTopNavi(),naviItemId,pathBeforeMainNavi,result,mapOfAllNaviItems);
+                    findNaviItemInSubNaviRecursively(site.getTopNavi(), naviItemId, pathBeforeMainNavi, result, mapOfAllNaviItems);
                 }
                 //TODO implement search of naviitem through site document
             }
@@ -816,4 +825,29 @@ public enum DocumentEnum {
             }
         }
     }
+
+    private static List<String> findUsagesOfLocalizationBundle(String bundleId) {
+        List<String> result = new ArrayList<String>();
+        try {
+            for (Box box : webDataService.getBoxs()) {
+                List<String> boxLocalizations = box.getLocalizations();
+
+                for (String boxLocalization : boxLocalizations) {
+                    if (boxLocalization.equals(bundleId)) {
+                        String responseMessage = String.format("</br><a href=\"aswebdataBoxEdit?pId=%s\"> Box [%s] </a> -> " +
+                                        "<a href=\"aswebdataBoxLocalizationsShow?ownerId=%s\"> Localizations </a>",
+                                box.getId(),
+                                box.getName(),
+                                box.getId());
+                        result.add(responseMessage);
+                    }
+                }
+            }
+        } catch (ASWebDataServiceException e) {
+            LOGGER.error("failed to use ASWebDataService.", e);
+        }
+
+        return result;
+    }
+
 }
