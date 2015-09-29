@@ -1606,8 +1606,8 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		PageBean ret = new PageBean();
 
 		ret.setTitle(page.getTitle());
-		ret.setKeywords(page.getKeywords());
-		ret.setDescription(page.getDescription());
+		ret.setKeywords(VariablesUtility.replaceVariables(req, page.getKeywords()));
+		ret.setDescription(VariablesUtility.replaceVariables(req, page.getDescription()));
 		ret.setName(page.getName());
 
 		//populate data  to request attributes - ### start
@@ -1930,8 +1930,8 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			Site site = siteDataService.getSite(template.getSite());
 			ret.setSubtitle(site.getSubtitle());
 			ret.setTitle(site.getTitle());
-			ret.setKeywords(site.getKeywords());
-			ret.setDescription(site.getDescription());
+			ret.setKeywords(VariablesUtility.replaceVariables(req, site.getKeywords()));
+			ret.setDescription(VariablesUtility.replaceVariables(req, site.getDescription()));
 			ret.setLanguageSelector(site.getLanguageselector());
 			if (site.getStartpage() != null && site.getStartpage().length() > 0)
 				ret.setLinkToStartPage(webDataService.getPagex(site.getStartpage()).getName() + HTML_SUFFIX);
