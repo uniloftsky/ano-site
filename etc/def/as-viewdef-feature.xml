@@ -15,7 +15,7 @@
 					<decorator name="editLink" />
 				</element>
                 <element type="field" name="enabled" comparable="true"/>
-                <element type="field" name="obsolete" comparable="false"/>
+                <element type="field" name="obsolete" comparable="true"/>
                 <element type="field" name="guards" comparable="true">
                     <decorator name="guards" />
                 </element>
