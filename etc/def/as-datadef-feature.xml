@@ -3,6 +3,7 @@
 	<document name="Feature">
 		<property type="string" name="name"/>
 		<property type="boolean" name="enabled" />
+        <property type="boolean" name="obsolete" />
 		<property type="text" name="description" />
         <property name="guards" type="list">
             <content>

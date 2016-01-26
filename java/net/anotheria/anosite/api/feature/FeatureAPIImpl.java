@@ -36,6 +36,11 @@ public class FeatureAPIImpl extends AbstractAPIImpl implements FeatureAPI{
 			if (!f.getEnabled())
 				return false;
 
+			/* if feature is marked as 'obsolete' and it is being used */
+			if (f.getObsolete()) {
+				log.warn("Feature " + f.getName() + " is being used, though it is marked as 'OBSOLETE'");
+			}
+
 			List<String> gIds = f.getGuards();
 			if (gIds==null || gIds.size()==0)
 				return true;
