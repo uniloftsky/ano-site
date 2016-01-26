@@ -199,8 +199,8 @@
 	</build>
 
 	<scm>
-		<url>svn:svn://svn.anotheria.net/opensource/ano-site/trunk</url>
-		<connection>scm:svn:svn://svn.anotheria.net/opensource/ano-site/trunk</connection>
-		<developerConnection>scm:svn:svn://svn.anotheria.net/opensource/ano-site/trunk</developerConnection>
+		<url>https://github.com/anotheria/ano-site</url>
+		<connection>scm:git:git@github.com:anotheria/ano-site.git</connection>
+		<developerConnection>scm:git:git@github.com:anotheria/ano-site.git</developerConnection>
 	</scm>
 </project>
