@@ -86,6 +86,7 @@ public final class CMSSelfTest {
 	}
 
 	private static void selfTestGuards(){
+		ensureGuardExists("DONTSHOW", "net.anotheria.anosite.guard.DisableTargetGuard");
 		ensureGuardExists("CMSLogedInGuard", "net.anotheria.anosite.guard.CMSLogedInGuard");
 		ensureGuardExists("CMSLoggedOut", "net.anotheria.anosite.guard.CMSLoggedOutGuard");
 		ensureGuardExists("InEditModeGuard", "net.anotheria.anosite.guard.InEditModeGuard");
