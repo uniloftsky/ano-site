@@ -1,6 +1,7 @@
 package net.anotheria.anosite.content.servlet;
 
 import net.anotheria.anodoc.data.NoSuchDocumentException;
+import net.anotheria.anodoc.util.context.ContextManager;
 import net.anotheria.anoplass.api.APICallContext;
 import net.anotheria.anoplass.api.APIFinder;
 import net.anotheria.anoplass.api.session.APISession;
@@ -72,6 +73,7 @@ import net.anotheria.anosite.shared.AnositeConfig;
 import net.anotheria.anosite.shared.InternalResponseCode;
 import net.anotheria.anosite.shared.presentation.servlet.BaseAnoSiteServlet;
 import net.anotheria.anosite.util.AnositeConstants;
+import static net.anotheria.anosite.util.AnositeConstants.SA_PAGE_NAME;
 import net.anotheria.anosite.wizard.api.WizardAPI;
 import net.anotheria.anosite.wizard.api.exception.WizardAPIException;
 import net.anotheria.anosite.wizard.handler.WizardHandler;
@@ -376,12 +378,11 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		boolean isWizardRequest = isRequestToResource(req, W_HTML_SUFFIX);
 
 		//initing Pagex if request was to it (trying to resolve page even if .html suffix not present)
-		Pagex page = isPageRequest || !isWizardRequest ? getPageByName(pageName) : null;
+		Pagex page = isPageRequest || !isWizardRequest ? resolvePageByName(pageName) : null;
 		//initing wizard if request was not to page
 		WizardDef wizard = page == null && isWizardRequest ? getWizardByName(pageName) : null;
 
 		boolean handleWizard = wizard != null;
-
 
 		//wizard initialization.
 		if (page == null && handleWizard) {
@@ -425,7 +426,23 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			}
 		}
 
-		//new check for https.
+        //set page name to session.
+        if (page != null) {
+            APICallContext.getCallContext().getCurrentSession().setAttribute(SA_PAGE_NAME, page.getName());
+        }
+
+        //does we need to redirect request to localized page name.
+        boolean redirectToLocalizedPage = page != null && !StringUtils.isEmpty(page.getLocalizedName()) && !page.getLocalizedName().equals(pageName);
+
+        if (redirectToLocalizedPage) {
+            String urlQuery = req.getQueryString();
+            urlQuery = urlQuery != null && urlQuery.length() > 0 ? "?" + urlQuery : "";
+            String pageUrl = page.getLocalizedName()+HTML_SUFFIX + urlQuery;
+            res.sendRedirect(pageUrl);
+            return;
+        }
+
+        //new check for https.
 		boolean secure = req.isSecure();
 		//ANOSITE-14, added config.httpsOnly.
 		boolean secureRequired = (page.getHttpsonly() && config.enforceHttps()) || (config.httpsOnly());
@@ -1433,7 +1450,9 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			// internal link to a page
 			if (item.getInternalLink().length() > 0) {
 				String pageId = item.getInternalLink();
-				String pageName = webDataService.getPagex(pageId).getName();
+				Pagex page = webDataService.getPagex(pageId);
+                String pageLocalizedName = page.getLocalizedName();
+                String pageName = StringUtils.isEmpty(pageLocalizedName) ? page.getName() : pageLocalizedName;
 				bean.setLink(pageName + HTML_SUFFIX);
 				if (extractPageName(req).equals(pageName))
 					bean.setSelected(true);
@@ -1609,6 +1628,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		ret.setKeywords(VariablesUtility.replaceVariables(req, page.getKeywords()));
 		ret.setDescription(VariablesUtility.replaceVariables(req, page.getDescription()));
 		ret.setName(page.getName());
+        ret.setLocalizedName(page.getLocalizedName());
 
 		//populate data  to request attributes - ### start
 		req.setAttribute(PageBean.PAGE_NAME_REQUEST_ATTR, page.getName());
@@ -1987,6 +2007,18 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		return extractArtifactName(req);
 	}
 
+    /**
+     * Trying to get page by localized name, if nothing found trying to find page by name.
+     *
+     * @param pageName {@link String} page name.
+     * @return {@link Pagex} with selected name.
+     * @throws ServletException on errors.
+     */
+    private Pagex resolvePageByName(String pageName) throws ServletException {
+        Pagex page = getPageByLocalizedName(pageName);
+        return page == null ? getPageByName(pageName) : page;
+    }
+
 	/**
 	 * Returns pagex object for the given name. Returns null if nothing found.
 	 *
@@ -2002,6 +2034,23 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		}
 		return null;
 	}
+
+    /**
+     * Returns pagex object for the given localized name. Returns null if nothing found.
+     *
+     * @param pageName string page name
+     * @return {@link Pagex} with selected name
+     * @throws ServletException on errors
+     */
+    private Pagex getPageByLocalizedName(String pageName) throws ServletException {
+        try {
+            String localizedNameProperty = "localizedName_" + ContextManager.getCallContext().getCurrentLanguage();
+            return webDataService.getPagexsByProperty(localizedNameProperty, pageName).get(0);
+        } catch (Exception e) {
+            //ignore ->
+        }
+        return null;
+    }
 
 
 	/**

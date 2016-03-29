@@ -41,6 +41,10 @@ public class PageBean {
 	 * Name of the page.
 	 */
 	private String name;
+    /**
+     * Localized name of the page.
+     */
+    private String localizedName;
 	/**
 	 * List of boxes in first column.
 	 */
@@ -111,7 +115,15 @@ public class PageBean {
 		this.name = name;
 	}
 
-	public void addBoxToColumn1(BoxBean aBox) {
+    public String getLocalizedName() {
+        return localizedName;
+    }
+
+    public void setLocalizedName(String localizedName) {
+        this.localizedName = localizedName;
+    }
+
+    public void addBoxToColumn1(BoxBean aBox) {
 		column1.add(aBox);
 	}
 
