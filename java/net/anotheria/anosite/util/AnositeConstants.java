@@ -40,6 +40,10 @@ public final class AnositeConstants {
 	 * Session attribute locale.
 	 */
 	public static final String SA_LOCALE = BEAN_PREFIX + SA_PREFIX + ".locale";
+    /**
+     * Session attribute page name.
+     */
+    public static final String SA_PAGE_NAME = BEAN_PREFIX + SA_PREFIX + ".pageName";
 	/**
 	 * Session attribute editMode flag.
 	 */
