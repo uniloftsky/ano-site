@@ -2031,7 +2031,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			return webDataService.getPagexsByProperty(PagexDocument.PROP_NAME, pageName).get(0);
 		} catch (Exception e) {
             if (LOGGER.isTraceEnabled()) {
-                LOGGER.trace("can't find page with name: '" + pageName + "' return null.", e);
+                LOGGER.trace("getPageByName("+pageName+")", e);
             }
 		}
 		return null;
@@ -2051,7 +2051,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
             return pages.isEmpty() ? null : pages.get(0);
         } catch (Exception e) {
             if (LOGGER.isTraceEnabled()) {
-                LOGGER.trace("can't find page with localized name: '" + pageName + "' return null.", e);
+                LOGGER.trace("getPageByLocalizedName("+pageName+")", e);
             }
         }
         return null;
