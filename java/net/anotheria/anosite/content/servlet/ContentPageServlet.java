@@ -2047,10 +2047,11 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
     private Pagex getPageByLocalizedName(String pageName) throws ServletException {
         try {
             String localizedNameProperty = "localizedName_" + ContextManager.getCallContext().getCurrentLanguage();
-            return webDataService.getPagexsByProperty(localizedNameProperty, pageName).get(0);
+            List<Pagex> pages = webDataService.getPagexsByProperty(localizedNameProperty, pageName);
+            return pages.isEmpty() ? null : pages.get(0);
         } catch (Exception e) {
             if (LOGGER.isTraceEnabled()) {
-                LOGGER.trace("can't find page with name: '" + pageName + "' return null.", e);
+                LOGGER.trace("can't find page with localized name: '" + pageName + "' return null.", e);
             }
         }
         return null;
