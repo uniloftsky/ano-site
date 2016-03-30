@@ -2030,7 +2030,9 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		try {
 			return webDataService.getPagexsByProperty(PagexDocument.PROP_NAME, pageName).get(0);
 		} catch (Exception e) {
-			//ignore -> 
+            if (LOGGER.isTraceEnabled()) {
+                LOGGER.trace("can't find page with name: '" + pageName + "' return null.", e);
+            }
 		}
 		return null;
 	}
@@ -2047,7 +2049,9 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
             String localizedNameProperty = "localizedName_" + ContextManager.getCallContext().getCurrentLanguage();
             return webDataService.getPagexsByProperty(localizedNameProperty, pageName).get(0);
         } catch (Exception e) {
-            //ignore ->
+            if (LOGGER.isTraceEnabled()) {
+                LOGGER.trace("can't find page with name: '" + pageName + "' return null.", e);
+            }
         }
         return null;
     }
