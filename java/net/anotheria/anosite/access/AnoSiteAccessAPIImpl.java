@@ -6,16 +6,20 @@ import net.anotheria.access.SOAttribute;
 import net.anotheria.access.SecurityObject;
 import net.anotheria.access.impl.PermissionCollection;
 import net.anotheria.access.impl.PermissionImpl;
+import net.anotheria.access.impl.SecurityBox;
 import net.anotheria.access.impl.StaticRole;
+import net.anotheria.access.storage.persistence.SecurityBoxPersistenceService;
 import net.anotheria.anoplass.api.APIException;
 import net.anotheria.anoplass.api.APIFinder;
 import net.anotheria.anoplass.api.APIInitException;
 import net.anotheria.anoplass.api.generic.login.LoginAPI;
+import net.anotheria.anoprise.dualcrud.CrudServiceException;
 import net.anotheria.anoprise.metafactory.MetaFactory;
 import net.anotheria.anoprise.metafactory.MetaFactoryException;
 import net.anotheria.anosite.access.constraint.ParametrizedConstraint;
 import net.anotheria.anosite.access.context.SecurityContextInitializer;
 import net.anotheria.anosite.gen.anoaccessapplicationdata.data.UserData;
+import net.anotheria.anosite.gen.anoaccessapplicationdata.service.AnoAccessApplicationDataServiceException;
 import net.anotheria.anosite.gen.anoaccessapplicationdata.service.IAnoAccessApplicationDataService;
 import net.anotheria.anosite.gen.anoaccessconfiguration.data.AccessOperation;
 import net.anotheria.anosite.gen.anoaccessconfiguration.data.Constraint;
@@ -33,6 +37,9 @@ import net.anotheria.anosite.gen.ascustomaction.service.IASCustomActionService;
 import net.anotheria.anosite.gen.assitedata.data.NaviItem;
 import net.anotheria.anosite.gen.assitedata.service.ASSiteDataServiceException;
 import net.anotheria.anosite.gen.assitedata.service.IASSiteDataService;
+import net.anotheria.anosite.gen.asuserdata.data.UserDef;
+import net.anotheria.anosite.gen.asuserdata.service.ASUserDataServiceException;
+import net.anotheria.anosite.gen.asuserdata.service.IASUserDataService;
 import net.anotheria.anosite.gen.aswebdata.data.Box;
 import net.anotheria.anosite.gen.aswebdata.data.Pagex;
 import net.anotheria.anosite.gen.aswebdata.service.ASWebDataServiceException;
@@ -104,6 +111,16 @@ public class AnoSiteAccessAPIImpl implements AnoSiteAccessAPI {
 	private IASWizardDataService wizardConfigurationPersistence;
 
 	/**
+	 * User data service.
+	 * */
+	private IASUserDataService userDataService;
+
+	/**
+	 * Security box service
+	 * */
+	private SecurityBoxPersistenceService securityBoxPersistenceService;
+
+	/**
 	 * {@link LoginAPI} instance.
 	 */
 	private LoginAPI loginAPI;
@@ -118,6 +135,8 @@ public class AnoSiteAccessAPIImpl implements AnoSiteAccessAPI {
 			siteDataService = MetaFactory.get(IASSiteDataService.class);
 			customActionsConfigurationPersistence = MetaFactory.get(IASCustomActionService.class);
 			wizardConfigurationPersistence = MetaFactory.get(IASWizardDataService.class);
+			userDataService = MetaFactory.get(IASUserDataService.class);
+			securityBoxPersistenceService = MetaFactory.get(SecurityBoxPersistenceService.class);
 		} catch (MetaFactoryException e) {
 			String message = LogMessageUtil.failMsg(e) + " Can't initialize required services.";
 			LOGGER.error(MarkerFactory.getMarker("FATAL"), message, e);
@@ -538,7 +557,63 @@ public class AnoSiteAccessAPIImpl implements AnoSiteAccessAPI {
 
 			// configuring access service with role and its permission collection
 			accessService.addPermissionCollection(permissionCollection);
+			configuredRole.setPermissionSetId(permissionCollection.getId());
 			accessService.addRole(configuredRole);
+		}
+
+		createSecureBoxes();
+	}
+
+	/**
+	 * Create secure boxes to store roles and permissions if they do not exists yet.
+	 * */
+	private void createSecureBoxes() {
+
+		List<UserData> userDatas = null;
+		SecurityBox securityBox = null;
+		UserDef user = null;
+
+		try {
+			userDatas = accessApplicationDataService.getUserDatas();
+		} catch (AnoAccessApplicationDataServiceException e) {
+			LOGGER.error("Error occurred while getting UserDef by id", e);
+			throw new RuntimeException("Error occurred while getting UserDef by id");
+		}
+
+		for (UserData userData : userDatas) {
+
+			try {
+				user = userDataService.getUserDef(userData.getUserId());
+			} catch (ASUserDataServiceException e) {
+				LOGGER.error("Error occurred while getting UserDef by id", e);
+				throw new RuntimeException("Error occurred while getting UserDef by id");
+			}
+
+			try {
+				securityBox = securityBoxPersistenceService.read(user.getLogin());
+			} catch (CrudServiceException e) {
+				LOGGER.warn("SecurityBox with id=" + user.getLogin() + " not found. Creating new one");
+			}
+
+			if (securityBox == null) {
+				securityBox = new SecurityBox(user.getLogin());
+			}
+
+			for (String roleId : userData.getRoles()) {
+
+				if (securityBox.hasRole(roleId)) {
+					continue;
+				}
+
+				net.anotheria.access.Role role = accessService.getRole(roleId);
+
+				try {
+					accessService.grantRole(new SecurityObject(user.getLogin()), role.getName());
+				} catch (AccessServiceException e) {
+					LOGGER.error("Error occurred while granting role " + role.getName() + " to " + user.getLogin(), e);
+					throw new RuntimeException();
+				}
+			}
 		}
 	}
 
