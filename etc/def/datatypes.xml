@@ -126,6 +126,7 @@
 		<element>print</element>
 		<element>braille</element>
 		<element>aural</element>
+		<element>none</element>
 	</enumeration>
 	
 	<enumeration name="LinkTypes">

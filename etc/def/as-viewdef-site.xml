@@ -244,6 +244,7 @@
 					<element type="field" name="hreflang" comparable="true"/>
 					<element type="field" name="charset" comparable="true"/>
 					<element type="field" name="browserFiltering" comparable="true"/>
+					<element type="field" name="onload" comarable="true"/>
 	        		<element type="function" name="edit"/>
 	        		<element type="function" name="duplicate"/>
 	        		<element type="function" name="deleteWithConfirmation"/>
@@ -265,6 +266,7 @@
 						<element type="field" name="hreflang"/>  
 						<element type="field" name="charset"/>
 						<element type="field" name="browserFiltering"/>
+						<element type="field" name="onload"/>
                         <element type="field" name="guards"/>
 						<element type="empty"/>
 						<element type="list">
