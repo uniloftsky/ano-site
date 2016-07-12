@@ -114,6 +114,7 @@
 		<element>Redirect</element>
 	</enumeration>
 	
+	
 	<!-- HTTP DTD types -->
 	
 	<enumeration name="MediaDesc">
