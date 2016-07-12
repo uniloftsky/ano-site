@@ -1845,6 +1845,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			bean.setCharset(item.getCharset());
 			bean.setHreflang(item.getHreflang());
 			bean.setBrowserFiltering(item.getBrowserFiltering());
+			bean.setOnload(item.getOnload());
 			ret.add(bean);
 		}
 		return ret;
