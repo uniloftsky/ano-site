@@ -88,6 +88,7 @@
 		<property name="charset" type="string"/>
 		<property name="hreflang" type="string"/>
 		<property name="browserFiltering" type="string"/>
+		<property name="onload" type="string"/>
         <property name="guards" type="list">
             <content>
                 <link name="guard" type="single" target="ASFederatedData.GuardDef"/>

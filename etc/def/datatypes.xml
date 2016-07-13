@@ -5,7 +5,7 @@
 		<element>Forward</element>
 		<element>none</element>
 	</enumeration>
-	
+
 	<enumeration name="Priority">
 		<element>P1</element>
 		<element>P2</element>
@@ -108,14 +108,14 @@
 		<element>P99</element>
 		<element>P100</element>
 	</enumeration>
-	
+
 	<enumeration name="PageAliasType">
 		<element>Mask</element>
 		<element>Redirect</element>
 	</enumeration>
-	
+
 	<!-- HTTP DTD types -->
-	
+
 	<enumeration name="MediaDesc">
 		<element>all</element>
 		<element>screen</element>
@@ -126,8 +126,10 @@
 		<element>print</element>
 		<element>braille</element>
 		<element>aural</element>
+		
+		<element>none</element>
 	</enumeration>
-	
+
 	<enumeration name="LinkTypes">
 		<element>none</element>
 		<element>alternate</element>
@@ -146,10 +148,10 @@
 		<element>help</element>
 		<element>bookmark</element>
 	</enumeration>
-	
+
 	<enumeration name="Allowance">
 		<element>Restricted</element>
 		<element>Allowed</element>
 	</enumeration>
-	
+
 </datatypes>

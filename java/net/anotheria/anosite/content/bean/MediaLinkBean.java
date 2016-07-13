@@ -12,6 +12,7 @@ public class MediaLinkBean {
 	private String charset;
 	private String hreflang;
 	private String browserFiltering;
+	private String onload;
 
 	public MediaLinkBean() {
 	}
@@ -98,6 +99,14 @@ public class MediaLinkBean {
 
 	public void setBrowserFiltering(final String aBrowserFiltering) {
 		this.browserFiltering = aBrowserFiltering;
+	}
+
+	public String getOnload() {
+		return onload;
+	}
+
+	public void setOnload(String aOnload) {
+		this.onload = aOnload;
 	}
 
 	@Override
