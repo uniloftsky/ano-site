@@ -40,6 +40,10 @@ public class CmsFileTag extends AbstractResourceTag {
 		return servletMapping;
 	}
 
+	@Override
+	protected String getAltFromDocument(DataObject document) {
+		throw new RuntimeException(getResultPropertyName() + " not supported for CmsFileTag! Refer to implementation Please!");
+	}
 
 	@Override
 	protected DataObject getDocument() throws JspException {
