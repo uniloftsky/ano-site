@@ -33,6 +33,19 @@ public class CmsImageTag extends AbstractResourceTag {
 		return Image.class.cast(document).getAlias();
 	}
 
+	@Override
+	protected String getAltFromDocument(DataObject document) {
+		if(!(document instanceof Image)){
+			return "Image " + getSelectType().getValue() + "[" + getPropertyValue() + "] ::: missing";
+		}
+		String altValue = Image.class.cast(document).getAlt();
+		if(altValue.isEmpty()){
+			return Image.class.cast(document).getTitle();
+		}
+		else {
+			return altValue;
+		}
+	}
 
 	@Override
 	protected String getResourcePath() {

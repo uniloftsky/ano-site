@@ -70,9 +70,15 @@ public class ImageProcessor implements VariablesProcessor {
 			if (!req.getContextPath().isEmpty())
 				filePath = req.getContextPath() + filePath;
 
+			String alt = img.getAlt();
 			String title = img.getTitle();
 
-			return "<img src=\"" + filePath + "\" alt=\"" + title + "\" border=\"0\"/>";
+			if(alt.isEmpty()){
+				return "<img src=\"" + filePath + "\" alt=\"" + title + "\" border=\"0\"/>";
+			}
+			else {
+				return "<img src=\"" + filePath + "\" alt=\"" + alt + "\" border=\"0\"/>";
+			}
 		} catch (ASResourceDataServiceException e) {
 			LOG.error("ASResourceDataServiceException failed", e);
 			return null;

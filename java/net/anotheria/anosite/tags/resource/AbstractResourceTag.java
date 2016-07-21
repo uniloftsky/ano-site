@@ -171,6 +171,9 @@ public abstract class AbstractResourceTag extends BaseTagSupport {
 			case DOCUMENT_ALIAS:
 				return getAliasFromDocument(getDocument());
 
+			case DOCUMENT_ALT:
+				return getAltFromDocument(getDocument());
+
 			case FILE_OR_IMAGE:
 				StringBuilder buf = new StringBuilder();
 				buf.append(getResourcePath()).append(getSelectType().getValue()).append(SEPARATOR).append(getPropertyValue());
@@ -198,6 +201,16 @@ public abstract class AbstractResourceTag extends BaseTagSupport {
 	 * @return string property
 	 */
 	protected abstract String getAliasFromDocument(DataObject document);
+
+	/**
+	 * Returns alt attribute value - if available.
+	 *
+	 * @param document
+	 * 		{@link DataObject} instance
+	 * @return
+	 * 		{@code String} property
+	 */
+	protected abstract String getAltFromDocument(DataObject document);
 
 
 	/**
@@ -229,6 +242,10 @@ public abstract class AbstractResourceTag extends BaseTagSupport {
 		 * Alias of  document! Can be applied  to CMS_Image  only!
 		 */
 		DOCUMENT_ALIAS("alias"),
+		/**
+		 * Alt attribute of document. Can be applied  to CMS_Image  only!
+		 */
+		DOCUMENT_ALT("alt"),
 		/**
 		 * File or  image property. (Depends on document instance).
 		 */
