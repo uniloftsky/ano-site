@@ -60,6 +60,9 @@ public class VariablesUtility {
         //adding TextResourceProcessor
         defaultProcessors.put(TextResourceProcessor.PREFIX, new TextResourceProcessor());
 
+		//adding static resource server processor
+		defaultProcessors.put(StaticResourceServerNameProcessor.PREFIX, new StaticResourceServerNameProcessor());
+
 	}
 	
 
