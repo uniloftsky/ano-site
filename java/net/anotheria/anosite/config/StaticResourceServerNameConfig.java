@@ -10,62 +10,62 @@ import org.slf4j.LoggerFactory;
 import java.io.Serializable;
 
 /**
- * Selects the static resource server according to the environment
+ * Selects the static resource server according to the environment.
  *
  * @author ykalapusha
  */
 @ConfigureMe(name = "static-resource-server-config")
-public final class StaticResourceServerNameConfig implements Serializable{
+public final class StaticResourceServerNameConfig implements Serializable {
 
     /**
-     * {@link Logger} instance
+     * {@link Logger} instance.
      */
     @DontConfigure
     private static final Logger LOGGER = LoggerFactory.getLogger(StaticResourceServerNameConfig.class);
 
     /**
-     * Synchronization lock
+     * Synchronization lock.
      */
     @DontConfigure
     private static final Object LOCK = new Object();
 
     /**
-     * {@link StaticResourceServerNameConfig} instance
+     * {@link StaticResourceServerNameConfig} instance.
      */
     @DontConfigure
     private static volatile StaticResourceServerNameConfig instance;
 
     /**
-     * name of the static resource server
+     * Name of the static resource server.
      */
     @Configure
     private String nameResourceServer;
 
     /**
-     * Private constructor
+     * Private constructor.
      */
-    private StaticResourceServerNameConfig(){
+    private StaticResourceServerNameConfig() {
         try {
             ConfigurationManager.INSTANCE.configure(this);
-        }catch (final IllegalArgumentException e){
+        } catch (final IllegalArgumentException e) {
             LOGGER.warn("StaticResourceServerNameConfig() configuration fail [" + e.getMessage() + "]");
         }
 
-        if(LOGGER.isDebugEnabled()){
+        if (LOGGER.isDebugEnabled()) {
             LOGGER.warn("StaticResourceServerNameConfig() configured with [" + this.toString() + "]");
         }
     }
 
     /**
-     * Get configuration instance
+     * Get configuration instance.
      *
      * @return
      *      {@link StaticResourceServerNameConfig} instance
      */
-    public static StaticResourceServerNameConfig getInstance(){
-        if(instance == null){
-            synchronized (LOCK){
-                if(instance == null){
+    public static StaticResourceServerNameConfig getInstance() {
+        if (instance == null) {
+            synchronized (LOCK) {
+                if(instance == null) {
                     instance = new StaticResourceServerNameConfig();
                 }
             }
@@ -83,8 +83,8 @@ public final class StaticResourceServerNameConfig implements Serializable{
 
     @Override
     public String toString() {
-        return "StaticResourceServerNameConfig{" +
-                "nameResourceServer='" + nameResourceServer + '\'' +
-                '}';
+        return "StaticResourceServerNameConfig{"
+                + "nameResourceServer='" + nameResourceServer + '\''
+                + '}';
     }
 }
