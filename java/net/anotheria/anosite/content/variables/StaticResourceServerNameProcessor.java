@@ -22,7 +22,7 @@ public class StaticResourceServerNameProcessor implements VariablesProcessor {
     /**
      * Processor prefix.
      */
-    public static final String PREFIX = "tcl";
+    public static final String PREFIX = "static";
 
     @Override
     public String replace(String prefix, String variable, String defValue, HttpServletRequest req) {
