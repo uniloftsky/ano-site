@@ -316,10 +316,31 @@ function lightbox(text, href) {
 ;
 
 //close lightbox
-$('.black_bg, .close_box, #cancel_button').live('click', function() {
+$('.black_bg, .close_box, #cancel_button, #notification_cancel_button').live('click', function() {
 	$('.lightbox').hide();
 	return false;
 });
+
+//open notification Box
+function notification(text, href) {
+	var buttons = '<div class="overlay_buttons"><a href="#" class="button" id="notification_cancel_button"><span>Ok</span></a></div>';
+	var el = $('.lightbox');
+	el.show();
+	text = text + buttons;
+	el.find('.box_in .text_here').html(text);
+	$('.lightbox .box').css('width', 'auto');
+	$('.lightbox .box').width($('.lightbox .box_in').width());
+	var wid = el.find('.box').width();
+	var box = el.find('.box');
+	var hig = el.find('.box').height();
+	box.css('left', '50%');
+	box.css('margin-left', -wid / 2);
+	//box.css('top', link.offset().top);
+	box.css('top', '50%');
+	box.css('margin-top', -hig / 2);
+	box.css('position', 'fixed');
+	return false;
+}
 
 $('.lang_s_open .button').live('click',
 		function() {
