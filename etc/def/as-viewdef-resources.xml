@@ -61,6 +61,7 @@
 					<element type="function" name="lock"/>
 	        		<element type="function" name="unlock"/>
 					<element type="function" name="showUsages"/>
+					<element type="function" name="transfer" />
 	      		</elements>
 	      		<dialog name="Edit" title="Edit LocalizationBundle">
         			<elements>
