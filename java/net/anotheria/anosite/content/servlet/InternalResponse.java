@@ -38,4 +38,9 @@ public class InternalResponse {
 	public boolean canContinue(){
 		return code == InternalResponseCode.CONTINUE || code == InternalResponseCode.CONTINUE_AND_REDIRECT || code == InternalResponseCode.ERROR_AND_CONTINUE; 
 	}
+
+	@Override
+	public String toString(){
+		return "code: "+code;
+	}
 }
