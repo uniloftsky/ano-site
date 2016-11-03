@@ -14,6 +14,7 @@ import net.anotheria.anoplass.api.APIFinder;
 import net.anotheria.anoplass.api.APIInitException;
 import net.anotheria.anoplass.api.generic.login.LoginAPI;
 import net.anotheria.anoprise.dualcrud.CrudServiceException;
+import net.anotheria.anoprise.dualcrud.SaveableID;
 import net.anotheria.anoprise.metafactory.MetaFactory;
 import net.anotheria.anoprise.metafactory.MetaFactoryException;
 import net.anotheria.anosite.access.constraint.ParametrizedConstraint;
@@ -590,7 +591,10 @@ public class AnoSiteAccessAPIImpl implements AnoSiteAccessAPI {
 			}
 
 			try {
-				securityBox = securityBoxPersistenceService.read(user.getLogin());
+				SaveableID saveableID = new SaveableID();
+				saveableID.setSaveableId(user.getLogin());
+				saveableID.setOwnerId(user.getLogin());
+				securityBox = securityBoxPersistenceService.read(saveableID);
 			} catch (CrudServiceException e) {
 				LOGGER.warn("SecurityBox with id=" + user.getLogin() + " not found. Creating new one");
 			}
