@@ -191,7 +191,7 @@
 	       				<element type="empty"/>
 		       			<element type="field" name="id" readonly="true"/>
 		      			<element type="field" name="name" /> 
-		      			<element type="field" name="layout" /> 
+		      			<element type="field" name="layout" showLink="true" />
 		      			<element type="field" name="site" /> 
 		      			<element type="field" name="mediaLinks" />
 		      			<element type="field" name="scripts" />
