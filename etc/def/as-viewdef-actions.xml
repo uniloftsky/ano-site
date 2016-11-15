@@ -29,7 +29,7 @@
 					<element type="field" name="id" readonly="true" />
 					<element type="field" name="name" />
 					<element type="empty" />
-					<element type="field" name="action" showLink="true"/>
+					<element type="field" name="action"/>
 					<element type="field" name="url" />
 					<element type="field" name="page" showLink="true"/>
 					<element type="empty" />
