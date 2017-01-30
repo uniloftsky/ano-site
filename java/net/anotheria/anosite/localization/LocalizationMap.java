@@ -3,7 +3,8 @@ package net.anotheria.anosite.localization;
 import net.anotheria.anoplass.api.APICallContext;
 import net.anotheria.anosite.gen.asresourcedata.data.LocalizationBundle;
 import net.anotheria.util.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,10 +20,10 @@ import java.util.Map.Entry;
 
 public class LocalizationMap {
 
-    /**
-     * {@code log4j} {@link Logger}.
-     */
-    private static final Logger LOGGER = Logger.getLogger(LocalizationMap.class);
+	/**
+	 * Logger.
+	 */
+    private static final Logger LOGGER = LoggerFactory.getLogger(LocalizationMap.class);
 
 	/**
 	 * The name under which the localization map is stored in the call context
