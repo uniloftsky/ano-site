@@ -7,6 +7,7 @@ import net.anotheria.access.SecurityObject;
 import net.anotheria.access.impl.SecurityBox;
 import net.anotheria.access.storage.persistence.SecurityBoxPersistenceService;
 import net.anotheria.anoprise.dualcrud.CrudServiceException;
+import net.anotheria.anoprise.dualcrud.SaveableID;
 import net.anotheria.anoprise.metafactory.MetaFactory;
 import net.anotheria.anoprise.metafactory.MetaFactoryException;
 import net.anotheria.anosite.gen.anoaccessapplicationdata.data.UserData;
@@ -65,7 +66,11 @@ public class UserAccessGrantListener implements IServiceListener {
             }
 
             try {
-                securityBox = securityBoxPersistenceService.read(user.getLogin());
+                SaveableID saveableID = new SaveableID();
+                saveableID.setSaveableId(user.getLogin());
+                saveableID.setOwnerId(user.getLogin());
+
+                securityBox = securityBoxPersistenceService.read(saveableID);
             } catch (CrudServiceException e) {
                 LOGGER.warn("SecurityBox with id=" + user.getLogin() + " not found. Creating new one");
             }

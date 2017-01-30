@@ -78,11 +78,27 @@ public class LocalizationMap {
 		for (String l : lines) {
 			if(StringUtils.isEmpty(l) || l.trim().startsWith("#"))
 				continue;
-			String[] message = StringUtils.tokenize(l, '=');
-			if (message.length != 2){
-                LOGGER.warn("Invalid format of LocalizationBundel with id " + bundle.getId() + " in line: <" + l + ">. Expected line format: <key=message>");
-                continue;
-            }
+
+			String[] message = null;
+
+			if (l.contains("\\=")) {
+				String escapedString = l.replace("\\=", "&#61;");
+				message = StringUtils.tokenize(escapedString, '=');
+
+				if (message.length != 2){
+					LOGGER.warn("Invalid format of LocalizationBundle with id " + bundle.getId() + " in line: <" + l + ">. Expected line format: <key=message>");
+					continue;
+				}
+
+				message[1] = message[1].replace("&#61;", "=");
+			} else {
+				message = StringUtils.tokenize(l, '=');
+				if (message.length != 2){
+					LOGGER.warn("Invalid format of LocalizationBundle with id " + bundle.getId() + " in line: <" + l + ">. Expected line format: <key=message>");
+					continue;
+				}
+			}
+
 			localizationBundles.put(getPrivateKey(scope, message[0]), message[1]);
 		}
 		

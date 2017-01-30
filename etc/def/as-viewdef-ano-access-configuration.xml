@@ -112,7 +112,7 @@
 					<element type="empty" />
 					<element type="field" name="id" readonly="true" />
 					<element type="field" name="name" />
-					<element type="field" name="accessOperation" />
+					<element type="field" name="accessOperation" showLink="true"/>
 					<element type="field" name="priority" />
 					<element type="field" name="deny" />
 					<element type="field" name="constraints" />

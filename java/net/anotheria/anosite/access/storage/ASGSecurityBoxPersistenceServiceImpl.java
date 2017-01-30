@@ -7,6 +7,7 @@ import net.anotheria.access.storage.persistence.SecurityBoxPersistenceService;
 import net.anotheria.anoprise.dualcrud.CrudServiceException;
 import net.anotheria.anoprise.dualcrud.ItemNotFoundException;
 import net.anotheria.anoprise.dualcrud.Query;
+import net.anotheria.anoprise.dualcrud.SaveableID;
 import net.anotheria.anoprise.metafactory.MetaFactory;
 import net.anotheria.anoprise.metafactory.MetaFactoryException;
 import net.anotheria.anosite.gen.anoaccessapplicationdata.data.UserData;
@@ -58,23 +59,23 @@ public class ASGSecurityBoxPersistenceServiceImpl implements SecurityBoxPersiste
 	}
 
 	@Override
-	public SecurityBox read(final String boxOwner) throws CrudServiceException {
+	public SecurityBox read(final SaveableID boxOwner) throws CrudServiceException {
 		if (boxOwner == null)
 			throw new IllegalArgumentException("boxOwner argument is null");
 
 		try {
 			SortType sorting = new SortType(UserDataSortType.SORT_BY_ID, UserDataSortType.DESC);
-			List<UserData> resultFromPersistence = persistence.getUserDatasByProperty(UserData.PROP_USER_ID, boxOwner, sorting);
+			List<UserData> resultFromPersistence = persistence.getUserDatasByProperty(UserData.PROP_USER_ID, boxOwner.getSaveableId(), sorting);
 
 			// if no box data for given owner
 			if (resultFromPersistence == null || resultFromPersistence.isEmpty())
-				throw new ItemNotFoundException(boxOwner);
+				throw new ItemNotFoundException(boxOwner.getSaveableId());
 
 			// fixing not consistent data
 			if (resultFromPersistence.size() > 1) {
 				for (UserData toRemove : resultFromPersistence.subList(1, resultFromPersistence.size())) {
 					try {
-						LOGGER.warn("Removing not used data[" + toRemove + "] for box owner[" + boxOwner + "]");
+						LOGGER.warn("Removing not used data[" + toRemove + "] for box owner[" + boxOwner.getSaveableId() + "]");
 						persistence.deleteUserData(toRemove);
 					} catch (AnoAccessApplicationDataServiceException e) {
 						LOGGER.warn("Removing fail and ignored.", e);
@@ -98,7 +99,7 @@ public class ASGSecurityBoxPersistenceServiceImpl implements SecurityBoxPersiste
 
 			return result;
 		} catch (AnoAccessApplicationDataServiceException e) {
-			String message = LogMessageUtil.failMsg(e, boxOwner);
+			String message = LogMessageUtil.failMsg(e, boxOwner.getSaveableId());
 			LOGGER.error(message, e);
 			throw new CrudServiceException(message, e);
 		}
