@@ -18,7 +18,12 @@
 		<property type="string" name="senderName" multilingual="true"/>
 		<property type="string" name="subject" multilingual="true"/>
 		<property type="text" name="message" multilingual="true"/>
-		<property type="text" name="plainMessage" multilingual="true"/> 
+		<property type="text" name="plainMessage" multilingual="true"/>
+		<property name="localizations" type="list">
+			<content>
+				<link name="guard" type="single" target="ASResourceData.LocalizationBundle"/>
+			</content>
+		</property>
 	</document>
 	<document name="Image">
 		<property name="name" type="string"/>
