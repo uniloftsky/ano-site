@@ -313,7 +313,33 @@ function lightbox(text, href) {
 	box.css('position', 'fixed');
 	return false;
 }
-;
+
+//open lightbox for transfer function
+function lightboxTransfer(action, document, id){
+	var onclickFunc = '$.post(\'' + action +'\', {pId:\'' + id +'\' }, function (response) {' +
+    ' if (response.errors != undefined && response.errors.length != 0) {' +
+        'notification(response.errors.error);' +
+    '} else {location.reload(true); }})';
+
+	var text = 'Are you sure you want to transfer to prod ' + document + ' with id: ' + id +'?';
+    var buttons = '<div class="overlay_buttons"><a href="#" onclick="'+ onclickFunc+ '" class="button"  id="ok_button"><span>OK</span></a><a href="#" class="button" id="cancel_button"><span>Cancel</span></a></div>';
+    var el = $('.lightbox');
+    el.show();
+    text = text + buttons;
+    el.find('.box_in .text_here').html(text);
+    $('.lightbox .box').css('width', 'auto');
+    $('.lightbox .box').width($('.lightbox .box_in').width());
+    var wid = el.find('.box').width();
+    var box = el.find('.box');
+    var hig = el.find('.box').height();
+    box.css('left', '50%');
+    box.css('margin-left', -wid / 2);
+    //box.css('top', link.offset().top);
+    box.css('top', '50%');
+    box.css('margin-top', -hig / 2);
+    box.css('position', 'fixed');
+    return false;
+}
 
 //close lightbox
 $('.black_bg, .close_box, #cancel_button, #notification_cancel_button').live('click', function() {
