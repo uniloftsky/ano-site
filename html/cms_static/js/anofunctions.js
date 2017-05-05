@@ -322,6 +322,7 @@ function lightboxTransfer(action, document, id){
     '} else {location.reload(true); }})';
 
 	var text = 'Are you sure you want to transfer to prod ' + document + ' with id: ' + id +'?';
+    var loadingText = 'Transferring ' + document + ' with id ' + id + ' ...';
     var buttons = '<div class="overlay_buttons"><a href="#" onclick="'+ onclickFunc+ '" class="button"  id="ok_button"><span>OK</span></a><a href="#" class="button" id="cancel_button"><span>Cancel</span></a></div>';
     var el = $('.lightbox');
     el.show();
@@ -338,6 +339,12 @@ function lightboxTransfer(action, document, id){
     box.css('top', '50%');
     box.css('margin-top', -hig / 2);
     box.css('position', 'fixed');
+
+    $('#ok_button', el).on('click', function () {
+        el.find('.overlay_buttons').hide();
+        var loading = '<div class="loading-transfer"></div>';
+        el.find('.box_in .text_here').html(loadingText + loading);
+    });
     return false;
 }
 
