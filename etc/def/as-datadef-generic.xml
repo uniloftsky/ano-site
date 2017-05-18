@@ -11,6 +11,12 @@
 	<document name="GenericGuardDef">
 		<property name="name" type="string"/>
 		<property name="clazz" type="string"/>
+		<property name="parameter1" type="string"/>
+		<property name="parameter2" type="string"/>
+		<property name="parameter3" type="string"/>
+		<property name="parameter4" type="string"/>
+		<property name="parameter5" type="string"/>
+		<property name="description" type="text"/>
 	</document>
   </module>
   <module name="ASCustomData">
@@ -24,6 +30,12 @@
 		<property name="clazz" type="string"/>
 	</document>
 	<document name="CustomGuardDef">
+		<property name="parameter1" type="string"/>
+		<property name="parameter2" type="string"/>
+		<property name="parameter3" type="string"/>
+		<property name="parameter4" type="string"/>
+		<property name="parameter5" type="string"/>
+		<property name="description" type="text"/>
 		<property name="name" type="string"/>
 		<property name="clazz" type="string"/>
 	</document>
@@ -49,5 +61,11 @@
 	<document name="GuardDef">
 		<property name="name" type="string"/>
 		<property name="clazz" type="string"/>
+		<property name="parameter1" type="string"/>
+		<property name="parameter2" type="string"/>
+		<property name="parameter3" type="string"/>
+		<property name="parameter4" type="string"/>
+		<property name="parameter5" type="string"/>
+		<property name="description" type="text"/>
 	</document>
   </module>
