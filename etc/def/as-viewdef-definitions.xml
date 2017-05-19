@@ -106,7 +106,13 @@
 	       				<element type="empty"/>
 		       			<element type="field" name="id" readonly="true"/>
 		      			<element type="field" name="name" /> 
-		      			<element type="field" name="clazz" /> 
+		      			<element type="field" name="clazz" />
+						<element type="field" name="parameter1"/>
+						<element type="field" name="parameter2"/>
+						<element type="field" name="parameter3"/>
+						<element type="field" name="parameter4"/>
+						<element type="field" name="parameter5"/>
+						<element type="field" name="description"/>
 						<element type="empty"/>
 						<element type="list">
 							<element type="function" name="updateAndClose"/>
@@ -227,7 +233,13 @@
 	       				<element type="empty"/>
 		       			<element type="field" name="id" readonly="true"/>
 		      			<element type="field" name="name" /> 
-		      			<element type="field" name="clazz" /> 
+		      			<element type="field" name="clazz" />
+						<element type="field" name="parameter1"/>
+						<element type="field" name="parameter2"/>
+						<element type="field" name="parameter3"/>
+						<element type="field" name="parameter4"/>
+						<element type="field" name="parameter5"/>
+						<element type="field" name="description"/>
 						<element type="empty"/>
 						<element type="list">
 							<element type="function" name="updateAndClose"/>
@@ -277,7 +289,13 @@
 					<element type="field" name="id" comparable="true">
 					</element>
 					<element type="field" name="name" comparable="default"/> 
-					<element type="field" name="clazz" comparable="true"/> 
+					<element type="field" name="clazz" comparable="true"/>
+					<element type="field" name="parameter1"/>
+					<element type="field" name="parameter2"/>
+					<element type="field" name="parameter3"/>
+					<element type="field" name="parameter4"/>
+					<element type="field" name="parameter5"/>
+					<element type="field" name="description"/>
 	        		<element type="function" name="deleteWithConfirmation"/>
 	      		</elements>
 	    	</section>
