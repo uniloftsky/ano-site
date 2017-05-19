@@ -13,3 +13,24 @@
 		<link name="accessOperation" type="single" target="AnoAccessConfiguration.AccessOperation" />
 	</document>
   </module>
+
+  <module name="ASExperiment">
+      <listener class="net.anotheria.anosite.cms.listener.CRUDLogListener"/>
+      <document name="Experiment">
+          <property name="name" type="string"/>
+          <property name="active" type="boolean"/>
+          <property name="distribution" type="enumeration" enumeration="ExperimentDistribution"/>
+          <property name="description" type="text"/>
+
+          <property name="distribution1" type="string"/>
+          <property name="distribution2" type="string"/>
+          <property name="distribution3" type="string"/>
+          <property name="distribution4" type="string"/>
+          <property name="distribution5" type="string"/>
+          <property name="distribution6" type="string"/>
+          <property name="distribution7" type="string"/>
+          <property name="distribution8" type="string"/>
+          <property name="distribution9" type="string"/>
+          <property name="distribution10" type="string"/>
+      </document>
+  </module>

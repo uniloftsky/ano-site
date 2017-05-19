@@ -154,4 +154,11 @@
 		<element>Allowed</element>
 	</enumeration>
 
+	<enumeration name="ExperimentDistribution">
+		<element>ODDEVEN</element>
+		<element>THIRD</element>
+		<element>QUARTER</element>
+		<element>CUSTOM</element>
+	</enumeration>
+
 </datatypes>
