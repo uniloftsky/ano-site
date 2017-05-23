@@ -22,15 +22,15 @@
           <property name="distribution" type="enumeration" enumeration="ExperimentDistribution"/>
           <property name="description" type="text"/>
 
-          <property name="distribution1" type="string"/>
-          <property name="distribution2" type="string"/>
-          <property name="distribution3" type="string"/>
-          <property name="distribution4" type="string"/>
-          <property name="distribution5" type="string"/>
-          <property name="distribution6" type="string"/>
-          <property name="distribution7" type="string"/>
-          <property name="distribution8" type="string"/>
-          <property name="distribution9" type="string"/>
-          <property name="distribution10" type="string"/>
+          <property name="variant1" type="string"/>
+          <property name="variant2" type="string"/>
+          <property name="variant3" type="string"/>
+          <property name="variant4" type="string"/>
+          <property name="variant5" type="string"/>
+          <property name="variant6" type="string"/>
+          <property name="variant7" type="string"/>
+          <property name="variant8" type="string"/>
+          <property name="variant9" type="string"/>
+          <property name="variant10" type="string"/>
       </document>
   </module>

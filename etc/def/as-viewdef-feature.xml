@@ -70,16 +70,16 @@
                     <element type="field" name="active" />
                     <element type="field" name="distribution"/>
                     <element type="field" name="description"/>
-                    <element type="field" name="distribution1"/>
-                    <element type="field" name="distribution2"/>
-                    <element type="field" name="distribution3"/>
-                    <element type="field" name="distribution4"/>
-                    <element type="field" name="distribution5"/>
-                    <element type="field" name="distribution6"/>
-                    <element type="field" name="distribution7"/>
-                    <element type="field" name="distribution8"/>
-                    <element type="field" name="distribution9"/>
-                    <element type="field" name="distribution10"/>
+                    <element type="field" name="variant1"/>
+                    <element type="field" name="variant2"/>
+                    <element type="field" name="variant3"/>
+                    <element type="field" name="variant4"/>
+                    <element type="field" name="variant5"/>
+                    <element type="field" name="variant6"/>
+                    <element type="field" name="variant7"/>
+                    <element type="field" name="variant8"/>
+                    <element type="field" name="variant9"/>
+                    <element type="field" name="variant10"/>
 
                     <element type="list">
                         <element type="function" name="updateAndClose" />
