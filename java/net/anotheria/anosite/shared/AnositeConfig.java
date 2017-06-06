@@ -4,6 +4,9 @@ import org.configureme.ConfigurationManager;
 import org.configureme.annotations.Configure;
 import org.configureme.annotations.ConfigureMe;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @ConfigureMe
 public class AnositeConfig{
 	private static AnositeConfig instance = new AnositeConfig();
@@ -12,6 +15,7 @@ public class AnositeConfig{
 	@Configure private boolean enforceHttp = true;
 	@Configure private boolean verbose = false;
 	@Configure private boolean httpsOnly = false;
+	@Configure private String[] systemsList = null;
 	
 	public static AnositeConfig getInstance(){ return instance; }
 		
@@ -45,5 +49,13 @@ public class AnositeConfig{
 	
 	public void setEnforceHttp(boolean aValue){
 		enforceHttp = aValue;
+	}
+
+	public String[] getSystemsList() {
+		return systemsList;
+	}
+
+	public void setSystemsList(String[] systemList) {
+		this.systemsList = systemList;
 	}
 }
