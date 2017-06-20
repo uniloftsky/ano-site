@@ -1,4 +1,4 @@
-<view name="Features" title="Features" requiredroles="admin,developer,editor">
+<view name="Features" title="Features">
 	<sections>
 		<!-- Section Page -->
 		<section title="Features" type="module">

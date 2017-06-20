@@ -1,4 +1,4 @@
-	<view name="Definitions" title="Definitions" requiredroles="admin,developer">
+	<view name="Definitions" title="Definitions">
 		<sections>
 			<section title="Generic BoxType" type="module">
 				<module>ASGenericData</module>

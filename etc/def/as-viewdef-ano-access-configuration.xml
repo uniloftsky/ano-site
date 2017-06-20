@@ -1,4 +1,4 @@
-<view name="AnoAccessConfiguration" title="Ano-Access Configuration" requiredroles="admin,developer,editor">
+<view name="AnoAccessConfiguration" title="Ano-Access Configuration">
 	<sections>
 		<section title="Access Operations" type="module">
 			<module>AnoAccessConfiguration</module>

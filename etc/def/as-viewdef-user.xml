@@ -1,5 +1,5 @@
 <!-- Managing of users view -->
-<view name="User" title="UserManagement" requiredroles="admin">
+<view name="User" title="UserManagement">
     <sections>
         <!-- User Document section-->
         <section title="Users" type="module">

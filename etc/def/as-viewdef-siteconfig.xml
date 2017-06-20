@@ -1,4 +1,4 @@
-	<view name="SiteConfig" title="Site Config" requiredroles="developer">
+	<view name="SiteConfig" title="Site Config">
 		<sections>
 			<section title="Filtered IP" type="module">
 				<module>ASSiteConfig</module>

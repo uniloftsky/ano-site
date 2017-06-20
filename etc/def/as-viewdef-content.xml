@@ -1,4 +1,4 @@
-<view name="Content" title="Content" requiredroles="admin,developer,editor">
+<view name="Content" title="Content">
 	<sections>
 		<!-- Section Page -->
 		<section title="Page" type="module">

@@ -1,4 +1,4 @@
-<view name="AnoAccessApplicationData" title="Ano-Access Data" requiredroles="admin,developer,editor">
+<view name="AnoAccessApplicationData" title="Ano-Access Data">
 	<sections>
 		<section title="User Data" type="module">
 			<module>AnoAccessApplicationData</module>

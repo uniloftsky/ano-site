@@ -1,4 +1,4 @@
-<view name="Actions" title="Actions" requiredroles="admin,developer">
+<view name="Actions" title="Actions">
 	<sections>
 		<section title="Mappings" type="module">
 			<module>ASCustomAction</module>

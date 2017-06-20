@@ -1,6 +1,6 @@
    <!-- Layout view, here everything is defined -->
 
-	<view name="Sitex" title="Site" requiredroles="admin,developer,producer">
+	<view name="Sitex" title="Site">
 		<sections>
 			<!-- Site -->
 			<section title="Site" type="module">

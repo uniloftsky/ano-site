@@ -60,10 +60,6 @@ public class CMSUserManager {
 		return user.getPassword().equals(password);
 	}
 
-	public boolean userInRole(String login, String role) {
-		return isKnownUser(login) && users.get(login).isUserInRole(role);
-	}
-
 	public boolean isKnownUser(String login) {
 		return users.containsKey(login);
 	}

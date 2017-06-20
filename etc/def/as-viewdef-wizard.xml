@@ -1,5 +1,5 @@
 <!-- Wizard expert mode view :) -->
-<view name="Wizard" title="Wizard" requiredroles="admin,developer,editor">
+<view name="Wizard" title="Wizard">
 	<sections>
 		<!-- Wizard Document section -->
 		<section title="WizardDef" type="module">

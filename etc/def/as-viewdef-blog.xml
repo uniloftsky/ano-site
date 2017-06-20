@@ -1,4 +1,4 @@
-<view name="Blog" title="Blog" requiredroles="admin,developer,producer">
+<view name="Blog" title="Blog">
     <sections>
 
         <section title="Posts" type="module">
