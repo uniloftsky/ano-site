@@ -4,24 +4,13 @@ import net.anotheria.access.AccessService;
 import net.anotheria.access.AccessServiceException;
 import net.anotheria.access.SOAttribute;
 import net.anotheria.access.SecurityObject;
-import net.anotheria.access.impl.PermissionCollection;
-import net.anotheria.access.impl.PermissionImpl;
-import net.anotheria.access.impl.SecurityBox;
-import net.anotheria.access.impl.StaticRole;
-import net.anotheria.access.storage.persistence.SecurityBoxPersistenceService;
 import net.anotheria.anoplass.api.APIException;
 import net.anotheria.anoplass.api.APIFinder;
 import net.anotheria.anoplass.api.APIInitException;
 import net.anotheria.anoplass.api.generic.login.LoginAPI;
-import net.anotheria.anoprise.dualcrud.CrudServiceException;
-import net.anotheria.anoprise.dualcrud.SaveableID;
 import net.anotheria.anoprise.metafactory.MetaFactory;
 import net.anotheria.anoprise.metafactory.MetaFactoryException;
-import net.anotheria.anosite.access.constraint.ParametrizedConstraint;
 import net.anotheria.anosite.access.context.SecurityContextInitializer;
-import net.anotheria.anosite.gen.anoaccessapplicationdata.data.UserData;
-import net.anotheria.anosite.gen.anoaccessapplicationdata.service.AnoAccessApplicationDataServiceException;
-import net.anotheria.anosite.gen.anoaccessapplicationdata.service.IAnoAccessApplicationDataService;
 import net.anotheria.anosite.gen.anoaccessconfiguration.data.AccessOperation;
 import net.anotheria.anosite.gen.anoaccessconfiguration.data.Constraint;
 import net.anotheria.anosite.gen.anoaccessconfiguration.data.ContextInitializer;
@@ -38,9 +27,6 @@ import net.anotheria.anosite.gen.ascustomaction.service.IASCustomActionService;
 import net.anotheria.anosite.gen.assitedata.data.NaviItem;
 import net.anotheria.anosite.gen.assitedata.service.ASSiteDataServiceException;
 import net.anotheria.anosite.gen.assitedata.service.IASSiteDataService;
-import net.anotheria.anosite.gen.asuserdata.data.UserDef;
-import net.anotheria.anosite.gen.asuserdata.service.ASUserDataServiceException;
-import net.anotheria.anosite.gen.asuserdata.service.IASUserDataService;
 import net.anotheria.anosite.gen.aswebdata.data.Box;
 import net.anotheria.anosite.gen.aswebdata.data.Pagex;
 import net.anotheria.anosite.gen.aswebdata.service.ASWebDataServiceException;
@@ -48,8 +34,6 @@ import net.anotheria.anosite.gen.aswebdata.service.IASWebDataService;
 import net.anotheria.anosite.gen.aswizarddata.data.WizardDef;
 import net.anotheria.anosite.gen.aswizarddata.service.ASWizardDataServiceException;
 import net.anotheria.anosite.gen.aswizarddata.service.IASWizardDataService;
-import net.anotheria.asg.data.DataObject;
-import net.anotheria.asg.util.listener.IServiceListener;
 import net.anotheria.util.StringUtils;
 import net.anotheria.util.log.LogMessageUtil;
 import net.anotheria.util.sorter.SortType;
@@ -87,11 +71,6 @@ public class AnoSiteAccessAPIImpl implements AnoSiteAccessAPI {
 	private IAnoAccessConfigurationService accessConfigurationService;
 
 	/**
-	 * Ano-site persistence for access user2roles data.
-	 */
-	private IAnoAccessApplicationDataService accessApplicationDataService;
-
-	/**
 	 * Pages and boxes configuration.
 	 */
 	private IASWebDataService pagesConfigurationPersistence;
@@ -112,16 +91,6 @@ public class AnoSiteAccessAPIImpl implements AnoSiteAccessAPI {
 	private IASWizardDataService wizardConfigurationPersistence;
 
 	/**
-	 * User data service.
-	 * */
-	private IASUserDataService userDataService;
-
-	/**
-	 * Security box service
-	 * */
-	private SecurityBoxPersistenceService securityBoxPersistenceService;
-
-	/**
 	 * {@link LoginAPI} instance.
 	 */
 	private LoginAPI loginAPI;
@@ -131,13 +100,10 @@ public class AnoSiteAccessAPIImpl implements AnoSiteAccessAPI {
 		try {
 			accessService = MetaFactory.get(AccessService.class);
 			accessConfigurationService = MetaFactory.get(IAnoAccessConfigurationService.class);
-			accessApplicationDataService = MetaFactory.get(IAnoAccessApplicationDataService.class);
 			pagesConfigurationPersistence = MetaFactory.get(IASWebDataService.class);
 			siteDataService = MetaFactory.get(IASSiteDataService.class);
 			customActionsConfigurationPersistence = MetaFactory.get(IASCustomActionService.class);
 			wizardConfigurationPersistence = MetaFactory.get(IASWizardDataService.class);
-			userDataService = MetaFactory.get(IASUserDataService.class);
-			securityBoxPersistenceService = MetaFactory.get(SecurityBoxPersistenceService.class);
 		} catch (MetaFactoryException e) {
 			String message = LogMessageUtil.failMsg(e) + " Can't initialize required services.";
 			LOGGER.error(MarkerFactory.getMarker("FATAL"), message, e);
@@ -153,9 +119,6 @@ public class AnoSiteAccessAPIImpl implements AnoSiteAccessAPI {
 			LOGGER.error(MarkerFactory.getMarker("FATAL"), message, e);
 			throw new APIInitException(message, e);
 		}
-
-		accessConfigurationService.addServiceListener(new AccessConfigurationChangeListener());
-		accessApplicationDataService.addServiceListener(new AccessUserDataChangeListener());
 	}
 
 	@Override
@@ -498,69 +461,6 @@ public class AnoSiteAccessAPIImpl implements AnoSiteAccessAPI {
 	 * @throws AnoSiteAccessAPIException
 	 */
 	private synchronized void configureAccessService() throws AnoSiteAccessAPIException {
-		accessService.reset(); // clearing current configuration
-
-		for (Role role : getRoles()) {
-			StaticRole configuredRole = new StaticRole(role.getId());
-
-			PermissionCollection permissionCollection = new PermissionCollection(configuredRole.getName());
-			for (Permission permission : getPermissions(role.getPermissions())) {
-				PermissionImpl configuredPermission = new PermissionImpl();
-				configuredPermission.setName(permission.getId());
-				configuredPermission.setAction(permission.getAccessOperation());
-				configuredPermission.setAllow(!permission.getDeny());
-
-				for (Constraint constraint : getConstraint(permission.getConstraints())) {
-					if (StringUtils.isEmpty(constraint.getClassName())) // skipping constraint if its class not configured
-						continue;
-
-					String clazz = constraint.getClassName();
-					try {
-						Class<?> undefinedClass = Class.forName(clazz); // loading class by name
-						if (!net.anotheria.access.impl.Constraint.class.isAssignableFrom(undefinedClass)) { // validating class type
-							String message = LogMessageUtil.failMsg(new RuntimeException()) + " Wrong constraint class[" + clazz + "] type.";
-							LOGGER.warn(message);
-							throw new AnoSiteAccessAPIException(message);
-						}
-
-						@SuppressWarnings("unchecked")
-						Class<net.anotheria.access.impl.Constraint> constraintClass = (Class<net.anotheria.access.impl.Constraint>) undefinedClass;
-						net.anotheria.access.impl.Constraint instance = constraintClass.newInstance();
-
-						if (instance instanceof ParametrizedConstraint) {
-							ParametrizedConstraint parametrizedInstance = ParametrizedConstraint.class.cast(instance);
-							parametrizedInstance.setParameter1(constraint.getParameter1());
-							parametrizedInstance.setParameter2(constraint.getParameter2());
-							parametrizedInstance.setParameter3(constraint.getParameter3());
-							parametrizedInstance.setParameter4(constraint.getParameter4());
-							parametrizedInstance.setParameter5(constraint.getParameter5());
-						}
-
-						configuredPermission.addConstraint(instance);
-					} catch (ClassNotFoundException e) {
-						String message = LogMessageUtil.failMsg(e) + " Wrong constraint class[" + clazz + "].";
-						LOGGER.warn(message, e);
-						throw new AnoSiteAccessAPIException(message, e);
-					} catch (InstantiationException e) {
-						String message = LogMessageUtil.failMsg(e) + " Can't instantiate constraint class[" + clazz + "].";
-						LOGGER.warn(message, e);
-						throw new AnoSiteAccessAPIException(message, e);
-					} catch (IllegalAccessException e) {
-						String message = LogMessageUtil.failMsg(e) + " Can't instantiate constraint class[" + clazz + "].";
-						LOGGER.warn(message, e);
-						throw new AnoSiteAccessAPIException(message, e);
-					}
-				}
-
-				// adding permission to role permission collection
-				permissionCollection.add(configuredPermission);
-			}
-
-			// configuring access service with role and its permission collection
-			accessService.addPermissionCollection(permissionCollection);
-			configuredRole.setPermissionSetId(permissionCollection.getId());
-			accessService.addRole(configuredRole);
-		}
 
 		createSecureBoxes();
 	}
@@ -569,158 +469,6 @@ public class AnoSiteAccessAPIImpl implements AnoSiteAccessAPI {
 	 * Create secure boxes to store roles and permissions if they do not exists yet.
 	 * */
 	private void createSecureBoxes() {
-
-		List<UserData> userDatas = null;
-		SecurityBox securityBox = null;
-		UserDef user = null;
-
-		try {
-			userDatas = accessApplicationDataService.getUserDatas();
-		} catch (AnoAccessApplicationDataServiceException e) {
-			LOGGER.error("Error occurred while getting UserDef by id", e);
-			throw new RuntimeException("Error occurred while getting UserDef by id");
-		}
-
-		for (UserData userData : userDatas) {
-
-			try {
-				user = userDataService.getUserDef(userData.getUserId());
-			} catch (ASUserDataServiceException e) {
-				LOGGER.error("Error occurred while getting UserDef by id", e);
-				throw new RuntimeException("Error occurred while getting UserDef by id");
-			}
-
-			try {
-				SaveableID saveableID = new SaveableID();
-				saveableID.setSaveableId(user.getLogin());
-				saveableID.setOwnerId(user.getLogin());
-				securityBox = securityBoxPersistenceService.read(saveableID);
-			} catch (CrudServiceException e) {
-				LOGGER.warn("SecurityBox with id=" + user.getLogin() + " not found. Creating new one");
-			}
-
-			if (securityBox == null) {
-				securityBox = new SecurityBox(user.getLogin());
-			}
-
-			for (String roleId : userData.getRoles()) {
-
-				if (securityBox.hasRole(roleId)) {
-					continue;
-				}
-
-				net.anotheria.access.Role role = accessService.getRole(roleId);
-
-				try {
-					accessService.grantRole(new SecurityObject(user.getLogin()), role.getName());
-				} catch (AccessServiceException e) {
-					LOGGER.error("Error occurred while granting role " + role.getName() + " to " + user.getLogin(), e);
-					throw new RuntimeException();
-				}
-			}
-		}
-	}
-
-	/**
-	 * Listener for updating {@link AccessService} configuration if it's changed in CMS.
-	 * 
-	 * @author Alexandr Bolbat
-	 */
-	public final class AccessConfigurationChangeListener implements IServiceListener {
-
-		/**
-		 * {@link Logger} instance.
-		 */
-		private final Logger LOGGER = LoggerFactory.getLogger(AccessUserDataChangeListener.class);
-
-		@Override
-		public void documentUpdated(final DataObject oldVersion, final DataObject newVersion) {
-			updateConfiguration();
-		}
-
-		@Override
-		public void documentDeleted(final DataObject doc) {
-			updateConfiguration();
-		}
-
-		@Override
-		public void documentCreated(final DataObject doc) {
-			updateConfiguration();
-		}
-
-		@Override
-		public void documentImported(final DataObject doc) {
-			updateConfiguration();
-		}
-
-		@Override
-		public void persistenceChanged() {
-			updateConfiguration();
-		}
-
-		/**
-		 * Update configuration in {@link AccessService}.
-		 */
-		private void updateConfiguration() {
-			try {
-				LOGGER.debug("Access configuration changed. Re-Configuring AccessService...");
-				configureAccessService();
-				LOGGER.debug("Re-Configuration of AccessService finished.");
-			} catch (AnoSiteAccessAPIException e) {
-				LOGGER.warn(LogMessageUtil.failMsg(e), e);
-			}
-		}
-
-	}
-
-	/**
-	 * Listener for clearing {@link AccessService} cache if user data (roles2user mapping) changed trough CMS.
-	 * 
-	 * @author Alexandr Bolbat
-	 */
-	public final class AccessUserDataChangeListener implements IServiceListener {
-
-		/**
-		 * {@link Logger} instance.
-		 */
-		private final Logger LOGGER = LoggerFactory.getLogger(AccessUserDataChangeListener.class);
-
-		@Override
-		public void documentUpdated(final DataObject oldVersion, final DataObject newVersion) {
-			update(oldVersion); // clearing for old userId
-			update(newVersion); // clearing for new userId
-		}
-
-		@Override
-		public void documentDeleted(final DataObject doc) {
-			update(doc);
-		}
-
-		@Override
-		public void documentCreated(final DataObject doc) {
-			update(doc);
-		}
-
-		@Override
-		public void documentImported(final DataObject doc) {
-		}
-
-		@Override
-		public void persistenceChanged() {
-		}
-
-		/**
-		 * Update configuration in {@link AccessService}.
-		 */
-		private void update(final DataObject doc) {
-			if (!(doc instanceof UserData))
-				return;
-
-			UserData userData = UserData.class.cast(doc);
-			LOGGER.debug("Access user data changed. Clearing cached user[" + userData.getUserId() + "] data in AccessService...");
-			accessService.reset(userData.getUserId());
-			LOGGER.debug("Clearingfinished.");
-		}
 
 	}
 
