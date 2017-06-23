@@ -4,15 +4,12 @@
 
 	<document name="UserDef">
 		<property name="login" type="string"/>
-		<property name="status" type="list">
+		<property name="roles" type="list">
 	        <content>
-				<link name="statusLink" type="single" target="ASUserData.RoleDef"/>
+				<link name="role" type="single" target="AnoAccessConfiguration.Role"/>
         	</content>
         </property>
         <property name="password" type="password"/>
 	</document>
 
-	<document name="RoleDef">
-	        <property name="name" type="string"/>
-	</document>
 </module>

@@ -2,8 +2,10 @@ package net.anotheria.anosite.cms.user;
 
 import net.anotheria.anoprise.metafactory.MetaFactory;
 import net.anotheria.anoprise.metafactory.MetaFactoryException;
-import net.anotheria.anosite.gen.asuserdata.data.RoleDef;
-import net.anotheria.anosite.gen.asuserdata.data.RoleDefBuilder;
+import net.anotheria.anosite.gen.anoaccessconfiguration.data.Role;
+import net.anotheria.anosite.gen.anoaccessconfiguration.data.RoleBuilder;
+import net.anotheria.anosite.gen.anoaccessconfiguration.service.AnoAccessConfigurationServiceException;
+import net.anotheria.anosite.gen.anoaccessconfiguration.service.IAnoAccessConfigurationService;
 import net.anotheria.anosite.gen.asuserdata.data.UserDef;
 import net.anotheria.anosite.gen.asuserdata.data.UserDefBuilder;
 import net.anotheria.anosite.gen.asuserdata.service.ASUserDataServiceException;
@@ -14,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -36,6 +39,7 @@ public class CMSUserManager {
 	private static Map<String, CMSUser> users;
 
 	private static IASUserDataService userDataService;
+	private static IAnoAccessConfigurationService anoAccessConfigurationService;
 	private static CMSUserManager instance;
 	private static boolean inited;
 
@@ -72,6 +76,7 @@ public class CMSUserManager {
 		users = new ConcurrentHashMap<String, CMSUser>();
 		try {
 			userDataService = MetaFactory.get(IASUserDataService.class);
+			anoAccessConfigurationService = MetaFactory.get(IAnoAccessConfigurationService.class);
 
 			/* initial creating of default roles and users */
 			createNecessaryDefaultRolesAndUsers();
@@ -102,33 +107,38 @@ public class CMSUserManager {
 		} catch (ASUserDataServiceException e) {
 			LOGGER.error("ASUserDataService failed", e);
 			throw new RuntimeException("ASUserDataService failed", e);
+		} catch (AnoAccessConfigurationServiceException e) {
+			LOGGER.error("AnoAccessConfigurationService failed", e);
+			throw new RuntimeException("AnoAccessConfigurationService failed", e);
 		}
 	}
 
-	private static void addDefaultUser(String login, String password, String role) throws ASUserDataServiceException {
+	private static void addDefaultUser(String login, String password, String role) throws ASUserDataServiceException, AnoAccessConfigurationServiceException {
 		List<UserDef> userDefs = userDataService.getUserDefsByProperty(UserDef.PROP_LOGIN, login);
 		if (userDefs == null || userDefs.isEmpty()) { // check if such user does not exist
-			List<RoleDef> roleDefs = userDataService.getRoleDefsByProperty(RoleDef.PROP_NAME, role);
-			if (roleDefs == null || roleDefs.isEmpty()) { // check if role for admin user does not exist
+			List<Role> roleList = anoAccessConfigurationService.getRolesByProperty(Role.PROP_NAME, role);
+			if (roleList == null || roleList.isEmpty()) { // check if role for admin user does not exist
 				LOGGER.error("There is no admin role for admin user in CMS");
 				throw new RuntimeException("admin role for admin user is undefined");
 			}
-			RoleDef adminRole = roleDefs.get(0);
+			Role adminRole = roleList.get(0);
 
 			UserDefBuilder userDefBuilder = new UserDefBuilder();
 			userDefBuilder.login(login);
 			userDefBuilder.password(password);
-			userDefBuilder.status(Arrays.asList(adminRole.getId()));
+			userDefBuilder.roles(Arrays.asList(adminRole.getId()));
 			userDataService.createUserDef(userDefBuilder.build());
 		}
 	}
 
-	private static void addDefaultRole(String role) throws ASUserDataServiceException {
-		List<RoleDef> roleDefs = userDataService.getRoleDefsByProperty(RoleDef.PROP_NAME, role);
-		if (roleDefs == null || roleDefs.isEmpty()) { // check if such role does not exist
-			RoleDefBuilder roleDefBuilder = new RoleDefBuilder();
-			roleDefBuilder.name(role);
-			userDataService.createRoleDef(roleDefBuilder.build());
+	private static void addDefaultRole(String role) throws AnoAccessConfigurationServiceException {
+		List<Role> roleList = anoAccessConfigurationService.getRolesByProperty(Role.PROP_NAME, role);
+		if (roleList == null || roleList.isEmpty()) { // check if such role does not exist
+			RoleBuilder roleBuilder = new RoleBuilder();
+			roleBuilder.name(role);
+			roleBuilder.permissions(Collections.<String>emptyList());
+			roleBuilder.contextInitializers(Collections.<String>emptyList());
+			anoAccessConfigurationService.createRole(roleBuilder.build());
 		}
 	}
 
@@ -189,14 +199,14 @@ public class CMSUserManager {
 			for (UserDef userDef : usersList) {
 				username = userDef.getLogin();
 				password = userDef.getPassword();
-                rolesIds = userDef.getStatus(); // getting IDs of user roles
+                rolesIds = userDef.getRoles(); // getting IDs of user roles
 
                 roles = new ArrayList<String>();
                 if (rolesIds != null && !rolesIds.isEmpty()) {
                     for (String roleId : rolesIds) {
-                        RoleDef roleDef = userDataService.getRoleDef(roleId);
-                        if (roleDef != null) {
-                            roles.add(roleDef.getName()); // getting name of user role
+                        Role role = anoAccessConfigurationService.getRole(roleId);
+                        if (role != null) {
+                            roles.add(role.getName()); // getting name of user role
                         }
                     }
                 }
@@ -207,6 +217,9 @@ public class CMSUserManager {
 		} catch (ASUserDataServiceException e) {
 			LOGGER.error("scan users failed", e);
 			throw new RuntimeException("ASUserDataService failed", e);
+		} catch (AnoAccessConfigurationServiceException e) {
+			LOGGER.error("AnoAccessConfigurationService failed", e);
+			throw new RuntimeException("AnoAccessConfigurationService failed", e);
 		}
 	}
 

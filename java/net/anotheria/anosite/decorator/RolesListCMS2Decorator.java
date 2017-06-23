@@ -2,7 +2,7 @@ package net.anotheria.anosite.decorator;
 
 import net.anotheria.anoprise.metafactory.MetaFactory;
 import net.anotheria.anoprise.metafactory.MetaFactoryException;
-import net.anotheria.anosite.gen.asuserdata.service.IASUserDataService;
+import net.anotheria.anosite.gen.anoaccessconfiguration.service.IAnoAccessConfigurationService;
 import net.anotheria.asg.exception.ASGRuntimeException;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MarkerFactory;
@@ -16,20 +16,20 @@ public class RolesListCMS2Decorator extends LinksListCMS2Decorator {
     /**
      * As site data service for script retrieval.
      */
-    private static IASUserDataService service;
+    private static IAnoAccessConfigurationService service;
 
     /**
      * Init.
      */
     static {
         try {
-            service = MetaFactory.get(IASUserDataService.class);
+            service = MetaFactory.get(IAnoAccessConfigurationService.class);
         } catch (MetaFactoryException e) {
-            LoggerFactory.getLogger(ScriptsListCMS2Decorator.class).error(MarkerFactory.getMarker("FATAL"), "IASUserDataService  init failure", e);
+            LoggerFactory.getLogger(IAnoAccessConfigurationService.class).error(MarkerFactory.getMarker("FATAL"), "IAnoAccessConfigurationService  init failure", e);
         }
     }
     @Override
     protected String getLinkTargetName(String targetId) throws ASGRuntimeException {
-        return service.getRoleDef(targetId).getName();
+        return service.getRole(targetId).getName();
     }
 }
