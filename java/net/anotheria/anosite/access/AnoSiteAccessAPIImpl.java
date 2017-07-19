@@ -4,12 +4,20 @@ import net.anotheria.access.AccessService;
 import net.anotheria.access.AccessServiceException;
 import net.anotheria.access.SOAttribute;
 import net.anotheria.access.SecurityObject;
+import net.anotheria.access.impl.PermissionCollection;
+import net.anotheria.access.impl.PermissionImpl;
+import net.anotheria.access.impl.SecurityBox;
+import net.anotheria.access.impl.StaticRole;
+import net.anotheria.access.storage.persistence.SecurityBoxPersistenceService;
 import net.anotheria.anoplass.api.APIException;
 import net.anotheria.anoplass.api.APIFinder;
 import net.anotheria.anoplass.api.APIInitException;
 import net.anotheria.anoplass.api.generic.login.LoginAPI;
+import net.anotheria.anoprise.dualcrud.CrudServiceException;
+import net.anotheria.anoprise.dualcrud.SaveableID;
 import net.anotheria.anoprise.metafactory.MetaFactory;
 import net.anotheria.anoprise.metafactory.MetaFactoryException;
+import net.anotheria.anosite.access.constraint.ParametrizedConstraint;
 import net.anotheria.anosite.access.context.SecurityContextInitializer;
 import net.anotheria.anosite.gen.anoaccessconfiguration.data.AccessOperation;
 import net.anotheria.anosite.gen.anoaccessconfiguration.data.Constraint;
@@ -27,6 +35,9 @@ import net.anotheria.anosite.gen.ascustomaction.service.IASCustomActionService;
 import net.anotheria.anosite.gen.assitedata.data.NaviItem;
 import net.anotheria.anosite.gen.assitedata.service.ASSiteDataServiceException;
 import net.anotheria.anosite.gen.assitedata.service.IASSiteDataService;
+import net.anotheria.anosite.gen.asuserdata.data.UserDef;
+import net.anotheria.anosite.gen.asuserdata.service.ASUserDataServiceException;
+import net.anotheria.anosite.gen.asuserdata.service.IASUserDataService;
 import net.anotheria.anosite.gen.aswebdata.data.Box;
 import net.anotheria.anosite.gen.aswebdata.data.Pagex;
 import net.anotheria.anosite.gen.aswebdata.service.ASWebDataServiceException;
@@ -34,6 +45,8 @@ import net.anotheria.anosite.gen.aswebdata.service.IASWebDataService;
 import net.anotheria.anosite.gen.aswizarddata.data.WizardDef;
 import net.anotheria.anosite.gen.aswizarddata.service.ASWizardDataServiceException;
 import net.anotheria.anosite.gen.aswizarddata.service.IASWizardDataService;
+import net.anotheria.asg.data.DataObject;
+import net.anotheria.asg.util.listener.IServiceListener;
 import net.anotheria.util.StringUtils;
 import net.anotheria.util.log.LogMessageUtil;
 import net.anotheria.util.sorter.SortType;
@@ -91,6 +104,16 @@ public class AnoSiteAccessAPIImpl implements AnoSiteAccessAPI {
 	private IASWizardDataService wizardConfigurationPersistence;
 
 	/**
+	 * User data service.
+	 * */
+	private IASUserDataService userDataService;
+
+	/**
+	 * Security box service
+	 * */
+	private SecurityBoxPersistenceService securityBoxPersistenceService;
+
+	/**
 	 * {@link LoginAPI} instance.
 	 */
 	private LoginAPI loginAPI;
@@ -104,6 +127,8 @@ public class AnoSiteAccessAPIImpl implements AnoSiteAccessAPI {
 			siteDataService = MetaFactory.get(IASSiteDataService.class);
 			customActionsConfigurationPersistence = MetaFactory.get(IASCustomActionService.class);
 			wizardConfigurationPersistence = MetaFactory.get(IASWizardDataService.class);
+			userDataService = MetaFactory.get(IASUserDataService.class);
+			securityBoxPersistenceService = MetaFactory.get(SecurityBoxPersistenceService.class);
 		} catch (MetaFactoryException e) {
 			String message = LogMessageUtil.failMsg(e) + " Can't initialize required services.";
 			LOGGER.error(MarkerFactory.getMarker("FATAL"), message, e);
@@ -112,13 +137,16 @@ public class AnoSiteAccessAPIImpl implements AnoSiteAccessAPI {
 
 		loginAPI = APIFinder.findAPI(LoginAPI.class);
 
-		try {
-			configureAccessService();
-		} catch (AnoSiteAccessAPIException e) {
-			String message = LogMessageUtil.failMsg(e) + " Can't initialize access service with current configuration.";
-			LOGGER.error(MarkerFactory.getMarker("FATAL"), message, e);
-			throw new APIInitException(message, e);
-		}
+//		try {
+//			configureAccessService();
+//		} catch (AnoSiteAccessAPIException e) {
+//			String message = LogMessageUtil.failMsg(e) + " Can't initialize access service with current configuration.";
+//			LOGGER.error(MarkerFactory.getMarker("FATAL"), message, e);
+//			throw new APIInitException(message, e);
+//		}
+//
+//		accessConfigurationService.addServiceListener(new AccessConfigurationChangeListener());
+//		accessApplicationDataService.addServiceListener(new AccessUserDataChangeListener());
 	}
 
 	@Override
@@ -127,8 +155,8 @@ public class AnoSiteAccessAPIImpl implements AnoSiteAccessAPI {
 
 	@Override
 	public boolean isAllowedForPage(final String pageId) throws AnoSiteAccessAPIException {
-		if (!AnoSiteAccessAPIConfig.getInstance().isEnabled()) // allowing access if access control disabled by configuration
-			return true;
+//		if (!AnoSiteAccessAPIConfig.getInstance().isEnabled()) // allowing access if access control disabled by configuration
+//			return true;
 
 		try {
 			Pagex page = pagesConfigurationPersistence.getPagex(pageId);
@@ -142,8 +170,8 @@ public class AnoSiteAccessAPIImpl implements AnoSiteAccessAPI {
 
 	@Override
 	public boolean isAllowedForBox(final String boxId) throws AnoSiteAccessAPIException {
-		if (!AnoSiteAccessAPIConfig.getInstance().isEnabled()) // allowing access if access control disabled by configuration
-			return true;
+//		if (!AnoSiteAccessAPIConfig.getInstance().isEnabled()) // allowing access if access control disabled by configuration
+//			return true;
 
 		try {
 			Box box = pagesConfigurationPersistence.getBox(boxId);
@@ -157,8 +185,8 @@ public class AnoSiteAccessAPIImpl implements AnoSiteAccessAPI {
 
 	@Override
 	public boolean isAllowedForNaviItem(String naviItemId) throws AnoSiteAccessAPIException {
-		if (!AnoSiteAccessAPIConfig.getInstance().isEnabled()) // allowing access if access control disabled by configuration
-			return true;
+//		if (!AnoSiteAccessAPIConfig.getInstance().isEnabled()) // allowing access if access control disabled by configuration
+//			return true;
 
 		try {
 			NaviItem naviItem = siteDataService.getNaviItem(naviItemId);
@@ -172,8 +200,8 @@ public class AnoSiteAccessAPIImpl implements AnoSiteAccessAPI {
 
 	@Override
 	public boolean isAllowedForAction(final String actionId) throws AnoSiteAccessAPIException {
-		if (!AnoSiteAccessAPIConfig.getInstance().isEnabled()) // allowing access if access control disabled by configuration
-			return true;
+//		if (!AnoSiteAccessAPIConfig.getInstance().isEnabled()) // allowing access if access control disabled by configuration
+//			return true;
 
 		try {
 			CustomActionDef action = customActionsConfigurationPersistence.getCustomActionDef(actionId);
@@ -187,8 +215,8 @@ public class AnoSiteAccessAPIImpl implements AnoSiteAccessAPI {
 
 	@Override
 	public boolean isAllowedForWizard(final String wizardId) throws AnoSiteAccessAPIException {
-		if (!AnoSiteAccessAPIConfig.getInstance().isEnabled()) // allowing access if access control disabled by configuration
-			return true;
+//		if (!AnoSiteAccessAPIConfig.getInstance().isEnabled()) // allowing access if access control disabled by configuration
+//			return true;
 
 		try {
 			WizardDef wizard = wizardConfigurationPersistence.getWizardDef(wizardId);
@@ -197,6 +225,16 @@ public class AnoSiteAccessAPIImpl implements AnoSiteAccessAPI {
 			String message = LogMessageUtil.failMsg(e, wizardId);
 			LOGGER.error(message, e);
 			throw new AnoSiteAccessAPIException(message, e);
+		}
+	}
+
+	@Override
+	public boolean isAllowed(String action, SecurityObject object, SecurityObject subject) {
+		try {
+			return accessService.isAllowed(action, object, subject).isAllowed();
+		} catch (AccessServiceException e) {
+			LOGGER.warn(LogMessageUtil.failMsg(e, action) + " Skipping exception and don't allow execution.", e);
+			return false;
 		}
 	}
 
@@ -329,28 +367,28 @@ public class AnoSiteAccessAPIImpl implements AnoSiteAccessAPI {
 		}
 	}
 
-	/**
-	 * Get {@link List} of {@link Role} by given id's.
-	 * 
-	 * @return {@link List} of {@link Role}, can be empty but not <code>null</code>
-	 * @throws AnoSiteAccessAPIException
-	 */
-	private List<Role> getRoles() throws AnoSiteAccessAPIException {
-		List<Role> result = new ArrayList<Role>();
-
-		try {
-			SortType sorting = new SortType(RoleSortType.SORT_BY_ID, RoleSortType.ASC);
-			List<Role> loaded = accessConfigurationService.getRoles(sorting);
-			if (loaded != null && !loaded.isEmpty())
-				result.addAll(loaded);
-
-			return result;
-		} catch (AnoAccessConfigurationServiceException e) {
-			String message = LogMessageUtil.failMsg(e) + " Can't load roles.";
-			LOGGER.error(message, e);
-			throw new AnoSiteAccessAPIException(message, e);
-		}
-	}
+//	/**
+//	 * Get {@link List} of {@link Role} by given id's.
+//	 *
+//	 * @return {@link List} of {@link Role}, can be empty but not <code>null</code>
+//	 * @throws AnoSiteAccessAPIException
+//	 */
+//	private List<Role> getRoles() throws AnoSiteAccessAPIException {
+//		List<Role> result = new ArrayList<Role>();
+//
+//		try {
+//			SortType sorting = new SortType(RoleSortType.SORT_BY_ID, RoleSortType.ASC);
+//			List<Role> loaded = accessConfigurationService.getRoles(sorting);
+//			if (loaded != null && !loaded.isEmpty())
+//				result.addAll(loaded);
+//
+//			return result;
+//		} catch (AnoAccessConfigurationServiceException e) {
+//			String message = LogMessageUtil.failMsg(e) + " Can't load roles.";
+//			LOGGER.error(message, e);
+//			throw new AnoSiteAccessAPIException(message, e);
+//		}
+//	}
 
 	/**
 	 * Get {@link List} of {@link Permission} who have given access operation.
@@ -377,31 +415,31 @@ public class AnoSiteAccessAPIImpl implements AnoSiteAccessAPI {
 		}
 	}
 
-	/**
-	 * Get {@link List} of {@link Permission} by given id's.
-	 * 
-	 * @param ids
-	 *            - id's
-	 * @return {@link List} of {@link Permission}, can be empty but not <code>null</code>
-	 * @throws AnoSiteAccessAPIException
-	 */
-	private List<Permission> getPermissions(final List<String> ids) throws AnoSiteAccessAPIException {
-		List<Permission> result = new ArrayList<Permission>();
-
-		if (ids == null || ids.isEmpty())
-			return result;
-
-		try {
-			for (String id : ids)
-				result.add(accessConfigurationService.getPermission(id));
-
-			return result;
-		} catch (AnoAccessConfigurationServiceException e) {
-			String message = LogMessageUtil.failMsg(e, ids) + " Can't load permissions.";
-			LOGGER.error(message, e);
-			throw new AnoSiteAccessAPIException(message, e);
-		}
-	}
+//	/**
+//	 * Get {@link List} of {@link Permission} by given id's.
+//	 *
+//	 * @param ids
+//	 *            - id's
+//	 * @return {@link List} of {@link Permission}, can be empty but not <code>null</code>
+//	 * @throws AnoSiteAccessAPIException
+//	 */
+//	private List<Permission> getPermissions(final List<String> ids) throws AnoSiteAccessAPIException {
+//		List<Permission> result = new ArrayList<Permission>();
+//
+//		if (ids == null || ids.isEmpty())
+//			return result;
+//
+//		try {
+//			for (String id : ids)
+//				result.add(accessConfigurationService.getPermission(id));
+//
+//			return result;
+//		} catch (AnoAccessConfigurationServiceException e) {
+//			String message = LogMessageUtil.failMsg(e, ids) + " Can't load permissions.";
+//			LOGGER.error(message, e);
+//			throw new AnoSiteAccessAPIException(message, e);
+//		}
+//	}
 
 	/**
 	 * Get {@link List} of {@link Constraint} by given id's.
@@ -455,21 +493,234 @@ public class AnoSiteAccessAPIImpl implements AnoSiteAccessAPI {
 		}
 	}
 
-	/**
-	 * Configuring {@link AccessService} instance with current configuration.
-	 * 
-	 * @throws AnoSiteAccessAPIException
-	 */
-	private synchronized void configureAccessService() throws AnoSiteAccessAPIException {
+//	/**
+//	 * Configuring {@link AccessService} instance with current configuration.
+//	 *
+//	 * @throws AnoSiteAccessAPIException
+//	 */
+//	private synchronized void configureAccessService() throws AnoSiteAccessAPIException {
+//		accessService.reset(); // clearing current configuration
+//
+//		for (Role role : getRoles()) {
+//			StaticRole configuredRole = new StaticRole(role.getId());
+//
+//			PermissionCollection permissionCollection = new PermissionCollection(configuredRole.getName());
+//			for (Permission permission : getPermissions(role.getPermissions())) {
+//				PermissionImpl configuredPermission = new PermissionImpl();
+//				configuredPermission.setName(permission.getId());
+//				AccessOperation accessOperation;
+//				try {
+//					accessOperation = accessConfigurationService.getAccessOperation(permission.getAccessOperation());
+//				} catch (AnoAccessConfigurationServiceException e) {
+//					String message = LogMessageUtil.failMsg(e) + " Can't retrieve access operation object. id="+permission.getAccessOperation();
+//					LOGGER.warn(message, e);
+//					throw new AnoSiteAccessAPIException(message, e);
+//				}
+//				configuredPermission.setAction(accessOperation.getName());
+//				configuredPermission.setAllow(!permission.getDeny());
+//
+//				for (Constraint constraint : getConstraint(permission.getConstraints())) {
+//					if (StringUtils.isEmpty(constraint.getClassName())) // skipping constraint if its class not configured
+//						continue;
+//
+//					String clazz = constraint.getClassName();
+//					try {
+//						Class<?> undefinedClass = Class.forName(clazz); // loading class by name
+//						if (!net.anotheria.access.impl.Constraint.class.isAssignableFrom(undefinedClass)) { // validating class type
+//							String message = LogMessageUtil.failMsg(new RuntimeException()) + " Wrong constraint class[" + clazz + "] type.";
+//							LOGGER.warn(message);
+//							throw new AnoSiteAccessAPIException(message);
+//						}
+//
+//						@SuppressWarnings("unchecked")
+//						Class<net.anotheria.access.impl.Constraint> constraintClass = (Class<net.anotheria.access.impl.Constraint>) undefinedClass;
+//						net.anotheria.access.impl.Constraint instance = constraintClass.newInstance();
+//
+//						if (instance instanceof ParametrizedConstraint) {
+//							ParametrizedConstraint parametrizedInstance = ParametrizedConstraint.class.cast(instance);
+//							parametrizedInstance.setParameter1(constraint.getParameter1());
+//							parametrizedInstance.setParameter2(constraint.getParameter2());
+//							parametrizedInstance.setParameter3(constraint.getParameter3());
+//							parametrizedInstance.setParameter4(constraint.getParameter4());
+//							parametrizedInstance.setParameter5(constraint.getParameter5());
+//						}
+//
+//						configuredPermission.addConstraint(instance);
+//					} catch (ClassNotFoundException e) {
+//						String message = LogMessageUtil.failMsg(e) + " Wrong constraint class[" + clazz + "].";
+//						LOGGER.warn(message, e);
+//						throw new AnoSiteAccessAPIException(message, e);
+//					} catch (InstantiationException e) {
+//						String message = LogMessageUtil.failMsg(e) + " Can't instantiate constraint class[" + clazz + "].";
+//						LOGGER.warn(message, e);
+//						throw new AnoSiteAccessAPIException(message, e);
+//					} catch (IllegalAccessException e) {
+//						String message = LogMessageUtil.failMsg(e) + " Can't instantiate constraint class[" + clazz + "].";
+//						LOGGER.warn(message, e);
+//						throw new AnoSiteAccessAPIException(message, e);
+//					}
+//				}
+//
+//				// adding permission to role permission collection
+//				permissionCollection.add(configuredPermission);
+//			}
+//
+//			// configuring access service with role and its permission collection
+//			accessService.addPermissionCollection(permissionCollection);
+//			configuredRole.setPermissionSetId(permissionCollection.getId());
+//			accessService.addRole(configuredRole);
+//		}
+//
+//		createSecureBoxes();
+//	}
+//
+//	/**
+//	 * Create secure boxes to store roles and permissions if they do not exists yet.
+//	 * */
+//	private void createSecureBoxes() {
+//		List<UserDef> userList = null;
+//		SecurityBox securityBox = null;
+//
+//		try {
+//			userList = userDataService.getUserDefs();
+//		} catch (ASUserDataServiceException e) {
+//			LOGGER.error("Error occurred while getting UserDefs", e);
+//			throw new RuntimeException("Error occurred while getting UserDefs");
+//		}
+//
+//		for (UserDef user : userList) {
+//			try {
+//				SaveableID saveableID = new SaveableID();
+//				saveableID.setSaveableId(user.getLogin());
+//				saveableID.setOwnerId(user.getLogin());
+//				securityBox = securityBoxPersistenceService.read(saveableID);
+//			} catch (CrudServiceException e) {
+//				LOGGER.warn("SecurityBox with id=" + user.getLogin() + " not found. Creating new one");
+//			}
+//
+//			if (securityBox == null) {
+//				securityBox = new SecurityBox(user.getLogin());
+//			}
+//
+//			for (String roleId : user.getRoles()) {
+//
+//				if (securityBox.hasRole(roleId)) {
+//					continue;
+//				}
+//
+//				net.anotheria.access.Role role = accessService.getRole(roleId);
+//
+//				try {
+//					accessService.grantRole(new SecurityObject(user.getLogin()), role.getName());
+//				} catch (AccessServiceException e) {
+//					LOGGER.error("Error occurred while granting role " + role.getName() + " to " + user.getLogin(), e);
+//					throw new RuntimeException();
+//				}
+//			}
+//		}
+//	}
 
-		createSecureBoxes();
-	}
-
-	/**
-	 * Create secure boxes to store roles and permissions if they do not exists yet.
-	 * */
-	private void createSecureBoxes() {
-
-	}
+//	/**
+//	 * Listener for updating {@link AccessService} configuration if it's changed in CMS.
+//	 *
+//	 * @author Alexandr Bolbat
+//	 */
+//	public final class AccessConfigurationChangeListener implements IServiceListener {
+//
+//		/**
+//		 * {@link Logger} instance.
+//		 */
+//		private final Logger LOGGER = LoggerFactory.getLogger(AccessConfigurationChangeListener.class);
+//
+//		@Override
+//		public void documentUpdated(final DataObject oldVersion, final DataObject newVersion) {
+//			updateConfiguration();
+//		}
+//
+//		@Override
+//		public void documentDeleted(final DataObject doc) {
+//			updateConfiguration();
+//		}
+//
+//		@Override
+//		public void documentCreated(final DataObject doc) {
+//			updateConfiguration();
+//		}
+//
+//		@Override
+//		public void documentImported(final DataObject doc) {
+//			updateConfiguration();
+//		}
+//
+//		@Override
+//		public void persistenceChanged() {
+//			updateConfiguration();
+//		}
+//
+//		/**
+//		 * Update configuration in {@link AccessService}.
+//		 */
+//		private void updateConfiguration() {
+//			try {
+//				LOGGER.debug("Access configuration changed. Re-Configuring AccessService...");
+//				configureAccessService();
+//				LOGGER.debug("Re-Configuration of AccessService finished.");
+//			} catch (AnoSiteAccessAPIException e) {
+//				LOGGER.warn(LogMessageUtil.failMsg(e), e);
+//			}
+//		}
+//
+//	}
+//
+//	/**
+//	 * Listener for clearing {@link AccessService} cache if user data (roles2user mapping) changed trough CMS.
+//	 *
+//	 * @author Alexandr Bolbat
+//	 */
+//	public final class AccessUserDataChangeListener implements IServiceListener {
+//
+//		/**
+//		 * {@link Logger} instance.
+//		 */
+//		private final Logger LOGGER = LoggerFactory.getLogger(AccessUserDataChangeListener.class);
+//
+//		@Override
+//		public void documentUpdated(final DataObject oldVersion, final DataObject newVersion) {
+//			update(oldVersion); // clearing for old userId
+//			update(newVersion); // clearing for new userId
+//		}
+//
+//		@Override
+//		public void documentDeleted(final DataObject doc) {
+//			update(doc);
+//		}
+//
+//		@Override
+//		public void documentCreated(final DataObject doc) {
+//			update(doc);
+//		}
+//
+//		@Override
+//		public void documentImported(final DataObject doc) {
+//		}
+//
+//		@Override
+//		public void persistenceChanged() {
+//		}
+//
+//		/**
+//		 * Update configuration in {@link AccessService}.
+//		 */
+//		private void update(final DataObject doc) {
+//			if (!(doc instanceof UserData))
+//				return;
+//
+//			UserData userData = UserData.class.cast(doc);
+//			LOGGER.debug("Access user data changed. Clearing cached user[" + userData.getUserId() + "] data in AccessService...");
+//			accessService.reset(userData.getUserId());
+//			LOGGER.debug("Clearingfinished.");
+//		}
+//
+//	}
 
 }

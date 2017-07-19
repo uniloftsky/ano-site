@@ -1,5 +1,6 @@
 package net.anotheria.anosite.access;
 
+import net.anotheria.access.SecurityObject;
 import net.anotheria.anoplass.api.API;
 
 /**
@@ -58,5 +59,16 @@ public interface AnoSiteAccessAPI extends API {
 	 * @throws AnoSiteAccessAPIException
 	 */
 	boolean isAllowedForWizard(String wizardId) throws AnoSiteAccessAPIException;
+
+	/**
+	 * Validate access for given action. If access operation not configured for given action this validation return <code>true</code>.
+	 *
+	 * @param actionName given action name
+	 * @param object action executor
+	 * @param subject action target
+	 * @return <code>true</code> if have access or <code>false</code>
+	 * @throws AnoSiteAccessAPIException
+	 */
+	boolean isAllowed(String actionName, SecurityObject object, SecurityObject subject) throws AnoSiteAccessAPIException;
 
 }

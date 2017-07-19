@@ -79,7 +79,7 @@ public class CMSUserManager {
 			anoAccessConfigurationService = MetaFactory.get(IAnoAccessConfigurationService.class);
 
 			/* initial creating of default roles and users */
-			createNecessaryDefaultRolesAndUsers();
+//			createNecessaryDefaultRolesAndUsers();
 
 			/* initial filling of map from CMS persistence files */
 			scanUsers();
@@ -92,55 +92,55 @@ public class CMSUserManager {
 		}
 	}
 
-	private static void createNecessaryDefaultRolesAndUsers() {
-		try {
-			/* adding each of default roles if it already not exists */
-			addDefaultRole("developer");
-			addDefaultRole("cmsuser");
-			addDefaultRole("editor");
-			addDefaultRole("producer");
-			addDefaultRole("admin");
+//	private static void createNecessaryDefaultRolesAndUsers() {
+//		try {
+//			/* adding each of default roles if it already not exists */
+//			addDefaultRole("developer");
+//			addDefaultRole("cmsuser");
+//			addDefaultRole("editor");
+//			addDefaultRole("producer");
+//			addDefaultRole("admin");
+//
+//			/* adding default users */
+//			addDefaultUser("admin", "admin", "admin"); // + admin:admin if necessary
+//
+//		} catch (ASUserDataServiceException e) {
+//			LOGGER.error("ASUserDataService failed", e);
+//			throw new RuntimeException("ASUserDataService failed", e);
+//		} catch (AnoAccessConfigurationServiceException e) {
+//			LOGGER.error("AnoAccessConfigurationService failed", e);
+//			throw new RuntimeException("AnoAccessConfigurationService failed", e);
+//		}
+//	}
 
-			/* adding default users */
-			addDefaultUser("admin", "admin", "admin"); // + admin:admin if necessary
+//	private static void addDefaultUser(String login, String password, String role) throws ASUserDataServiceException, AnoAccessConfigurationServiceException {
+//		List<UserDef> userDefs = userDataService.getUserDefsByProperty(UserDef.PROP_LOGIN, login);
+//		if (userDefs == null || userDefs.isEmpty()) { // check if such user does not exist
+//			List<Role> roleList = anoAccessConfigurationService.getRolesByProperty(Role.PROP_NAME, role);
+//			if (roleList == null || roleList.isEmpty()) { // check if role for admin user does not exist
+//				LOGGER.error("There is no admin role for admin user in CMS");
+//				throw new RuntimeException("admin role for admin user is undefined");
+//			}
+//			Role adminRole = roleList.get(0);
+//
+//			UserDefBuilder userDefBuilder = new UserDefBuilder();
+//			userDefBuilder.login(login);
+//			userDefBuilder.password(password);
+//			userDefBuilder.roles(Arrays.asList(adminRole.getId()));
+//			userDataService.createUserDef(userDefBuilder.build());
+//		}
+//	}
 
-		} catch (ASUserDataServiceException e) {
-			LOGGER.error("ASUserDataService failed", e);
-			throw new RuntimeException("ASUserDataService failed", e);
-		} catch (AnoAccessConfigurationServiceException e) {
-			LOGGER.error("AnoAccessConfigurationService failed", e);
-			throw new RuntimeException("AnoAccessConfigurationService failed", e);
-		}
-	}
-
-	private static void addDefaultUser(String login, String password, String role) throws ASUserDataServiceException, AnoAccessConfigurationServiceException {
-		List<UserDef> userDefs = userDataService.getUserDefsByProperty(UserDef.PROP_LOGIN, login);
-		if (userDefs == null || userDefs.isEmpty()) { // check if such user does not exist
-			List<Role> roleList = anoAccessConfigurationService.getRolesByProperty(Role.PROP_NAME, role);
-			if (roleList == null || roleList.isEmpty()) { // check if role for admin user does not exist
-				LOGGER.error("There is no admin role for admin user in CMS");
-				throw new RuntimeException("admin role for admin user is undefined");
-			}
-			Role adminRole = roleList.get(0);
-
-			UserDefBuilder userDefBuilder = new UserDefBuilder();
-			userDefBuilder.login(login);
-			userDefBuilder.password(password);
-			userDefBuilder.roles(Arrays.asList(adminRole.getId()));
-			userDataService.createUserDef(userDefBuilder.build());
-		}
-	}
-
-	private static void addDefaultRole(String role) throws AnoAccessConfigurationServiceException {
-		List<Role> roleList = anoAccessConfigurationService.getRolesByProperty(Role.PROP_NAME, role);
-		if (roleList == null || roleList.isEmpty()) { // check if such role does not exist
-			RoleBuilder roleBuilder = new RoleBuilder();
-			roleBuilder.name(role);
-			roleBuilder.permissions(Collections.<String>emptyList());
-			roleBuilder.contextInitializers(Collections.<String>emptyList());
-			anoAccessConfigurationService.createRole(roleBuilder.build());
-		}
-	}
+//	private static void addDefaultRole(String role) throws AnoAccessConfigurationServiceException {
+//		List<Role> roleList = anoAccessConfigurationService.getRolesByProperty(Role.PROP_NAME, role);
+//		if (roleList == null || roleList.isEmpty()) { // check if such role does not exist
+//			RoleBuilder roleBuilder = new RoleBuilder();
+//			roleBuilder.name(role);
+//			roleBuilder.permissions(Collections.<String>emptyList());
+//			roleBuilder.contextInitializers(Collections.<String>emptyList());
+//			anoAccessConfigurationService.createRole(roleBuilder.build());
+//		}
+//	}
 
 	public static void changeUserPassword(String login, String newPassword) {
 		try {
