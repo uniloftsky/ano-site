@@ -71,4 +71,53 @@ public interface AnoSiteAccessAPI extends API {
 	 */
 	boolean isAllowed(String actionName, SecurityObject object, SecurityObject subject) throws AnoSiteAccessAPIException;
 
+	/**
+	 * Makes hash for password.
+	 * @param plainTextPassword pass
+	 * @return hash
+	 */
+	public String hashPassword(String plainTextPassword);
+
+	/**
+	 * Get marker for pass hash.
+	 * @return hash marker
+	 */
+	public String getHashMarker();
+
+	/**
+	 * Check if user can login.
+	 * @param login user's login
+	 * @param password user's plain text pass.
+	 * @return true is user can login, false otherwise.
+	 * @throws RuntimeException if user not found.
+	 */
+	public boolean canUserLogin(String login, String password);
+
+	/**
+	 * Set new password for user.
+	 * @param login user's login
+	 * @param newPassword new password
+	 */
+	public void changeUserPassword(String login, String newPassword);
+
+	/**
+	 *  Check if user exists.
+	 * @param login user's login
+	 * @return true if user exists, false otherwise.
+	 */
+	public boolean isUserExists(String login);
+
+	/**
+	 * Get CMS user id by login
+	 * @param login user's login
+	 * @return id
+	 */
+	public String getUserIdByLogin(String login);
+
+	/**
+	 * Get CMS user login by id
+	 * @param id user's id
+	 * @return login
+	 */
+	public String getUserLoginById(String id);
 }

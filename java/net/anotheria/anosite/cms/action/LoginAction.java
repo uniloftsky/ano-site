@@ -1,9 +1,11 @@
 package net.anotheria.anosite.cms.action;
 
-import net.anotheria.anosite.cms.user.CMSUserManager;
+import net.anotheria.anoplass.api.APIFinder;
+import net.anotheria.anosite.access.AnoSiteAccessAPI;
 import net.anotheria.maf.action.ActionForward;
 import net.anotheria.maf.action.ActionMapping;
 import net.anotheria.maf.bean.FormBean;
+import net.anotheria.util.StringUtils;
 import net.anotheria.webutils.actions.AccessControlMafAction;
 
 import javax.servlet.http.Cookie;
@@ -12,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author vbezuhlyi
- * @see net.anotheria.anosite.cms.user.CMSUserManager
  * @see LogoutAction
  * @see ChangePassAction
  */
@@ -23,16 +24,13 @@ public class LoginAction extends AccessControlMafAction {
 
     private static final String BEAN_USER_DEF_ID = "currentUserDefId";
 
-    private CMSUserManager userManager;
-
+    private AnoSiteAccessAPI anoSiteAccessAPI;
 
     public LoginAction() {
-        userManager = CMSUserManager.getInstance();
+        anoSiteAccessAPI = APIFinder.findAPI(AnoSiteAccessAPI.class);
     }
 
-
     public ActionForward execute(ActionMapping mapping, FormBean bean, HttpServletRequest req, HttpServletResponse res) throws Exception {
-        CMSUserManager.scanUsers();
 
         /* first try to read auth from cookie */
         try {
@@ -49,10 +47,10 @@ public class LoginAction extends AccessControlMafAction {
                 int index = authString.indexOf(AUTH_DELIMITER);
                 String login = authString.substring(0, index);
                 String password = authString.substring(index + 1);
-                String userId = CMSUserManager.getIdByLogin(login);
+                String userId = anoSiteAccessAPI.getUserIdByLogin(login);
 
-                if (login != null && password != null) {
-                    if (userManager.canLoginUser(login, password)) {
+                if (StringUtils.isEmpty(login) && StringUtils.isEmpty(password)) {
+                    if (anoSiteAccessAPI.canUserLogin(login, password)) {
                         /* CAUTION: HttpSession is serializable in Tomcat by default! */
                         addBeanToSession(req, BEAN_USER_ID, login);
                         addBeanToSession(req, BEAN_USER_DEF_ID, userId);
@@ -72,10 +70,10 @@ public class LoginAction extends AccessControlMafAction {
             login = getStringParameter(req, P_USER_LOGIN);
             password = getStringParameter(req, P_PASSWORD);
 
-            if (!userManager.canLoginUser(login, password))
+            if (!anoSiteAccessAPI.canUserLogin(login, password))
                 throw new RuntimeException("Can't login.");
 
-            userId = CMSUserManager.getIdByLogin(login);
+            userId = anoSiteAccessAPI.getUserIdByLogin(login);
             res.addCookie(createAuthCookie(req, login, password));
         } catch (Exception e) {
             return mapping.findForward("success");

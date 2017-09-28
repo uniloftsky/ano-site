@@ -1,6 +1,7 @@
 package net.anotheria.anosite.cms.action;
 
-import net.anotheria.anosite.cms.user.CMSUserManager;
+import net.anotheria.anoplass.api.APIFinder;
+import net.anotheria.anosite.access.AnoSiteAccessAPI;
 import net.anotheria.maf.action.ActionCommand;
 import net.anotheria.maf.action.ActionMapping;
 import net.anotheria.maf.bean.FormBean;
@@ -11,8 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author vbezuhlyi
- * @see LoginAction
- * @see CMSUserManager
  */
 public class ChangePassAction extends BaseAction {
 
@@ -27,13 +26,18 @@ public class ChangePassAction extends BaseAction {
     private static final String BEAN_CHANGE_PASS_PAGE_MESSAGE = "Message";
     private static final String BEAN_USER_DEF_ID = "currentUserDefId";
 
+    private AnoSiteAccessAPI anoSiteAccessAPI;
+
+    public ChangePassAction() {
+        anoSiteAccessAPI = APIFinder.findAPI(AnoSiteAccessAPI.class);
+    }
 
     @Override
     public ActionCommand execute(ActionMapping mapping, FormBean formBean, HttpServletRequest req, HttpServletResponse res) throws Exception {
 
         /* page is just opened (it's not submit) */
         String userId = (String)getBeanFromSession(req, BEAN_USER_DEF_ID);
-        String login = CMSUserManager.getLoginById(userId);
+        String login = anoSiteAccessAPI.getUserLoginById(userId);
 
         if (req.getParameter(P_IS_SUBMIT) == null) {
             /* for case when not logged user goes on ChangePass page directly */
@@ -50,10 +54,9 @@ public class ChangePassAction extends BaseAction {
         }
 
         /* so, user have submitted ChangePass form */
-        CMSUserManager manager = CMSUserManager.getInstance();
         String oldPass = req.getParameter(P_OLD_PASS);
 
-        if (req.getParameter(P_IS_SUBMIT).equals("true") && manager.canLoginUser(login, oldPass)) {
+        if (req.getParameter(P_IS_SUBMIT).equals("true") && anoSiteAccessAPI.canUserLogin(login, oldPass)) {
             String newPass1 = req.getParameter(P_NEW_PASS_1);
             String newPass2 = req.getParameter(P_NEW_PASS_2);
 
@@ -70,10 +73,7 @@ public class ChangePassAction extends BaseAction {
             }
 
             // changing password
-            CMSUserManager.changeUserPassword(login, newPass1);
-
-            // scan users to update password (user should be able to login with new password from another browser)
-            CMSUserManager.scanUsers();
+            anoSiteAccessAPI.changeUserPassword(login, newPass1);
 
             // redirect to index page (login with new password first will not be required while session is alive)
             res.sendRedirect(INDEX_PAGE_PATH);

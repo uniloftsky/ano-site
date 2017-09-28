@@ -4,28 +4,19 @@ import net.anotheria.access.AccessService;
 import net.anotheria.access.AccessServiceException;
 import net.anotheria.access.SOAttribute;
 import net.anotheria.access.SecurityObject;
-import net.anotheria.access.impl.PermissionCollection;
-import net.anotheria.access.impl.PermissionImpl;
-import net.anotheria.access.impl.SecurityBox;
-import net.anotheria.access.impl.StaticRole;
 import net.anotheria.access.storage.persistence.SecurityBoxPersistenceService;
 import net.anotheria.anoplass.api.APIException;
 import net.anotheria.anoplass.api.APIFinder;
 import net.anotheria.anoplass.api.APIInitException;
 import net.anotheria.anoplass.api.generic.login.LoginAPI;
-import net.anotheria.anoprise.dualcrud.CrudServiceException;
-import net.anotheria.anoprise.dualcrud.SaveableID;
 import net.anotheria.anoprise.metafactory.MetaFactory;
 import net.anotheria.anoprise.metafactory.MetaFactoryException;
-import net.anotheria.anosite.access.constraint.ParametrizedConstraint;
 import net.anotheria.anosite.access.context.SecurityContextInitializer;
 import net.anotheria.anosite.gen.anoaccessconfiguration.data.AccessOperation;
 import net.anotheria.anosite.gen.anoaccessconfiguration.data.Constraint;
 import net.anotheria.anosite.gen.anoaccessconfiguration.data.ContextInitializer;
 import net.anotheria.anosite.gen.anoaccessconfiguration.data.Permission;
 import net.anotheria.anosite.gen.anoaccessconfiguration.data.PermissionSortType;
-import net.anotheria.anosite.gen.anoaccessconfiguration.data.Role;
-import net.anotheria.anosite.gen.anoaccessconfiguration.data.RoleSortType;
 import net.anotheria.anosite.gen.anoaccessconfiguration.service.AccessOperationNotFoundInAnoAccessConfigurationServiceException;
 import net.anotheria.anosite.gen.anoaccessconfiguration.service.AnoAccessConfigurationServiceException;
 import net.anotheria.anosite.gen.anoaccessconfiguration.service.IAnoAccessConfigurationService;
@@ -45,9 +36,8 @@ import net.anotheria.anosite.gen.aswebdata.service.IASWebDataService;
 import net.anotheria.anosite.gen.aswizarddata.data.WizardDef;
 import net.anotheria.anosite.gen.aswizarddata.service.ASWizardDataServiceException;
 import net.anotheria.anosite.gen.aswizarddata.service.IASWizardDataService;
-import net.anotheria.asg.data.DataObject;
-import net.anotheria.asg.util.listener.IServiceListener;
 import net.anotheria.util.StringUtils;
+import net.anotheria.util.crypt.MD5Util;
 import net.anotheria.util.log.LogMessageUtil;
 import net.anotheria.util.sorter.SortType;
 import org.slf4j.Logger;
@@ -490,6 +480,78 @@ public class AnoSiteAccessAPIImpl implements AnoSiteAccessAPI {
 			String message = LogMessageUtil.failMsg(e, ids) + " Can't load context initializers.";
 			LOGGER.error(message, e);
 			throw new AnoSiteAccessAPIException(message, e);
+		}
+	}
+
+	@Override
+	public String hashPassword(String plainTextPassword) {
+		return MD5Util.getMD5Hash(plainTextPassword) + getHashMarker();
+	}
+
+	@Override
+	public String getHashMarker() {
+		return "//hash";
+	}
+
+	private UserDef getUserByLogin(String login) {
+		try {
+			List<UserDef> userDefs = userDataService.getUserDefsByProperty(UserDef.PROP_LOGIN, login);
+			if (userDefs == null || userDefs.isEmpty())
+				throw new RuntimeException("User with login[" + login + "] not found");
+
+			return userDefs.get(0);
+		} catch (ASUserDataServiceException e) {
+			LOGGER.error("get user def by login failed", e);
+			throw new RuntimeException("ASUserDataService failed", e);
+		}
+	}
+
+	@Override
+	public boolean canUserLogin(String login, String password) {
+		UserDef user = getUserByLogin(login);
+		password = hashPassword(password);
+		return user.getPassword().equals(password);
+	}
+
+	@Override
+	public void changeUserPassword(String login, String newPassword) {
+		try {
+			UserDef user = getUserByLogin(login);
+			user.setPassword(hashPassword(newPassword));
+			userDataService.updateUserDef(user);
+		} catch (ASUserDataServiceException e) {
+			LOGGER.error("change user password failed", e);
+			throw new RuntimeException("ASUserDataService failed", e);
+		}
+	}
+
+	@Override
+	public boolean isUserExists(String login) {
+		try {
+			List<UserDef> userDefs = userDataService.getUserDefsByProperty(UserDef.PROP_LOGIN, login);
+			if (userDefs == null || userDefs.isEmpty())
+				return false;
+
+			return true;
+		} catch (ASUserDataServiceException e) {
+			LOGGER.error("Getting user by login failed", e);
+			throw new RuntimeException("Getting user by login failed", e);
+		}
+	}
+
+	@Override
+	public String getUserIdByLogin(String login) {
+		return getUserByLogin(login).getId();
+	}
+
+	@Override
+	public String getUserLoginById(String id) {
+		try {
+			return userDataService.getUserDef(id).getLogin();
+
+		} catch (ASUserDataServiceException e) {
+			LOGGER.error("Getting user by login failed", e);
+			throw new RuntimeException("Getting user by login failed", e);
 		}
 	}
 

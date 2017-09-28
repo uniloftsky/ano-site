@@ -2,9 +2,10 @@ package net.anotheria.anosite.cms.listener;
 
 import net.anotheria.anodoc.query2.QueryNotEqualProperty;
 import net.anotheria.anodoc.query2.QueryProperty;
+import net.anotheria.anoplass.api.APIFinder;
 import net.anotheria.anoprise.metafactory.MetaFactory;
 import net.anotheria.anoprise.metafactory.MetaFactoryException;
-import net.anotheria.anosite.cms.user.CMSUserManager;
+import net.anotheria.anosite.access.AnoSiteAccessAPI;
 import net.anotheria.anosite.gen.asuserdata.data.UserDef;
 import net.anotheria.anosite.gen.asuserdata.service.ASUserDataServiceException;
 import net.anotheria.anosite.gen.asuserdata.service.IASUserDataService;
@@ -20,7 +21,6 @@ import java.util.List;
  * Listener for checking user's updates.
  *
  * @author vbezuhlyi
- * @see CMSUserManager
  * @see IASUserDataService
  */
 
@@ -33,7 +33,11 @@ public class UserListener implements IServiceListener {
 
     private static final IASUserDataService userDataService;
 
+    private static final AnoSiteAccessAPI anoSiteAccessAPI;
+
     static {
+        anoSiteAccessAPI = APIFinder.findAPI(AnoSiteAccessAPI.class);
+
         try {
             userDataService = MetaFactory.get(IASUserDataService.class);
         } catch (MetaFactoryException e) {
@@ -80,22 +84,19 @@ public class UserListener implements IServiceListener {
             shouldUpdate = true;
         }
 
-        if (isDifferent(userDef != null ? userDef.getPassword() : null, userDefNew.getPassword()) || !userDefNew.getPassword().contains(CMSUserManager.getHashMarker())) {
-            userDefNew.setPassword(CMSUserManager.hashPassword(userDefNew.getPassword())); // hashing new or changed plain-text password
+        if (isDifferent(userDef != null ? userDef.getPassword() : null, userDefNew.getPassword()) || !userDefNew.getPassword().contains(anoSiteAccessAPI.getHashMarker())) {
+            userDefNew.setPassword(anoSiteAccessAPI.hashPassword(userDefNew.getPassword())); // hashing new or changed plain-text password
             shouldUpdate = true;
         }
 
-        if (shouldUpdate)
+        if (shouldUpdate) {
             try {
                 userDataService.updateUserDef(userDefNew);
             } catch (ASUserDataServiceException e) {
                 LOGGER.error("ASUserDataService for UserListener failed", e);
                 throw new RuntimeException("ASUserDataService for UserListener failed", e);
             }
-
-        CMSUserManager.scanUsers(); // updating info as user probably has new login or password
-
-
+        }
     }
 
     private <T> boolean isDifferent(T obj1, T obj2) {
