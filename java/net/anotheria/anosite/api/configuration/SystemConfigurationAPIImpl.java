@@ -5,6 +5,7 @@ import net.anotheria.anoplass.api.AbstractAPIImpl;
 import net.anotheria.anosite.shared.AnositeConfig;
 import org.configureme.ConfigurationManager;
 import org.configureme.Environment;
+import org.configureme.GlobalEnvironment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,10 +30,12 @@ public class SystemConfigurationAPIImpl extends AbstractAPIImpl implements Syste
 
 	@Override
 	public String getCurrentSystem() {
-		Environment environment = ConfigurationManager.INSTANCE.getDefaultEnvironment().isReduceable() ?
-									ConfigurationManager.INSTANCE.getDefaultEnvironment().reduce() :
-									ConfigurationManager.INSTANCE.getDefaultEnvironment();
-		return environment.expandedStringForm().toUpperCase();
+		Environment environment = ConfigurationManager.INSTANCE.getDefaultEnvironment();
+		Environment resultEnviroment = environment;
+		while(environment.isReduceable() && (environment = environment.reduce()) != GlobalEnvironment.INSTANCE) {
+			resultEnviroment = environment;
+		}
+		return resultEnviroment.expandedStringForm().toUpperCase();
 	}
 
 	@Override
