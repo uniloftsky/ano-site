@@ -32,7 +32,7 @@ public final class DocumentTransferConfig implements Serializable {
      * Name of target point we need send document to.
      * */
     @Configure
-    private String[] domains;
+    private String domain;
 
 
     private DocumentTransferConfig() {
@@ -56,11 +56,11 @@ public final class DocumentTransferConfig implements Serializable {
         return INSTANCE;
     }
 
-    public String[] getDomains() {
-        return domains;
+    public String getDomain() {
+        return domain;
     }
 
-    public void setDomains(String[] domains) {
-        this.domains = domains;
+    public void setDomain(String domain) {
+        this.domain = domain;
     }
 }
