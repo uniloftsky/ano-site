@@ -58,7 +58,7 @@
 		<dependency>
 			<groupId>net.anotheria</groupId>
 			<artifactId>ano-doc</artifactId>
-			<version>2.6.4-SNAPSHOT</version>
+			<version>${ano-doc.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>net.anotheria</groupId>
