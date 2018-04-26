@@ -2,16 +2,16 @@
 	<parent>
 		<groupId>net.anotheria</groupId>
 		<artifactId>ano-doc-parent</artifactId>
-		<version>2.6.3</version>
+		<version>2.6.4</version>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>ano-site</artifactId>
-	<version>2.6.4-SNAPSHOT</version>
+	<version>2.6.5-SNAPSHOT</version>
 	<name>anotheria.net site engine</name>
 
 	<properties>
-		<ano-doc.version>2.6.3-SNAPSHOT</ano-doc.version>
+		<ano-doc.version>2.6.4</ano-doc.version>
 		<ano-util.version>2.1.6</ano-util.version>
 		<ano-tags.version>2.1.1</ano-tags.version>
 		<ano-web.version>2.1.0</ano-web.version>
@@ -37,14 +37,14 @@
 			<artifactId>logback-classic</artifactId>
 			<scope>test</scope>
 		</dependency>
-        <dependency>
-             <groupId>javax.servlet</groupId>
-             <artifactId>javax.servlet-api</artifactId>
-         </dependency>
-         <dependency>
-             <groupId>javax.servlet.jsp</groupId>
-             <artifactId>javax.servlet.jsp-api</artifactId>
-         </dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>javax.servlet.jsp-api</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-client</artifactId>
@@ -58,7 +58,7 @@
 		<dependency>
 			<groupId>net.anotheria</groupId>
 			<artifactId>ano-doc</artifactId>
-			<version>2.6.4-SNAPSHOT</version>
+			<version>${ano-doc.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>net.anotheria</groupId>
