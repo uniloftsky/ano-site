@@ -15,10 +15,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 
 /**
  * Auto transfer content between configured modules.
@@ -35,10 +31,14 @@ public abstract class AutoTransferListener implements IServiceListener {
      */
     private String filename;
 
+    /**
+     * Base constructor.
+     *
+     * @param moduleId - id of module data
+     */
     public AutoTransferListener(String moduleId){
         filename = moduleId;
     }
-
 
     @Override
     public void documentUpdated(DataObject dataObject, DataObject dataObject1) {
@@ -105,17 +105,3 @@ public abstract class AutoTransferListener implements IServiceListener {
         }
     }
 }
-
-//        if (autoTransfers != null) {
-//            for (AutoTransfer autoTransfer : autoTransfers) {
-//                Path copied = Paths.get(autoTransfer.getSourceDir() + filename + ".dat");
-//                Path toCopy = Paths.get(autoTransfer.getCopyDir() + filename + ".dat");
-//                try {
-//                    Files.copy(copied, toCopy, StandardCopyOption.REPLACE_EXISTING);
-//                    Files.delete(Paths.get(autoTransfer.getCopyDir() + "locks/" + filename + ".lock"));
-//                } catch (IOException e) {
-//                    LOGGER.error("Error while performing auto transfer. ", e);
-//                }
-//
-//            }
-//        }
