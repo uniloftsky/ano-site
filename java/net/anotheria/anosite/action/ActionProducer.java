@@ -90,7 +90,7 @@ public class ActionProducer implements IStatsProducer {
 		CurrentlyTracedCall currentlyTracedCall = aRunningUseCase.callTraced() ?
 				(CurrentlyTracedCall) aRunningUseCase : null;
 		if (currentlyTracedCall != null)
-			currentStep = currentlyTracedCall.startStep(new StringBuilder(getProducerId()).append('.').append("execute").toString(), this);
+			currentStep = currentlyTracedCall.startStep(new StringBuilder(getProducerId()).append('.').append("execute").toString(), this, "execute");
 		try {
 			return action.execute(req, resp, mapping);
 		} catch (Exception e) {

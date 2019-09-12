@@ -83,7 +83,7 @@ public class BoxHandlerProducer implements IStatsProducer {
 		CurrentlyTracedCall runningUseCase = aRunningUseCase.callTraced() ? 
 				(CurrentlyTracedCall)aRunningUseCase : null;
 		if (runningUseCase !=null)
-			currentElement = runningUseCase.startStep(new StringBuilder(getProducerId()).append('.').append("process").toString(), this);
+			currentElement = runningUseCase.startStep(new StringBuilder(getProducerId()).append('.').append("process").toString(), this, "process");
 		try {
 			return target.process(req, res, box, bean);
 		}  catch (Exception e) {
@@ -109,7 +109,7 @@ public class BoxHandlerProducer implements IStatsProducer {
 		CurrentlyTracedCall runningUseCase = aRunningUseCase.callTraced() ? 
 				(CurrentlyTracedCall)aRunningUseCase : null; 
 		if (runningUseCase !=null)
-			currentElement = runningUseCase.startStep(new StringBuilder(getProducerId()).append('.').append("submit").toString(), this);
+			currentElement = runningUseCase.startStep(new StringBuilder(getProducerId()).append('.').append("submit").toString(), this, "submit");
 		try {
 			return target.submit(req, res, box);
 		}  catch (Exception e) {
