@@ -26,6 +26,15 @@
 			</content>
 		</property>
 	</document>
+	<document name="PushNotificationTemplate">
+		<property type="string" name="name"/>
+		<property type="text" name="message" multilingual="true"/>
+		<property name="localizations" type="list">
+			<content>
+				<link name="guard" type="single" target="ASResourceData.LocalizationBundle"/>
+			</content>
+		</property>
+	</document>
 	<document name="Image">
 		<property name="name" type="string"/>
 		<property name="title" type="string" multilingual="false"/>
