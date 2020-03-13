@@ -15,6 +15,10 @@ public class AnositeConfig{
 	@Configure private boolean enforceHttp = true;
 	@Configure private boolean verbose = false;
 	@Configure private boolean httpsOnly = false;
+	/**
+	 * Application name.
+	 */
+	@Configure private String app = "";
 	@Configure private String[] systemsList = null;
 	
 	public static AnositeConfig getInstance(){ return instance; }
@@ -49,6 +53,14 @@ public class AnositeConfig{
 	
 	public void setEnforceHttp(boolean aValue){
 		enforceHttp = aValue;
+	}
+
+	public String getApp() {
+		return app;
+	}
+
+	public void setApp(String app) {
+		this.app = app;
 	}
 
 	public String[] getSystemsList() {

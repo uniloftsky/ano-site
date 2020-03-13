@@ -53,4 +53,8 @@ public class SystemConfigurationAPIImpl extends AbstractAPIImpl implements Syste
 		return new ArrayList<>();
 	}
 
+	@Override
+	public String getCurrentApplication() {
+		return AnositeConfig.getInstance().getApp();
+	}
 }
