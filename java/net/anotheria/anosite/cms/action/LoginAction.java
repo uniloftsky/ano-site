@@ -1,7 +1,7 @@
 package net.anotheria.anosite.cms.action;
 
 import net.anotheria.anosite.cms.user.CMSUserManager;
-import net.anotheria.maf.action.ActionForward;
+import net.anotheria.maf.action.ActionCommand;
 import net.anotheria.maf.action.ActionMapping;
 import net.anotheria.maf.bean.FormBean;
 import net.anotheria.webutils.actions.AccessControlMafAction;
@@ -31,7 +31,7 @@ public class LoginAction extends AccessControlMafAction {
     }
 
 
-    public ActionForward execute(ActionMapping mapping, FormBean bean, HttpServletRequest req, HttpServletResponse res) throws Exception {
+    public ActionCommand execute(ActionMapping mapping, FormBean bean, HttpServletRequest req, HttpServletResponse res) throws Exception {
         CMSUserManager.scanUsers();
 
         /* first try to read auth from cookie */
@@ -78,7 +78,7 @@ public class LoginAction extends AccessControlMafAction {
             userId = CMSUserManager.getIdByLogin(login);
             res.addCookie(createAuthCookie(req, login, password));
         } catch (Exception e) {
-            return mapping.findForward("success");
+            return mapping.success();
         }
 
         addBeanToSession(req, BEAN_USER_ID, login);
