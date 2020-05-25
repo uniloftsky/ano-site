@@ -9,6 +9,7 @@ import net.anotheria.access.impl.PermissionImpl;
 import net.anotheria.access.impl.SecurityBox;
 import net.anotheria.access.impl.StaticRole;
 import net.anotheria.access.storage.persistence.SecurityBoxPersistenceService;
+import net.anotheria.anodoc.data.NoSuchDocumentException;
 import net.anotheria.anoplass.api.APIException;
 import net.anotheria.anoplass.api.APIFinder;
 import net.anotheria.anoplass.api.APIInitException;
@@ -585,6 +586,9 @@ public class AnoSiteAccessAPIImpl implements AnoSiteAccessAPI {
 
 			try {
 				user = userDataService.getUserDef(userData.getUserId());
+			} catch (NoSuchDocumentException e1) {
+				LOGGER.warn("Couldn't get user by id "+userData.getUserId()+", {"+userData+"}", e1);
+				continue;
 			} catch (ASUserDataServiceException e) {
 				LOGGER.error("Error occurred while getting UserDef by id", e);
 				throw new RuntimeException("Error occurred while getting UserDef by id");
