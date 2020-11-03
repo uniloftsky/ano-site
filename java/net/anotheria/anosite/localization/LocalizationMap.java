@@ -1,6 +1,7 @@
 package net.anotheria.anosite.localization;
 
 import net.anotheria.anoplass.api.APICallContext;
+import net.anotheria.anosite.content.variables.VariablesUtility;
 import net.anotheria.anosite.gen.asresourcedata.data.LocalizationBundle;
 import net.anotheria.util.StringUtils;
 import org.slf4j.LoggerFactory;
@@ -41,21 +42,24 @@ public class LocalizationMap {
 
 	public String getMessage(String key) {
 		String message = localizationBundles.get(getPrivateKey(LocalizationEnvironment.ACTION, key));
-		if (message != null)
-			return message;
-		message = localizationBundles.get(getPrivateKey(LocalizationEnvironment.BOX, key));
-		if (message != null)
-			return message;
-		message = localizationBundles.get(getPrivateKey(LocalizationEnvironment.PAGE, key));
-		if (message != null)
-			return message;
-		message = localizationBundles.get(getPrivateKey(LocalizationEnvironment.TEMPLATE, key));
-		if (message != null)
-			return message;
-		message = localizationBundles.get(getPrivateKey(LocalizationEnvironment.SITE, key));
-		if (message != null)
-			return message;
-		return localizationBundles.get(getPrivateKey(LocalizationEnvironment.RESOURCES, key));
+		if (StringUtils.isEmpty(message))
+			message = localizationBundles.get(getPrivateKey(LocalizationEnvironment.BOX, key));
+
+		if (StringUtils.isEmpty(message))
+			message = localizationBundles.get(getPrivateKey(LocalizationEnvironment.PAGE, key));
+
+		if (StringUtils.isEmpty(message))
+			message = localizationBundles.get(getPrivateKey(LocalizationEnvironment.TEMPLATE, key));
+
+		if (StringUtils.isEmpty(message)) {
+			message = localizationBundles.get(getPrivateKey(LocalizationEnvironment.SITE, key));
+		}
+
+		if (StringUtils.isEmpty(message))
+			message = localizationBundles.get(getPrivateKey(LocalizationEnvironment.RESOURCES, key));
+
+		message = VariablesUtility.replaceLocalizationBundleVariables(message);
+		return message;
 	}
 
 	public void addLocalization(LocalizationEnvironment scope, Map<String, String> localization) {

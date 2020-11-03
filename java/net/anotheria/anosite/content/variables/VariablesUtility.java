@@ -23,6 +23,10 @@ public class VariablesUtility {
 	 * Map with preconfigured processors.
 	 */
 	private static final Map<String, VariablesProcessor> defaultProcessors = new HashMap<String, VariablesProcessor>();
+	 /**
+	  * Map with configured localization bundle variable processors.
+	  */
+	private static final Map<String, LocalizationBundleVariableProcessor> lbProcessors = new HashMap<>();
 	
 	static{
 		defaultProcessors.put(DefinitionPrefixes.PREFIX_CALENDAR, new CalendarProcessor());
@@ -73,6 +77,28 @@ public class VariablesUtility {
 	 */
 	public static void addProcessor(String prefix, VariablesProcessor processor){
 		defaultProcessors.put(prefix, processor);
+	}
+
+	 /**
+	  * Add a processor for localization bundles.
+	  *
+	  * @param variable		prefix for processor mapping
+	  * @param processor	{@link LocalizationBundleVariableProcessor} processor
+	  */
+	public static void addLocalizationBundleProcessor(String variable, LocalizationBundleVariableProcessor processor) {
+		lbProcessors.put(variable, processor);
+	}
+
+	public static String replaceLocalizationBundleVariables(String source) {
+		if (StringUtils.isEmpty(source))
+			return source;
+
+		for (String key: lbProcessors.keySet()) {
+			if (source.contains(key)) {
+				source = source.replace(key, lbProcessors.get(key).replace(key));
+			}
+		}
+		return source;
 	}
 
 	public static Map<String, VariablesProcessor> getDefaultProcessors(){
