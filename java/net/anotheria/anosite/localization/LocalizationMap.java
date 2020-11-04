@@ -1,12 +1,18 @@
 package net.anotheria.anosite.localization;
 
 import net.anotheria.anoplass.api.APICallContext;
+import net.anotheria.anoprise.metafactory.MetaFactory;
+import net.anotheria.anoprise.metafactory.MetaFactoryException;
 import net.anotheria.anosite.content.variables.VariablesUtility;
 import net.anotheria.anosite.gen.asresourcedata.data.LocalizationBundle;
+import net.anotheria.anosite.gen.asresourcedata.service.ASResourceDataServiceException;
+import net.anotheria.anosite.gen.asresourcedata.service.IASResourceDataService;
 import net.anotheria.util.StringUtils;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+import org.slf4j.MarkerFactory;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,20 +26,31 @@ import java.util.Map.Entry;
  */
 
 public class LocalizationMap {
-
 	/**
 	 * Logger.
 	 */
     private static final Logger LOGGER = LoggerFactory.getLogger(LocalizationMap.class);
-
 	/**
 	 * The name under which the localization map is stored in the call context
 	 * to allow access by the variable processors.
 	 */
 	public static final String CALL_CONTEXT_SCOPE_NAME = LocalizationMap.class.getName();
-	private Map<String, String> localizationBundles = new HashMap<String, String>();
+	/**
+	 * Current value of localization map.
+	 */
+	private Map<String, String> localizationBundles = new HashMap<>();
+	/**
+	 * {@link IASResourceDataService} instance.
+	 */
+	private IASResourceDataService resourceDataService;
 	
 	private LocalizationMap() {
+		try {
+			resourceDataService = MetaFactory.get(IASResourceDataService.class);
+		} catch (MetaFactoryException e) {
+			LOGGER.error(MarkerFactory.getMarker("FATAL"), "Init IASResourceDataService failure", e);
+			throw new RuntimeException("Init IASResourceDataService failure", e);
+		}
 	}
 
 	private String getPrivateKey(LocalizationEnvironment environment, String key) {
@@ -73,11 +90,26 @@ public class LocalizationMap {
 	}
 
 	public void addLocalizationBundle(LocalizationEnvironment scope, LocalizationBundle bundle){
+		if (!StringUtils.isEmpty(bundle.getParentBundle())) {
+			try {
+				LocalizationBundle parentBundle = resourceDataService.getLocalizationBundle(bundle.getParentBundle());
+				localizationBundles.putAll(parseBundle(scope, parentBundle));
+			} catch (ASResourceDataServiceException e) {
+				LOGGER.warn("Unable to get parent bundle. " + e.getMessage());
+			}
+		}
+		localizationBundles.putAll(parseBundle(scope, bundle));
+	}
+
+	private Map<String, String> parseBundle(LocalizationEnvironment scope, LocalizationBundle bundle) {
+
 		String toParse = bundle.getMessages();
 		if(toParse == null){
 			LOGGER.error("LocalizationBundle " + bundle.getId() + ": message is null!");
-            return;
-        }
+			return Collections.emptyMap();
+		}
+
+		Map<String, String> result = new HashMap<>();
 		toParse = StringUtils.removeChar(toParse, '\r');
 		String[] lines = StringUtils.tokenize(toParse, '\n');
 		for (String l : lines) {
@@ -104,9 +136,9 @@ public class LocalizationMap {
 				}
 			}
 
-			localizationBundles.put(getPrivateKey(scope, message[0]), message[1]);
+			result.put(getPrivateKey(scope, message[0]), message[1]);
 		}
-		
+		return result;
 	}
 
 	public static LocalizationMap getCurrentLocalizationMap() {

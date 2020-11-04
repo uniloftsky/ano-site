@@ -12,6 +12,7 @@
 	<document name="LocalizationBundle">
 		<property type="string" name="name"/>
 		<property type="text" name="messages" multilingual="true"/>
+		<link name="parentBundle" type="single" target="ASResourceData.LocalizationBundle"/>
 	</document>
 	<document name="MailTemplate">
 		<property type="string" name="name"/>
