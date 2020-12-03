@@ -59,20 +59,20 @@ public class LocalizationMap {
 
 	public String getMessage(String key) {
 		String message = localizationBundles.get(getPrivateKey(LocalizationEnvironment.ACTION, key));
-		if (StringUtils.isEmpty(message))
+		if (message == null)
 			message = localizationBundles.get(getPrivateKey(LocalizationEnvironment.BOX, key));
 
-		if (StringUtils.isEmpty(message))
+		if (message == null)
 			message = localizationBundles.get(getPrivateKey(LocalizationEnvironment.PAGE, key));
 
-		if (StringUtils.isEmpty(message))
+		if (message == null)
 			message = localizationBundles.get(getPrivateKey(LocalizationEnvironment.TEMPLATE, key));
 
-		if (StringUtils.isEmpty(message)) {
+		if (message == null) {
 			message = localizationBundles.get(getPrivateKey(LocalizationEnvironment.SITE, key));
 		}
 
-		if (StringUtils.isEmpty(message))
+		if (message == null)
 			message = localizationBundles.get(getPrivateKey(LocalizationEnvironment.RESOURCES, key));
 
 		message = VariablesUtility.replaceLocalizationBundleVariables(message);
