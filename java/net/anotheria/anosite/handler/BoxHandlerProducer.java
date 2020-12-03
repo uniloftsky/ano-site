@@ -7,6 +7,8 @@ import net.anotheria.moskito.core.calltrace.CurrentlyTracedCall;
 import net.anotheria.moskito.core.calltrace.RunningTraceContainer;
 import net.anotheria.moskito.core.calltrace.TraceStep;
 import net.anotheria.moskito.core.calltrace.TracedCall;
+import net.anotheria.moskito.core.context.CurrentMeasurement;
+import net.anotheria.moskito.core.context.MoSKitoContext;
 import net.anotheria.moskito.core.predefined.ActionStats;
 import net.anotheria.moskito.core.predefined.Constants;
 import net.anotheria.moskito.core.producers.IStats;
@@ -76,6 +78,12 @@ public class BoxHandlerProducer implements IStatsProducer {
 	}
 	
 	BoxHandlerResponse process(HttpServletRequest req, HttpServletResponse res, Box box, BoxBean bean, BoxHandler target){
+		MoSKitoContext moSKitoContext = MoSKitoContext.get();
+		CurrentMeasurement cm = moSKitoContext.notifyProducerEntry(this);
+		if (cm.isFirst()){
+			cm.setCallDescription("process Box: "+box.getName()+" ["+box.getId()+"]");
+		}
+
 		processStats.addRequest();
 		long startTime = System.nanoTime();
 		TracedCall aRunningUseCase = RunningTraceContainer.getCurrentlyTracedCall();
@@ -91,6 +99,10 @@ public class BoxHandlerProducer implements IStatsProducer {
 			return new ResponseAbort(e);
 		} finally {
 			long duration = System.nanoTime() - startTime;
+
+			moSKitoContext.notifyProducerExit(this);
+			cm.notifyProducerFinished();
+
 			processStats.addExecutionTime(duration);
 			processStats.notifyRequestFinished();
 			if (currentElement!=null)
@@ -102,6 +114,12 @@ public class BoxHandlerProducer implements IStatsProducer {
 	}
 	
 	BoxHandlerResponse submit(HttpServletRequest req, HttpServletResponse res, Box box, BoxHandler target){
+		MoSKitoContext moSKitoContext = MoSKitoContext.get();
+		CurrentMeasurement cm = moSKitoContext.notifyProducerEntry(this);
+		if (cm.isFirst()){//actually a box should never be first producer.
+			cm.setCallDescription("submit Box: "+box.getName()+" ["+box.getId()+"]");
+		}
+
 		submitStats.addRequest();
 		long startTime = System.nanoTime();
 		TracedCall aRunningUseCase = RunningTraceContainer.getCurrentlyTracedCall();
@@ -117,6 +135,9 @@ public class BoxHandlerProducer implements IStatsProducer {
 			return new ResponseAbort(e);
 		} finally {
 			long duration = System.nanoTime() - startTime;
+
+			moSKitoContext.notifyProducerExit(this);
+
 			submitStats.addExecutionTime(duration);
 			submitStats.notifyRequestFinished();
 			if (currentElement!=null)
