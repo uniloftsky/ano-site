@@ -25,4 +25,8 @@ public abstract class BaseAnoSiteServlet extends MoskitoHttpServlet {
 		return servletPath;
 	}
 
+	@Override
+	public String getProducerId() {
+		return getClass().getSimpleName();
+	}
 }
