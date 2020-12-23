@@ -5,6 +5,8 @@ import net.anotheria.moskito.core.calltrace.CurrentlyTracedCall;
 import net.anotheria.moskito.core.calltrace.RunningTraceContainer;
 import net.anotheria.moskito.core.calltrace.TraceStep;
 import net.anotheria.moskito.core.calltrace.TracedCall;
+import net.anotheria.moskito.core.context.CurrentMeasurement;
+import net.anotheria.moskito.core.context.MoSKitoContext;
 import net.anotheria.moskito.core.predefined.ActionStats;
 import net.anotheria.moskito.core.predefined.Constants;
 import net.anotheria.moskito.core.producers.IStats;
@@ -83,6 +85,12 @@ public class ActionProducer implements IStatsProducer {
 	 */
 	protected ActionCommand execute(HttpServletRequest req, HttpServletResponse resp, ActionMapping mapping, Action action) throws Exception {
 
+		MoSKitoContext moSKitoContext = MoSKitoContext.get();
+		CurrentMeasurement cm = moSKitoContext.notifyProducerEntry(this);
+		if (cm.isFirst()){
+			cm.setCallDescription("execute "+mapping.toString());
+		}
+
 		executeStats.addRequest();
 		long startTime = System.nanoTime();
 		TracedCall aRunningUseCase = RunningTraceContainer.getCurrentlyTracedCall();
@@ -90,7 +98,7 @@ public class ActionProducer implements IStatsProducer {
 		CurrentlyTracedCall currentlyTracedCall = aRunningUseCase.callTraced() ?
 				(CurrentlyTracedCall) aRunningUseCase : null;
 		if (currentlyTracedCall != null)
-			currentStep = currentlyTracedCall.startStep(new StringBuilder(getProducerId()).append('.').append("execute").toString(), this);
+			currentStep = currentlyTracedCall.startStep(new StringBuilder(getProducerId()).append('.').append("execute").toString(), this, "execute");
 		try {
 			return action.execute(req, resp, mapping);
 		} catch (Exception e) {
@@ -98,6 +106,10 @@ public class ActionProducer implements IStatsProducer {
 			throw e;
 		} finally {
 			long duration = System.nanoTime() - startTime;
+
+			moSKitoContext.notifyProducerExit(this);
+			cm.notifyProducerFinished();
+
 			executeStats.addExecutionTime(duration);
 			executeStats.notifyRequestFinished();
 			if (currentStep != null)

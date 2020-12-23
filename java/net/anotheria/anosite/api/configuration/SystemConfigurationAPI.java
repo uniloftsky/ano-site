@@ -15,4 +15,6 @@ public interface SystemConfigurationAPI extends API {
 	String getCurrentSystemExpanded();
 
 	List<String> getAvailableSystems();
+
+	String getCurrentApplication();
 }

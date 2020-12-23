@@ -43,4 +43,8 @@ public class ActionMapping {
     public List<String> getLocalizationBundleIds(){
         return def.getLocalizationBundles();
     }
+
+    public String toString(){
+    	return def.toString();
+	}
 }

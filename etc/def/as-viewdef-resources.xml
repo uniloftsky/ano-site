@@ -22,6 +22,7 @@
 	        		<element type="function" name="deleteWithConfirmation"/>
 					<element type="function" name="lock"/>
 	        		<element type="function" name="unlock"/>
+					<element type="function" name="transfer" />
 	      		</elements>
 	      		<dialog name="Edit" title="Edit TextResource">
         			<elements>
@@ -69,6 +70,7 @@
 		       			<element type="field" name="id" readonly="true"/>
 		      			<element type="field" name="name" />
 		      			<element type="field" name="messages" />
+						<element type="field" name="parentBundle" />
 						<element type="empty"/>
 						<element type="list">
 							<element type="function" name="updateAndClose"/>
@@ -126,7 +128,46 @@
       			</dialog>
 	    	</section>
 
-            <section title="Pictures" type="module">
+			<section title="Push Notification Templates" type="module">
+				<module>ASResourceData</module>
+				<document>PushNotificationTemplate</document>
+				<filter name="AZ" field="name" />
+				<filter name="MissingTranslation" field="Any" />
+				<elements>
+					<element type="field" name="id" comparable="true">
+						<decorator name="idToA">
+							<rule>3</rule>
+						</decorator>
+					</element>
+					<element type="field" name="name" comparable="default">
+						<decorator name="editLink" />
+					</element>
+					<element type="function" name="edit" />
+					<element type="function" name="duplicate" />
+					<element type="function" name="deleteWithConfirmation" />
+					<element type="function" name="lock" />
+					<element type="function" name="unlock" />
+				</elements>
+				<dialog name="Edit" title="Edit Mail Template">
+					<elements>
+						<element type="empty" />
+						<element type="field" name="id" readonly="true" />
+						<element type="field" name="name" />
+						<element type="field" name="message" />
+						<element type="field" name="localizations" />
+						<element type="empty" />
+						<element type="list">
+							<element type="function" name="updateAndClose" />
+							<element type="function" name="updateAndStay" />
+							<element type="function" name="cancel" />
+							<element type="function" name="lock" />
+							<element type="function" name="unlock" />
+						</element>
+					</elements>
+				</dialog>
+			</section>
+
+			<section title="Pictures" type="module">
 				<module>ASResourceData</module>
                 <document>Image</document>
 				<filter name="AZ" field="name"/>

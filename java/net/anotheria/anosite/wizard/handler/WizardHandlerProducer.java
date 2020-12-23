@@ -110,7 +110,7 @@ public final class WizardHandlerProducer implements IStatsProducer {
 		CurrentlyTracedCall runningUseCase = aRunningUseCase.callTraced() ?
 				(CurrentlyTracedCall) aRunningUseCase : null;
 		if (runningUseCase != null)
-			currentStep = runningUseCase.startStep(new StringBuilder(getProducerId()).append('.').append("preProcess").toString(), this);
+			currentStep = runningUseCase.startStep(new StringBuilder(getProducerId()).append('.').append("preProcess").toString(), this, "preProcess");
 		try {
 			return target.preProcess(req, res, wizard);
 		} catch (Exception e) {
@@ -146,7 +146,7 @@ public final class WizardHandlerProducer implements IStatsProducer {
 		CurrentlyTracedCall runningUseCase = aRunningUseCase.callTraced() ?
 				(CurrentlyTracedCall) aRunningUseCase : null;
 		if (runningUseCase != null)
-			currentElement = runningUseCase.startStep(new StringBuilder(getProducerId()).append('.').append("process").toString(), this);
+			currentElement = runningUseCase.startStep(new StringBuilder(getProducerId()).append('.').append("process").toString(), this, "process");
 		try {
 			return target.process(req, res, wizard);
 		} catch (Exception e) {
@@ -181,7 +181,7 @@ public final class WizardHandlerProducer implements IStatsProducer {
 		CurrentlyTracedCall runningUseCase = aRunningUseCase.callTraced() ?
 				(CurrentlyTracedCall) aRunningUseCase : null;
 		if (runningUseCase != null)
-			currentElement = runningUseCase.startStep(new StringBuilder(getProducerId()).append('.').append("submit").toString(), this);
+			currentElement = runningUseCase.startStep(new StringBuilder(getProducerId()).append('.').append("submit").toString(), this, "submit");
 		try {
 			return target.submit(req, res, wizard);
 		} catch (Exception e) {
