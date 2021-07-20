@@ -104,6 +104,7 @@
 	        		<element type="function" name="deleteWithConfirmation"/>
 					<element type="function" name="lock"/>
 	        		<element type="function" name="unlock"/>
+					<element type="function" name="transfer" />
 	      		</elements>
 	      		<dialog name="Edit" title="Edit Mail Template">
         			<elements>
