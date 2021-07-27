@@ -240,6 +240,10 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	 */
 	private AnoSiteAccessAPI accessAPI;
 
+	private String page404 = "404.html";
+
+	private String page500 = "500.html";
+
 
 	@Override
 	public void init(ServletConfig config) throws ServletException {
@@ -263,9 +267,18 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		boxExecutor = new BoxBeanCreator();
 		wizardExecutor = new WizardExecutor();
 		config.getServletContext().setAttribute(AnositeConstants.AA_ANOSITE_RANDOM, IdCodeGenerator.generateCode(10));
-		//Lock!
-		lockManager = new SafeIdBasedLockManager();
-	}
+
+        page404 = config.getInitParameter("page404");
+        if (StringUtils.isEmpty(page404)) {
+            page404 = "404.html";
+        }
+        page500 = config.getInitParameter("page500");
+        if (StringUtils.isEmpty(page500)) {
+            page500 = "500.html";
+        }
+        //Lock!
+        lockManager = new SafeIdBasedLockManager();
+    }
 
 	@Override
 	protected void moskitoDoGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -413,7 +426,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			if (errorPage)
 				throw new ServletException("Page: " + pageName + " not found.");
 			APICallContext.getCallContext().getCurrentSession().setAttribute("404.sourcePageName", pageName);
-			res.sendRedirect(req.getContextPath() + "/" + "404.html");
+			res.sendRedirect(req.getContextPath() + "/" + page404);
 			return;
 		}
 
@@ -546,7 +559,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 						AnositeConstants.AS_MOSKITO_SUBSYSTEM);
 				InternalResponse wizardResponse = InternalResponse.class.cast(wizardProducer.execute(wizardExecutor, req, res, wizard));
 				if (wizardResponse.getCode() == InternalResponseCode.ABORT) {
-					res.sendRedirect(req.getContextPath() + "/" + "500.html");
+					res.sendRedirect(req.getContextPath() + "/" + page500);
 				}
 
 				if (!wizardResponse.canContinue()) {
@@ -584,7 +597,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		///////////////// PAGE END //////////////////////
 
 		if (pageResponse.getCode() == InternalResponseCode.ABORT) {
-			res.sendRedirect(req.getContextPath() + "/" + "500.html");
+			res.sendRedirect(req.getContextPath() + "/" + page500);
 		}
 
 		if (!pageResponse.canContinue()) {
