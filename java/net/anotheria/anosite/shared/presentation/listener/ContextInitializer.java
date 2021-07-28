@@ -6,8 +6,6 @@ import net.anotheria.anosite.api.configuration.SystemConfigurationAPI;
 import net.anotheria.anosite.api.configuration.SystemConfigurationAPIFactory;
 import net.anotheria.anosite.api.feature.FeatureAPI;
 import net.anotheria.anosite.api.feature.FeatureAPIFactory;
-import net.anotheria.anosite.blog.api.BlogAPI;
-import net.anotheria.anosite.blog.api.BlogAPIFactory;
 import net.anotheria.anosite.cms.helper.BoxHelperUtility;
 import net.anotheria.anosite.wizard.api.WizardAPI;
 import net.anotheria.anosite.wizard.api.WizardAPIFactory;
@@ -48,7 +46,6 @@ public class ContextInitializer implements ServletContextListener{
 		//configure API!
 		LOGGER.info(myname + "Configure api");
 		APIFinder.addAPIFactory(WizardAPI.class, new WizardAPIFactory());
-		APIFinder.addAPIFactory(BlogAPI.class,new BlogAPIFactory());
 		APIFinder.addAPIFactory(FeatureAPI.class, new FeatureAPIFactory());
 		APIFinder.addAPIFactory(SystemConfigurationAPI.class, new SystemConfigurationAPIFactory());
 		LOGGER.info(myname + "API configured");
