@@ -1,6 +1,6 @@
 <module name="ASWizardData">
     <listener class="net.anotheria.anosite.cms.listener.CRUDLogListener"/>
-
+    <listener class="net.anotheria.anosite.cms.listener.AutoTransferWizardDataListener" />
     <!-- Wizard document! - "MultiPageDialog" -->
     <document name="WizardDef">
         <property name="name" type="string"/>
