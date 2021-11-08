@@ -20,6 +20,7 @@
 		<property type="string" name="senderName" multilingual="true"/>
 		<property type="string" name="subject" multilingual="true"/>
 		<property type="text" name="message" multilingual="true"/>
+		<property type="text" name="mjml" multilingual="true"/>
 		<property type="text" name="plainMessage" multilingual="true"/>
 		<property name="localizations" type="list">
 			<content>

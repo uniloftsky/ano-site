@@ -115,6 +115,7 @@
 						<element type="field" name="senderName"/>
 		      			<element type="field" name="subject" />
 		      			<element type="field" name="message" />
+						<element type="field" name="mjml"/>
 		      			<element type="field" name="plainMessage" />
 						<element type="field" name="localizations" />
 						<element type="empty"/>
