@@ -15,6 +15,7 @@
 					<decorator name="editLink" />
 				</element>
                 <element type="field" name="enabled" comparable="true"/>
+                <element type="field" name="activeInProduction" comparable="true"/>
                 <element type="field" name="obsolete" comparable="true"/>
                 <element type="field" name="guards" comparable="true">
                     <decorator name="guards" />
@@ -26,6 +27,8 @@
                     <element type="field" name="id" readonly="true" />
                     <element type="field" name="name" />
                     <element type="field" name="enabled" />
+                    <element type="empty" />
+                    <element type="field" name="activeInProduction"/>
                     <element type="empty" />
                     <element type="field" name="obsolete"/>
                     <element type="empty" />

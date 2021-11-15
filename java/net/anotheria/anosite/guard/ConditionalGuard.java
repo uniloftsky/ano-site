@@ -13,6 +13,7 @@ import net.anotheria.asg.exception.ASGRuntimeException;
  *
  */
 public interface ConditionalGuard {
+
 	/**
 	 * Returns true if the condition is fullfilled.
 	 * @param object
