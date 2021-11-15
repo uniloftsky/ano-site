@@ -1,17 +1,18 @@
 package net.anotheria.anosite.api.feature;
 
 import net.anotheria.anoplass.api.APIException;
-import net.anotheria.anoplass.api.APIFinder;
 import net.anotheria.anoplass.api.APIInitException;
 import net.anotheria.anoplass.api.AbstractAPIImpl;
 import net.anotheria.anoprise.metafactory.MetaFactory;
 import net.anotheria.anoprise.metafactory.MetaFactoryException;
-import net.anotheria.anosite.api.configuration.SystemConfigurationAPI;
 import net.anotheria.anosite.gen.asfeature.data.Feature;
 import net.anotheria.anosite.gen.asfeature.service.ASFeatureServiceException;
 import net.anotheria.anosite.gen.asfeature.service.IASFeatureService;
 import net.anotheria.anosite.guard.ConditionalGuard;
 import net.anotheria.anosite.guard.GuardFactory;
+import org.configureme.ConfigurationManager;
+import org.configureme.Environment;
+import org.configureme.GlobalEnvironment;
 
 import java.util.List;
 
@@ -26,10 +27,6 @@ public class FeatureAPIImpl extends AbstractAPIImpl implements FeatureAPI{
 	 * {@link IASFeatureService} instance.
 	 */
 	private IASFeatureService featureService;
-	/**
-	 * API: {@link SystemConfigurationAPI}.
-	 */
-	private SystemConfigurationAPI systemConfigurationAPI;
 
 	@Override
 	public boolean isFeatureActive(String name) throws APIException {
@@ -46,7 +43,7 @@ public class FeatureAPIImpl extends AbstractAPIImpl implements FeatureAPI{
 				return false;
 
 			/* check if this feature must be worked on production */
-			if (systemConfigurationAPI.getCurrentSystem().startsWith("CMS") && !f.getActiveInProduction())
+			if (getCurrentSystem().startsWith("CMS") && !f.getActiveInProduction())
 				return false;
 
 			/* if feature is marked as 'obsolete' and it is being used */
@@ -83,12 +80,19 @@ public class FeatureAPIImpl extends AbstractAPIImpl implements FeatureAPI{
 		}catch(MetaFactoryException e){
 			throw new APIInitException("Feature service not found.");
 		}
-		systemConfigurationAPI = APIFinder.findAPI(SystemConfigurationAPI.class);
 	}
 
 	@Override
 	public void deInit() {
 		featureService = null;
-		systemConfigurationAPI = null;
+	}
+
+	private String getCurrentSystem() {
+		Environment environment = ConfigurationManager.INSTANCE.getDefaultEnvironment();
+		Environment resultEnviroment = environment;
+		while(environment.isReduceable() && (environment = environment.reduce()) != GlobalEnvironment.INSTANCE) {
+			resultEnviroment = environment;
+		}
+		return resultEnviroment.expandedStringForm().toUpperCase();
 	}
 }
