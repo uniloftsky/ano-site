@@ -10,6 +10,7 @@ import net.anotheria.anoprise.metafactory.MetaFactory;
 import net.anotheria.anoprise.metafactory.MetaFactoryException;
 import net.anotheria.anosite.access.AnoSiteAccessAPI;
 import net.anotheria.anosite.access.AnoSiteAccessAPIException;
+import net.anotheria.anosite.api.configuration.SystemConfigurationAPI;
 import net.anotheria.anosite.config.ResourceDeliveryConfig;
 import net.anotheria.anosite.content.bean.AttributeBean;
 import net.anotheria.anosite.content.bean.AttributeMap;
@@ -239,6 +240,10 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	 * {@link AnoSiteAccessAPI} instance.
 	 */
 	private AnoSiteAccessAPI accessAPI;
+	/**
+	 * API: {@link SystemConfigurationAPI}.
+	 */
+	private transient SystemConfigurationAPI systemConfigurationAPI;
 
 	private String page404 = "404.html";
 
@@ -259,6 +264,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			featureService    = MetaFactory.get(IASFeatureService.class);
 			wizardAPI = APIFinder.findAPI(WizardAPI.class);
 			accessAPI = APIFinder.findAPI(AnoSiteAccessAPI.class);
+			systemConfigurationAPI = APIFinder.findAPI(SystemConfigurationAPI.class);
 		} catch (MetaFactoryException e) {
 			LOGGER.error(MarkerFactory.getMarker("FATAL"), "Init ASG services failure", e);
 			throw new ServletException("Init ASG services failure", e);
@@ -1252,6 +1258,10 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		}
 
 		if (!feature.getEnabled())
+			return true;
+
+		/* check if this feature must be worked on production */
+		if (systemConfigurationAPI.getCurrentSystem().startsWith("CMS") && !feature.getActiveInProduction())
 			return true;
 
 		List<String> gIds = feature.getGuards();
