@@ -43,7 +43,7 @@ public class FeatureAPIImpl extends AbstractAPIImpl implements FeatureAPI{
 				return false;
 
 			/* check if this feature must be worked on production */
-			if (getCurrentSystem().startsWith("CMS") && !f.getActiveInProduction())
+			if (getCurrentSystem().startsWith("PROD") && !f.getActiveInProduction())
 				return false;
 
 			/* if feature is marked as 'obsolete' and it is being used */

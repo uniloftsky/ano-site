@@ -1261,7 +1261,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			return true;
 
 		/* check if this feature must be worked on production */
-		if (systemConfigurationAPI.getCurrentSystem().startsWith("CMS") && !feature.getActiveInProduction())
+		if (systemConfigurationAPI.getCurrentSystem().startsWith("PROD") && !feature.getActiveInProduction())
 			return true;
 
 		List<String> gIds = feature.getGuards();
