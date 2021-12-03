@@ -24,11 +24,15 @@ import java.util.List;
  * @author rpotopa
  */
 public class LocalizationProcessor implements VariablesProcessor {
+	/**
+	 * {@link Logger} instance for view used keys.
+	 */
+	private static final Logger TEXT_RESOURCE_LOGGER = LoggerFactory.getLogger("TextResourceLog");
 
 	/**
 	 * {@link Logger} instance.
 	 */
-	private static Logger LOGGER = LoggerFactory.getLogger(BaseResourceTag.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(BaseResourceTag.class);
 
 	/**
 	 * Prefix.
@@ -55,6 +59,7 @@ public class LocalizationProcessor implements VariablesProcessor {
 	@Override
 	public String replace(String prefix, String variable, String defValue, HttpServletRequest req) {
 		if (PREFIX.equals(prefix) && !StringUtils.isEmpty(variable)) {
+			TEXT_RESOURCE_LOGGER.info(variable);
 			String value = getLocalizationFromMap(variable);
 			if(value != null)
 				return value;

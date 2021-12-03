@@ -10,6 +10,8 @@ import net.anotheria.anosite.content.variables.VariablesUtility;
 import net.anotheria.anosite.gen.asresourcedata.data.TextResource;
 import net.anotheria.anosite.localization.LocalizationMap;
 import net.anotheria.anosite.util.AnositeConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Writes out the content of the resource. Writes out a link to the resource in edit mode.
@@ -17,6 +19,10 @@ import net.anotheria.anosite.util.AnositeConstants;
  *
  */
 public class TextResourceTag extends BaseResourceTag{
+	/**
+	 * {@link Logger} instance for view used keys.
+	 */
+	private static final Logger TEXT_RESOURCE_LOGGER = LoggerFactory.getLogger("TextResourceLog");
 
 	/**
 	 * SerialVersionUID.
@@ -38,6 +44,7 @@ public class TextResourceTag extends BaseResourceTag{
 		}
 
 		boolean editable = false;
+		TEXT_RESOURCE_LOGGER.info(key);
 		
 		//Try to find resource with given key in LocalizationMap
 		LocalizationMap localization = (LocalizationMap)APICallContext.getCallContext().getAttribute(LocalizationMap.CALL_CONTEXT_SCOPE_NAME);
