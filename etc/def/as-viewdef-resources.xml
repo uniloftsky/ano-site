@@ -199,6 +199,7 @@
 					<element type="function" name="lock"/>
 	        		<element type="function" name="unlock"/>
 	        		<element type="function" name="version"/>
+                    <element type="function" name="transfer" />
 	            </elements>
     	        <dialog name="Edit" title="Upload a picture">
                     <elements>
