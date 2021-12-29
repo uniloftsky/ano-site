@@ -117,6 +117,10 @@ public class LocalizationMap {
                 continue;
 
             String escapedString = l.replace("\\=", "&#61;");
+            if (!escapedString.contains("=")) {
+                LOGGER.warn("Invalid format of LocalizationBundle with id " + bundle.getId() + " in line: <" + l + ">. Expected line format: <key=message>");
+                continue;
+            }
             String[] message = StringUtils.tokenize(escapedString, '=');
             int length = message.length;
             String key;
