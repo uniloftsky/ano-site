@@ -114,30 +114,22 @@ public class LocalizationMap {
 		String[] lines = StringUtils.tokenize(toParse, '\n');
 		for (String l : lines) {
 			if(StringUtils.isEmpty(l) || l.trim().startsWith("#"))
-				continue;
+                continue;
 
-			String[] message = null;
-
-			if (l.contains("\\=")) {
-				String escapedString = l.replace("\\=", "&#61;");
-				message = StringUtils.tokenize(escapedString, '=');
-
-				if (message.length != 2){
-					LOGGER.warn("Invalid format of LocalizationBundle with id " + bundle.getId() + " in line: <" + l + ">. Expected line format: <key=message>");
-					continue;
-				}
-
-				message[1] = message[1].replace("&#61;", "=");
-			} else {
-				message = StringUtils.tokenize(l, '=');
-				if (message.length != 2){
-					LOGGER.warn("Invalid format of LocalizationBundle with id " + bundle.getId() + " in line: <" + l + ">. Expected line format: <key=message>");
-					continue;
-				}
-			}
-
-			result.put(getPrivateKey(scope, message[0]), message[1]);
-		}
+            String escapedString = l.replace("\\=", "&#61;");
+            String[] message = StringUtils.tokenize(escapedString, '=');
+            int length = message.length;
+            String key;
+            String value;
+            if ((length == 2 || length == 1) && !message[0].isEmpty()) {
+                key = message[0].replace("&#61;", "=");
+                value = length == 2 ? message[1].replace("&#61;", "=") : "";
+            } else {
+                LOGGER.warn("Invalid format of LocalizationBundle with id " + bundle.getId() + " in line: <" + l + ">. Expected line format: <key=message>");
+                continue;
+            }
+            result.put(getPrivateKey(scope, key), value);
+        }
 		return result;
 	}
 
