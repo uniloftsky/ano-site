@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 /**
- * Storage for localization in different environment.<br/>
+ * Storage for localization in different environment.
  * Will be rewritten with new Localization Framework.
  * 
  * @author denis

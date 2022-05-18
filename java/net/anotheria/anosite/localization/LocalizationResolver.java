@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  * Not real resolver but some workaround as localizations adder from
- * LocalizationMap and TextResources.<br/>
+ * LocalizationMap and TextResources.
  * Will be rewritten with new Localization Framework.
  * 
  * @author denis

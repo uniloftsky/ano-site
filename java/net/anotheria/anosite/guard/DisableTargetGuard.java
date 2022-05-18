@@ -6,7 +6,7 @@ import net.anotheria.asg.exception.ASGRuntimeException;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * @auther Vlad Lukjanenko
+ * @author Vlad Lukjanenko
  */
 public class DisableTargetGuard implements ConditionalGuard {
 

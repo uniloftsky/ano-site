@@ -21,7 +21,6 @@ import javax.servlet.ServletContextListener;
 /**
  * This listener performs the webapp initialization upon webserver start (or webapp hot-re-deploy).
  * @author lrosenberg
- * @created Feb 16, 2007
  */
 public class ContextInitializer implements ServletContextListener{
 
