@@ -160,7 +160,7 @@ public class IPFilter implements Filter{
 	}
 	
 	/**
-	 * @param req
+	 * @param req TODO dummy comment for javadoc.
 	 * @return URL to maintenance page
 	 */
 	protected String getMaintenancePageURL(HttpServletRequest req){

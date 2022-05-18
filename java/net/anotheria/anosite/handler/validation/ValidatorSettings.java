@@ -1,8 +1,8 @@
 package net.anotheria.anosite.handler.validation;
 
-import java.io.Serializable;
-
 import org.json.JSONObject;
+
+import java.io.Serializable;
 
 /**
  * Validator settings generic interface.
@@ -21,7 +21,7 @@ public interface ValidatorSettings extends Serializable {
 	/**
 	 * Get validator settings as {@link JSONObject}.
 	 * 
-	 * @return
+	 * @return TODO dummy comment for javadoc.
 	 */
 	JSONObject toJSON();
 

@@ -20,7 +20,7 @@ public class ActionMapping {
 	private ActionCommand predefinedCommand;
 	/**
 	 * Creates a new ActionMapping
-	 * @param aDef
+	 * @param aDef  TODO dummy comment for javadoc.
 	 */
 	public ActionMapping(ActionMappingDef aDef){
 		def = aDef;
@@ -29,7 +29,7 @@ public class ActionMapping {
 	
 	/**
 	 * Returns the predefinedCommand.
-	 * @return
+	 * @return  TODO dummy comment for javadoc.
 	 */
 	public ActionCommand getPredefinedCommand(){
 		return predefinedCommand;
@@ -37,13 +37,13 @@ public class ActionMapping {
 
     /**
      * Returns LocalizationBundle ids, that are connected to this ActionMapping.
-     *
-     * @return
+     * @return  TODO dummy comment for javadoc.
      */
     public List<String> getLocalizationBundleIds(){
         return def.getLocalizationBundles();
     }
 
+    
     public String toString(){
     	return def.toString();
 	}

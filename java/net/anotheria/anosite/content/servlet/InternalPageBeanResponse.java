@@ -15,15 +15,15 @@ public class InternalPageBeanResponse extends InternalResponse {
 	private PageBean pageBean;
 	/**
 	 * Creates a new InternalPageBeanResponse with a pagebean and InternalResponseCode.CONTINUE.
-	 * @param aPageBean
+	 * @param aPageBean  TODO dummy comment for javadoc.
 	 */
 	public InternalPageBeanResponse(PageBean aPageBean){
 		this(InternalResponseCode.CONTINUE, aPageBean);
 	}
 	/**
 	 * Creates a new InternalPageBeanResponse with the given response code and pageBean.
-	 * @param code
-	 * @param aPageBean
+	 * @param code  TODO dummy comment for javadoc.
+	 * @param aPageBean  TODO dummy comment for javadoc.
 	 */
 	public InternalPageBeanResponse(InternalResponseCode code, PageBean aPageBean){
 		super(code);
@@ -32,7 +32,7 @@ public class InternalPageBeanResponse extends InternalResponse {
 	
 	/**
 	 * Returns the page bean.
-	 * @return
+	 * @return  TODO dummy comment for javadoc.
 	 */
 	public PageBean getPageBean(){
 		return pageBean;

@@ -64,7 +64,7 @@ public enum WizardCommand {
 	/**
 	 * Returns {@link WizardCommand} .
 	 *
-	 * @param parameters {@link Map<String,String>} actually request parameter map
+	 * @param parameters {@link Map} actually request parameter map
 	 * @return {@link WizardCommand}, if not found in map NEXT will be returned
 	 */
 	public static WizardCommand getCommandByValue(Map<String, String[]> parameters) {

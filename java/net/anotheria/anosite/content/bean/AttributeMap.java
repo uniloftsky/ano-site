@@ -29,16 +29,16 @@ public class AttributeMap {
 	}
 	/**
 	 * Returns the attribute under given name.
-	 * @param key
-	 * @return
+	 * @param key  TODO dummy comment for javadoc.
+	 * @return  TODO dummy comment for javadoc.
 	 */
 	public AttributeBean getAttribute(String key){
 		return attributes.get(key);
 	}
 	/**
 	 * Sets the attribute. If override is true an old value will be overriden.
-	 * @param b
-	 * @param override
+	 * @param b  TODO dummy comment for javadoc.
+	 * @param override TODO dummy comment for javadoc.
 	 */
 	public void setAttribute(AttributeBean b, boolean override){
 		AttributeBean old = attributes.get(b.getKey());
@@ -47,7 +47,7 @@ public class AttributeMap {
 	}
 	/**
 	 * Sets the attribute. Note, attributes aren't overriden once set.
-	 * @param b
+	 * @param b  TODO dummy comment for javadoc.
 	 */
 	public void setAttribute(AttributeBean b){
 		setAttribute(b, false);

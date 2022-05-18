@@ -133,14 +133,11 @@ public abstract class AbstractValidationBoxHandler<T extends AbstractFormBean> e
 	/**
 	 * Real submit method for overriding in sub classes.
 	 * 
-	 * @param req
-	 *            - request
-	 * @param res
-	 *            - response
-	 * @param box
-	 *            - box
+	 * @param req request
+	 * @param res response
+	 * @param box box
 	 * @return {@link BoxHandlerResponse}
-	 * @throws BoxSubmitException
+	 * @throws BoxSubmitException TODO dummy comment for javadoc.
 	 */
 	protected BoxHandlerResponse executeSubmit(final HttpServletRequest req, final HttpServletResponse res, final Box box) throws BoxSubmitException {
 		return super.submit(req, res, box);
@@ -157,7 +154,8 @@ public abstract class AbstractValidationBoxHandler<T extends AbstractFormBean> e
 
 	/**
 	 * Use this method if we want put some validation settings to page.
-	 * 
+	 *
+	 * @param req  TODO dummy comment for javadoc.
 	 * @return {@link ValidationSettings}
 	 */
 	protected final ValidationSettings getFormValidationSettings(final HttpServletRequest req) {

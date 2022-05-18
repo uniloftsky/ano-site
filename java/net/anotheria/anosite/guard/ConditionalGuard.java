@@ -1,9 +1,9 @@
 package net.anotheria.anosite.guard;
 
-import javax.servlet.http.HttpServletRequest;
-
 import net.anotheria.asg.data.DataObject;
 import net.anotheria.asg.exception.ASGRuntimeException;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * A conditional guard guards any object and returns true only if the predefined condition is true in the objects context. ContentPageServlet and other CMS classes ignore 
@@ -16,10 +16,10 @@ public interface ConditionalGuard {
 
 	/**
 	 * Returns true if the condition is fullfilled.
-	 * @param object
-	 * @param req
-	 * @return
-	 * @throws ASGRuntimeException
+	 * @param object  TODO dummy comment for javadoc.
+	 * @param req TODO dummy comment for javadoc.
+	 * @return TODO dummy comment for javadoc.
+	 * @throws ASGRuntimeException  TODO dummy comment for javadoc.
 	 */
 	boolean isConditionFullfilled(DataObject object, HttpServletRequest req) throws ASGRuntimeException;
 }

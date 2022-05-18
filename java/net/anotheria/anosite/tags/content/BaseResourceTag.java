@@ -44,9 +44,9 @@ public abstract class BaseResourceTag extends BaseTagSupport {
 	}
 	/**
 	 * Returns a text resource by its name.
-	 * @param key
-	 * @return
-	 * @throws JspException
+	 * @param key TODO dummy comment for javadoc.
+	 * @return TODO dummy comment for javadoc.
+	 * @throws JspException TODO dummy comment for javadoc.
 	 */
 	protected TextResource getTextResourceByName(String key) throws JspException{
 		try{

@@ -101,7 +101,7 @@ public interface WizardAPI extends API {
 	 *
 	 * @param wizard {@link WizardAO}
 	 * @return true if wizard canceled, false otherwise
-	 * @throws WizardAPIException
+	 * @throws WizardAPIException  TODO dummy comment for javadoc.
 	 */
 	boolean cancelWizard(WizardAO wizard) throws WizardAPIException;
 

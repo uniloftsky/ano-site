@@ -109,6 +109,8 @@ public class VariablesUtility {
 	
 	/**
 	 * Replaces variable expressions in the given string src with help of default processors.
+	 * @param req  TODO dummy comment for javadoc.
+	 * @param src  TODO dummy comment for javadoc.
 	 */
 	public static String replaceVariables(HttpServletRequest req, String src){
 		return replaceVariables(req, src, defaultProcessors);

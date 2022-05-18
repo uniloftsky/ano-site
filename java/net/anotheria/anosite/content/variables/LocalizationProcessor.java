@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MarkerFactory;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.JspException;
 import java.util.List;
 
 
@@ -76,9 +75,8 @@ public class LocalizationProcessor implements VariablesProcessor {
 	
 	/**
 	 * Returns a text resource by its name.
-	 * @param key
-	 * @return
-	 * @throws JspException
+	 * @param key  TODO dummy comment for javadoc.
+	 * @return  TODO dummy comment for javadoc.
 	 */
 	protected String getLocalizationFromResources(String key){
 		try{

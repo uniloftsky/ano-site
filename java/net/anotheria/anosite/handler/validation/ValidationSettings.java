@@ -1,14 +1,14 @@
 package net.anotheria.anosite.handler.validation;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * Validation settings configuration used in {@link AbstractValidationBoxHandler}.
@@ -49,6 +49,8 @@ public class ValidationSettings implements Serializable {
 
 	/**
 	 * Add new message to settings with some key.
+	 * @param key  TODO dummy comment for javadoc.
+	 * @param message  TODO dummy comment for javadoc.
 	 */
 	public void addMessage(String key, String message) {
 		messages.put(key, message);

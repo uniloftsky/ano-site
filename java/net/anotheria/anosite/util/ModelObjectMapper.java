@@ -13,15 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
 
 /**
- * Guitar Model Object.
- * <p/>
- * <P>Various attributes of guitars, and related behaviour.
- * <p/>
- *
- * @author vitaliy
- * @version 1.0
- *          Date: Jan 16, 2010
- *          Time: 3:17:22 PM
+ * Model Object Mapper.
  */
 public final class ModelObjectMapper {
 
