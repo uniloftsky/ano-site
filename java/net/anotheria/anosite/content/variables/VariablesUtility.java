@@ -109,9 +109,6 @@ public class VariablesUtility {
 	
 	/**
 	 * Replaces variable expressions in the given string src with help of default processors.
-	 * @param req
-	 * @param src
-	 * @return
 	 */
 	public static String replaceVariables(HttpServletRequest req, String src){
 		return replaceVariables(req, src, defaultProcessors);
@@ -119,10 +116,10 @@ public class VariablesUtility {
 	
 	/**
 	 * Replaces variable expressions in the given string src with the help of submitted processors. Useful for variable customization.
-	 * @param req
-	 * @param src
-	 * @param processors
-	 * @return
+	 * @param req request
+	 * @param src source string
+	 * @param processors processors
+	 * @return returns a string with variables replaced.
 	 */
 	public static String replaceVariables(HttpServletRequest req, String src, Map<String,VariablesProcessor> processors){
 		if(src == null || src.length() == 0)
