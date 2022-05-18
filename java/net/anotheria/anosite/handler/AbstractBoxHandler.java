@@ -56,7 +56,7 @@ public abstract class AbstractBoxHandler implements BoxHandler{
 
 	/**
 	 * Returns the log instance. This way each handler has a useable log.
-	 * @return
+	 * @return Logger.
 	 */
 	protected Logger getLog(){
 		return log;

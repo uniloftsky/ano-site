@@ -10,7 +10,7 @@ import net.anotheria.anosite.shared.InternalResponseCode;
 public abstract class BoxHandlerResponse {
 	/**
 	 * Returns the response code of the response. Classes react on the response accordingly to the response code.
-	 * @return
+	 * @return the response code.
 	 */
 	public abstract InternalResponseCode getResponseCode();
 	

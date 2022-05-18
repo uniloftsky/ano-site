@@ -1,13 +1,12 @@
 package net.anotheria.anosite.handler.validation;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Form definition bean used in {@link AbstractValidationBoxHandler}.
@@ -97,11 +96,11 @@ public abstract class AbstractFormBean implements Serializable {
 	/**
 	 * Read field value from form data storage in real type. Can be returned with some default value if real value not exist in storage.
 	 * 
-	 * @param name
-	 *            - field name
-	 * @param fieldType
-	 *            - field value type class
-	 * @return T
+	 * @param name field name.
+	 * @param fieldType field value type class.
+	 * @param defaultValue  TODO dummy comment for javadoc.
+	 * @param <T>  TODO dummy comment for javadoc.
+	 * @return T  TODO dummy comment for javadoc.
 	 */
 	protected final <T> T readField(final String name, Class<T> fieldType, T defaultValue) {
 		Object value = readField(name);
@@ -114,8 +113,7 @@ public abstract class AbstractFormBean implements Serializable {
 	/**
 	 * Any bean extended from this abstract class must have possibility to initialize by self from request.
 	 * 
-	 * @param req
-	 *            - request
+	 * @param req request
 	 */
 	protected abstract void prepare(final HttpServletRequest req);
 

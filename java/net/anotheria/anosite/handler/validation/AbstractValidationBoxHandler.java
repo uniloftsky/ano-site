@@ -1,11 +1,5 @@
 package net.anotheria.anosite.handler.validation;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import net.anotheria.anosite.content.bean.BoxBean;
 import net.anotheria.anosite.gen.aswebdata.data.Box;
 import net.anotheria.anosite.handler.AbstractBoxHandler;
@@ -15,6 +9,11 @@ import net.anotheria.anosite.handler.exception.BoxHandleException;
 import net.anotheria.anosite.handler.exception.BoxProcessException;
 import net.anotheria.anosite.handler.exception.BoxSubmitException;
 import net.anotheria.util.StringUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * Abstract box handler for handling requests with validation functional.
@@ -119,16 +118,12 @@ public abstract class AbstractValidationBoxHandler<T extends AbstractFormBean> e
 	/**
 	 * Real process method for overriding in sub classes.
 	 * 
-	 * @param req
-	 *            - request
-	 * @param res
-	 *            - response
-	 * @param box
-	 *            - box
-	 * @param bean
-	 *            - box bean
+	 * @param req request
+	 * @param res response
+	 * @param box box
+	 * @param bean box bean
 	 * @return {@link BoxHandlerResponse}
-	 * @throws BoxProcessException
+	 * @throws BoxProcessException  TODO dummy comment for javadoc.
 	 */
 	protected BoxHandlerResponse executeProcess(final HttpServletRequest req, final HttpServletResponse res, final Box box, final BoxBean bean)
 			throws BoxProcessException {
@@ -177,11 +172,8 @@ public abstract class AbstractValidationBoxHandler<T extends AbstractFormBean> e
 
 	/**
 	 * Get form bean. On first call to this method form bean will be created and prepared from request.
-	 * 
-	 * @param req
-	 *            - request
-	 * @return T
-	 * @throws BoxSubmitException
+	 * @param req request
+	 * @return T  TODO dummy comment for javadoc.
 	 */
 	protected final T getFormBean(final HttpServletRequest req) {
 		Object beanObj = req.getAttribute(getFormId() + ATTR_FORM_BEAN);
@@ -195,11 +187,8 @@ public abstract class AbstractValidationBoxHandler<T extends AbstractFormBean> e
 
 	/**
 	 * Publish form bean to request attributes.
-	 * 
-	 * @param formBean
-	 *            - form bean
-	 * @param req
-	 *            - request
+	 * @param formBean form bean
+	 * @param req request
 	 */
 	protected final void publishFormBean(final T formBean, final HttpServletRequest req) {
 		for (String fieldName : formBean.getFieldsNames())
@@ -209,12 +198,10 @@ public abstract class AbstractValidationBoxHandler<T extends AbstractFormBean> e
 	/**
 	 * Prepare form bean.
 	 * 
-	 * @param bean
-	 *            - form bean
-	 * @param req
-	 *            - request
-	 * @return T
-	 * @throws BoxSubmitException
+	 * @param bean  TODO dummy comment for javadoc.
+	 * @param req request.
+	 * @return T  TODO dummy comment for javadoc.
+	 * @throws BoxSubmitException  TODO dummy comment for javadoc.
 	 */
 	private final T prepareFormBean(final T bean, final HttpServletRequest req) {
 		bean.prepare(req);
@@ -224,8 +211,7 @@ public abstract class AbstractValidationBoxHandler<T extends AbstractFormBean> e
 	/**
 	 * Create instance of form bean.
 	 * 
-	 * @return T
-	 * @throws BoxSubmitException
+	 * @return T  TODO dummy comment for javadoc.
 	 */
 	protected final T createFormBean() {
 		try {
@@ -254,14 +240,11 @@ public abstract class AbstractValidationBoxHandler<T extends AbstractFormBean> e
 	/**
 	 * Validate submit request.
 	 * 
-	 * @param req
-	 *            - request
-	 * @param res
-	 *            - response
-	 * @param box
-	 *            - box
+	 * @param req  TODO dummy comment for javadoc.
+	 * @param res  TODO dummy comment for javadoc.
+	 * @param box  TODO dummy comment for javadoc.
 	 * @return {@link ValidationResponse}
-	 * @throws BoxHandleException
+	 * @throws BoxHandleException  TODO dummy comment for javadoc.
 	 */
 	protected ValidationResponse validate(final HttpServletRequest req, final HttpServletResponse res, final Box box) throws BoxHandleException {
 		return ValidationResponse.EMPTY_RESPONSE;
@@ -270,12 +253,10 @@ public abstract class AbstractValidationBoxHandler<T extends AbstractFormBean> e
 	/**
 	 * Writes JSON response and flush the stream.
 	 * 
-	 * @param res
-	 *            - HttpServletResponse
-	 * @param json
-	 *            - response
-	 * @return {@link BoxHandlerResponse}
-	 * @throws IOException
+	 * @param res HttpServletResponse
+	 * @param json response
+	 * @return {@link BoxHandlerResponse}  TODO dummy comment for javadoc.
+	 * @throws BoxSubmitException  TODO dummy comment for javadoc.
 	 */
 	protected final BoxHandlerResponse writeJSONResponse(final HttpServletResponse res, final String json) throws BoxSubmitException {
 		res.setCharacterEncoding(JSON_RESPONSE_CODEPAGE);
