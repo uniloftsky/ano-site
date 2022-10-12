@@ -114,6 +114,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -470,6 +471,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			String redirectTarget = "https://";
 			redirectTarget += req.getServerName();
 			redirectTarget += requestURI;
+			redirectTarget = URLEncoder.encode(redirectTarget, "UTF-8");
 			LOGGER.debug("making secure switch to " + redirectTarget);
 			res.sendRedirect(redirectTarget);
 			return;
@@ -479,6 +481,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			String redirectTarget = "http://";
 			redirectTarget += req.getServerName();
 			redirectTarget += requestURI;
+			redirectTarget = URLEncoder.encode(redirectTarget, "UTF-8");
 			LOGGER.debug("making unsecure switch to " + redirectTarget);
 			res.sendRedirect(redirectTarget);
 			return;
