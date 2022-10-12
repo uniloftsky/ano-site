@@ -46,7 +46,7 @@
 				<module>ASResourceData</module>
 				<document>LocalizationBundle</document>
 				<filter name="AZ" field="name"/>
-				<filter name="MissingTranslation" field="Any" />
+				<filter name="MissingTranslation" field="any" />
 				<elements>
 					<element type="field" name="id" comparable="true">
 	        		   	<decorator name="idToA">
