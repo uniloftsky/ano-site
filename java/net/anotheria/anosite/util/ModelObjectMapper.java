@@ -15,6 +15,7 @@ import java.lang.reflect.Field;
 /**
  * Model Object Mapper.
  */
+@Deprecated
 public final class ModelObjectMapper {
 
 	/**
@@ -32,6 +33,7 @@ public final class ModelObjectMapper {
 	 * @param req  http request
 	 * @param bean backing bean
 	 */
+	@Deprecated
 	public static void map(final HttpServletRequest req, final Object bean) {
 		FormObjectMapper.map(req, bean);
 	}
@@ -42,6 +44,7 @@ public final class ModelObjectMapper {
 	 * @param req  http request
 	 * @param bean backing bean
 	 */
+	@Deprecated
 	public static void validate(final HttpServletRequest req, final Object bean) {
 		final Class beanClass = bean.getClass();
 		final Field[] fields = beanClass.getDeclaredFields();
