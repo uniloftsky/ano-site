@@ -7,7 +7,6 @@ import net.anotheria.anosite.gen.asresourcedata.service.IASResourceDataService;
 import net.anotheria.anosite.gen.shared.action.BaseToolsAction;
 import net.anotheria.maf.action.ActionCommand;
 import net.anotheria.maf.action.ActionMapping;
-import net.anotheria.maf.bean.FormBean;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,7 +30,7 @@ public class LocalizationBundleMakeParentsMafAction extends BaseToolsAction {
         return true;
     }
 
-    public ActionCommand anoDocExecute(ActionMapping aMapping, FormBean aAf, HttpServletRequest aReq, HttpServletResponse aRes) throws Exception {
+    public ActionCommand anoDocExecute(ActionMapping aMapping, HttpServletRequest aReq, HttpServletResponse aRes) throws Exception {
         try {
             List<LocalizationBundle> localizationBundles = iasResourceDataService.getLocalizationBundles();
             localizationBundles.sort(Comparator.comparing(LocalizationBundle::getId));

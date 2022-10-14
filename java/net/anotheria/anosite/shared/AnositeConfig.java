@@ -4,9 +4,6 @@ import org.configureme.ConfigurationManager;
 import org.configureme.annotations.Configure;
 import org.configureme.annotations.ConfigureMe;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @ConfigureMe
 public class AnositeConfig{
 	private static AnositeConfig instance = new AnositeConfig();

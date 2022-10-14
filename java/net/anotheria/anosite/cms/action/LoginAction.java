@@ -3,7 +3,6 @@ package net.anotheria.anosite.cms.action;
 import net.anotheria.anosite.cms.user.CMSUserManager;
 import net.anotheria.maf.action.ActionCommand;
 import net.anotheria.maf.action.ActionMapping;
-import net.anotheria.maf.bean.FormBean;
 import net.anotheria.webutils.actions.AccessControlMafAction;
 
 import javax.servlet.http.Cookie;
@@ -31,7 +30,7 @@ public class LoginAction extends AccessControlMafAction {
     }
 
 
-    public ActionCommand execute(ActionMapping mapping, FormBean bean, HttpServletRequest req, HttpServletResponse res) throws Exception {
+    public ActionCommand execute(ActionMapping mapping, HttpServletRequest req, HttpServletResponse res) throws Exception {
         CMSUserManager.scanUsers();
 
         /* first try to read auth from cookie */
