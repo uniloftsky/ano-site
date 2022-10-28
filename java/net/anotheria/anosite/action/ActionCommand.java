@@ -59,8 +59,8 @@ public class ActionCommand {
 	
 	/**
 	 * Returns the target for the redirect or forward.
-	 * First the url paraemter is checked, if no url parameter is specified, page parameter is considered and the url to the specified page is returned.
-	 * @return
+	 * First the url parameter is checked, if no url parameter is specified, page parameter is considered and the url to the specified page is returned.
+	 * @return the target for the redirect or forward.
 	 */
 	public String getTarget(){
 		String targetUrl =  url == null || url.trim().length() == 0 ? 

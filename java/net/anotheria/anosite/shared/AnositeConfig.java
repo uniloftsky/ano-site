@@ -44,7 +44,7 @@ public class AnositeConfig{
 
 	/**
 	 * If true and a user is on a https page, but the page doesn't require https, he will be redirected to http.
-	 * @return
+	 * @return true if http is enforced.
 	 */
 	public boolean enforceHttp(){ return enforceHttp; }
 	

@@ -37,8 +37,8 @@ public final class GuardFactory {
 
 	/**
 	 * Creates a new conditional guards (or returns an existing one) by guards id.
-	 * @param id
-	 * @return
+	 * @param id of the guard.
+	 * @return conditional guard.
 	 */
 	public static ConditionalGuard getConditionalGuard(String id){
 		ConditionalGuard g = null;
