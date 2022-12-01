@@ -1,8 +1,6 @@
 package net.anotheria.anosite.cms.action;
 
 import net.anotheria.anosite.gen.shared.action.BaseToolsAction;
-import net.anotheria.asg.generator.Context;
-import net.anotheria.asg.generator.GeneratorDataRegistry;
 import net.anotheria.maf.action.ActionCommand;
 import net.anotheria.maf.action.ActionMapping;
 
@@ -19,8 +17,7 @@ public class LocalizationBundleExportMafAction extends BaseToolsAction {
     }
 
     public ActionCommand anoDocExecute(ActionMapping aMapping, HttpServletRequest aReq, HttpServletResponse aRes) throws Exception {
-        Context context = GeneratorDataRegistry.getInstance().getContext();
-        aReq.setAttribute("languages", context.getLanguages());
+        aReq.setAttribute("languages", getSupportedLanguages());
         aReq.setAttribute("selectedLanguage", "AT");
         return aMapping.success();
     }
