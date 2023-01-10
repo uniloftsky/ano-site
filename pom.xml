@@ -29,8 +29,6 @@
 
 		<source-version>1.8</source-version>
 		<target-version>1.8</target-version>
-		
-		<maven.javadoc.failOnError>false</maven.javadoc.failOnError>
 	</properties>
 
 	<dependencies>
