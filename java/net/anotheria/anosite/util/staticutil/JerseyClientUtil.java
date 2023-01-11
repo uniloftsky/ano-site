@@ -1,6 +1,7 @@
 package net.anotheria.anosite.util.staticutil;
 
 import org.glassfish.jersey.client.JerseyClientBuilder;
+import org.glassfish.jersey.media.multipart.MultiPartFeature;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -61,6 +62,7 @@ public final class JerseyClientUtil {
 
         CLIENT = new JerseyClientBuilder()
                 .hostnameVerifier(HttpsURLConnection.getDefaultHostnameVerifier())
+                .register(MultiPartFeature.class)
                 .sslContext(ctx)
                 .connectTimeout(5_000, TimeUnit.MILLISECONDS)
                 .readTimeout(90_000, TimeUnit.MILLISECONDS)
