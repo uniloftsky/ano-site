@@ -1,19 +1,18 @@
 package net.anotheria.anosite.util.staticutil;
 
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.client.urlconnection.HTTPSProperties;
+import org.glassfish.jersey.client.JerseyClientBuilder;
+import org.glassfish.jersey.media.multipart.MultiPartFeature;
 
-import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+import javax.ws.rs.client.Client;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Util for configuring jersey client.
@@ -21,51 +20,34 @@ import java.security.cert.X509Certificate;
  * @author ykalapusha
  */
 public final class JerseyClientUtil {
-
-    /**
-     * Connection timeout.
-     */
-    private static final int CONNECT_TIMEOUT = 5000;
-
-    /**
-     * Read timeout.
-     */
-    private static final int READ_TIMEOUT = 90000;
-
     /**
      * Jersey {@link Client} client instance.
      */
     private static final Client CLIENT;
 
     /**
-     * {@link TrustManager} config.
-     */
-    private static final TrustManager[] certs = new TrustManager[]{
-            new X509TrustManager() {
-                @Override
-                public X509Certificate[] getAcceptedIssuers() {
-                    return null;
-                }
-
-                @Override
-                public void checkServerTrusted(X509Certificate[] chain, String authType)
-                        throws CertificateException {
-                }
-
-                @Override
-                public void checkClientTrusted(X509Certificate[] chain, String authType)
-                        throws CertificateException {
-                }
-            }
-    };
-
-    /**
      * Configure jersey client
      */
     static {
+        TrustManager[] certs = new TrustManager[]{
+                new X509TrustManager() {
+                    @Override
+                    public X509Certificate[] getAcceptedIssuers() {
+                        return null;
+                    }
 
-        HostnameVerifier hostnameVerifier = HttpsURLConnection.getDefaultHostnameVerifier();
-        ClientConfig config = new DefaultClientConfig();
+                    @Override
+                    public void checkServerTrusted(X509Certificate[] chain, String authType)
+                            throws CertificateException {
+                    }
+
+                    @Override
+                    public void checkClientTrusted(X509Certificate[] chain, String authType)
+                            throws CertificateException {
+                    }
+                }
+        };
+
         SSLContext ctx = null;
         try {
             ctx = SSLContext.getInstance("SSL");
@@ -78,11 +60,13 @@ public final class JerseyClientUtil {
             throw new RuntimeException("Unable to init SSL context. " + e.getMessage());
         }
 
-        config.getProperties().put(HTTPSProperties.PROPERTY_HTTPS_PROPERTIES, new HTTPSProperties(hostnameVerifier, ctx));
-        config.getProperties().put(ClientConfig.PROPERTY_CONNECT_TIMEOUT, CONNECT_TIMEOUT);
-        config.getProperties().put(ClientConfig.PROPERTY_READ_TIMEOUT, READ_TIMEOUT);
-
-        CLIENT = Client.create(config);
+        CLIENT = new JerseyClientBuilder()
+                .hostnameVerifier(HttpsURLConnection.getDefaultHostnameVerifier())
+                .register(MultiPartFeature.class)
+                .sslContext(ctx)
+                .connectTimeout(5_000, TimeUnit.MILLISECONDS)
+                .readTimeout(90_000, TimeUnit.MILLISECONDS)
+                .build();
     }
 
     /**

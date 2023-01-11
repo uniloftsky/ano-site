@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * TextResourceProcessor.
  *
- * @author: h3llka
+ * @author h3llka
  */
 public class TextResourceProcessor implements VariablesProcessor {
 	/**

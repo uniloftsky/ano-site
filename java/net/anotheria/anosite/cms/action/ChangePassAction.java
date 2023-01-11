@@ -3,7 +3,6 @@ package net.anotheria.anosite.cms.action;
 import net.anotheria.anosite.cms.user.CMSUserManager;
 import net.anotheria.maf.action.ActionCommand;
 import net.anotheria.maf.action.ActionMapping;
-import net.anotheria.maf.bean.FormBean;
 import net.anotheria.webutils.actions.BaseAction;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,7 +28,7 @@ public class ChangePassAction extends BaseAction {
 
 
     @Override
-    public ActionCommand execute(ActionMapping mapping, FormBean formBean, HttpServletRequest req, HttpServletResponse res) throws Exception {
+    public ActionCommand execute(ActionMapping mapping, HttpServletRequest req, HttpServletResponse res) throws Exception {
 
         /* page is just opened (it's not submit) */
         String userId = (String)getBeanFromSession(req, BEAN_USER_DEF_ID);

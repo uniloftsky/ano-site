@@ -27,7 +27,7 @@ public abstract class ContextLanguageIsGuard implements ConditionalGuard{
 
 	/**
 	 * Returns the context language for this guard implementation to let pass. Remember the return value of this function must MATCH EXACTLY what you've written in the context.xml.
-	 * @return
+	 * @return context language.
 	 */
 	protected abstract String getDesiredContextLanguage();
 	

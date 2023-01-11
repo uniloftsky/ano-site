@@ -2,7 +2,6 @@ package net.anotheria.anosite.util;
 
 import net.anotheria.anoplass.api.APICallContext;
 import net.anotheria.anoplass.api.validation.ValidationError;
-import net.anotheria.maf.util.FormObjectMapper;
 import net.anotheria.maf.validation.Validator;
 import net.anotheria.maf.validation.annotations.ValidateCustom;
 import net.anotheria.maf.validation.annotations.ValidateNotEmpty;
@@ -27,7 +26,7 @@ public final class ModelObjectMapper {
 	/**
 	 * Mapper log.
 	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(FormObjectMapper.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ModelObjectMapper.class);
 
 	/**
 	 * @param req  http request
@@ -35,7 +34,7 @@ public final class ModelObjectMapper {
 	 */
 	@Deprecated
 	public static void map(final HttpServletRequest req, final Object bean) {
-		FormObjectMapper.map(req, bean);
+		//FormObjectMapper.map(req, bean);
 	}
 
 	/**

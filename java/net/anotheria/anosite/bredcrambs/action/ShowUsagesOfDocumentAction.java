@@ -58,7 +58,7 @@ public class ShowUsagesOfDocumentAction extends BaseAction {
 
 
     @Override
-    public ActionCommand execute(ActionMapping mapping, FormBean formBean, HttpServletRequest req, HttpServletResponse res) throws Exception {
+    public ActionCommand execute(ActionMapping mapping,  HttpServletRequest req, HttpServletResponse res) throws Exception {
         JSONResponse response = new JSONResponse();
         String doc = req.getParameter(DOC_PARAM);
         String pId = req.getParameter(SEARCHED_ELEMENT_ID_PARAM);

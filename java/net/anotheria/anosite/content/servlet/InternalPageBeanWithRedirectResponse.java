@@ -19,7 +19,7 @@ public class InternalPageBeanWithRedirectResponse extends InternalPageBeanRespon
 	}
 	/**
 	 * Returns the redirect url.
-	 * @return
+	 * @return the redirect url.
 	 */
 	public String getRedirectUrl(){
 		return redirectUrl;

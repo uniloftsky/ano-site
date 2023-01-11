@@ -24,7 +24,7 @@ public abstract class SessionFlagPresentGuard implements ConditionalGuard{
 	}
 	/**
 	 * Returns the name of the flag to look after.
-	 * @return
+	 * @return flag name.
 	 */
 	protected abstract String getFlagName();
 	

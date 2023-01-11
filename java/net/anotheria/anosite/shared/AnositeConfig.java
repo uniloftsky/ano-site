@@ -4,9 +4,6 @@ import org.configureme.ConfigurationManager;
 import org.configureme.annotations.Configure;
 import org.configureme.annotations.ConfigureMe;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @ConfigureMe
 public class AnositeConfig{
 	private static AnositeConfig instance = new AnositeConfig();
@@ -47,7 +44,7 @@ public class AnositeConfig{
 
 	/**
 	 * If true and a user is on a https page, but the page doesn't require https, he will be redirected to http.
-	 * @return
+	 * @return true if http is enforced.
 	 */
 	public boolean enforceHttp(){ return enforceHttp; }
 	

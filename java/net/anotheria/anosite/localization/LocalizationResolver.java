@@ -56,8 +56,8 @@ public enum LocalizationResolver {
 	/**
 	 * Returns a text resource by its name.
 	 * 
-	 * @param key
-	 * @return
+	 * @param key - name of the resource.
+	 * @return TextResource.
 	 * @throws RuntimeException
 	 *             on ResourceService failure
 	 */
