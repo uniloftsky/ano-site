@@ -2,7 +2,7 @@
 	<parent>
 		<groupId>net.anotheria</groupId>
 		<artifactId>ano-doc-parent</artifactId>
-		<version>3.2.0</version>
+		<version>3.2.2-SNAPSHOT</version>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
@@ -11,18 +11,18 @@
 	<name>anotheria.net site engine</name>
 
 	<properties>
-		<ano-doc.version>3.2.0</ano-doc.version>
+		<ano-doc.version>3.2.2-SNAPSHOT</ano-doc.version>
 		<ano-util.version>2.2.0</ano-util.version>
-		<ano-tags.version>2.1.1</ano-tags.version>
-		<ano-web.version>3.0.0</ano-web.version>
-		<ano-maf.version>3.0.0</ano-maf.version>
+		<ano-tags.version>2.1.4-SNAPSHOT</ano-tags.version>
+		<ano-web.version>3.0.2-SNAPSHOT</ano-web.version>
+		<ano-maf.version>3.0.2-SNAPSHOT</ano-maf.version>
 		<ano-prise.version>2.2.0</ano-prise.version>
 		<ano-plass.version>2.1.2</ano-plass.version>
 		<ano-access.version>2.2.0</ano-access.version>
 		<jersey-version>2.38</jersey-version>
 
 		<configureme.version>2.5.0</configureme.version>
-		<moskito.version>3.2.1</moskito.version>
+		<moskito.version>3.2.3-SNAPSHOT</moskito.version>
 
 		<commons-io.version>2.5</commons-io.version>
 		<json.version>20090211</json.version>
@@ -42,12 +42,16 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
+			<groupId>jakarta.servlet</groupId>
+			<artifactId>jakarta.servlet-api</artifactId>
+			<version>6.0.0</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>javax.servlet.jsp</groupId>
-			<artifactId>javax.servlet.jsp-api</artifactId>
+			<groupId>jakarta.servlet.jsp</groupId>
+			<artifactId>jakarta.servlet.jsp-api</artifactId>
+			<version>3.1.1</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.glassfish.jersey.core</groupId>

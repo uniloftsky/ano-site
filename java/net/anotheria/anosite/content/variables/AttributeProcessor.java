@@ -1,6 +1,6 @@
 package net.anotheria.anosite.content.variables;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import net.anotheria.anoplass.api.APICallContext;
 import net.anotheria.anosite.content.bean.AttributeBean;
