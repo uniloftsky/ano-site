@@ -19,7 +19,7 @@
 		<ano-prise.version>2.2.0</ano-prise.version>
 		<ano-plass.version>2.1.2</ano-plass.version>
 		<ano-access.version>2.2.0</ano-access.version>
-		<jersey-version>2.38</jersey-version>
+		<jersey-version>3.0.0</jersey-version>
 
 		<configureme.version>2.5.0</configureme.version>
 		<moskito.version>4.0.0-SNAPSHOT</moskito.version>
@@ -50,6 +50,11 @@
 			<groupId>jakarta.servlet.jsp</groupId>
 			<artifactId>jakarta.servlet.jsp-api</artifactId>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.ws.rs</groupId>
+			<artifactId>jakarta.ws.rs-api</artifactId>
+			<version>3.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.glassfish.jersey.core</groupId>
