@@ -260,12 +260,12 @@
                             <additionalDependency>
                                     <groupId>org.glassfish.jersey.core</groupId>
                                     <artifactId>jersey-server</artifactId>
-                                    <version>2.38</version>
+                                    <version>3.0.0</version>
                             </additionalDependency>
                             <additionalDependency>
 								<groupId>org.glassfish.jersey.media</groupId>
 								<artifactId>jersey-media-multipart</artifactId>
-                                <version>2.38</version>
+                                <version>3.0.0</version>
                             </additionalDependency>
                         </additionalDependencies>
                     </configuration>
