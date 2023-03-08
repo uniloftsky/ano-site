@@ -19,7 +19,7 @@
 		<ano-prise.version>2.2.0</ano-prise.version>
 		<ano-plass.version>2.1.2</ano-plass.version>
 		<ano-access.version>2.2.0</ano-access.version>
-		<jersey-version>3.0.0</jersey-version>
+		<jersey-version>3.0.9</jersey-version>
 
 		<configureme.version>2.5.0</configureme.version>
 		<moskito.version>4.0.0-SNAPSHOT</moskito.version>
@@ -260,12 +260,12 @@
                             <additionalDependency>
                                     <groupId>org.glassfish.jersey.core</groupId>
                                     <artifactId>jersey-server</artifactId>
-                                    <version>3.0.0</version>
+                                    <version>3.0.9</version>
                             </additionalDependency>
                             <additionalDependency>
 								<groupId>org.glassfish.jersey.media</groupId>
 								<artifactId>jersey-media-multipart</artifactId>
-                                <version>3.0.0</version>
+                                <version>3.0.9</version>
                             </additionalDependency>
                         </additionalDependencies>
                     </configuration>
