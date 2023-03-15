@@ -17,7 +17,7 @@
 		<ano-web.version>4.0.0-SNAPSHOT</ano-web.version>
 		<ano-maf.version>4.0.0-SNAPSHOT</ano-maf.version>
 		<ano-prise.version>2.2.0</ano-prise.version>
-		<ano-plass.version>2.1.2</ano-plass.version>
+		<ano-plass.version>3.0.0-SNAPSHOT</ano-plass.version>
 		<ano-access.version>2.2.0</ano-access.version>
 		<jersey-version>3.0.9</jersey-version>
 
