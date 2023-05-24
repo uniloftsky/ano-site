@@ -1,0 +1,18 @@
+<module name="ASBrand">
+    <listener class="net.anotheria.anosite.cms.listener.CRUDLogListener"/>
+    <listener class="net.anotheria.anosite.cms.listener.AutoTransferBrandListener"/>
+    <document name="Brand">
+        <property type="string" name="name"/>
+        <property type="boolean" name="defaultBrand"/>
+        <property type="list" name="urlsToMap">
+            <content>
+                <property name="urlToMap" type="string"/>
+            </content>
+        </property>
+        <property type="list" name="localizations">
+            <content>
+                <link name="localization" type="single" target="ASResourceData.LocalizationBundle"/>
+            </content>
+        </property>
+    </document>
+</module>
