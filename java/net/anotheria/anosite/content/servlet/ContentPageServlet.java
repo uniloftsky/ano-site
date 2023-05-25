@@ -1,6 +1,7 @@
 package net.anotheria.anosite.content.servlet;
 
 import net.anotheria.anodoc.data.NoSuchDocumentException;
+import net.anotheria.anodoc.util.context.BrandConfig;
 import net.anotheria.anodoc.util.context.ContextManager;
 import net.anotheria.anoplass.api.APICallContext;
 import net.anotheria.anoplass.api.APIFinder;
@@ -24,6 +25,9 @@ import net.anotheria.anosite.content.bean.ScriptBean;
 import net.anotheria.anosite.content.bean.SiteBean;
 import net.anotheria.anosite.content.bean.StylesheetBean;
 import net.anotheria.anosite.content.variables.VariablesUtility;
+import net.anotheria.anosite.gen.asbrand.data.Brand;
+import net.anotheria.anosite.gen.asbrand.service.ASBrandServiceException;
+import net.anotheria.anosite.gen.asbrand.service.IASBrandService;
 import net.anotheria.anosite.gen.asfeature.data.Feature;
 import net.anotheria.anosite.gen.asfeature.service.ASFeatureServiceException;
 import net.anotheria.anosite.gen.asfeature.service.IASFeatureService;
@@ -206,6 +210,10 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	 * Wizard service.
 	 */
 	private transient IASWizardDataService wizardDataService;
+	/**
+	 * {@link IASBrandService} instance.
+	 */
+	private transient IASBrandService brandService;
 
 	/**
 	 * WizardAPI instance.
@@ -263,6 +271,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			resourceDataService = MetaFactory.get(IASResourceDataService.class);
 			wizardDataService = MetaFactory.get(IASWizardDataService.class);
 			featureService    = MetaFactory.get(IASFeatureService.class);
+			brandService = MetaFactory.get(IASBrandService.class);
 			wizardAPI = APIFinder.findAPI(WizardAPI.class);
 			accessAPI = APIFinder.findAPI(AnoSiteAccessAPI.class);
 			systemConfigurationAPI = APIFinder.findAPI(SystemConfigurationAPI.class);
@@ -371,6 +380,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 
 	protected void processRequest(HttpServletRequest req, HttpServletResponse res, boolean submit) throws ServletException, IOException, ASGRuntimeException, BoxHandleException, WizardHandlerException {
 
+		prepareBrand(req);
 		prepareTextResources(req);
 		req.setAttribute(BEAN_ANOSITE_VERBOSITY, config.verbose() ? Boolean.TRUE : Boolean.FALSE);
 
@@ -664,6 +674,54 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		}
 
 
+	}
+
+	private void prepareBrand(HttpServletRequest req) {
+		BrandConfig brandConfig = ContextManager.getCallContext().getBrandConfig();
+		if (brandConfig != null && brandConfig.getUrlsToMap().contains(req.getServerName()))
+			return;
+
+		Brand brand = null;
+		try {
+			List<Brand> brands = brandService.getBrands();
+			for (Brand b: brands)
+				if (b.getUrlsToMap().contains(req.getServerName())) {
+					brand = b;
+					break;
+				}
+		} catch (ASBrandServiceException e) {
+			LOGGER.error("Unable to get brand for {}. {}", req.getServerName(), e.getMessage());
+		}
+
+		//trying to get default brand
+		if (brand == null) {
+			try {
+				List<Brand> brands = brandService.getBrandsByProperty(Brand.PROP_DEFAULT_BRAND, true);
+				if (brands == null || brands.size() == 0) {
+					LOGGER.warn("Default brand not found");
+				} else if (brands.size() > 1){
+					LOGGER.warn("Default brand more than 1.");
+				} else {
+					brand = brands.get(0);
+				}
+			} catch (ASBrandServiceException e) {
+				LOGGER.error("Unable to get default brand. {}", e.getMessage());
+			}
+		}
+
+		if (brand == null) {
+			LOGGER.error("Brand is null for " + req.getServerName());
+			return;
+		}
+
+		try {
+			prepareTemplateLocalization(brand.getLocalizations());
+		} catch (ASGRuntimeException e) {
+			LOGGER.error("Unable to prepare localizations. " + e.getMessage());
+		}
+
+		brandConfig = new BrandConfig(brand.getName(), brand.getDefaultBrand(), brand.getUrlsToMap(), brand.getLocalizations());
+		ContextManager.getCallContext().setBrandConfig(brandConfig);
 	}
 
 	/**
