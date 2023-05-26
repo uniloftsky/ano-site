@@ -14,6 +14,7 @@
                     <decorator name="editLink" />
                 </element>
                 <element type="field" name="defaultBrand" comparable="false"/>
+                <element type="field" name="urlsToMap" comparable="false"/>
             </elements>
             <dialog name="Edit" title="Edit Brand">
                 <elements>
