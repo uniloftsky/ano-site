@@ -107,19 +107,21 @@ public class FeatureAPIImpl extends AbstractAPIImpl implements FeatureAPI {
 				return true;
 
 			BrandConfig brandConfig = ContextManager.getCallContext().getBrandConfig();
-			boolean isValidateByBrand = false;
-			for (String brandId: brandIds) {
-				try {
-					Brand brand = brandService.getBrand(brandId);
-					if (brand.getName().equals(brandConfig.getName())) {
-						isValidateByBrand = true;
-						break;
+			boolean isValidateByBrand = true;
+			if (brandConfig != null) {
+				isValidateByBrand = false;
+				for (String brandId: brandIds) {
+					try {
+						Brand brand = brandService.getBrand(brandId);
+						if (brand.getName().equals(brandConfig.getName())) {
+							isValidateByBrand = true;
+							break;
+						}
+					} catch (ASBrandServiceException e) {
+						log.warn("Unable to check brand {} for brand feature {}. {}", brandId, name, e.getMessage());
 					}
-				} catch (ASBrandServiceException e) {
-					log.warn("Unable to check brand {} for brand feature {}. {}", brandId, name, e.getMessage());
 				}
 			}
-
 			return isValidateByBrand && processByGuards(brandFeature.getGuards(), "Brand feature: " + name);
 		} catch (ASFeatureServiceException e) {
 			log.warn("Brand feature " + name + " not found, due ", e);
