@@ -14,5 +14,6 @@
                 <link name="localization" type="single" target="ASResourceData.LocalizationBundle"/>
             </content>
         </property>
+        <link type="single" target="ASResourceData.Image" name="logo"/>
     </document>
 </module>

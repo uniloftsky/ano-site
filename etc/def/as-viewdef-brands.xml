@@ -24,6 +24,7 @@
                     <element type="field" name="defaultBrand"/>
                     <element type="field" name="urlsToMap"/>
                     <element type="field" name="localizations"/>
+                    <element type="field" name="logo" />
                     <element type="list">
                         <element type="function" name="updateAndClose" />
                         <element type="function" name="updateAndStay" />

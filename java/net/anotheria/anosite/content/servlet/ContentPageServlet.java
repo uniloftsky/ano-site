@@ -720,7 +720,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			LOGGER.error("Unable to prepare localizations. " + e.getMessage());
 		}
 
-		brandConfig = new BrandConfig(brand.getName(), brand.getDefaultBrand(), brand.getUrlsToMap(), brand.getLocalizations());
+		brandConfig = new BrandConfig(brand.getName(), brand.getDefaultBrand(), brand.getUrlsToMap(), brand.getLocalizations(), brand.getLogo());
 		ContextManager.getCallContext().setBrandConfig(brandConfig);
 	}
 
