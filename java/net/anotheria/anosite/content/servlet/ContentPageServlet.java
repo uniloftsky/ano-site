@@ -678,8 +678,14 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 
 	private void prepareBrand(HttpServletRequest req) {
 		BrandConfig brandConfig = ContextManager.getCallContext().getBrandConfig();
-		if (brandConfig != null && brandConfig.getUrlsToMap().contains(req.getServerName()))
+		if (brandConfig != null && brandConfig.getUrlsToMap().contains(req.getServerName())) {
+			try {
+				prepareTemplateLocalization(brandConfig.getLocalizations());
+			} catch (ASGRuntimeException e) {
+				LOGGER.error("Unable to prepare localizations. " + e.getMessage());
+			}
 			return;
+		}
 
 		Brand brand = null;
 		try {
@@ -714,14 +720,14 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			return;
 		}
 
+		brandConfig = new BrandConfig(brand.getName(), brand.getDefaultBrand(), brand.getUrlsToMap(), brand.getLocalizations());
+		ContextManager.getCallContext().setBrandConfig(brandConfig);
+
 		try {
-			prepareTemplateLocalization(brand.getLocalizations());
+			prepareTemplateLocalization(brandConfig.getLocalizations());
 		} catch (ASGRuntimeException e) {
 			LOGGER.error("Unable to prepare localizations. " + e.getMessage());
 		}
-
-		brandConfig = new BrandConfig(brand.getName(), brand.getDefaultBrand(), brand.getUrlsToMap(), brand.getLocalizations());
-		ContextManager.getCallContext().setBrandConfig(brandConfig);
 	}
 
 	/**
