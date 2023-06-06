@@ -720,7 +720,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			return;
 		}
 
-		brandConfig = new BrandConfig(brand.getName(), brand.getDefaultBrand(), brand.getUrlsToMap(), brand.getLocalizations());
+		brandConfig = new BrandConfig(brand.getName(), brand.getDefaultBrand(), brand.getMediaLink(), brand.getUrlsToMap(), brand.getLocalizations());
 		ContextManager.getCallContext().setBrandConfig(brandConfig);
 
 		try {
@@ -1730,6 +1730,13 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		//MediaLinks
 		ret.addMediaLinks(createMediaLinkBeanList(template.getMediaLinks(), req));
 		ret.addMediaLinks(createMediaLinkBeanList(page.getMediaLinks(), req));
+
+		BrandConfig brandConfig = ContextManager.getCallContext().getBrandConfig();
+		if (brandConfig != null) {
+			if (StringUtils.isEmpty(brandConfig.getBrandMediaLinkId())) {
+				ret.addMediaLinks(createMediaLinkBeanList(Collections.singletonList(brandConfig.getBrandMediaLinkId()), req));
+			}
+		}
 
 		//Scripts
 		ret.addScripts(createScriptBeanList(template.getScripts(), req));
