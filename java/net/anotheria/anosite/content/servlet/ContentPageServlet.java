@@ -1733,7 +1733,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 
 		BrandConfig brandConfig = ContextManager.getCallContext().getBrandConfig();
 		if (brandConfig != null) {
-			if (StringUtils.isEmpty(brandConfig.getBrandMediaLinkId())) {
+			if (!StringUtils.isEmpty(brandConfig.getBrandMediaLinkId())) {
 				ret.addMediaLinks(createMediaLinkBeanList(Collections.singletonList(brandConfig.getBrandMediaLinkId()), req));
 			}
 		}
