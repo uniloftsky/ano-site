@@ -720,7 +720,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			return;
 		}
 
-		brandConfig = new BrandConfig(brand.getName(), brand.getDefaultBrand(), brand.getUrlsToMap(), brand.getLocalizations(), Collections.emptyList());
+		brandConfig = new BrandConfig(brand.getName(), brand.getDefaultBrand(), brand.getUrlsToMap(), brand.getLocalizations(), brand.getMediaLinks());
 		ContextManager.getCallContext().setBrandConfig(brandConfig);
 
 		try {
