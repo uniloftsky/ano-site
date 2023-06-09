@@ -1731,11 +1731,6 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		ret.addMediaLinks(createMediaLinkBeanList(template.getMediaLinks(), req));
 		ret.addMediaLinks(createMediaLinkBeanList(page.getMediaLinks(), req));
 
-		BrandConfig brandConfig = ContextManager.getCallContext().getBrandConfig();
-		if (brandConfig != null) {
-			ret.addMediaLinks(createMediaLinkBeanList(brandConfig.getBrandMediaLinkIds(), req));
-		}
-
 		//Scripts
 		ret.addScripts(createScriptBeanList(template.getScripts(), req));
 		ret.addScripts(createScriptBeanList(page.getScripts(), req));
@@ -1897,6 +1892,11 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		ret.addFooterBoxes(boxes);
 		ret.addMediaLinks(searchMediaLinks(boxes));
 		ret.addScripts(searchScripts(boxes));
+
+		BrandConfig brandConfig = ContextManager.getCallContext().getBrandConfig();
+		if (brandConfig != null) {
+			ret.addMediaLinks(createMediaLinkBeanList(brandConfig.getBrandMediaLinkIds(), req));
+		}
 
 		return redirectTarget == null ?
 				new InternalPageBeanResponse(ret) :
