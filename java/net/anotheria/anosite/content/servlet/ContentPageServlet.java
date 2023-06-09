@@ -127,11 +127,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static net.anotheria.anosite.util.AnositeConstants.PARAM_SWITCH_MODE;
-import static net.anotheria.anosite.util.AnositeConstants.PARAM_VALUE_EDIT_MODE;
-import static net.anotheria.anosite.util.AnositeConstants.PARAM_VALUE_VIEW_MODE;
-import static net.anotheria.anosite.util.AnositeConstants.SA_EDIT_MODE_FLAG;
-import static net.anotheria.anosite.util.AnositeConstants.SA_PAGE_NAME;
+import static net.anotheria.anosite.util.AnositeConstants.*;
 
 /**
  * This servlet builds and delivers pages (out of pagexs objects) and is therefore one of the main classes in the ano-site framework.
@@ -679,6 +675,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	private void prepareBrand(HttpServletRequest req) {
 		BrandConfig brandConfig = ContextManager.getCallContext().getBrandConfig();
 		if (brandConfig != null && brandConfig.getUrlsToMap().contains(req.getServerName())) {
+			req.getSession().setAttribute(SA_BRAND, brandConfig.getName());
 			try {
 				prepareTemplateLocalization(brandConfig.getLocalizations());
 			} catch (ASGRuntimeException e) {
@@ -723,6 +720,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		brandConfig = new BrandConfig(brand.getName(), brand.getDefaultBrand(), brand.getUrlsToMap(), brand.getLocalizations(), brand.getMediaLinks());
 		ContextManager.getCallContext().setBrandConfig(brandConfig);
 
+		req.getSession().setAttribute(SA_BRAND, brandConfig.getName());
 		try {
 			prepareTemplateLocalization(brandConfig.getLocalizations());
 		} catch (ASGRuntimeException e) {
