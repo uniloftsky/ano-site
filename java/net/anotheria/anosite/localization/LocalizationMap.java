@@ -58,7 +58,7 @@ public class LocalizationMap {
 	}
 
 	public String getMessage(String key) {
-		String message = localizationBundles.get(getPrivateKey(LocalizationEnvironment.BRAND, key));;
+		String message = localizationBundles.get(getPrivateKey(LocalizationEnvironment.BRAND, key));
 		if (message == null)
 			message = localizationBundles.get(getPrivateKey(LocalizationEnvironment.ACTION, key));
 		if (message == null)
