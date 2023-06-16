@@ -677,7 +677,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		if (brandConfig != null && brandConfig.getUrlsToMap().contains(req.getServerName())) {
 			req.getSession().setAttribute(SA_BRAND, brandConfig.getName());
 			try {
-				prepareTemplateLocalization(brandConfig.getLocalizations());
+				prepareBrandLocalization(brandConfig.getLocalizations());
 			} catch (ASGRuntimeException e) {
 				LOGGER.error("Unable to prepare localizations. " + e.getMessage());
 			}
@@ -2184,6 +2184,17 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	 */
 	private void preparePageLocalization(List<String> localizationBundlesIds) throws ASResourceDataServiceException, ASGRuntimeException {
 		LocalizationMap.getCurrentLocalizationMap().addLocalizationBundles(LocalizationEnvironment.PAGE, getLocalizationBundles(localizationBundlesIds));
+	}
+
+	/**
+	 * Prepare brand localization.
+	 *
+	 * @param localizationBundlesIds collection of localization bundles ids
+	 * @throws ASResourceDataServiceException on errors
+	 * @throws ASGRuntimeException			on errors
+	 */
+	private void prepareBrandLocalization(List<String> localizationBundlesIds) throws ASResourceDataServiceException, ASGRuntimeException {
+		LocalizationMap.getCurrentLocalizationMap().addLocalizationBundles(LocalizationEnvironment.BRAND, getLocalizationBundles(localizationBundlesIds));
 	}
 
 	/**
