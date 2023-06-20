@@ -27,10 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @WebServlet({"/TranslateLocalizationBundle"})
 @MultipartConfig
@@ -100,8 +97,28 @@ public class LocalizationBundleTranslationServlet extends HttpServlet {
                         jsonResponse.addError("INPUT_ERROR", "Cannot find any content in for provided locale.");
                     }
 
-                    String translated = openAIWrapper.translate(languageFrom, languageTo, content);
-                    bundle.putStringProperty(new StringProperty(localizationBundleTo, translated));
+                    StringBuilder translated = new StringBuilder();
+                    List<String> contentLines = Arrays.asList(content.trim().split("\n"));
+                    int chunkSize = 10;
+                    int maxPages = contentLines.size() / chunkSize;
+
+                    for (int i = 0; i <= maxPages; i++) {
+                        StringBuilder contentToTranslate = new StringBuilder();
+                        int fromIndex = i * chunkSize;
+                        int toIndex = i * chunkSize + chunkSize;
+
+                        if (toIndex > contentLines.size()) {
+                            toIndex = contentLines.size();
+                        }
+
+                        List<String> subList = contentLines.subList(fromIndex, toIndex);
+                        for (String s : subList) {
+                            contentToTranslate.append(s).append("\n");
+                        }
+                        translated.append(openAIWrapper.translate(languageFrom, languageTo, contentToTranslate.toString())).append("\n");
+                    }
+
+                    bundle.putStringProperty(new StringProperty(localizationBundleTo, translated.toString()));
                     resourceDataService.updateLocalizationBundle(bundle);
 
                     if (!StringUtils.isEmpty(translated)) {
