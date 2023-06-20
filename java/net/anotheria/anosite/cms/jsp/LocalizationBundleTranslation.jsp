@@ -16,6 +16,49 @@
     <script type="text/javascript" src="/cms_static/js/jquery-1.4.min.js"></script>
     <script type="text/javascript" src="/cms_static/js/anofunctions.js"></script>
     <link href="/cms_static/css/newadmin.css" rel="stylesheet" type="text/css">
+
+    <style>
+        .lds-ring {
+            display: inline-block;
+            position: relative;
+            width: 40px;
+            height: 40px;
+        }
+
+        .lds-ring div {
+            box-sizing: border-box;
+            display: block;
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            margin: 8px;
+            border: 3px solid #fff;
+            border-radius: 50%;
+            animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+            border-color: #000 transparent transparent transparent;
+        }
+
+        .lds-ring div:nth-child(1) {
+            animation-delay: -0.45s;
+        }
+
+        .lds-ring div:nth-child(2) {
+            animation-delay: -0.3s;
+        }
+
+        .lds-ring div:nth-child(3) {
+            animation-delay: -0.15s;
+        }
+
+        @keyframes lds-ring {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
 </head>
 <body>
 <jsp:include page="MenuMaf.jsp" flush="true"/>
@@ -26,36 +69,44 @@
             <div class="c_r"><!-- --></div>
             <div class="c_b_l"><!-- --></div>
             <div class="c_b_r"><!-- --></div>
-            <div>
-                <label style="width: 100px">Bundle:
-                    <select name="language" class="bundleId">
+            <div style="display: flex; flex-direction: column">
+                <div style="width: 350px; display: flex">
+                    <p style="width: 20%">Bundle: </p>
+                    <select style="width: 75%" name="language" class="bundleId">
                         <ano:iterate name="localizationBundles"
                                      type="net.anotheria.anosite.gen.asresourcedata.data.LocalizationBundle"
                                      id="bundle">
                             <option value="${bundle.id}">${bundle.id}_${bundle.name}</option>
                         </ano:iterate>
                     </select>
-                </label>
-            </div>
-            <div>
-                <label style="width: 100px">From:
-                    <select name="language" class="localeFrom">
+                </div>
+                <div style="width: 350px; display: flex">
+                    <p style="width: 20%">From: </p>
+                    <select style="width: 75%" name="language" class="localeFrom">
                         <ano:iterate name="languages" type="java.lang.String" id="option">
                             <option value="<ano:write name="option"/>"><ano:write name="option"/></option>
                         </ano:iterate>
                     </select>
-                </label>
-            </div>
-            <div style="margin-bottom: 1em">
-                <label style="width: 100px"> To:
-                    <select name="language" class="localeTo">
+                </div>
+                <div style="margin-bottom: 1em; width: 350px; display: flex">
+                    <p style="width: 20%">To: </p>
+                    <select style="width: 75%" name="language" class="localeTo">
                         <ano:iterate name="languages" type="java.lang.String" id="option">
                             <option value="<ano:write name="option"/>"><ano:write name="option"/></option>
                         </ano:iterate>
                     </select>
-                </label>
+                </div>
             </div>
-            <a href="#" class="button translate"><span>Translate</span></a>
+            <div style="display: flex; flex-direction: column;">
+                <div><a href="#" class="button translate"><span>Translate</span></a></div>
+                <div class="lds-ring" style="display: none">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+
             <div class="clear"><!-- --></div>
         </div>
     </div>
@@ -80,9 +131,26 @@
             url: '/TranslateLocalizationBundle',
             type: "POST",
             data: payload,
+            beforeSend: function () {
+                $('.lds-ring').show();
+            },
+            complete: function () {
+                $('.lds-ring').hide();
+            },
             success: function (data) {
-                console.log(JSON.stringify(payload));
-                console.log("sent request");
+                if (data.errors && data.errors.length != 0) {
+                    if (data.errors["INPUT_ERROR"]) {
+                        alert(data.errors["INPUT_ERROR"][0]);
+                    } else if (data.errors["CONFIG_ERROR"]) {
+                        alert(data.errors["CONFIG_ERROR"][0]);
+                    } else if (data.errors["CANNOT_TRANSLATE"]) {
+                        alert(data.errors["CANNOT_TRANSLATE"][0]);
+                    } else if (data.errors["SERVER_ERROR"]) {
+                        alert(data.errors["SERVER_ERROR"][0]);
+                    }
+                } else {
+                    alert("Success");
+                }
             }
         });
     });

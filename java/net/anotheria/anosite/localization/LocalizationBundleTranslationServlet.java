@@ -13,6 +13,7 @@ import net.anotheria.anosite.gen.asresourcedata.data.LocalizationBundle;
 import net.anotheria.anosite.gen.asresourcedata.data.LocalizationBundleDocument;
 import net.anotheria.anosite.gen.asresourcedata.service.IASResourceDataService;
 import net.anotheria.maf.json.JSONResponse;
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,40 +61,58 @@ public class LocalizationBundleTranslationServlet extends HttpServlet {
             String localeFrom = req.getParameter("localeFrom");
             String localeTo = req.getParameter("localeTo");
 
-            String languageFrom = null;
-            String languageTo = null;
+            if (localeFrom.equals(localeTo)) {
+                jsonResponse.addError("INPUT_ERROR", "localeFrom equals to localeTo");
+            } else {
+                String languageFrom = null;
+                String languageTo = null;
 
-            for (Map.Entry<String, String> entry : config.getLanguagesMap().entrySet()) {
-                if (entry.getKey().equals(localeFrom)) {
-                    languageFrom = entry.getValue();
+                for (Map.Entry<String, String> entry : config.getLanguagesMap().entrySet()) {
+                    if (entry.getKey().equals(localeFrom)) {
+                        languageFrom = entry.getValue();
+                    }
+                    if (entry.getKey().equals(localeTo)) {
+                        languageTo = entry.getValue();
+                    }
                 }
-                if (entry.getKey().equals(localeTo)) {
-                    languageTo = entry.getValue();
+
+                if (languageFrom == null) {
+                    jsonResponse.addError("CONFIG_ERROR", "Check ano-site-localization-auto-translation-config. Cannot find a normal language for locale: " + localeFrom);
+                } else if (languageTo == null) {
+                    jsonResponse.addError("CONFIG_ERROR", "Check ano-site-localization-auto-translation-config. Cannot find a normal language for locale: " + localeTo);
+                } else {
+
+                    String localizationBundleFrom = "messages_" + localeFrom;
+                    String localizationBundleTo = "messages_" + localeTo;
+
+                    String content = "";
+                    LocalizationBundleDocument bundle = (LocalizationBundleDocument) resourceDataService.getLocalizationBundle(bundleId);
+                    Enumeration<String> keys = bundle.getKeys();
+                    while (keys.hasMoreElements()) {
+                        String key = keys.nextElement();
+                        if (key.equals(localizationBundleFrom)) {
+                            content = bundle.getString(key);
+                            break;
+                        }
+                    }
+
+                    if (StringUtils.isEmpty(content)) {
+                        jsonResponse.addError("INPUT_ERROR", "Cannot find any content in for provided locale.");
+                    }
+
+                    String translated = openAIWrapper.translate(languageFrom, languageTo, content);
+                    bundle.putStringProperty(new StringProperty(localizationBundleTo, translated));
+                    resourceDataService.updateLocalizationBundle(bundle);
+
+                    if (!StringUtils.isEmpty(translated)) {
+                        JSONObject data = new JSONObject();
+                        data.put("success", true);
+                        jsonResponse.setData(data);
+                    } else {
+                        jsonResponse.addError("CANNOT_TRANSLATE", "Cannot translate a provided localization");
+                    }
                 }
             }
-
-            String localizationBundleFrom = "messages_" + localeFrom;
-            String localizationBundleTo = "messages_" + localeTo;
-
-            String content = "";
-            LocalizationBundleDocument bundle = (LocalizationBundleDocument) resourceDataService.getLocalizationBundle(bundleId);
-            Enumeration<String> keys = bundle.getKeys();
-            while (keys.hasMoreElements()) {
-                String key = keys.nextElement();
-                if (key.equals(localizationBundleFrom)) {
-                    content = bundle.getString(key);
-                    break;
-                }
-                jsonResponse.addError("INPUT_ERROR", "Cannot find any content in for provided locale.");
-            }
-
-            String translated = openAIWrapper.translate(languageFrom, languageTo, content);
-            bundle.putStringProperty(new StringProperty(localizationBundleTo, translated));
-            resourceDataService.updateLocalizationBundle(bundle);
-
-            JSONObject data = new JSONObject();
-            data.put("success", true);
-            jsonResponse.setData(data);
         } catch (Exception any) {
             log.error(any.getMessage(), any);
             jsonResponse.addError("SERVER_ERROR", "Server error, please check logs.");
@@ -111,7 +130,7 @@ public class LocalizationBundleTranslationServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
     }
 
     public static class OpenAIWrapper {
@@ -119,7 +138,7 @@ public class LocalizationBundleTranslationServlet extends HttpServlet {
         private static OpenAIWrapper INSTANCE;
         private static final Logger log = LoggerFactory.getLogger(OpenAIWrapper.class);
         private static final String PROMPT = "You will get a localizations in format 'key'='translation'. Translate it from %s to %s without any explanations.\n" +
-                "Localizations: \"\"\"\n%s\n\"\"\"";
+                "Localizations:\n \"\"\"\n%s\n\"\"\"";
 
         private final OpenAiService openAiService;
 
@@ -148,7 +167,7 @@ public class LocalizationBundleTranslationServlet extends HttpServlet {
                     List<ChatCompletionChoice> choices = openAiService.createChatCompletion(chatCompletionRequest).getChoices();
                     if (!choices.isEmpty()) {
                         for (ChatCompletionChoice choice : choices) {
-                            result = choice.getMessage().getContent();
+                            return choice.getMessage().getContent();
                         }
                     }
                 } catch (RuntimeException ex) {
