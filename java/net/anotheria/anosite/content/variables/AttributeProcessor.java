@@ -85,7 +85,7 @@ public class AttributeProcessor implements VariablesProcessor {
 				for (String attrId: brandConfig.getAttributes()) {
 					try {
 						Attribute attribute = iasWebDataService.getAttribute(attrId);
-						if (attribute.getName().equals(variable)) {
+						if (attribute.getKey().equals(variable)) {
 							ret = attribute.getValue();
 							break;
 						}
