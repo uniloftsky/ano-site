@@ -31,12 +31,12 @@ public class LocalizationBundleTranslationServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(LocalizationBundleTranslationServlet.class);
 
     private IASResourceDataService resourceDataService;
-    private final IASGTranslationService IASGTranslationService;
+    private final IASGTranslationService translationService;
     private final LocalizationAutoTranslationConfig config;
 
     public LocalizationBundleTranslationServlet() {
         this.config = LocalizationAutoTranslationConfig.getInstance();
-        this.IASGTranslationService = new TranslationServiceFactory().create();
+        this.translationService = new TranslationServiceFactory().create();
 
         try {
             resourceDataService = MetaFactory.get(IASResourceDataService.class);
@@ -119,7 +119,7 @@ public class LocalizationBundleTranslationServlet extends HttpServlet {
                         for (String s : subList) {
                             contentToTranslate.append(s).append("\n");
                         }
-                        translated.append(IASGTranslationService.translate(languageFrom, languageTo, contentToTranslate.toString())).append("\n");
+                        translated.append(translationService.translate(languageFrom, languageTo, contentToTranslate.toString())).append("\n");
                     }
 
                     if (!StringUtils.isEmpty(translated)) {

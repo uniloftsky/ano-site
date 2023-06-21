@@ -102,9 +102,59 @@
                     <div></div>
                 </div>
             </div>
+            <div class="translatedResult">
+
+            </div>
             <div class="clear"><!-- --></div>
         </div>
     </div>
 </div>
 </body>
 </html>
+<script type="text/javascript">
+    $('.translate').click(function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        var bundleId = $('.bundleId').val();
+        var localeFrom = $('.localeFrom').val();
+        var input = $('.input').val();
+
+        var payload = {
+            bundleId: bundleId,
+            localeFrom: localeFrom,
+            input: input,
+            method: "translate"
+        };
+        $.ajax({
+            url: '/SpecificTranslateLocalizationBundle',
+            type: "POST",
+            data: payload,
+            beforeSend: function () {
+                $('#translateRing').show();
+            },
+            complete: function () {
+                $('#translateRing').hide();
+                $('.result').show();
+                $('.submit').show();
+            },
+            success: function (data) {
+                if (data.errors && data.errors.length != 0) {
+                    if (data.errors["INPUT_ERROR"]) {
+                        alert(data.errors["INPUT_ERROR"][0]);
+                    } else if (data.errors["CONFIG_ERROR"]) {
+                        alert(data.errors["CONFIG_ERROR"][0]);
+                    } else if (data.errors["CANNOT_TRANSLATE"]) {
+                        alert(data.errors["CANNOT_TRANSLATE"][0]);
+                    } else if (data.errors["SERVER_ERROR"]) {
+                        alert(data.errors["SERVER_ERROR"][0]);
+                    }
+                } else {
+                    console.log(JSON.stringify(data));
+                    console.log(data.results);
+                    alert("Translated")
+                }
+            }
+        });
+    });
+</script>
