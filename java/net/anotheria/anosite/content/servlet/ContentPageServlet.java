@@ -717,7 +717,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			return;
 		}
 
-		brandConfig = new BrandConfig(brand.getName(), brand.getDefaultBrand(), brand.getUrlsToMap(), brand.getLocalizations(), brand.getMediaLinks());
+		brandConfig = new BrandConfig(brand.getName(), brand.getDefaultBrand(), brand.getUrlsToMap(), brand.getLocalizations(), brand.getMediaLinks(), brand.getAttributes());
 		ContextManager.getCallContext().setBrandConfig(brandConfig);
 
 		req.getSession().setAttribute(SA_BRAND, brandConfig.getName());
@@ -1712,7 +1712,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 
 		PageBean ret = new PageBean();
 
-		ret.setTitle(page.getTitle());
+		ret.setTitle(VariablesUtility.replaceVariables(req, page.getTitle()));
 		ret.setKeywords(VariablesUtility.replaceVariables(req, page.getKeywords()));
 		ret.setDescription(VariablesUtility.replaceVariables(req, page.getDescription()));
 		ret.setName(page.getName());

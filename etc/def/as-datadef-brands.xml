@@ -19,7 +19,10 @@
                 <link name="mediaLink" type="single" target="ASSiteData.MediaLink"/>
             </content>
         </property>
-
-
+        <property type="list" name="attributes" >
+            <content>
+                <link name="attribute" type="single" target="ASWebData.Attribute"/>
+            </content>
+        </property>
     </document>
 </module>

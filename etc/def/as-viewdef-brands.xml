@@ -25,6 +25,7 @@
                     <element type="field" name="urlsToMap"/>
                     <element type="field" name="localizations"/>
                     <element type="field" name="mediaLinks"/>
+                    <element type="field" name="attributes"/>
                     <element type="list">
                         <element type="function" name="updateAndClose" />
                         <element type="function" name="updateAndStay" />
