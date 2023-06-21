@@ -97,9 +97,28 @@
                     </select>
                 </div>
             </div>
-            <div style="display: flex; flex-direction: column;">
+            <div style="display: flex; flex-direction: column; margin-bottom: 2em">
                 <div><a href="#" class="button translate"><span>Translate</span></a></div>
-                <div class="lds-ring" style="display: none">
+                <div id="translateRing" class="lds-ring" style="display: none">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+            <div class="result" style="display: none; margin-bottom: 1em">
+                <div style="margin-bottom: 1em">
+                    <p>Original:</p>
+                    <textarea class="textareaOriginal" rows="10" style="width: 100%"></textarea>
+                </div>
+                <div>
+                    <p>Translated:</p>
+                    <textarea class="textareaTranslated" rows="10" style="width: 100%"></textarea>
+                </div>
+            </div>
+            <div style="display: flex; flex-direction: column;">
+                <div><a href="#" class="button submit" style="display: none"><span>Submit</span></a></div>
+                <div id="submitRing" class="lds-ring" style="display: none">
                     <div></div>
                     <div></div>
                     <div></div>
@@ -125,17 +144,20 @@
         var payload = {
             bundleId: bundleId,
             localeFrom: localeFrom,
-            localeTo: localeTo
+            localeTo: localeTo,
+            method: "translate"
         };
         $.ajax({
             url: '/TranslateLocalizationBundle',
             type: "POST",
             data: payload,
             beforeSend: function () {
-                $('.lds-ring').show();
+                $('#translateRing').show();
             },
             complete: function () {
-                $('.lds-ring').hide();
+                $('#translateRing').hide();
+                $('.result').show();
+                $('.submit').show();
             },
             success: function (data) {
                 if (data.errors && data.errors.length != 0) {
@@ -149,7 +171,51 @@
                         alert(data.errors["SERVER_ERROR"][0]);
                     }
                 } else {
-                    alert("Success");
+                    var originalText = data.data.originalText;
+                    var translatedText = data.data.translatedText;
+                    $('.textareaOriginal').val(originalText);
+                    $('.textareaTranslated').val(translatedText);
+                }
+            }
+        });
+    });
+    $('.submit').click(function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        var bundleId = $('.bundleId').val();
+        var localeTo = $('.localeTo').val();
+        var translatedText = $('.textareaTranslated').val();
+
+        var payload = {
+            bundleId: bundleId,
+            translatedText: translatedText,
+            targetLocale: localeTo,
+            method: "save"
+        };
+        $.ajax({
+            url: '/TranslateLocalizationBundle',
+            type: "POST",
+            data: payload,
+            beforeSend: function () {
+                $('#submitRing').show();
+            },
+            complete: function () {
+                $('#submitRing').hide();
+            },
+            success: function (data) {
+                if (data.errors && data.errors.length != 0) {
+                    if (data.errors["INPUT_ERROR"]) {
+                        alert(data.errors["INPUT_ERROR"][0]);
+                    } else if (data.errors["CONFIG_ERROR"]) {
+                        alert(data.errors["CONFIG_ERROR"][0]);
+                    } else if (data.errors["CANNOT_TRANSLATE"]) {
+                        alert(data.errors["CANNOT_TRANSLATE"][0]);
+                    } else if (data.errors["SERVER_ERROR"]) {
+                        alert(data.errors["SERVER_ERROR"][0]);
+                    }
+                } else {
+                    alert("Translation saved");
                 }
             }
         });

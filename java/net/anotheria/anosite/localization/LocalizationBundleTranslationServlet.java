@@ -47,6 +47,16 @@ public class LocalizationBundleTranslationServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        String method = req.getParameter("method");
+        if (method.equals("translate")) {
+            translate(req, resp);
+        } else {
+            saveTranslation(req, resp);
+        }
+    }
+
+    private void translate(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         JSONResponse jsonResponse = new JSONResponse();
         try {
             String bundleId = req.getParameter("bundleId");
@@ -75,7 +85,6 @@ public class LocalizationBundleTranslationServlet extends HttpServlet {
                 } else {
 
                     String localizationBundleFrom = "messages_" + localeFrom;
-                    String localizationBundleTo = "messages_" + localeTo;
 
                     String content = "";
                     LocalizationBundleDocument bundle = (LocalizationBundleDocument) resourceDataService.getLocalizationBundle(bundleId);
@@ -113,12 +122,11 @@ public class LocalizationBundleTranslationServlet extends HttpServlet {
                         translated.append(IASGTranslationService.translate(languageFrom, languageTo, contentToTranslate.toString())).append("\n");
                     }
 
-                    bundle.putStringProperty(new StringProperty(localizationBundleTo, translated.toString()));
-                    resourceDataService.updateLocalizationBundle(bundle);
-
                     if (!StringUtils.isEmpty(translated)) {
                         JSONObject data = new JSONObject();
                         data.put("success", true);
+                        data.put("originalText", content);
+                        data.put("translatedText", translated);
                         jsonResponse.setData(data);
                     } else {
                         jsonResponse.addError("CANNOT_TRANSLATE", "Cannot translate a provided localization");
@@ -129,7 +137,26 @@ public class LocalizationBundleTranslationServlet extends HttpServlet {
             log.error(any.getMessage(), any);
             jsonResponse.addError("SERVER_ERROR", "Server error, please check logs.");
         }
+        writeResponse(resp, jsonResponse.toJSON().toString());
+    }
 
+    private void saveTranslation(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        JSONResponse jsonResponse = new JSONResponse();
+        try {
+            String translatedText = req.getParameter("translatedText");
+            String targetLocale = req.getParameter("targetLocale");
+            String bundleId = req.getParameter("bundleId");
+
+            LocalizationBundleDocument bundle = (LocalizationBundleDocument) resourceDataService.getLocalizationBundle(bundleId);
+
+            String localizationBundleTo = "messages_" + targetLocale;
+
+            bundle.putStringProperty(new StringProperty(localizationBundleTo, translatedText));
+            resourceDataService.updateLocalizationBundle(bundle);
+        } catch (Exception any) {
+            log.error(any.getMessage(), any);
+            jsonResponse.addError("SERVER_ERROR", "Server error, please check logs.");
+        }
         writeResponse(resp, jsonResponse.toJSON().toString());
     }
 
