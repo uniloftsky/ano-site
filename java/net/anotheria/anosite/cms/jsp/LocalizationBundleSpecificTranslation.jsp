@@ -119,6 +119,8 @@
 </body>
 </html>
 <script type="text/javascript">
+    var counter = 1;
+
     $('.translate').click(function (event) {
         event.preventDefault();
         event.stopPropagation();
@@ -139,6 +141,12 @@
             data: payload,
             beforeSend: function () {
                 $('#translateRing').show();
+                $('.submit').hide();
+                for (let i = 1; i < counter; i++) {
+                    document.getElementById("locale" + i).remove();
+                    document.getElementById("textarea" + i).remove();
+                }
+                counter = 1;
             },
             complete: function () {
                 $('#translateRing').hide();
@@ -158,22 +166,79 @@
                     }
                 } else {
                     var map = data.data.results;
+
                     for (let key in map) {
                         if (map.hasOwnProperty(key)) {
                             const localeElement = document.createElement("p");
                             localeElement.textContent = key + ":";
+                            localeElement.setAttribute("id", "locale" + counter);
+
                             const textAreaElement = document.createElement("textarea");
                             textAreaElement.textContent = map[key];
                             textAreaElement.setAttribute("rows", "10");
                             textAreaElement.setAttribute("style", "width: 100%;")
+                            textAreaElement.setAttribute("id", "textarea" + counter);
 
                             var resultDiv = document.getElementById("translatedResult");
                             resultDiv.append(localeElement);
                             resultDiv.append(textAreaElement);
                             console.log(key + " -> " + map[key]);
+                            counter++;
                         }
                     }
 
+                }
+            }
+        });
+    });
+    $('.submit').click(function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        var bundleId = $('.bundleId').val();
+
+        const map = new Map();
+        for (let i = 1; i < counter; i++) {
+            var textAreaId = "textarea" + i;
+            console.log(textAreaId);
+            const textArea = document.getElementById(textAreaId);
+            console.log(textArea);
+            var localeId = "locale" + i;
+            console.log(localeId);
+            const locale = document.getElementById(localeId);
+            console.log(locale);
+            map.set(locale.textContent, textArea.textContent);
+        }
+        console.log(JSON.stringify(Array.from(map.entries())));
+
+        var payload = {
+            bundleId: bundleId,
+            map: JSON.stringify(Array.from(map.entries())),
+            method: "save"
+        };
+        $.ajax({
+            url: '/SpecificTranslateLocalizationBundle',
+            type: "POST",
+            data: payload,
+            beforeSend: function () {
+                $('#submitRing').show();
+            },
+            complete: function () {
+                $('#submitRing').hide();
+            },
+            success: function (data) {
+                if (data.errors && data.errors.length != 0) {
+                    if (data.errors["INPUT_ERROR"]) {
+                        alert(data.errors["INPUT_ERROR"][0]);
+                    } else if (data.errors["CONFIG_ERROR"]) {
+                        alert(data.errors["CONFIG_ERROR"][0]);
+                    } else if (data.errors["CANNOT_TRANSLATE"]) {
+                        alert(data.errors["CANNOT_TRANSLATE"][0]);
+                    } else if (data.errors["SERVER_ERROR"]) {
+                        alert(data.errors["SERVER_ERROR"][0]);
+                    }
+                } else {
+                    alert("Translation saved");
                 }
             }
         });

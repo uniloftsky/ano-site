@@ -1,5 +1,9 @@
 package net.anotheria.anosite.localization;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.google.gson.Gson;
 import net.anotheria.anoprise.metafactory.MetaFactory;
 import net.anotheria.anoprise.metafactory.MetaFactoryException;
 import net.anotheria.anosite.cms.translation.IASGTranslationService;
@@ -21,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Array;
 import java.util.*;
 
 @WebServlet({"/SpecificTranslateLocalizationBundle"})
@@ -107,6 +112,51 @@ public class LocalizationBundleSpecificTranslationServlet extends HttpServlet {
     }
 
     private void saveTranslation(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        JSONResponse jsonResponse = new JSONResponse();
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            String bundleId = req.getParameter("bundleId");
+            String rawTranslatedMap = req.getParameter("map");
+
+            Map<String, String> translatedMap = new HashMap<>();
+            ArrayNode rootNode = (ArrayNode) objectMapper.readTree(rawTranslatedMap);
+            for (JsonNode jsonNode : rootNode) {
+                ArrayNode value = (ArrayNode) jsonNode;
+                String locale = value.get(0).asText().replace(":", "");
+                String content = value.get(1).asText();
+                translatedMap.put(locale, content);
+            }
+
+            LocalizationBundleDocument bundle = (LocalizationBundleDocument) resourceDataService.getLocalizationBundle(bundleId);
+            for (Map.Entry<String, String> entry : translatedMap.entrySet()) {
+                String existingContent = bundle.getString("messages_" + entry.getKey());
+                existingContent = net.anotheria.util.StringUtils.removeChar(existingContent, '\r');
+                Map<String, String> existingContentMap = net.anotheria.util.StringUtils.buildParameterMap(existingContent);
+
+                String translatedContent = entry.getValue();
+                translatedContent = net.anotheria.util.StringUtils.removeChar(translatedContent, '\r');
+                Map<String, String> translatedContentMap = net.anotheria.util.StringUtils.buildParameterMap(translatedContent);
+
+                for (Map.Entry<String, String> translatedEntry : translatedContentMap.entrySet()) {
+                    if (existingContentMap.containsKey(translatedEntry.getKey())) {
+                        existingContentMap.replace(translatedEntry.getKey(), translatedEntry.getValue());
+                    } else {
+                        existingContentMap.put(translatedEntry.getKey(), translatedEntry.getValue());
+                    }
+                }
+
+                StringBuilder toSave = new StringBuilder();
+                for (Map.Entry<String, String> existingEntry : existingContentMap.entrySet()) {
+                    toSave.append(existingEntry.getKey()).append("=").append(existingEntry.getValue()).append("\n");
+                }
+                bundle.setString("messages_" + entry.getKey(), toSave.toString());
+                resourceDataService.updateLocalizationBundle(bundle);
+            }
+        } catch (Exception any) {
+            log.error(any.getMessage(), any);
+            jsonResponse.addError("SERVER_ERROR", "Server error, please check logs.");
+        }
     }
 
     protected void writeResponse(HttpServletResponse response, String jsonString) throws IOException {
