@@ -157,6 +157,7 @@ public class LocalizationBundleSpecificTranslationServlet extends HttpServlet {
             log.error(any.getMessage(), any);
             jsonResponse.addError("SERVER_ERROR", "Server error, please check logs.");
         }
+        writeResponse(resp, jsonResponse.toJSON().toString());
     }
 
     protected void writeResponse(HttpServletResponse response, String jsonString) throws IOException {
