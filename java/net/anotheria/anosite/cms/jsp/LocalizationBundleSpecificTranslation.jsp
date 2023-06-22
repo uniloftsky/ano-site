@@ -102,8 +102,15 @@
                     <div></div>
                 </div>
             </div>
-            <div class="translatedResult">
+            <div id="translatedResult" style="margin-bottom: 1em">
 
+            </div>
+            <div><a href="#" class="button submit" style="display: none"><span>Submit</span></a></div>
+            <div id="submitRing" class="lds-ring" style="display: none">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
             </div>
             <div class="clear"><!-- --></div>
         </div>
@@ -150,9 +157,23 @@
                         alert(data.errors["SERVER_ERROR"][0]);
                     }
                 } else {
-                    console.log(JSON.stringify(data));
-                    console.log(data.results);
-                    alert("Translated")
+                    var map = data.data.results;
+                    for (let key in map) {
+                        if (map.hasOwnProperty(key)) {
+                            const localeElement = document.createElement("p");
+                            localeElement.textContent = key + ":";
+                            const textAreaElement = document.createElement("textarea");
+                            textAreaElement.textContent = map[key];
+                            textAreaElement.setAttribute("rows", "10");
+                            textAreaElement.setAttribute("style", "width: 100%;")
+
+                            var resultDiv = document.getElementById("translatedResult");
+                            resultDiv.append(localeElement);
+                            resultDiv.append(textAreaElement);
+                            console.log(key + " -> " + map[key]);
+                        }
+                    }
+
                 }
             }
         });

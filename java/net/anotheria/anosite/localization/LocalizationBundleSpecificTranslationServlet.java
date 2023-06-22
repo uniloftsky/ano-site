@@ -94,10 +94,9 @@ public class LocalizationBundleSpecificTranslationServlet extends HttpServlet {
                     translatedMap.put(targetLocale, translatedContent);
                 }
 
-                List<String> translated = new LinkedList<>(Arrays.asList("result1", "result2", "result3"));
                 JSONObject data = new JSONObject();
                 data.put("success", true);
-                data.put("results", translated);
+                data.put("results", translatedMap);
                 jsonResponse.setData(data);
             }
         } catch (Exception any) {
