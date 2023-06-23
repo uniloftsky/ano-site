@@ -722,7 +722,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 
 		req.getSession().setAttribute(SA_BRAND, brandConfig.getName());
 		try {
-			prepareTemplateLocalization(brandConfig.getLocalizations());
+			prepareBrandLocalization(brandConfig.getLocalizations());
 		} catch (ASGRuntimeException e) {
 			LOGGER.error("Unable to prepare localizations. " + e.getMessage());
 		}
