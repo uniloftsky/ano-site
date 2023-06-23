@@ -1734,7 +1734,13 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		ret.addScripts(createScriptBeanList(page.getScripts(), req));
 
 		//attributes
-		AttributeMap attributeMap = createAttributeMap(req, res, page.getAttributes());
+		List<String> attributes = page.getAttributes();
+		BrandConfig brandConfig = ContextManager.getCallContext().getBrandConfig();
+		if (brandConfig != null) {
+			attributes.addAll(brandConfig.getAttributes());
+		}
+
+		AttributeMap attributeMap = createAttributeMap(req, res, attributes);
 		APICallContext.getCallContext().setAttribute(AttributeMap.PAGE_ATTRIBUTES_CALL_CONTEXT_SCOPE_NAME, attributeMap);
 		ret.setAttributes(attributeMap);
 
@@ -1891,7 +1897,6 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		ret.addMediaLinks(searchMediaLinks(boxes));
 		ret.addScripts(searchScripts(boxes));
 
-		BrandConfig brandConfig = ContextManager.getCallContext().getBrandConfig();
 		if (brandConfig != null) {
 			ret.addMediaLinks(createMediaLinkBeanList(brandConfig.getBrandMediaLinkIds(), req));
 		}
