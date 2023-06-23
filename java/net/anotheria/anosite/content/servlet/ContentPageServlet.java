@@ -376,7 +376,6 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 
 	protected void processRequest(HttpServletRequest req, HttpServletResponse res, boolean submit) throws ServletException, IOException, ASGRuntimeException, BoxHandleException, WizardHandlerException {
 
-		prepareBrand(req);
 		prepareTextResources(req);
 		req.setAttribute(BEAN_ANOSITE_VERBOSITY, config.verbose() ? Boolean.TRUE : Boolean.FALSE);
 
@@ -670,62 +669,6 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		}
 
 
-	}
-
-	private void prepareBrand(HttpServletRequest req) {
-		BrandConfig brandConfig = ContextManager.getCallContext().getBrandConfig();
-		if (brandConfig != null && brandConfig.getUrlsToMap().contains(req.getServerName())) {
-			req.getSession().setAttribute(SA_BRAND, brandConfig.getName());
-			try {
-				prepareBrandLocalization(brandConfig.getLocalizations());
-			} catch (ASGRuntimeException e) {
-				LOGGER.error("Unable to prepare localizations. " + e.getMessage());
-			}
-			return;
-		}
-
-		Brand brand = null;
-		try {
-			List<Brand> brands = brandService.getBrands();
-			for (Brand b: brands)
-				if (b.getUrlsToMap().contains(req.getServerName())) {
-					brand = b;
-					break;
-				}
-		} catch (ASBrandServiceException e) {
-			LOGGER.error("Unable to get brand for {}. {}", req.getServerName(), e.getMessage());
-		}
-
-		//trying to get default brand
-		if (brand == null) {
-			try {
-				List<Brand> brands = brandService.getBrandsByProperty(Brand.PROP_DEFAULT_BRAND, true);
-				if (brands == null || brands.size() == 0) {
-					LOGGER.warn("Default brand not found");
-				} else if (brands.size() > 1){
-					LOGGER.warn("Default brand more than 1.");
-				} else {
-					brand = brands.get(0);
-				}
-			} catch (ASBrandServiceException e) {
-				LOGGER.error("Unable to get default brand. {}", e.getMessage());
-			}
-		}
-
-		if (brand == null) {
-			LOGGER.error("Brand is null for " + req.getServerName());
-			return;
-		}
-
-		brandConfig = new BrandConfig(brand.getName(), brand.getDefaultBrand(), brand.getUrlsToMap(), brand.getLocalizations(), brand.getMediaLinks(), brand.getAttributes());
-		ContextManager.getCallContext().setBrandConfig(brandConfig);
-
-		req.getSession().setAttribute(SA_BRAND, brandConfig.getName());
-		try {
-			prepareBrandLocalization(brandConfig.getLocalizations());
-		} catch (ASGRuntimeException e) {
-			LOGGER.error("Unable to prepare localizations. " + e.getMessage());
-		}
 	}
 
 	/**
@@ -1709,6 +1652,11 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	 */
 	private InternalResponse createPageBean(HttpServletRequest req, HttpServletResponse res, Pagex page, PageTemplate template) throws ASGRuntimeException {
 		preparePageLocalization(page.getLocalizations());
+		BrandConfig brandConfig = ContextManager.getCallContext().getBrandConfig();
+
+		if (brandConfig != null) {
+			prepareBrandLocalization(brandConfig.getLocalizations());
+		}
 
 		PageBean ret = new PageBean();
 
@@ -1735,7 +1683,6 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 
 		//attributes
 		List<String> attributes = page.getAttributes();
-		BrandConfig brandConfig = ContextManager.getCallContext().getBrandConfig();
 		if (brandConfig != null) {
 			attributes.addAll(brandConfig.getAttributes());
 		}
