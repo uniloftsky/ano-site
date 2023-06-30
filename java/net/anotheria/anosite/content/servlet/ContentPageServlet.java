@@ -25,8 +25,6 @@ import net.anotheria.anosite.content.bean.ScriptBean;
 import net.anotheria.anosite.content.bean.SiteBean;
 import net.anotheria.anosite.content.bean.StylesheetBean;
 import net.anotheria.anosite.content.variables.VariablesUtility;
-import net.anotheria.anosite.gen.asbrand.data.Brand;
-import net.anotheria.anosite.gen.asbrand.service.ASBrandServiceException;
 import net.anotheria.anosite.gen.asbrand.service.IASBrandService;
 import net.anotheria.anosite.gen.asfeature.data.Feature;
 import net.anotheria.anosite.gen.asfeature.service.ASFeatureServiceException;
