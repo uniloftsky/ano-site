@@ -162,6 +162,7 @@
 						<element type="field" name="footerMargin"/>
 						<element type="field" name="footerTemplate"/>
 						<element type="field" name="contentTemplate"/>
+						<element type="field" name="localizations" />
 
 						<element type="empty"/>
 						<element type="list">
