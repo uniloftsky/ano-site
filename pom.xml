@@ -7,7 +7,7 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>ano-site</artifactId>
-    <version>3.2.2-SNAPSHOT</version>
+    <version>3.2.3-SNAPSHOT</version>
 	<name>anotheria.net site engine</name>
 
 	<properties>
@@ -224,6 +224,13 @@
 				<includes>
 					<include>**/*.jsp</include>
 				</includes>
+			</resource>
+			<resource>
+				<directory>${project.basedir}/etc/appdata</directory>
+				<includes>
+					<include>ano-site-localization-auto-translation-config.json</include>
+				</includes>
+				<targetPath>etc/appdata</targetPath>
 			</resource>
 		</resources>
 		<plugins>

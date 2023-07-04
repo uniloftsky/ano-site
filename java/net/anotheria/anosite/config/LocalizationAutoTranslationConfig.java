@@ -41,7 +41,7 @@ public class LocalizationAutoTranslationConfig {
      */
     @Configure
     @SerializedName("@languages")
-    private LanguageParameter[] languages;
+    private LocalizationAutoTranslationConfig.LanguageParameter[] languages;
 
     /**
      * Map that is populated from list 'languages'
@@ -56,7 +56,7 @@ public class LocalizationAutoTranslationConfig {
             LOGGER.warn("Configuration fail[" + e.getMessage() + "]. Relaying on defaults.");
         }
 
-        for (LanguageParameter language : this.languages) {
+        for (LocalizationAutoTranslationConfig.LanguageParameter language : this.languages) {
             this.languagesMap.put(language.key, language.value);
         }
     }
@@ -69,7 +69,7 @@ public class LocalizationAutoTranslationConfig {
         this.openAIToken = openAIToken;
     }
 
-    public void setLanguages(LanguageParameter[] languages) {
+    public void setLanguages(LocalizationAutoTranslationConfig.LanguageParameter[] languages) {
         this.languages = languages;
     }
 
@@ -141,4 +141,5 @@ public class LocalizationAutoTranslationConfig {
                     '}';
         }
     }
+
 }
