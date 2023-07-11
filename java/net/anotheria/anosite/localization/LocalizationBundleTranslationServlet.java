@@ -23,6 +23,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @WebServlet({"/TranslateLocalizationBundle"})
 @MultipartConfig
@@ -33,10 +36,12 @@ public class LocalizationBundleTranslationServlet extends HttpServlet {
     private IASResourceDataService resourceDataService;
     private final IASGTranslationService translationService;
     private final LocalizationAutoTranslationConfig config;
+    private final ExecutorService executorService;
 
     public LocalizationBundleTranslationServlet() {
         this.config = LocalizationAutoTranslationConfig.getInstance();
         this.translationService = new TranslationServiceFactory().create();
+        this.executorService = Executors.newFixedThreadPool(10);
 
         try {
             resourceDataService = MetaFactory.get(IASResourceDataService.class);
@@ -101,25 +106,48 @@ public class LocalizationBundleTranslationServlet extends HttpServlet {
                         jsonResponse.addError("INPUT_ERROR", "Cannot find any content in for provided locale.");
                     }
 
+
                     StringBuilder translated = new StringBuilder();
                     List<String> contentLines = Arrays.asList(content.trim().split("\n"));
                     int chunkSize = 10;
                     int maxPages = contentLines.size() / chunkSize;
+                    List<String> translatedVector = new Vector<>();
+
+                    CountDownLatch countDownLatch = new CountDownLatch(maxPages + 1);
 
                     for (int i = 0; i <= maxPages; i++) {
-                        StringBuilder contentToTranslate = new StringBuilder();
-                        int fromIndex = i * chunkSize;
-                        int toIndex = i * chunkSize + chunkSize;
+                        String finalLanguageFrom = languageFrom;
+                        String finalLanguageTo = languageTo;
 
-                        if (toIndex > contentLines.size()) {
-                            toIndex = contentLines.size();
-                        }
+                        int finalI = i;
+                        Runnable chunkThread = () -> {
+                            StringBuilder contentToTranslate = new StringBuilder();
+                            int fromIndex = finalI * chunkSize;
+                            int toIndex = finalI * chunkSize + chunkSize;
 
-                        List<String> subList = contentLines.subList(fromIndex, toIndex);
-                        for (String s : subList) {
-                            contentToTranslate.append(s).append("\n");
+                            if (toIndex > contentLines.size()) {
+                                toIndex = contentLines.size();
+                            }
+
+                            List<String> subList = contentLines.subList(fromIndex, toIndex);
+                            for (String s : subList) {
+                                contentToTranslate.append(s).append("\n");
+                            }
+                            String translatedTemp = translationService.translate(finalLanguageFrom, finalLanguageTo, contentToTranslate.toString());
+                            translatedVector.add(translatedTemp);
+                            countDownLatch.countDown();
+                        };
+
+                        executorService.submit(chunkThread);
+                    }
+
+                    countDownLatch.await();
+
+                    for (String s : translatedVector) {
+                        String[] translatedLines = s.split("\n");
+                        for (String line : translatedLines) {
+                            translated.append(line).append("\n");
                         }
-                        translated.append(translationService.translate(languageFrom, languageTo, contentToTranslate.toString())).append("\n");
                     }
 
                     if (!StringUtils.isEmpty(translated)) {

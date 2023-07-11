@@ -1,5 +1,6 @@
 package net.anotheria.anosite.config;
 
+import org.configureme.ConfigurationManager;
 import org.configureme.annotations.Configure;
 import org.configureme.annotations.ConfigureMe;
 import org.configureme.annotations.DontConfigure;
@@ -22,6 +23,14 @@ public class LocalizationAutoTranslationTokenConfig {
      * Instance.
      */
     private static LocalizationAutoTranslationTokenConfig INSTANCE;
+
+    public LocalizationAutoTranslationTokenConfig() {
+        try {
+            ConfigurationManager.INSTANCE.configure(this);
+        } catch (final IllegalArgumentException e) {
+            LOGGER.warn("Configuration fail[" + e.getMessage() + "]. Relaying on defaults.");
+        }
+    }
 
     @Configure
     private String token;
