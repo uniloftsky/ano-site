@@ -5,7 +5,7 @@ import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 import com.theokanning.openai.completion.chat.ChatMessage;
 import com.theokanning.openai.completion.chat.ChatMessageRole;
 import com.theokanning.openai.service.OpenAiService;
-import net.anotheria.anosite.config.LocalizationAutoTranslationConfig;
+import net.anotheria.anosite.config.LocalizationAutoTranslationTokenConfig;
 import net.anotheria.anosite.gen.shared.service.BasicService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,12 +22,12 @@ public class IASGTranslationTranslationServiceImpl extends BasicService implemen
     private static final String PROMPT = "You will get a localizations in format 'key'='translation'. Translate it from %s to %s without any explanations.\n" +
             "Localizations:\n \"\"\"\n%s\n\"\"\"";
 
-    private LocalizationAutoTranslationConfig config;
+    private LocalizationAutoTranslationTokenConfig config;
     private OpenAiService openAiService;
 
     public IASGTranslationTranslationServiceImpl() {
-        this.config = LocalizationAutoTranslationConfig.getInstance();
-        this.openAiService = new OpenAiService(config.getOpenAIToken(), Duration.ofSeconds(240));
+        this.config = LocalizationAutoTranslationTokenConfig.getInstance();
+        this.openAiService = new OpenAiService(config.getToken(), Duration.ofSeconds(240));
     }
 
     @Override

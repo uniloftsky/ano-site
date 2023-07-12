@@ -2,11 +2,9 @@ package net.anotheria.anosite.cms.action;
 
 import net.anotheria.anoprise.metafactory.MetaFactory;
 import net.anotheria.anoprise.metafactory.MetaFactoryException;
-import net.anotheria.anosite.config.LocalizationAutoTranslationConfig;
 import net.anotheria.anosite.gen.asresourcedata.data.LocalizationBundle;
 import net.anotheria.anosite.gen.asresourcedata.service.IASResourceDataService;
 import net.anotheria.anosite.gen.shared.action.BaseToolsAction;
-import net.anotheria.anosite.localization.LocalizationBundleTranslationServlet;
 import net.anotheria.maf.action.ActionCommand;
 import net.anotheria.maf.action.ActionMapping;
 import org.slf4j.Logger;
