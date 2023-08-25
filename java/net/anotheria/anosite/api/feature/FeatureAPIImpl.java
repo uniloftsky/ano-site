@@ -47,7 +47,6 @@ public class FeatureAPIImpl extends AbstractAPIImpl implements FeatureAPI {
 		try {
 			List<Feature> featuresList = featureService.getFeaturesByProperty(Feature.PROP_NAME, name);
 			if (featuresList == null || featuresList.size() == 0){
-				log.warn("Feature " + name + " not found.");
 				return false;
 			}
 
@@ -80,7 +79,6 @@ public class FeatureAPIImpl extends AbstractAPIImpl implements FeatureAPI {
 		try {
 			List<BrandFeature> brandFeatureList = featureService.getBrandFeaturesByProperty(BrandFeature.PROP_NAME, name);
 			if (brandFeatureList == null || brandFeatureList.size() == 0) {
-				log.warn("Brand feature " + name + " not found.");
 				return false;
 			}
 
