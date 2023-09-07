@@ -17,12 +17,12 @@
 		<ano-web.version>3.0.0</ano-web.version>
 		<ano-maf.version>3.0.0</ano-maf.version>
 		<ano-prise.version>2.2.0</ano-prise.version>
-		<ano-plass.version>2.1.2</ano-plass.version>
+		<ano-plass.version>2.1.6</ano-plass.version>
 		<ano-access.version>2.2.0</ano-access.version>
 		<jersey-version>2.38</jersey-version>
 
 		<configureme.version>2.5.0</configureme.version>
-		<moskito.version>3.2.1</moskito.version>
+		<moskito.version>3.2.6-SNAPSHOT</moskito.version>
 
 		<commons-io.version>2.5</commons-io.version>
 		<json.version>20090211</json.version>
