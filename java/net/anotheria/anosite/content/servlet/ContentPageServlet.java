@@ -1,6 +1,7 @@
 package net.anotheria.anosite.content.servlet;
 
 import net.anotheria.anodoc.data.NoSuchDocumentException;
+import net.anotheria.anodoc.util.context.BrandConfig;
 import net.anotheria.anodoc.util.context.ContextManager;
 import net.anotheria.anoplass.api.APICallContext;
 import net.anotheria.anoplass.api.APIFinder;
@@ -24,6 +25,7 @@ import net.anotheria.anosite.content.bean.ScriptBean;
 import net.anotheria.anosite.content.bean.SiteBean;
 import net.anotheria.anosite.content.bean.StylesheetBean;
 import net.anotheria.anosite.content.variables.VariablesUtility;
+import net.anotheria.anosite.gen.asbrand.service.IASBrandService;
 import net.anotheria.anosite.gen.asfeature.data.Feature;
 import net.anotheria.anosite.gen.asfeature.service.ASFeatureServiceException;
 import net.anotheria.anosite.gen.asfeature.service.IASFeatureService;
@@ -123,11 +125,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static net.anotheria.anosite.util.AnositeConstants.PARAM_SWITCH_MODE;
-import static net.anotheria.anosite.util.AnositeConstants.PARAM_VALUE_EDIT_MODE;
-import static net.anotheria.anosite.util.AnositeConstants.PARAM_VALUE_VIEW_MODE;
-import static net.anotheria.anosite.util.AnositeConstants.SA_EDIT_MODE_FLAG;
-import static net.anotheria.anosite.util.AnositeConstants.SA_PAGE_NAME;
+import static net.anotheria.anosite.util.AnositeConstants.*;
 
 /**
  * This servlet builds and delivers pages (out of pagexs objects) and is therefore one of the main classes in the ano-site framework.
@@ -206,6 +204,10 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	 * Wizard service.
 	 */
 	private transient IASWizardDataService wizardDataService;
+	/**
+	 * {@link IASBrandService} instance.
+	 */
+	private transient IASBrandService brandService;
 
 	/**
 	 * WizardAPI instance.
@@ -263,6 +265,7 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 			resourceDataService = MetaFactory.get(IASResourceDataService.class);
 			wizardDataService = MetaFactory.get(IASWizardDataService.class);
 			featureService    = MetaFactory.get(IASFeatureService.class);
+			brandService = MetaFactory.get(IASBrandService.class);
 			wizardAPI = APIFinder.findAPI(WizardAPI.class);
 			accessAPI = APIFinder.findAPI(AnoSiteAccessAPI.class);
 			systemConfigurationAPI = APIFinder.findAPI(SystemConfigurationAPI.class);
@@ -1647,10 +1650,15 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	 */
 	private InternalResponse createPageBean(HttpServletRequest req, HttpServletResponse res, Pagex page, PageTemplate template) throws ASGRuntimeException {
 		preparePageLocalization(page.getLocalizations());
+		BrandConfig brandConfig = ContextManager.getCallContext().getBrandConfig();
+
+		if (brandConfig != null) {
+			prepareBrandLocalization(brandConfig.getLocalizations());
+		}
 
 		PageBean ret = new PageBean();
 
-		ret.setTitle(page.getTitle());
+		ret.setTitle(VariablesUtility.replaceVariables(req, page.getTitle()));
 		ret.setKeywords(VariablesUtility.replaceVariables(req, page.getKeywords()));
 		ret.setDescription(VariablesUtility.replaceVariables(req, page.getDescription()));
 		ret.setName(page.getName());
@@ -1672,7 +1680,12 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		ret.addScripts(createScriptBeanList(page.getScripts(), req));
 
 		//attributes
-		AttributeMap attributeMap = createAttributeMap(req, res, page.getAttributes());
+		List<String> attributes = page.getAttributes();
+		if (brandConfig != null) {
+			attributes.addAll(brandConfig.getAttributes());
+		}
+
+		AttributeMap attributeMap = createAttributeMap(req, res, attributes);
 		APICallContext.getCallContext().setAttribute(AttributeMap.PAGE_ATTRIBUTES_CALL_CONTEXT_SCOPE_NAME, attributeMap);
 		ret.setAttributes(attributeMap);
 
@@ -1828,6 +1841,10 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 		ret.addFooterBoxes(boxes);
 		ret.addMediaLinks(searchMediaLinks(boxes));
 		ret.addScripts(searchScripts(boxes));
+
+		if (brandConfig != null) {
+			ret.addMediaLinks(createMediaLinkBeanList(brandConfig.getBrandMediaLinkIds(), req));
+		}
 
 		return redirectTarget == null ?
 				new InternalPageBeanResponse(ret) :
@@ -2117,6 +2134,17 @@ public class ContentPageServlet extends BaseAnoSiteServlet {
 	 */
 	private void preparePageLocalization(List<String> localizationBundlesIds) throws ASResourceDataServiceException, ASGRuntimeException {
 		LocalizationMap.getCurrentLocalizationMap().addLocalizationBundles(LocalizationEnvironment.PAGE, getLocalizationBundles(localizationBundlesIds));
+	}
+
+	/**
+	 * Prepare brand localization.
+	 *
+	 * @param localizationBundlesIds collection of localization bundles ids
+	 * @throws ASResourceDataServiceException on errors
+	 * @throws ASGRuntimeException			on errors
+	 */
+	private void prepareBrandLocalization(List<String> localizationBundlesIds) throws ASResourceDataServiceException, ASGRuntimeException {
+		LocalizationMap.getCurrentLocalizationMap().addLocalizationBundles(LocalizationEnvironment.BRAND, getLocalizationBundles(localizationBundlesIds));
 	}
 
 	/**

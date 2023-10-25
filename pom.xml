@@ -25,7 +25,7 @@
 		<moskito.version>4.0.0-SNAPSHOT</moskito.version>
 
 		<commons-io.version>2.5</commons-io.version>
-		<json.version>20090211</json.version>
+		<json.version>20231013</json.version>
 
 		<source-version>1.8</source-version>
 		<target-version>1.8</target-version>
@@ -69,7 +69,7 @@
 		<dependency>
 			<groupId>org.codehaus.jettison</groupId>
 			<artifactId>jettison</artifactId>
-			<version>1.1</version>
+			<version>1.5.4</version>
 		</dependency>
 		<dependency>
 			<groupId>net.anotheria</groupId>
@@ -139,12 +139,17 @@
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
-			<version>4.5.2</version>
+			<version>4.5.13</version>
 		</dependency>
 		<dependency>
 			<groupId>net.anotheria</groupId>
 			<artifactId>ano-net</artifactId>
 			<version>2.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.theokanning.openai-gpt3-java</groupId>
+			<artifactId>service</artifactId>
+			<version>0.11.1</version>
 		</dependency>
 
 	</dependencies>
@@ -226,6 +231,13 @@
 				<includes>
 					<include>**/*.jsp</include>
 				</includes>
+			</resource>
+			<resource>
+				<directory>${project.basedir}/etc/appdata</directory>
+				<includes>
+					<include>ano-site-localization-auto-translation-config.json</include>
+				</includes>
+				<targetPath>etc/appdata</targetPath>
 			</resource>
 		</resources>
 		<plugins>
