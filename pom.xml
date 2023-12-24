@@ -21,8 +21,8 @@
 		<ano-access.version>4.0.0</ano-access.version>
 		<jersey-version>3.1.3</jersey-version>
 
-		<configureme.version>4.0.0-SNAPSHOT</configureme.version>
-		<moskito.version>4.0.0-SNAPSHOT</moskito.version>
+		<configureme.version>4.0.0</configureme.version>
+		<moskito.version>4.0.0</moskito.version>
 
 		<commons-io.version>2.15.0</commons-io.version>
 		<json.version>20231013</json.version>
