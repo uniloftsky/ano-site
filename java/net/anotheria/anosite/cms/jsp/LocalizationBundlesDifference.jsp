@@ -84,7 +84,9 @@
                     <p style="width: 40%">Source language: </p>
                     <select style="width: 65%" name="language" class="source">
                         <ano:iterate name="languages" type="java.lang.String" id="option">
-                            <option value="<ano:write name="option"/>"><ano:write name="option"/></option>
+                            <option value="<ano:write name="option"/>"
+                                    <ano:iF test="${option == sourceLanguage}">selected</ano:iF>><ano:write
+                                    name="option"/></option>
                         </ano:iterate>
                     </select>
                 </div>
@@ -92,7 +94,9 @@
                     <p style="width: 40%">Destination language: </p>
                     <select style="width: 65%" name="language" class="destination">
                         <ano:iterate name="languages" type="java.lang.String" id="option">
-                            <option value="<ano:write name="option"/>"><ano:write name="option"/></option>
+                            <option value="<ano:write name="option"/>"
+                                    <ano:iF test="${destinationLanguage != null && destinationLanguage == option}">selected</ano:iF>   >
+                                <ano:write name="option"/></option>
                         </ano:iterate>
                     </select>
                 </div>

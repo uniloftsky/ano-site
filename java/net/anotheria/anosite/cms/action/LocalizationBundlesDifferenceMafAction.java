@@ -2,11 +2,13 @@ package net.anotheria.anosite.cms.action;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import net.anotheria.anodoc.util.context.ContextManager;
 import net.anotheria.anoprise.metafactory.MetaFactory;
 import net.anotheria.anoprise.metafactory.MetaFactoryException;
 import net.anotheria.anosite.gen.asresourcedata.data.LocalizationBundle;
 import net.anotheria.anosite.gen.asresourcedata.service.IASResourceDataService;
 import net.anotheria.anosite.gen.shared.action.BaseToolsAction;
+import net.anotheria.anosite.gen.util.AnositeCallContext;
 import net.anotheria.maf.action.ActionCommand;
 import net.anotheria.maf.action.ActionMapping;
 
@@ -30,7 +32,22 @@ public class LocalizationBundlesDifferenceMafAction extends BaseToolsAction {
         List<LocalizationBundle> localizationBundles = iasResourceDataService.getLocalizationBundles();
         localizationBundles.sort(Comparator.comparing(LocalizationBundle::getId));
         req.setAttribute("localizationBundles", localizationBundles);
-        req.setAttribute("languages", getSupportedLanguages());
+
+        List<String> supportedLanguages = getSupportedLanguages();
+        req.setAttribute("languages", supportedLanguages);
+
+        String defaultLanguage = ContextManager.getCallContext().getDefaultLanguage();
+        req.setAttribute("sourceLanguage", defaultLanguage);
+
+        if(supportedLanguages.size() == 2) {
+            String destinationLanguage;
+            for (String supportedLanguage : supportedLanguages) {
+                if(!supportedLanguage.equals(defaultLanguage)) {
+                    destinationLanguage = supportedLanguage;
+                    req.setAttribute("destinationLanguage", destinationLanguage);
+                }
+            }
+        }
         return mapping.success();
     }
 
