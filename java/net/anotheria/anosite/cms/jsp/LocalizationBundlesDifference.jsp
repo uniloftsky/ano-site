@@ -101,7 +101,7 @@
                     </select>
                 </div>
             </div>
-            <div><a href="#" class="button submit"><span>Get difference</span></a></div>
+            <div><a href="#" class="button getDifference"><span>Get difference</span></a></div>
             <div id="submitRing" class="lds-ring" style="display: none">
                 <div></div>
                 <div></div>
@@ -121,24 +121,35 @@
             </div>
             <div class="clear"><!-- --></div>
         </div>
+        <div id="localization-to-save-div" class="main_area" style="display: none">
+            <div class="c_l"><!-- --></div>
+            <div class="c_r"><!-- --></div>
+            <div class="c_b_l"><!-- --></div>
+            <div class="c_b_r"><!-- --></div>
+            <div style="margin-bottom: 1em">
+                <p>Messages to save: </p>
+                <textarea class="to-save-area" rows="10" style="width: 100%; padding: .25em"></textarea>
+            </div>
+            <div><a href="#" class="button save"><span>Save messages</span></a></div>
+            <div class="clear"><!-- --></div>
+        </div>
     </div>
 </div>
 </body>
 </html>
 <script type="text/javascript">
-    $('.submit').click(function (event) {
-        event.preventDefault();
-        event.stopPropagation();
+    const bundleId = $('.bundleId').val();
+    const source = $('.source').val();
+    const destination = $('.destination').val();
 
-        const bundleId = $('.bundleId').val();
-        const source = $('.source').val();
-        const destination = $('.destination').val();
-
+    const getDifference = function () {
         const payload = {
             bundleId: bundleId,
             source: source,
-            destination: destination
+            destination: destination,
+            method: "TRANSLATE"
         };
+
         $.ajax({
             url: '/LocalizationBundlesDifference',
             type: "POST",
@@ -153,20 +164,62 @@
                 if (data.errors && data.errors.length != 0) {
                     if (data.errors["INPUT_ERROR"]) {
                         alert(data.errors["INPUT_ERROR"][0]);
-                    } else if (data.errors["CONFIG_ERROR"]) {
-                        alert(data.errors["CONFIG_ERROR"][0]);
-                    } else if (data.errors["CANNOT_TRANSLATE"]) {
-                        alert(data.errors["CANNOT_TRANSLATE"][0]);
                     } else if (data.errors["SERVER_ERROR"]) {
                         alert(data.errors["SERVER_ERROR"][0]);
                     }
                 } else {
                     $('#result-div').show();
                     const result = data.data.result;
-                    console.log(result);
                     $('.result-area').val(result);
+
+                    $('#localization-to-save-div').show();
                 }
             }
         });
+    };
+
+    const save = function () {
+        const messagesToSave = $('.to-save-area').val();
+
+        const payload = {
+            bundleId: bundleId,
+            source: source,
+            destination: destination,
+            method: "SAVE",
+            messagesToSave: messagesToSave
+        };
+
+        $.ajax({
+            url: '/LocalizationBundlesDifference',
+            type: "POST",
+            data: payload,
+            success: function (data) {
+                if (data.errors && data.errors.length != 0) {
+                    if (data.errors["INPUT_ERROR"]) {
+                        alert(data.errors["INPUT_ERROR"][0]);
+                    } else if (data.errors["SERVER_ERROR"]) {
+                        alert(data.errors["SERVER_ERROR"][0]);
+                    }
+                } else {
+                    $('#localization-to-save-div').hide();
+                    getDifference();
+                    $('.to-save-area').val('');
+                }
+            }
+        });
+    }
+
+    $('.getDifference').click(function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        getDifference();
+    });
+
+    $('.save').click(function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        save();
     });
 </script>
