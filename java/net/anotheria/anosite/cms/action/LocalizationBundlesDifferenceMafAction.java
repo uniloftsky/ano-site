@@ -8,7 +8,6 @@ import net.anotheria.anoprise.metafactory.MetaFactoryException;
 import net.anotheria.anosite.gen.asresourcedata.data.LocalizationBundle;
 import net.anotheria.anosite.gen.asresourcedata.service.IASResourceDataService;
 import net.anotheria.anosite.gen.shared.action.BaseToolsAction;
-import net.anotheria.anosite.gen.util.AnositeCallContext;
 import net.anotheria.maf.action.ActionCommand;
 import net.anotheria.maf.action.ActionMapping;
 
