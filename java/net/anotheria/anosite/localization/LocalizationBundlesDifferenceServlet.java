@@ -121,7 +121,7 @@ public class LocalizationBundlesDifferenceServlet extends HttpServlet {
         }
 
         if (StringUtils.isEmpty(sourceContent)) {
-            jsonResponse.addError("INPUT_ERROR", "Cannot find any content for provided locale: " + locale);
+            return new HashMap<>();
         }
 
         return StringUtils.buildParameterMap(sourceContent);
