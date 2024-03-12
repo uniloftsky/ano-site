@@ -138,11 +138,11 @@
 </body>
 </html>
 <script type="text/javascript">
-    const bundleId = $('.bundleId').val();
-    const source = $('.source').val();
-    const destination = $('.destination').val();
-
     const getDifference = function () {
+        const bundleId = $('.bundleId').val();
+        const source = $('.source').val();
+        const destination = $('.destination').val();
+
         const payload = {
             bundleId: bundleId,
             source: source,
@@ -179,6 +179,9 @@
     };
 
     const save = function () {
+        const bundleId = $('.bundleId').val();
+        const source = $('.source').val();
+        const destination = $('.destination').val();
         const messagesToSave = $('.to-save-area').val();
 
         const payload = {
