@@ -10,7 +10,9 @@ import net.anotheria.anosite.gen.asresourcedata.service.IASResourceDataService;
 import net.anotheria.anosite.gen.shared.action.BaseToolsAction;
 import net.anotheria.maf.action.ActionCommand;
 import net.anotheria.maf.action.ActionMapping;
+import org.apache.commons.lang3.math.NumberUtils;
 
+import java.text.NumberFormat;
 import java.util.Comparator;
 import java.util.List;
 
@@ -29,7 +31,13 @@ public class LocalizationBundlesDifferenceMafAction extends BaseToolsAction {
     @Override
     public ActionCommand anoDocExecute(ActionMapping mapping, HttpServletRequest req, HttpServletResponse res) throws Exception {
         List<LocalizationBundle> localizationBundles = iasResourceDataService.getLocalizationBundles();
-        localizationBundles.sort(Comparator.comparing(LocalizationBundle::getId));
+        localizationBundles.sort(((o1, o2) -> {
+            NumberFormat numberFormat = NumberFormat.getInstance();
+            numberFormat.setMinimumIntegerDigits(3);
+            String firstId = numberFormat.format(Integer.parseInt(o1.getId()));
+            String secondId = numberFormat.format(Integer.parseInt(o2.getId()));
+            return firstId.compareToIgnoreCase(secondId);
+        }));
         req.setAttribute("localizationBundles", localizationBundles);
 
         List<String> supportedLanguages = getSupportedLanguages();
@@ -38,10 +46,10 @@ public class LocalizationBundlesDifferenceMafAction extends BaseToolsAction {
         String defaultLanguage = ContextManager.getCallContext().getDefaultLanguage();
         req.setAttribute("sourceLanguage", defaultLanguage);
 
-        if(supportedLanguages.size() == 2) {
+        if (supportedLanguages.size() == 2) {
             String destinationLanguage;
             for (String supportedLanguage : supportedLanguages) {
-                if(!supportedLanguage.equals(defaultLanguage)) {
+                if (!supportedLanguage.equals(defaultLanguage)) {
                     destinationLanguage = supportedLanguage;
                     req.setAttribute("destinationLanguage", destinationLanguage);
                 }
