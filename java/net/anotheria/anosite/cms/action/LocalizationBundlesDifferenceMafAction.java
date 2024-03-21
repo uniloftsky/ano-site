@@ -10,7 +10,7 @@ import net.anotheria.anosite.gen.asresourcedata.service.IASResourceDataService;
 import net.anotheria.anosite.gen.shared.action.BaseToolsAction;
 import net.anotheria.maf.action.ActionCommand;
 import net.anotheria.maf.action.ActionMapping;
-import org.apache.commons.lang3.math.NumberUtils;
+import net.anotheria.util.NumberUtils;
 
 import java.text.NumberFormat;
 import java.util.Comparator;
@@ -32,10 +32,8 @@ public class LocalizationBundlesDifferenceMafAction extends BaseToolsAction {
     public ActionCommand anoDocExecute(ActionMapping mapping, HttpServletRequest req, HttpServletResponse res) throws Exception {
         List<LocalizationBundle> localizationBundles = iasResourceDataService.getLocalizationBundles();
         localizationBundles.sort(((o1, o2) -> {
-            NumberFormat numberFormat = NumberFormat.getInstance();
-            numberFormat.setMinimumIntegerDigits(3);
-            String firstId = numberFormat.format(Integer.parseInt(o1.getId()));
-            String secondId = numberFormat.format(Integer.parseInt(o2.getId()));
+            String firstId = NumberUtils.itoa(Integer.parseInt(o1.getId()), 3);
+            String secondId = NumberUtils.itoa(Integer.parseInt(o2.getId()), 3);
             return firstId.compareToIgnoreCase(secondId);
         }));
         req.setAttribute("localizationBundles", localizationBundles);
